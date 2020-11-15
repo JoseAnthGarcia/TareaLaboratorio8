@@ -1,4 +1,6 @@
+<%@ page import="beans.DistritoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:useBean id="listaDistritos" scope="request" type="java.util.ArrayList<beans.DistritoBean>"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,57 +69,57 @@
         <div class="col-sm-3">
         </div>
         <div class="col-sm-6">
-            <form>
+            <h1>Registro</h1>
+            <form method="POST" action="<%=request.getContextPath()%>/UsuarioServlet?accion=agregar">
                 <div class="form-group row">
                     <label for="inputName" class="col-sm-2 col-form-label">Nombres:</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputName">
+                        <input type="text" class="form-control" name="nombres" id="inputName">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputLastName" class="col-sm-2 col-form-label">Apellidos:</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputLastName">
+                        <input type="text" class="form-control" name="apellidos" id="inputLastName">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputDni" class="col-sm-2 col-form-label">DNI:</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputDni">
+                        <input type="text" class="form-control" name="dni" id="inputDni">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputEmail" class="col-sm-2 col-form-label">Correo:</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail">
+                        <input type="email" class="form-control" name="correo" id="inputEmail">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña:</label>
                     <div class="col-sm-10">
-                        <input type="password" class="form-control" id="inputPassword">
+                        <input type="password" class="form-control" name="contrasenia" id="inputPassword">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputPassword2" class="col-sm-2 col-form-label">Confirmar contraseña:</label>
                     <div class="col-sm-10">
-                        <input type="password" class="form-control" id="inputPassword2">
+                        <input type="password" class="form-control" name="contrasenia2" id="inputPassword2">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="selectDistrict" class="col-sm-2 col-form-label">Distrito</label>
                     <div class="col-sm-10">
-                        <select class="form-control" id="selectDistrict">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                        <select class="form-control" id="selectDistrict" name="idDistrito">
+                            <option selected value="0">Eliga un distrito</option>
+                            <%for (DistritoBean distrito : listaDistritos) {%>
+                                <option value="<%=distrito.getId()%>"><%=distrito.getNombre()%></option>
+                            <% } %>
                         </select>
                     </div>
                 </div>
+                <button type="submit" class="btn btn-success pull-right">Registrarse</button>
             </form>
-            <a href="#" class="btn btn-success pull-right">Registrarse</a>
         </div>
         <div class="col-sm-3">
         </div>
