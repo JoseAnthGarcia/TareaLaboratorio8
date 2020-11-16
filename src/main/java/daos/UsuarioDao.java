@@ -1,6 +1,7 @@
 package daos;
 
 import beans.DistritoBean;
+import beans.UsuarioBean;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -49,5 +50,49 @@ public class UsuarioDao extends BaseDao{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public DistritoBean buscarDistrito(String idDistrito){
+
+        DistritoBean distrito = null;
+
+        String sql = "SELECT * FROM distrito WHERE idDistrito = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql); ) {
+            pstmt.setInt(1,Integer.parseInt(idDistrito));
+
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    distrito = new DistritoBean();
+                    distrito.setId(rs.getInt(1));
+                    distrito.setNombre(rs.getString(2));
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return distrito;
+    }
+
+    public boolean buscarCorreo(String correo){
+        boolean encontrado = false;
+
+        String sql = "SELECT * FROM usuario WHERE correo = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setString(1,correo);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    encontrado = true;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return encontrado;
     }
 }
