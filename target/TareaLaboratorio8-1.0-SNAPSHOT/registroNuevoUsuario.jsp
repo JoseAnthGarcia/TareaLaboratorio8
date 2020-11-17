@@ -106,10 +106,10 @@
                 <div class="form-group row">
                     <label for="inputName" class="col-sm-2 col-form-label">Nombres:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control <%=nombresB?"":"is-invalid"%>"
+                        <input type="text" class="form-control <%=(request.getParameter("nombres") !=null && request.getParameter("nombres").equals(""))?"is-invalid":""%>"
                                aria-describedby="inputNameFeedback"
                                name="nombres"
-                               id="inputName" <%=nombresB?"value='"+request.getParameter("nombres")+"'":""%>>
+                               id="inputName" <%=request.getParameter("nombres")==null?"":"value='"+request.getParameter("nombres")+"'"%>>
                         <div id="inputNameFeedback" class="invalid-feedback">
                             Ingrese datos, por favor.
                         </div>
@@ -121,7 +121,7 @@
                         <input type="text" class="form-control <%=apellidosB?"":"is-invalid"%>"
                                aria-describedby="inputLastNameFeedback"
                                name="apellidos"
-                               id="inputLastName" <%=nombresB?"value='"+request.getParameter("apellidos")+"'":""%>>
+                               id="inputLastName" <%=request.getParameter("apellidos")==null?"":"value='"+request.getParameter("apellidos")+"'"%>>
                         <div id="inputLastNameFeedback" class="invalid-feedback">
                             Ingrese datos, por favor.
                         </div>
@@ -132,9 +132,9 @@
                     <div class="col-sm-10">
                         <input type="text" class="form-control <%=dniB?"":"is-invalid"%>"
                                aria-describedby="inputDniFeedback"
-                               name="dni" id="inputDni" <%=nombresB?"value='"+request.getParameter("dni")+"'":""%>>
+                               name="dni" id="inputDni" <%=request.getParameter("dni")==null?"":"value='"+request.getParameter("dni")+"'"%>>
                         <div id="inputDniFeedback" class="invalid-feedback">
-                            Ingrese datos, por favor.
+                            Ingrese datos validos, por favor.
                         </div>
                     </div>
                 </div>
@@ -144,7 +144,7 @@
                         <input type="email" class="form-control <%=correoB?"":"is-invalid"%>"
                                aria-describedby="inputEmailFeedback"
                                name="correo"
-                               id="inputEmail" <%=nombresB?"value='"+request.getParameter("correo")+"'":""%>>
+                               id="inputEmail" <%=request.getParameter("correo")==null?"":"value='"+request.getParameter("correo")+"'"%>>
                         <div id="inputEmailFeedback" class="invalid-feedback">
                             Ingrese datos, por favor.
                         </div>
@@ -155,9 +155,9 @@
                     <div class="col-sm-10">
                         <input type="password" class="form-control <%=contraseniaB?"":"is-invalid"%>"
                                aria-describedby="inputPasswordFeedback"
-                               name="contrasenia" id="inputPassword">
+                               name="contrasenia" id="inputPassword" <%=request.getParameter("contrasenia")==null?"":"value='"+request.getParameter("contrasenia")+"'"%>>
                         <div id="inputPasswordFeedback" class="invalid-feedback">
-                            Ingrese contraseña valida, por favor.
+                            Ingrese una contraseña valida, por favor.
                         </div>
                     </div>
                 </div>
@@ -166,9 +166,9 @@
                     <div class="col-sm-10">
                         <input type="password" class="form-control <%=contrasenia2B?"":"is-invalid"%>"
                                aria-describedby="inputPassword2Feedback"
-                               name="contrasenia2" id="inputPassword2">
+                               name="contrasenia2" id="inputPassword2" <%=request.getParameter("contrasenia2")==null?"":"value='"+request.getParameter("contrasenia2")+"'"%>>
                         <div id="inputPassword2Feedback" class="invalid-feedback">
-                            Ingrese contraseña valida, por favor.
+                            Ingrese una contraseña valida, por favor.
                         </div>
                     </div>
                 </div>
@@ -184,7 +184,9 @@
                         <% } %>
                             <option selected value="0">Eliga un distrito</option>
                             <%for (DistritoBean distrito : listaDistritos) {%>
-                            <option value="<%=distrito.getId()%>"><%=distrito.getNombre()%>
+                            <option value="<%=distrito.getId()%>"
+                                    <%=(request.getParameter("idDistrito")!=null &&
+                                            request.getParameter("idDistrito").equals(String.valueOf(distrito.getId())))?"selected":""%>><%=distrito.getNombre()%>
                             </option>
                         <% } %>
                             </select>

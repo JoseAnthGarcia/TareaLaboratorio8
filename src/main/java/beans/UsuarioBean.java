@@ -6,7 +6,7 @@ public class UsuarioBean {
     private String dni;
     private String correo;
     private String contrasenia;
-    private int idDistrito;
+    private DistritoBean distrito;
 
     public String getNombre() {
         return nombre;
@@ -48,11 +48,11 @@ public class UsuarioBean {
         this.contrasenia = contrasenia;
     }
 
-    public int getIdDistrito() {
-        return idDistrito;
+    public DistritoBean getDistrito() {
+        return distrito;
     }
 
-    public void setIdDistrito(int idDistrito) {
-        this.idDistrito = idDistrito;
+    public void setDistrito(DistritoBean distrito) {
+        this.distrito = distrito;
     }
 }

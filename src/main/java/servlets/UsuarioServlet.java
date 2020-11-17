@@ -102,17 +102,15 @@ public class UsuarioServlet extends HttpServlet {
 
                     boolean contIguales = false;
                     if(contrasenia.equals(contrasenia2)) {
-                        System.out.println("contraseñas iguales");
                         contIguales = true;
                     }
 
                     boolean correoExis = false;
                     if(usuarioDao.buscarCorreo(correo)){
-                        System.out.println("correo encontrado");
                         correoExis = true;
                     }
 
-                    if(distritoSelected && contIguales && correoExis && idDistritoInt != 0){
+                    if(distritoSelected && contIguales && !correoExis && idDistritoInt != 0){
                         usuarioDao.regitrarNuevoUsuario(nombres, apellidos, dni, correo, contrasenia, idDistritoInt);
                         response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
                     }else{
