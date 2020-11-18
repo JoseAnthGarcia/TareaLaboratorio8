@@ -85,7 +85,7 @@ public class UsuarioServlet extends HttpServlet {
         ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
         /*Para editar*/
-        int usuarioId =1;
+        int usuarioId =2;
         UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
         request.setAttribute("usuario", bUsuario);
         ArrayList<DistritoBean> listaDistritos2 = usuarioDao.obtenerDistritos();
@@ -153,6 +153,11 @@ public class UsuarioServlet extends HttpServlet {
                 break;
 
             case "actualizar":
+                String cambiar = request.getParameter("cambiar") == null ?
+                        "nada" : request.getParameter("cambiar");
+                request.setAttribute("cambiar",cambiar);
+
+
                 if(nombresB && apellidosB  && distritoBoolean){
 
                     int idDistritoInt = Integer.parseInt(idDistrito);
@@ -164,7 +169,7 @@ public class UsuarioServlet extends HttpServlet {
 
                     if(distritoSelected && idDistritoInt != 0){
                         usuarioDao.actualizarUsuario(nombres, apellidos, idDistritoInt,usuarioId);
-                        response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
+                        response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=miPerfil");
                     }else{
 
                         request.setAttribute("distritoSelected", distritoSelected);
@@ -189,7 +194,7 @@ public class UsuarioServlet extends HttpServlet {
         String accion = request.getParameter("accion") == null ?
                 "nada" : request.getParameter("accion");
         UsuarioDao usuarioDao = new UsuarioDao();
-        int usuarioId=1;
+        int usuarioId=2;
 
         switch (accion) {
             case "nada":
@@ -214,12 +219,14 @@ public class UsuarioServlet extends HttpServlet {
                 requestDispatcher.forward(request, response);
                 break;
             case "editar":
+                String cambiar= request.getParameter("cambiar") == null ?
+                        "nada" : request.getParameter("cambiar");
                 ArrayList<DistritoBean> listaDistritos2 = usuarioDao.obtenerDistritos();
                 request.setAttribute("listaDistritos2", listaDistritos2);
 
                 UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
 
-
+                    request.setAttribute("cambiar",cambiar);
                     request.setAttribute("usuario", bUsuario);
                     requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
                     requestDispatcher.forward(request, response);

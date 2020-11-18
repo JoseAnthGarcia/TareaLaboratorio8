@@ -90,13 +90,13 @@
                 <tr>
                     <th>Nombres</th>
                     <td><%=usuario.getNombre()%></td>
-                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&usuarioId=<%=usuario.getIdUsuario() %>"
+                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&cambiar=nombre"
                            class="btn btn-success">Editar</a></td>
                 </tr>
                 <tr>
                     <th>Apellidos</th>
                     <td><%=usuario.getApellido()%></td>
-                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&usuarioId=<%=usuario.getIdUsuario() %>"
+                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&cambiar=apellido"
                            class="btn btn-success">Editar</a></td>
                 </tr>
                 <tr>
@@ -107,13 +107,13 @@
                 <tr>
                     <th>Correo</th>
                     <td><%=usuario.getCorreo()%></td>
-                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&usuarioId=<%=usuario.getIdUsuario() %>"
+                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&cambiar=contrasenia"
                            class="btn btn-success">Cambiar Contraseña</a></td>
                 </tr>
                 <tr>
                     <th>Distrito</th>
                     <td><%=usuario.getDistrito().getNombre()%></td>
-                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&usuarioId=<%=usuario.getIdUsuario() %>"
+                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&cambiar=distrito"
                            class="btn btn-success">Editar</a></td>
                 </tr>
 
