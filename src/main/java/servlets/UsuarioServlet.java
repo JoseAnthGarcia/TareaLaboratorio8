@@ -140,7 +140,11 @@ public class UsuarioServlet extends HttpServlet {
 
             case "actualizar":
                 if(nombresB && apellidosB  && distritoBoolean){
-
+                    int usuarioId =1;
+                    UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
+                    request.setAttribute("usuario", bUsuario);
+                    ArrayList<DistritoBean> listaDistritos2 = usuarioDao.obtenerDistritos();
+                    request.setAttribute("listaDistritos2", listaDistritos2);
                     int idDistritoInt = Integer.parseInt(idDistrito);
 
                     boolean distritoSelected = false;
@@ -152,8 +156,9 @@ public class UsuarioServlet extends HttpServlet {
                         usuarioDao.actualizarUsuario(nombres, apellidos, idDistritoInt);
                         response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
                     }else{
-                        int usuarioId =1;
-                        UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
+
+
+
                         request.setAttribute("usuario", bUsuario);
                         request.setAttribute("distritoSelected", distritoSelected);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
@@ -163,10 +168,6 @@ public class UsuarioServlet extends HttpServlet {
 
 
                 }else{
-                    int usuarioId =1;
-
-                    UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
-                    request.setAttribute("usuario", bUsuario);
                     request.setAttribute("nombresB",nombresB);
                     request.setAttribute("apellidosB",apellidosB);
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
