@@ -1,0 +1,159 @@
+<%@ page import="beans.DistritoBean" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: Katherine
+  Date: 17/11/2020
+  Time: 16:01
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:useBean id="usuario" scope="request" type="beans.UsuarioBean" />
+<jsp:useBean id="listaDistritos2" scope="request" type="java.util.ArrayList<beans.DistritoBean>"/>
+<%
+    boolean nombresB = request.getAttribute("nombresB") == null ? true : (Boolean) request.getAttribute("nombresB");
+    boolean apellidosB = request.getAttribute("apellidosB") == null ? true : (Boolean) request.getAttribute("apellidosB");
+    boolean distritoSelected = request.getAttribute("distritoSelected") == null ? true : (Boolean) request.getAttribute("distritoSelected");
+
+%>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <jsp:include page="bootstrapRepository.jsp"/>
+
+    <!-- para los iconos como botones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .btn {
+            background-color: #343a40;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        /* Darker background on mouse-over */
+        .btn:hover {
+            background-color: #767676;
+        }
+
+        .margen {
+            margin-top: 2%;
+        }
+
+        .container-fluid {
+            text-align: center;
+            padding: 3% 15%;
+        }
+
+        .page-item .page-link {
+            color: #343a40;
+            border-color: #343a40;
+        }
+
+        .page-item.active .page-link {
+            border-color: #343a40;
+            background-color: #343a40;
+        }
+        .centrar{
+            align-items: center;
+            justify-content: center;
+        }
+
+    </style>
+
+    <title>Editar mi perfil</title>
+</head>
+<body>
+<header>
+    <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+
+        </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <strong>MiMarca.com</strong>
+            </a>
+            <a href="#"><img src="imagenes/sigout.png" height="30px"/></a>
+
+        </div>
+    </div>
+</header>
+<div class="container">
+
+    <h1 class="mb-3 mt-3">Editar mi perfil</h1>
+    <div class="row">
+
+        <div class="col-lg-6 col-md-12 centrar">
+            <img src="https://lh3.googleusercontent.com/proxy/NKPsgN2kY96sNXegV5KjOe9j1afG-Jc4IQh_RWpLCYs_RTVZLYF_jGF6CFVCPuZoQf_btiNsLNQx5RjtBcFo0G3gMBaQRP1HkqyXgYhyKai8yMD_8D2E2IrMNxcsp8TB9M678DdU2Mz-rdOrGu-R" width="408px" height="400px" />
+        </div>
+        <div class="col-lg-6 col-md-12 centrar">
+            <div class="col-sm-12 mt-5">
+
+                <form method="POST" action="<%=request.getContextPath()%>/UsuarioServlet?accion=actualizar">
+                    <div class="form-group row">
+                        <label for="inputName" class="col-sm-2 col-form-label">Nombres:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control <%=nombresB?"":"is-invalid"%>"
+                                   aria-describedby="inputNameFeedback"
+                                   name="nombres"
+                                   id="inputName" <%=request.getParameter("nombres")==null?"":"value='"+request.getParameter("nombres")+"'"%> value="<%=usuario.getNombre()%>">
+                            <div id="inputNameFeedback" class="invalid-feedback">
+                                Ingrese datos, por favor.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputLastName" class="col-sm-2 col-form-label">Apellidos:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control <%=apellidosB?"":"is-invalid"%>"
+                                   aria-describedby="inputLastNameFeedback"
+                                   name="apellidos"
+                                   id="inputLastName" <%=request.getParameter("apellidos")==null?"":"value='"+request.getParameter("apellidos")+"'"%> value="<%=usuario.getApellido()%>">
+                            <div id="inputLastNameFeedback" class="invalid-feedback">
+                                Ingrese datos, por favor.
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group row">
+                        <label for="selectDistrict" class="col-sm-2 col-form-label">Distrito</label>
+                        <div class="col-sm-10">
+                            <% if (request.getParameter("idDistrito") == null) {%>
+                            <select class="form-control" id="selectDistrict" name="idDistrito">
+                                    <% }else{ %>
+                                <select class="form-control
+                            <%=((request.getParameter("idDistrito")).equals("0") || distritoSelected==false)?"is-invalid":""%>"
+                                        aria-describedby="idDistritoFeedback" id="selectDistrict" name="idDistrito">
+                                    <% } %>
+                                    <option selected value="0">Elija un distrito</option>
+                                    <%for (DistritoBean distrito : listaDistritos2) {%>
+                                    <option value="<%=distrito.getId()%>"
+                                            <%=(request.getParameter("idDistrito")!=null &&
+                                                    request.getParameter("idDistrito").equals(String.valueOf(distrito.getId())))?"selected":""%>><%=distrito.getNombre()%>
+                                    </option>
+                                    <% } %>
+                                </select>
+                                <div id="idDistritoFeedback" class="invalid-feedback">
+                                    Seleccione una opcion valida, por favor.
+                                </div>
+                        </div>
+
+
+                    </div>
+                    <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=miPerfil" class="btn btn-danger mt-3">Regresar</a>
+                    <button type="submit" class="btn btn-success pull-right mt-3">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>
