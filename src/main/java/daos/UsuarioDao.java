@@ -135,9 +135,9 @@ public class UsuarioDao extends BaseDao{
         return usuarioBean;
     }
     public void actualizarUsuario(String nombres, String apellidos,
-                                      int idDistrito){
+                                      int idDistrito, int idUsuario){
 
-        String sql = "UPDATE jobs SET nombreUsuario = ?, apellido = ?, idDistrito = ? WHERE job_id = ?";
+        String sql = "UPDATE usuario SET nombreUsuario = ?, apellido = ?, idDistrito = ? WHERE idUsuario = ?";
 
 
         try (Connection conn = getConnection();
@@ -146,6 +146,7 @@ public class UsuarioDao extends BaseDao{
             pstmt.setString(1,nombres);
             pstmt.setString(2,apellidos);
             pstmt.setInt(3, idDistrito);
+            pstmt.setInt(4, idUsuario);
 
             pstmt.executeUpdate();
         } catch (SQLException throwables) {

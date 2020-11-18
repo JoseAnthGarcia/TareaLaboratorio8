@@ -88,7 +88,7 @@
     <div class="row">
 
         <div class="col-lg-6 col-md-12 centrar">
-            <img src="https://lh3.googleusercontent.com/proxy/NKPsgN2kY96sNXegV5KjOe9j1afG-Jc4IQh_RWpLCYs_RTVZLYF_jGF6CFVCPuZoQf_btiNsLNQx5RjtBcFo0G3gMBaQRP1HkqyXgYhyKai8yMD_8D2E2IrMNxcsp8TB9M678DdU2Mz-rdOrGu-R" width="408px" height="400px" />
+            <img src="imagenes/profile.png" width="408px" height="400px" />
         </div>
         <div class="col-lg-6 col-md-12 centrar">
             <div class="col-sm-12 mt-5">
@@ -102,7 +102,7 @@
                                    name="nombres"
                                    id="inputName" <%=request.getParameter("nombres")==null?"":"value='"+request.getParameter("nombres")+"'"%> value="<%=usuario.getNombre()%>">
                             <div id="inputNameFeedback" class="invalid-feedback">
-                                Ingrese datos, por favor.
+                                Ingrese datos válidos, por favor.
                             </div>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                                    name="apellidos"
                                    id="inputLastName" <%=request.getParameter("apellidos")==null?"":"value='"+request.getParameter("apellidos")+"'"%> value="<%=usuario.getApellido()%>">
                             <div id="inputLastNameFeedback" class="invalid-feedback">
-                                Ingrese datos, por favor.
+                                Ingrese datos válidos, por favor.
                             </div>
                         </div>
                     </div>

@@ -33,12 +33,20 @@ public class UsuarioServlet extends HttpServlet {
 
     public boolean validarString(String input){
         boolean resultado = true;
-
+        boolean resultado2= true;
         if(input.equalsIgnoreCase("")){
             resultado = false;
         }
+        try{
+            int numero= Integer.parseInt(input);
+            resultado2=false;
+        }catch (NumberFormatException e){
+            resultado2=true;
+        }
+        boolean resultadoFinal= resultado&&resultado2;
 
-        return resultado;
+
+        return resultadoFinal;
     }
 
     public boolean validarNumero(String input){
@@ -76,6 +84,12 @@ public class UsuarioServlet extends HttpServlet {
 
         ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
+        /*Para editar*/
+        int usuarioId =1;
+        UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
+        request.setAttribute("usuario", bUsuario);
+        ArrayList<DistritoBean> listaDistritos2 = usuarioDao.obtenerDistritos();
+        request.setAttribute("listaDistritos2", listaDistritos2);
 
         switch (accion){
             case "nada":
@@ -140,11 +154,7 @@ public class UsuarioServlet extends HttpServlet {
 
             case "actualizar":
                 if(nombresB && apellidosB  && distritoBoolean){
-                    int usuarioId =1;
-                    UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
-                    request.setAttribute("usuario", bUsuario);
-                    ArrayList<DistritoBean> listaDistritos2 = usuarioDao.obtenerDistritos();
-                    request.setAttribute("listaDistritos2", listaDistritos2);
+
                     int idDistritoInt = Integer.parseInt(idDistrito);
 
                     boolean distritoSelected = false;
@@ -153,13 +163,10 @@ public class UsuarioServlet extends HttpServlet {
                     }
 
                     if(distritoSelected && idDistritoInt != 0){
-                        usuarioDao.actualizarUsuario(nombres, apellidos, idDistritoInt);
+                        usuarioDao.actualizarUsuario(nombres, apellidos, idDistritoInt,usuarioId);
                         response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
                     }else{
 
-
-
-                        request.setAttribute("usuario", bUsuario);
                         request.setAttribute("distritoSelected", distritoSelected);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
                         requestDispatcher.forward(request, response);
