@@ -95,4 +95,65 @@ public class UsuarioDao extends BaseDao{
 
         return encontrado;
     }
+    /*Para la parte de editar*/
+    public UsuarioBean obtenerUsuario(int usuarioId){
+
+
+
+        String sql = "select u.idUsuario, u.nombreUsuario, u.apellido, u.dni, u.correo, u.contrasenia,u.idDistrito, d.nombreDistrito\n" +
+                "from usuario u\n" +
+                "inner join distrito d on u.idDistrito=d.idDistrito\n" +
+                "where idUsuario=?;";
+        UsuarioBean usuarioBean = new UsuarioBean();
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, usuarioId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+
+                    DistritoBean distritoBean = new DistritoBean();
+                    usuarioBean.setIdUsuario(rs.getInt(1));
+                    usuarioBean.setNombre(rs.getString(2));
+                    usuarioBean.setApellido(rs.getString(3));
+                    usuarioBean.setDni(rs.getString(4));
+                    usuarioBean.setCorreo(rs.getString(5));
+                    usuarioBean.setContrasenia(rs.getString(6));
+                    distritoBean.setId(rs.getInt(7));
+                    distritoBean.setNombre(rs.getString(8));
+                    usuarioBean.setDistrito(distritoBean);
+
+
+                }
+            }
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+        return usuarioBean;
+    }
+    public void actualizarUsuario(String nombres, String apellidos,
+                                      int idDistrito){
+
+        String sql = "UPDATE jobs SET nombreUsuario = ?, apellido = ?, idDistrito = ? WHERE job_id = ?";
+
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setString(1,nombres);
+            pstmt.setString(2,apellidos);
+            pstmt.setInt(3, idDistrito);
+
+            pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+
+
+
 }

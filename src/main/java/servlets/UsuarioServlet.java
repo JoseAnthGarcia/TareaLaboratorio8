@@ -1,5 +1,6 @@
 package servlets;
 import beans.DistritoBean;
+import beans.UsuarioBean;
 import daos.UsuarioDao;
 
 import javax.servlet.RequestDispatcher;
@@ -65,30 +66,31 @@ public class UsuarioServlet extends HttpServlet {
                 "nada" : request.getParameter("accion");
 
         UsuarioDao usuarioDao = new UsuarioDao();
+        String nombres = request.getParameter("nombres");
+        String apellidos = request.getParameter("apellidos");
+        String idDistrito = request.getParameter("idDistrito");
+
+        boolean nombresB = validarString(nombres);
+        boolean apellidosB = validarString(apellidos);
+        boolean distritoBoolean = validarNumero(idDistrito);
+
+        ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();
+        request.setAttribute("listaDistritos", listaDistritos);
+
         switch (accion){
             case "nada":
                 //manda indice
                 break;
 
             case "agregar":
-                String nombres = request.getParameter("nombres");
-                String apellidos = request.getParameter("apellidos");
                 String dni = request.getParameter("dni");
                 String correo = request.getParameter("correo");
                 String contrasenia = request.getParameter("contrasenia");
                 String contrasenia2 = request.getParameter("contrasenia2");
-                String idDistrito = request.getParameter("idDistrito");
-
-                boolean nombresB = validarString(nombres);
-                boolean apellidosB = validarString(apellidos);
                 boolean dniB = validarDni(dni);
                 boolean correoB = validarCorreo(correo);
                 boolean contraseniaB = validarString(contrasenia);
                 boolean contrasenia2B = validarString(contrasenia2);
-                boolean distritoBoolean = validarNumero(idDistrito);
-
-                ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();
-                request.setAttribute("listaDistritos", listaDistritos);
 
                 if(nombresB && apellidosB && dniB && correoB && contraseniaB
                         && contrasenia2B && distritoBoolean){
@@ -135,6 +137,39 @@ public class UsuarioServlet extends HttpServlet {
                 }
 
                 break;
+
+            case "actualizar":
+                if(nombresB && apellidosB  && distritoBoolean){
+
+                    int idDistritoInt = Integer.parseInt(idDistrito);
+
+                    boolean distritoSelected = false;
+                    if(usuarioDao.buscarDistrito(idDistrito)!= null){
+                        distritoSelected = true;
+                    }
+
+                    if(distritoSelected && idDistritoInt != 0){
+                        usuarioDao.actualizarUsuario(nombres, apellidos, idDistritoInt);
+                        response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
+                    }else{
+
+                        request.setAttribute("distritoSelected", distritoSelected);
+                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
+                        requestDispatcher.forward(request, response);
+
+                    }
+
+
+                }else{
+                    int usuarioId =1;
+
+                    UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
+                    request.setAttribute("usuario", bUsuario);
+                    request.setAttribute("nombresB",nombresB);
+                    request.setAttribute("apellidosB",apellidosB);
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
+                    requestDispatcher.forward(request, response);
+                }
         }
 
     }
@@ -143,19 +178,44 @@ public class UsuarioServlet extends HttpServlet {
             throws ServletException, IOException {
         String accion = request.getParameter("accion") == null ?
                 "nada" : request.getParameter("accion");
+        UsuarioDao usuarioDao = new UsuarioDao();
+        int usuarioId=1;
 
-        switch (accion){
+        switch (accion) {
             case "nada":
                 //manda indice
                 break;
 
             case "agregar":
-                UsuarioDao usuarioDao = new UsuarioDao();
+
                 ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();
                 request.setAttribute("listaDistritos", listaDistritos);
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("registroNuevoUsuario.jsp");
                 requestDispatcher.forward(request, response);
                 break;
+            case "miPerfil":
+
+
+                UsuarioBean usuario =usuarioDao.obtenerUsuario(usuarioId);
+
+                request.setAttribute("usuario",usuario);
+
+                requestDispatcher = request.getRequestDispatcher("miPerfil.jsp");
+                requestDispatcher.forward(request, response);
+                break;
+            case "editar":
+                ArrayList<DistritoBean> listaDistritos2 = usuarioDao.obtenerDistritos();
+                request.setAttribute("listaDistritos2", listaDistritos2);
+
+                UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
+
+
+                    request.setAttribute("usuario", bUsuario);
+                    requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
+                    requestDispatcher.forward(request, response);
+
+                break;
+
         }
     }
 }
