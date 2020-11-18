@@ -152,7 +152,9 @@ public class UsuarioServlet extends HttpServlet {
                         usuarioDao.actualizarUsuario(nombres, apellidos, idDistritoInt);
                         response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
                     }else{
-
+                        int usuarioId =1;
+                        UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
+                        request.setAttribute("usuario", bUsuario);
                         request.setAttribute("distritoSelected", distritoSelected);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
                         requestDispatcher.forward(request, response);
