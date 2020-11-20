@@ -11,16 +11,36 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
             .btn {
-                background-color: #ffffff;
+                background-color: #343a40;
                 border: none;
-                color: black;
+                color: white;
                 padding: 12px 16px;
                 font-size: 15px;
                 cursor: pointer;
+                margin-top: 20px;
+                margin-left: 20px;
             }
             /* Darker background on mouse-over */
             .btn:hover {
-                background-color: #767676;
+                background-color: #343a40;
+            }
+            .margen{
+                margin-top: 2%;
+            }
+            .container-fluid{
+                text-align: center;
+                padding: 3% 15% ;
+                margin-top: 20px;
+            }
+            .page-item .page-link {
+                color: #343a40;
+                border-color: #343a40;
+                margin-top: 20px;
+            }
+            .page-item.active .page-link {
+                border-color: #343a40;
+                background-color: #343a40;
+                margin-top: 20px;
             }
         </style>
 
@@ -45,10 +65,10 @@
             </div>
 
         </header>
-        <a class="btn btn-primary " href="#" role="button">Realizar un pedido</a>
+        <a href="#" class="btn btn-secondary" >Realizar un pedido</a>
 
 
-        <div class="container" style="margin-top: 65px">
+        <div class="container" style="margin-top: 20px">
 
             <!-- Presentacion de bodegas -->
             <% int cant = 0;
@@ -61,7 +81,7 @@
                         if(cant < listaBodegas.size()){
                 %>
                 <div class="col-sm-3"> <!-- Probar medidas "sm-3"? -->
-                    <img src="imagenes/bodega1.png" class="img-thumbnail">
+                    <img src="imagenes/bodega1.png"  class="img-thumbnail">
                     <p class="mb-1"><b>Bodega: </b> <%=listaBodegas.get(j).getNombreBodega()%> </p>
                     <p class="mb-0"><b>Dirección: </b> <%=listaBodegas.get(j).getDireccion()%> </p>
                     <div class="form-check">
