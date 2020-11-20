@@ -1,13 +1,14 @@
 package daos;
 
 import beans.MiBodegaProductosBean;
+import beans.PedidoBean;
 import beans.ProductoBean;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class BodegaDao {
-    public static int calcularCantPag(){
+public class BodegaDao extends BaseDao{
+    public int calcularCantPag(){
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -33,7 +34,7 @@ public class BodegaDao {
         return cantPag;
     }
 
-    public static ArrayList<ProductoBean> listarProductoBodega(int pagina){
+    public ArrayList<ProductoBean> listarProductoBodega(int pagina){
 
         ArrayList<ProductoBean> listaProductos = new ArrayList<>();
 
@@ -46,7 +47,7 @@ public class BodegaDao {
         String url = "jdbc:mysql://localhost:3306/mydb?serverTimezone=America/Lima";
 
         int limit = (pagina-1)*5;
-        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega = 1 limit ?,5;";
+        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega = 1 AND estado ='Existente' limit ?,5;";
 
         try (Connection conn = DriverManager.getConnection(url, "root", "root");
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -71,6 +72,72 @@ public class BodegaDao {
         }
 
         return listaProductos;
+    }
+
+    public boolean buscarProducto(int idProducto){
+
+        boolean exisProduct = false;
+
+        String sql = "SELECT * FROM producto WHERE idProducto = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setInt(1, idProducto);
+
+            try(ResultSet rs = pstmt.executeQuery();){
+                if(rs.next()){
+                    exisProduct = true;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return exisProduct;
+    }
+
+    public ArrayList<PedidoBean> buscarPedidoConProducto(int idProducto){
+
+        ArrayList<PedidoBean> listaPedidos = new ArrayList<>();
+
+        String sql = "SELECT pe.codigo FROM producto p\n" +
+                "LEFT JOIN pedido_has_producto php ON p.idProducto = php.idProducto\n" +
+                "LEFT JOIN pedido pe ON php.idPedido = pe.idPedido\n" +
+                "WHERE p.idProducto = ? AND pe.estado = 'Pendiente';";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setInt(1, idProducto);
+
+            try(ResultSet rs = pstmt.executeQuery();){
+                while (rs.next()) {
+                    PedidoBean pedido = new PedidoBean();
+                    pedido.setCodigo(rs.getString(1));
+                    listaPedidos.add(pedido);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return listaPedidos;
+    }
+
+    public void eliminarProducto(int idProducto){
+        String sql = "UPDATE producto SET estado='Eliminado' WHERE idProducto=?;";
+
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setInt(1,idProducto);
+            pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
 }

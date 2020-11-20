@@ -2,7 +2,8 @@
 <%@ page import="beans.MiBodegaProductosBean" %>
 <%@ page import="daos.MiBodegaProductosDao" %>
 <%@ page import="java.math.BigDecimal" %>
-<%@ page import="beans.ProductoBean" %><%--
+<%@ page import="beans.ProductoBean" %>
+<%@ page import="beans.PedidoBean" %><%--
   Created by IntelliJ IDEA.
   User: Anacleto
   Date: 8/11/2020
@@ -13,6 +14,7 @@
 <jsp:useBean id="listaProductoBodegas" scope="request" type="java.util.ArrayList<beans.ProductoBean>"/>
 <jsp:useBean id="cantPag" scope="request" type="java.lang.Integer"/>
 <jsp:useBean id="paginaAct" scope="request" type="java.lang.Integer"/>
+<%ArrayList<PedidoBean> pedidosConProducto = request.getAttribute("pedidosConProducto")==null?null:(ArrayList<PedidoBean>)request.getAttribute("pedidosConProducto");%>
 
 <html>
 <head>
@@ -83,6 +85,9 @@
         <a href="<%=request.getContextPath()%>/BodegaProductos?action=formAdd">
             <button class="btn"><i class="fa fa-plus"></i></button>
         </a>
+        <% if(pedidosConProducto!=null){ %>
+            <h3>Error</h3>
+        <% } %>
     </div>
 
     <form>
@@ -117,12 +122,12 @@
                     <td>S/<%=producto.getPrecioProducto()%></td>
                     <td>
                         <a href="<%=request.getContextPath()%>/BodegaServlet?accion=editar&idProducto=<%=producto.getId()%>">
-                            <button class="btn"><i class="fa fa-edit"></i></button>
+                            <i class="fa fa-edit btn"></i>
                         </a>
                     </td>
                     <td>
-                        <a href="EditarProducto.html">
-                            <button class="btn"><i class="fa fa-trash"></i></button>
+                        <a href="<%=request.getContextPath()%>/BodegaServlet?accion=eliminar&idProducto=<%=producto.getId()%>">
+                            <i class="fa fa-trash btn"></i>
                         </a>
                     </td>
                 </tr>
