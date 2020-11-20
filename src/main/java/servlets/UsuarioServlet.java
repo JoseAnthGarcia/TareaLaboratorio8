@@ -78,6 +78,10 @@ public class UsuarioServlet extends HttpServlet {
         String apellidos = request.getParameter("apellidos");
         String idDistrito = request.getParameter("idDistrito");
 
+        System.out.println(nombres);
+        System.out.println(apellidos);
+        System.out.println(idDistrito);
+
         boolean nombresB = validarString(nombres);
         boolean apellidosB = validarString(apellidos);
         boolean distritoBoolean = validarNumero(idDistrito);
@@ -156,7 +160,6 @@ public class UsuarioServlet extends HttpServlet {
                 String cambiar = request.getParameter("cambiar") == null ?
                         "nada" : request.getParameter("cambiar");
                 request.setAttribute("cambiar",cambiar);
-
 
                 if(nombresB && apellidosB  && distritoBoolean){
 

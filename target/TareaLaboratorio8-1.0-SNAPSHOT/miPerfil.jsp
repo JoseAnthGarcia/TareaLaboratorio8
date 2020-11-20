@@ -90,14 +90,15 @@
                 <tr>
                     <th>Nombres</th>
                     <td><%=usuario.getNombre()%></td>
+
                     <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&cambiar=nombre"
-                           class="btn btn-success">Editar</a></td>
+                           ><button class="btn"><i class="fa fa-edit"></i></button></a></td>
                 </tr>
                 <tr>
                     <th>Apellidos</th>
                     <td><%=usuario.getApellido()%></td>
                     <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&cambiar=apellido"
-                           class="btn btn-success">Editar</a></td>
+                           ><button class="btn"><i class="fa fa-edit"></i></button></a></td>
                 </tr>
                 <tr>
                     <th>DNI</th>
@@ -114,16 +115,21 @@
                     <th>Distrito</th>
                     <td><%=usuario.getDistrito().getNombre()%></td>
                     <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&cambiar=distrito"
-                           class="btn btn-success">Editar</a></td>
+                           ><button class="btn"><i class="fa fa-edit"></i></button></a></td>
                 </tr>
 
 
             </table>
         </div>
     </div>
-
+    <footer class="page-footer font-small blue" style="margin-top: 20px">
+        <div class="footer-copyright text-center py-3">© 2020 Copyright:
+            <a href="#">MiMarca</a>
+        </div>
+    </footer>
 
 </div>
+
 
 </body>
 </html>
