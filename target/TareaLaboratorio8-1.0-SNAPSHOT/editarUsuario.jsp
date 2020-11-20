@@ -10,6 +10,7 @@
 <jsp:useBean id="usuario" scope="request" type="beans.UsuarioBean" />
 <jsp:useBean id="listaDistritos2" scope="request" type="java.util.ArrayList<beans.DistritoBean>"/>
 <%
+    String cambiar= (String) request.getAttribute("cambiar");
     boolean nombresB = request.getAttribute("nombresB") == null ? true : (Boolean) request.getAttribute("nombresB");
     boolean apellidosB = request.getAttribute("apellidosB") == null ? true : (Boolean) request.getAttribute("apellidosB");
     boolean distritoSelected = request.getAttribute("distritoSelected") == null ? true : (Boolean) request.getAttribute("distritoSelected");
@@ -88,42 +89,74 @@
     <div class="row">
 
         <div class="col-lg-6 col-md-12 centrar">
-            <img src="https://lh3.googleusercontent.com/proxy/NKPsgN2kY96sNXegV5KjOe9j1afG-Jc4IQh_RWpLCYs_RTVZLYF_jGF6CFVCPuZoQf_btiNsLNQx5RjtBcFo0G3gMBaQRP1HkqyXgYhyKai8yMD_8D2E2IrMNxcsp8TB9M678DdU2Mz-rdOrGu-R" width="408px" height="400px" />
+            <img src="imagenes/profile.png" width="408px" height="400px" />
         </div>
         <div class="col-lg-6 col-md-12 centrar">
             <div class="col-sm-12 mt-5">
 
-                <form method="POST" action="<%=request.getContextPath()%>/UsuarioServlet?accion=actualizar">
+                <form method="POST" action="<%=request.getContextPath()%>/UsuarioServlet?accion=actualizar&cambiar=<%=cambiar%>">
                     <div class="form-group row">
                         <label for="inputName" class="col-sm-2 col-form-label">Nombres:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control <%=nombresB?"":"is-invalid"%>"
+                            <% if (cambiar.equals("nombre")){ %>
+                            <input type="text"
+                                   class="form-control <%=nombresB?"":"is-invalid"%>"
                                    aria-describedby="inputNameFeedback"
                                    name="nombres"
                                    id="inputName" <%=request.getParameter("nombres")==null?"":"value='"+request.getParameter("nombres")+"'"%> value="<%=usuario.getNombre()%>">
                             <div id="inputNameFeedback" class="invalid-feedback">
-                                Ingrese datos, por favor.
+                                Ingrese datos válidos, por favor.
                             </div>
+                            <% } else {  %>
+                            <input type="text"
+                                   readonly class="form-control-plaintext "
+                                   name="nombres"
+                                   id="inputName" <%=request.getParameter("nombres")==null?"":"value='"+request.getParameter("nombres")+"'"%> value="<%=usuario.getNombre()%>">
+                            <%}%>
                         </div>
+
                     </div>
                     <div class="form-group row">
                         <label for="inputLastName" class="col-sm-2 col-form-label">Apellidos:</label>
                         <div class="col-sm-10">
+                            <% if (cambiar.equals("apellido")){ %>
                             <input type="text" class="form-control <%=apellidosB?"":"is-invalid"%>"
                                    aria-describedby="inputLastNameFeedback"
                                    name="apellidos"
                                    id="inputLastName" <%=request.getParameter("apellidos")==null?"":"value='"+request.getParameter("apellidos")+"'"%> value="<%=usuario.getApellido()%>">
                             <div id="inputLastNameFeedback" class="invalid-feedback">
-                                Ingrese datos, por favor.
+                                Ingrese datos válidos, por favor.
                             </div>
+                            <% } else {  %>
+                            <input type="text"
+                                   readonly class="form-control-plaintext <%=apellidosB?"":"is-invalid"%>"
+                                   aria-describedby="inputLastNameFeedback"
+                                   name="apellidos"
+                                   id="inputLastName" <%=request.getParameter("apellidos")==null?"":"value='"+request.getParameter("apellidos")+"'"%> value="<%=usuario.getApellido()%>">
+                            <div id="inputLastNameFeedback" class="invalid-feedback">
+                                Ingrese datos válidos, por favor.
+                            </div>
+                            <%}%>
                         </div>
                     </div>
-
+                    <div class="form-group row">
+                        <label for="staticDNI" class="col-sm-2 col-form-label">DNI</label>
+                        <div class="col-sm-10">
+                            <input type="text" readonly class="form-control-plaintext" id="staticDNI" value="<%=usuario.getDni()%>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="staticCorreo" class="col-sm-2 col-form-label">Correo</label>
+                        <div class="col-sm-10">
+                            <input type="text" readonly class="form-control-plaintext" id="staticCorreo" value="<%=usuario.getCorreo()%>">
+                        </div>
+                    </div>
 
 
                     <div class="form-group row">
                         <label for="selectDistrict" class="col-sm-2 col-form-label">Distrito</label>
                         <div class="col-sm-10">
+                            <% if (cambiar.equals("distrito")){ %>
                             <% if (request.getParameter("idDistrito") == null) {%>
                             <select class="form-control" id="selectDistrict" name="idDistrito">
                                     <% }else{ %>
@@ -141,7 +174,20 @@
                                 </select>
                                 <div id="idDistritoFeedback" class="invalid-feedback">
                                     Seleccione una opcion valida, por favor.
-                                </div>
+                                </div><% } else {  %>
+
+                                        <fieldset disabled>
+
+                                            <div class="form-group">
+                                                <select class="form-control"  name="idDistrito">
+                                                    <option value="<%=usuario.getDistrito().getId()%>"
+                                                            <%=(request.getParameter("idDistrito")!=null &&
+                                                                    request.getParameter("idDistrito").equals(String.valueOf(usuario.getDistrito().getId())))?"selected":""%>><%=usuario.getDistrito().getNombre()%>
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </fieldset>
+                                            <%}%>
                         </div>
 
 
