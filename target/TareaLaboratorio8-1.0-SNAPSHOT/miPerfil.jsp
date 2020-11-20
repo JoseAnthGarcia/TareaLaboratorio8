@@ -108,7 +108,7 @@
                 <tr>
                     <th>Correo</th>
                     <td><%=usuario.getCorreo()%></td>
-                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&cambiar=contrasenia"
+                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=cambioContra&idUsuario=<%=usuario.getIdUsuario()%>"
                            class="btn btn-success">Cambiar Contraseña</a></td>
                 </tr>
                 <tr>
@@ -122,14 +122,16 @@
             </table>
         </div>
     </div>
-    <footer class="page-footer font-small blue" style="margin-top: 20px">
+
+
+</div>
+<div class="container-fluid">
+    <footer class="page-footer font-small blue mb-3 mt-3" style="margin-top: 20px">
         <div class="footer-copyright text-center py-3">© 2020 Copyright:
             <a href="#">MiMarca</a>
         </div>
     </footer>
-
 </div>
-
 
 </body>
 </html>
