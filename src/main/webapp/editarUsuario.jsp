@@ -174,19 +174,11 @@
                                 </select>
                                 <div id="idDistritoFeedback" class="invalid-feedback">
                                     Seleccione una opcion valida, por favor.
-                                </div><% } else {  %>
-
-                                        <fieldset disabled>
-
-                                            <div class="form-group">
-                                                <select class="form-control"  name="idDistrito">
-                                                    <option value="<%=usuario.getDistrito().getId()%>"
-                                                            <%=(request.getParameter("idDistrito")!=null &&
-                                                                    request.getParameter("idDistrito").equals(String.valueOf(usuario.getDistrito().getId())))?"selected":""%>><%=usuario.getDistrito().getNombre()%>
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </fieldset>
+                                </div><% } else {%>
+                                        <input hidden type="text" name="idDistrito" class="form-control-plaintext" value="<%=usuario.getDistrito().getId()%>">
+                                        <div class="col-sm-10">
+                                            <input type="text" readonly class="form-control-plaintext" value="<%=usuario.getDistrito().getNombre()%>">
+                                        </div>
                                             <%}%>
                         </div>
 
