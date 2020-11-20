@@ -81,13 +81,24 @@
 <div class="container" style="margin-top: 20px">
 
     <!-- botones -->
-    <div class="row justify-content-end" style="margin-bottom: 20px;">
-        <a href="<%=request.getContextPath()%>/BodegaProductos?action=formAdd">
-            <button class="btn"><i class="fa fa-plus"></i></button>
-        </a>
-        <% if(pedidosConProducto!=null){ %>
-            <h3>Error</h3>
-        <% } %>
+    <div class="container" style="margin-bottom: 20px;">
+        <div class="row">
+            <div class="col-sm-11">
+                <% if(pedidosConProducto!=null){ %>
+                <div class="alert alert-danger" role="alert">
+                    <h6>El producto que desea eliminar se ha encontrado en los siguientes pedidos pendientes:</h6>
+                    <%for(PedidoBean pedido: pedidosConProducto){%>
+                    <h6>-<%=pedido.getCodigo()%></h6>
+                    <%}%>
+                </div>
+                <%}%>
+            </div>
+            <div class="col-sm-1">
+                <a href="<%=request.getContextPath()%>/BodegaProductos?action=formAdd">
+                    <button class="btn"><i class="fa fa-plus"></i></button>
+                </a>
+            </div>
+        </div>
     </div>
 
     <form>
