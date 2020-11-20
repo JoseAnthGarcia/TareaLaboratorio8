@@ -1,7 +1,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="beans.MiBodegaProductosBean" %>
 <%@ page import="daos.MiBodegaProductosDao" %>
-<%@ page import="java.math.BigDecimal" %><%--
+<%@ page import="java.math.BigDecimal" %>
+<%@ page import="beans.ProductoBean" %><%--
   Created by IntelliJ IDEA.
   User: Anacleto
   Date: 8/11/2020
@@ -9,7 +10,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="listaProductoBodegas" scope="request" type="java.util.ArrayList<beans.MiBodegaProductosBean>"/>
+<jsp:useBean id="listaProductoBodegas" scope="request" type="java.util.ArrayList<beans.ProductoBean>"/>
 <jsp:useBean id="cantPag" scope="request" type="java.lang.Integer"/>
 <jsp:useBean id="paginaAct" scope="request" type="java.lang.Integer"/>
 
@@ -73,57 +74,67 @@
     </div>
 </header>
 
+
+
 <div class="container" style="margin-top: 20px">
 
     <!-- botones -->
     <div class="row justify-content-end" style="margin-bottom: 20px;">
         <a href="<%=request.getContextPath()%>/BodegaProductos?action=formAdd">
-            <button class="btn"><i class="fa fa-plus"></i></button></a>
+            <button class="btn"><i class="fa fa-plus"></i></button>
+        </a>
     </div>
 
-    <div class="row">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col" style="opacity: 0.0;">item</th>
-                <th scope="col" style="opacity: 0.0;">image</th>
-                <th scope="col">NOMBRE</th>
-                <th scope="col">DESCRIPCIÓN</th>
-                <th scope="col">STOCK</th>
-                <th scope="col">PRECIO UNITARIO</th>
-                <th></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
+    <form>
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">NOMBRE</th>
+                    <th scope="col">DESCRIPCIÓN</th>
+                    <th scope="col">STOCK</th>
+                    <th scope="col">PRECIO UNITARIO</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
 
-            <!-- Inicio del bucle para listar los productos-->
-            <%
-                for(MiBodegaProductosBean producto : listaProductoBodegas){
-            %>
-            <tr>
-                <th>
-                </th>
-                <td>
-                    <img src="https://mui.today/__export/1589466590626/sites/mui/img/2020/05/14/coca-cola-sabor-botella-vidrio.jpg_879108255.jpg" height="35">
-                    <!-- todo: reemplazar por la ruta de la foto ingresar
+                <!-- Inicio del bucle para listar los productos-->
+                <%
+                    for(ProductoBean producto : listaProductoBodegas){
+                %>
+                <tr>
+                    <td>
+                        <img src="https://mui.today/__export/1589466590626/sites/mui/img/2020/05/14/coca-cola-sabor-botella-vidrio.jpg_879108255.jpg" height="35">
+                        <!-- todo: reemplazar por la ruta de la foto ingresar
                     <img src="<%=producto.getRutaFoto()%>" height="35"> -->
-                </td>
-                <td><%=producto.getNombreProducto()%></td>
-                <td><%=producto.getDescripcion()%></td>
-                <td><%=producto.getStock()%></td>
-                <td>S/<%=producto.getPrecioProducto()%></td>
-                <td><a href="<%=request.getContextPath()%>/BodegaProductos?action=editar&nombreProducto=<%=producto.getNombreProducto()%>"><button class="btn"><i class="fa fa-edit"></i></button></a></td>
-                <td><a href="<%=request.getContextPath()%>/BodegaProductos?action=borrar&nombreProducto=<%=producto.getNombreProducto()%>"><button class="btn"><i class="fa fa-trash"></i></button></a></td>
+                    </td>
+                    <td><%=producto.getNombreProducto()%></td>
+                    <td><%=producto.getDescripcion()%></td>
+                    <td><%=producto.getStock()%></td>
+                    <td>S/<%=producto.getPrecioProducto()%></td>
+                    <td>
+                        <a href="<%=request.getContextPath()%>/BodegaServlet?accion=editar&idProducto=<%=producto.getId()%>">
+                            <button class="btn"><i class="fa fa-edit"></i></button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="EditarProducto.html">
+                            <button class="btn"><i class="fa fa-trash"></i></button>
+                        </a>
+                    </td>
+                </tr>
+                <%
+                    }
+                %>
 
-            </tr>
-            <%
-                }
-            %>
+                </tbody>
+            </table>
+        </div>
+    </form>
 
-            </tbody>
-        </table>
-    </div>
 
     <!-- paginacion -->
     <div class="row">
@@ -135,7 +146,7 @@
                 </li>
                 <%}else{%>
                 <li class="page-item">
-                    <a class="page-link" href="<%=request.getContextPath()%>/BodegaProductos?pag=<%=paginaAct-1%>">Anterior</a>
+                    <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=paginaAct-1%>">Anterior</a>
                 </li>
                 <%}%>
 
@@ -146,7 +157,7 @@
                           </span>
                 </li>
                 <%      }else{%>
-                <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/BodegaProductos?pag=<%=k%>"><%=k%></a></li>
+                <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=k%>"><%=k%></a></li>
                 <%      }
                 } %>
 
@@ -157,7 +168,7 @@
                 </li>
                 <%}else{%>
                 <li class="page-item">
-                    <a class="page-link" href="<%=request.getContextPath()%>/BodegaProductos?pag=<%=paginaAct+1%>">Siguiente</a>
+                    <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=paginaAct+1%>">Siguiente</a>
                 </li>
                 <%}%>
 
@@ -166,6 +177,7 @@
     </div>
 
 </div>
+
 
 <footer class="page-footer font-small blue" style="margin-top: 60px">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
