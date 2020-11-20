@@ -118,7 +118,6 @@
                 <div class="form-group row">
                     <label for="inputLastName" class="col-sm-2 col-form-label">Apellidos:</label>
                     <div class="col-sm-10">
-                        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=agregar">ir_editar</a>
                         <input type="text" class="form-control <%=apellidosB?"":"is-invalid"%>"
                                aria-describedby="inputLastNameFeedback"
                                name="apellidos"

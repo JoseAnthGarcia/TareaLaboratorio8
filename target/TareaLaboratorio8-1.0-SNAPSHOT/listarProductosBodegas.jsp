@@ -1,6 +1,6 @@
-<%@ page import="beans.ProductoBodegasBean" %>
+<%@ page import="beans.ProductoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="listaProductoBodegas" scope="request" type="java.util.ArrayList<beans.ProductoBodegasBean>"/>
+<jsp:useBean id="listaProductos" scope="request" type="java.util.ArrayList<beans.ProductoBean>"/>
 <jsp:useBean id="cantPag" scope="request" type="java.lang.Integer"/>
 <jsp:useBean id="paginaAct" scope="request" type="java.lang.Integer"/>
 <!DOCTYPE html>

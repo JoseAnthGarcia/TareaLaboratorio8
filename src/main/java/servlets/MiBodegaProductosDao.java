@@ -5,7 +5,6 @@ package daos;
 // TODO: se ha hardcodeado el id de la bodega
 
 import beans.MiBodegaProductosBean;
-import beans.ProductoBodegasBean;
 
 import java.math.BigDecimal;
 import java.sql.*;
