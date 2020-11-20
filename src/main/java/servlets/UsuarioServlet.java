@@ -188,6 +188,42 @@ public class UsuarioServlet extends HttpServlet {
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
                     requestDispatcher.forward(request, response);
                 }
+                break;
+
+            case "validarContra":
+                //obtener usuarioID , o antes ya lo tengo para usar
+                String contraseniaA = request.getParameter("contrasenia");
+                String contrasenia2A = request.getParameter("contrasenia2A");
+                String contraseniaBB = request.getParameter("contraseniaB");
+                String contrasenia2BB = request.getParameter("contrasenia2B");
+
+
+                boolean contAntIguales=false;
+                if(contraseniaA.equals(contrasenia2A)){
+                    contAntIguales=true;
+                }
+
+                boolean contIguales= false;
+                if(contraseniaBB.equals(contrasenia2BB)){
+                    contIguales= true;
+                }
+
+                if(contAntIguales && contIguales){
+                    usuarioDao.actualizarContra(usuarioId, contraseniaBB); //ojo con usuarioId
+                    response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=miPerfil");
+                }else{
+                    UsuarioBean usuarioDopel = usuarioDao.obtenerUsuario(usuarioId);
+                    //los hiddens no funcionan sin un busuario nuevo.....u.u
+                    request.setAttribute("busuario",usuarioDopel);
+                    //request.setAttribute("contraseniaB",contraseniaBB);
+                    //request.setAttribute("contrasenia2B",contrasenia2BB);
+                    //request.setAttribute("contrasenia2A",contrasenia2A);
+                    request.setAttribute("contIguales",contIguales);
+                    request.setAttribute("contAntIguales",contAntIguales);
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("cambioContrasenia.jsp");
+                    requestDispatcher.forward(request,response);
+                }
+                break;
         }
 
     }
@@ -234,6 +270,16 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
                     requestDispatcher.forward(request, response);
 
+                break;
+
+            case "cambioContra":
+                //int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+                UsuarioBean busuario = usuarioDao.obtenerUsuario(usuarioId);
+
+                //request.setAttribute("contrasenia",busuario.getContrasenia()); //puede reducirse mas adelante
+                request.setAttribute("busuario",busuario);
+                requestDispatcher = request.getRequestDispatcher("cambioContrasenia.jsp");
+                requestDispatcher.forward(request,response);
                 break;
 
         }

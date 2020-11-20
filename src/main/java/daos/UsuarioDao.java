@@ -154,6 +154,22 @@ public class UsuarioDao extends BaseDao{
         }
     }
 
+    public void actualizarContra(int usuarioID, String contraseniaNew){
+        String sql = "UPDATE usuario SET contrasenia = ? WHERE idUsuario = ?";
+
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setString(1,contraseniaNew);
+            pstmt.setInt(2,usuarioID);
+
+            pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
 
 
 
