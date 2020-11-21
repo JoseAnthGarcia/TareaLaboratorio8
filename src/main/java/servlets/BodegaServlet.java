@@ -54,9 +54,15 @@ public class BodegaServlet extends HttpServlet {
             case "agregar":
                 break;
             case "editar":
-                int idProducto = Integer.parseInt(request.getParameter("idProducto")); //Validar idProducto
-                view = request.getRequestDispatcher("MiBodegaProductos.jsp"); //Cambiar al jsp de editar producto
-                view.forward(request,response);
+                int idProducto = Integer.parseInt(request.getParameter("idProducto"));
+                ProductoBean producto = bodegaDao.buscarProducto2(idProducto);
+                if(producto == null){
+                    response.sendRedirect(request.getContextPath()+"/BodegaServlet");
+                }else{
+                    request.setAttribute("producto", producto);
+                    view = request.getRequestDispatcher("editarProducto.jsp");
+                    view.forward(request,response);
+                }
                 break;
             case "eliminar":
                 String idProductoString = request.getParameter("idProducto");
