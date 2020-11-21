@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="producto" scope="request" type="beans.MiBodegaProductosBean" />
+<jsp:useBean id="producto" scope="request" type="beans.ProductoBean" />
+
 <html>
 <head>
 
@@ -74,7 +75,7 @@
                             <div class="form-group row">
                                 <label for="Descripcion" class="col-md-4 col-form-label text-md-right">Descripción</label>
                                 <div class="col-md-6">
-                                    <input type="text" id="Descripcion" class="form-control" name="descripcion" value="<%=producto.getDescripcion()%>>
+                                    <input type="text" id="Descripcion" class="form-control" name="descripcion" value="<%=producto.getDescripcion()%>">
                                 </div>
                             </div>
 
@@ -82,14 +83,14 @@
                             <div class="form-group row">
                                 <label for="Stock" class="col-md-4 col-form-label text-md-right">Stock</label>
                                 <div class="col-md-6">
-                                    <input type="number" min="0" id="Stock" class="form-control" name="stock" value="<%=producto.getStock()%>>
+                                    <input type="number" min="0" id="Stock" class="form-control" name="stock" value="<%=producto.getStock()%>">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="Precio" class="col-md-4 col-form-label text-md-right">Precio Unitario</label>
                                 <div class="col-md-6">
-                                    <input type="number" min="0" step=".01" id="Precio" class="form-control" name="precioProducto" value="<%=producto.getPrecioProducto()%>>
+                                    <input type="number" min="0" step=".01" id="Precio" class="form-control" name="precioProducto" value="<%=producto.getPrecioProducto()%>">
                                 </div>
 
                             </div>
@@ -106,12 +107,12 @@
                             </div>
 
                             <div class="col-md-6 offset-md-4">
-                                <a href="<%=request.getContextPath()%>/BodegaProductos?action=lista">
+                                <a href="<%=request.getContextPath()%>/BodegaServlet?action=lista">
                                     <button type="button" class="btn btn-outline-secondary">
                                         Confirmar
                                     </button>
                                 </a>
-                                <a href="<%=request.getContextPath()%>/BodegaProductos?action=lista">
+                                <a href="<%=request.getContextPath()%>/BodegaServlet?action=lista">
                                     <button class="btn btn-outline-danger">
                                         Cancelar
                                     </button>
