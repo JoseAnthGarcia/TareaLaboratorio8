@@ -34,7 +34,7 @@ public class BodegaDao extends BaseDao{
         return cantPag;
     }
 
-    public ArrayList<ProductoBean> listarProductoBodega(int pagina){
+    public static ArrayList<ProductoBean> listarProductoBodega(int pagina){
 
         ArrayList<ProductoBean> listaProductos = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class BodegaDao extends BaseDao{
         String url = "jdbc:mysql://localhost:3306/mydb?serverTimezone=America/Lima";
 
         int limit = (pagina-1)*5;
-        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega = 1 AND estado ='Existente' limit ?,5;";
+        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega = 1 limit ?,5;";
 
         try (Connection conn = DriverManager.getConnection(url, "root", "root");
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -95,6 +95,29 @@ public class BodegaDao extends BaseDao{
         }
 
         return exisProduct;
+    }
+
+    public ProductoBean buscarProducto2(int idProducto){
+
+        ProductoBean producto = null;
+
+        String sql = "SELECT * FROM producto WHERE idProducto = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setInt(1, idProducto);
+
+            try(ResultSet rs = pstmt.executeQuery();){
+                if(rs.next()){
+                    producto = new ProductoBean();
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return producto;
     }
 
     public ArrayList<PedidoBean> buscarPedidoConProducto(int idProducto){
