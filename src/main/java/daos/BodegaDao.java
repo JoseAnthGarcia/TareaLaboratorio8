@@ -101,7 +101,7 @@ public class BodegaDao extends BaseDao{
 
         ProductoBean producto = null;
 
-        String sql = "SELECT * FROM producto WHERE idProducto = ?";
+        String sql = "SELECT nombreProducto, descripcion, stock, precioUnitario FROM producto WHERE idProducto = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -111,6 +111,11 @@ public class BodegaDao extends BaseDao{
             try(ResultSet rs = pstmt.executeQuery();){
                 if(rs.next()){
                     producto = new ProductoBean();
+                    producto.setNombreProducto(rs.getString("nombreProducto"));
+                    producto.setDescripcion(rs.getString("descripcion"));
+                    producto.setStock(rs.getInt("stock"));
+                    producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
+
                 }
             }
         } catch (SQLException throwables) {
