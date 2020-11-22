@@ -117,7 +117,7 @@
                                         Confirmar
                                     </button>
                                 </a>
-                                <a href="<%=request.getContextPath()%>/BodegaProductos?action=lista">
+                                <a href="<%=request.getContextPath()%>/BodegaServlet?accion=listar">
                                     <button class="btn btn-outline-danger">
                                         Cancelar
                                     </button>

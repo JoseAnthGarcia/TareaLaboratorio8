@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
 
-        }
         /* Darker background on mouse-over */
         .btn:hover {
             background-color: #767676;
@@ -117,7 +116,7 @@
                                         Confirmar
                                     </button>
                                 </a>
-                                <a href="<%=request.getContextPath()%>/BodegaProductos?action=lista">
+                                <a href="<%=request.getContextPath()%>/BodegaServlet?accion=listar">
                                     <button class="btn btn-outline-danger">
                                         Cancelar
                                     </button>

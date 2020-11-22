@@ -23,6 +23,7 @@ public class BodegaServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String accion = request.getParameter("accion") == null ?
                 "listar" : request.getParameter("accion");
 
@@ -34,9 +35,15 @@ public class BodegaServlet extends HttpServlet {
 
         String pag = request.getParameter("pag") == null ?
                 "1" : request.getParameter("pag");
-        int paginaAct = Integer.parseInt(pag); // se trata de obtener la pagina actual, si es null, se asigna la 1 por defecto
-        if (paginaAct>cantPag){
-            paginaAct=1;
+
+        int paginaAct;
+        try{
+            paginaAct = Integer.parseInt(pag); //try
+            if(paginaAct>cantPag){
+                paginaAct = 1;
+            }
+        }catch(NumberFormatException e){
+            paginaAct = 1;
         }
 
         RequestDispatcher view;

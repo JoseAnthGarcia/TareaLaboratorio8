@@ -1,6 +1,7 @@
 package daos;
 
-import main.java.beans.BodegasAdminBean;
+import beans.BodegasAdminBean;
+
 
 import java.sql.*;
 import java.util.ArrayList;

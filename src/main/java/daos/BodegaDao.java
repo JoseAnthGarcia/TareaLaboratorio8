@@ -19,7 +19,7 @@ public class BodegaDao extends BaseDao{
         String url = "jdbc:mysql://localhost:3306/mydb?serverTimezone=America/Lima";
 
         // TODO: idBodega se ha hardcodeado
-        String sql = "select ceil(count(*)/5) from producto where idBodega=1";  // numero de paginas
+        String sql = "select ceil(count(*)/5) from producto where idBodega=1 AND estado='Existente'";  // numero de paginas
 
         int cantPag = 0;
         try (Connection conn = DriverManager.getConnection(url, "root", "root");
@@ -38,18 +38,12 @@ public class BodegaDao extends BaseDao{
 
         ArrayList<ProductoBean> listaProductos = new ArrayList<>();
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
         String url = "jdbc:mysql://localhost:3306/mydb?serverTimezone=America/Lima";
 
         int limit = (pagina-1)*5;
-        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega = 1 limit ?,5;";
+        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=1 AND estado='Existente' limit ?,5;";
 
-        try (Connection conn = DriverManager.getConnection(url, "root", "root");
+        try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
             pstmt.setInt(1, limit);
