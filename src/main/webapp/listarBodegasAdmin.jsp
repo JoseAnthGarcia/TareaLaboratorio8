@@ -1,9 +1,9 @@
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="java.daos.BodegasAdminDao" %>
+<%@ page import="daos.BodegasAdminDao" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    ArrayList<main.java.beans.BodegasAdminBean> listaBodegas = (ArrayList<main.java.beans.BodegasAdminBean>) request.getAttribute("lista");
+    ArrayList<beans.BodegasAdminBean> listaBodegas = (ArrayList<beans.BodegasAdminBean>) request.getAttribute("lista");
 %>
 
 <jsp:useBean id="cantPag" scope="request" type="java.lang.Integer"/>
@@ -85,7 +85,7 @@
             <a href="#" class="navbar-brand d-flex align-items-center">
                 <strong>Administración</strong>
             </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
+            <a href="<%=request.getContextPath()%>/Admin2Servlet?accion=registrar" class="navbar-brand d-flex align-items-center">
                 <strong>Registrar bodega</strong>
             </a>
             <a href="#" class="navbar-brand d-flex align-items-center">
@@ -106,7 +106,7 @@
                 <th>Bloquear bodega</th>
             </tr>
             <%
-                for(main.java.beans.BodegasAdminBean bodega : listaBodegas){
+                for(beans.BodegasAdminBean bodega : listaBodegas){
             %>
             <tr>
                 <td><%= bodega.getRucBodega() %></td>

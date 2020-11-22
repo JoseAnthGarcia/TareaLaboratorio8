@@ -102,10 +102,10 @@
                         <a href="#" class="navbar-brand d-flex align-items-center">
                             <strong>Administración</strong>
                         </a>
-                        <a href="#" class="navbar-brand d-flex align-items-center">
+                        <a href="<%=request.getContextPath()%>/Admin2Servlet?accion=registrar" class="navbar-brand d-flex align-items-center">
                             <strong>Registrar bodega</strong>
                         </a>
-                        <a href="#" class="navbar-brand d-flex align-items-center">
+                        <a href="<%=request.getContextPath()%>/Admin2Servlet" class="navbar-brand d-flex align-items-center">
                             <strong>Lista de bodegas</strong>
                         </a>
                         <a href="#" ><img src="imagenes/sigout.png" height="30px"/></a>
@@ -170,7 +170,8 @@
                             <div class="col-sm-10">
                                 <input type="text" class="form-control <%=rucB?"":"is-invalid"%>"
                                        aria-describedby="inputrucFeedback"
-                                       name="ruc" id="inputruc" <%=request.getParameter("ruc")==null?"":"value='"+request.getParameter("ruc")+"'"%>>
+                                       name="ruc"
+                                       id="inputruc" <%=request.getParameter("ruc")==null?"":"value='"+request.getParameter("ruc")+"'"%>>
                                 <div id="inputrucFeedback" class="invalid-feedback">
                                     Ingrese datos validos, por favor.
                                 </div>
