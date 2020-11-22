@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-@WebServlet(name = "BodegaProductosServlet", urlPatterns = {"/BodegaProductos"})
+//TODO : ELIMINAR
+@WebServlet(name = "BodegaProductosServlet", urlPatterns = {"/BodegaProductosk4wnk"})
 public class BodegaProductosServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher view;
