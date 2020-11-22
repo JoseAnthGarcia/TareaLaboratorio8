@@ -1,6 +1,7 @@
 package daos;
 
-import main.java.beans.BodegasAdminBean;
+import beans.BodegasAdminBean;
+import beans.DistritoBean;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -104,6 +105,99 @@ public class BodegasAdminDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void guardarBodega(String ruc, String direccion, String nombreBodega, String correo,int idDistrito){
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        String sql = "INSERT INTO  bodega(ruc,direccion,idDistrito,nombreBodega,correo) " +
+                "VALUES (?,?,?,?,?)";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setString(1,ruc);
+            pstmt.setString(2,direccion);
+            pstmt.setInt(3,idDistrito);
+            pstmt.setString(4,nombreBodega);
+            pstmt.setString(5,correo);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public ArrayList<DistritoBean> obtenerDistritos(){
+
+        ArrayList<DistritoBean> listaDistritos = new ArrayList<>();
+
+        String sql = "SELECT * FROM distrito;";
+        try (Connection conn = getConnection();Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql);) {
+
+            while (rs.next()) {
+                DistritoBean distrito = new DistritoBean();
+                distrito.setId(rs.getInt(1));
+                distrito.setNombre(rs.getString(2));
+                listaDistritos.add(distrito);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return listaDistritos;
+    }
+
+
+    public DistritoBean buscarDistrito(String idDistrito){
+
+        DistritoBean distrito = null;
+
+        String sql = "SELECT * FROM distrito WHERE idDistrito = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql); ) {
+            pstmt.setInt(1,Integer.parseInt(idDistrito));
+
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    distrito = new DistritoBean();
+                    distrito.setId(rs.getInt(1));
+                    distrito.setNombre(rs.getString(2));
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return distrito;
+    }
+    public boolean buscarRuc(String ruc){
+        boolean encontrado = false;
+
+        String sql = "SELECT * FROM usuario WHERE ruc = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setString(1,ruc);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    encontrado = true;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return encontrado;
     }
 
 }
