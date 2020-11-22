@@ -85,7 +85,7 @@
             <a href="#" class="navbar-brand d-flex align-items-center">
                 <strong>Administración</strong>
             </a>
-            <a href="<%=request.getContextPath()%>/Admin2Servlet?accion=registrar" class="navbar-brand d-flex align-items-center">
+            <a href="<%=request.getContextPath()%>/AdminServlet?accion=registrar" class="navbar-brand d-flex align-items-center">
                 <strong>Registrar bodega</strong>
             </a>
             <a href="#" class="navbar-brand d-flex align-items-center">

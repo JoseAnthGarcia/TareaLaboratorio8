@@ -102,10 +102,10 @@
                         <a href="#" class="navbar-brand d-flex align-items-center">
                             <strong>Administración</strong>
                         </a>
-                        <a href="<%=request.getContextPath()%>/Admin2Servlet?accion=registrar" class="navbar-brand d-flex align-items-center">
+                        <a href="<%=request.getContextPath()%>/AdminServlet?accion=registrar" class="navbar-brand d-flex align-items-center">
                             <strong>Registrar bodega</strong>
                         </a>
-                        <a href="<%=request.getContextPath()%>/Admin2Servlet" class="navbar-brand d-flex align-items-center">
+                        <a href="<%=request.getContextPath()%>/AdminServlet" class="navbar-brand d-flex align-items-center">
                             <strong>Lista de bodegas</strong>
                         </a>
                         <a href="#" ><img src="imagenes/sigout.png" height="30px"/></a>
@@ -140,7 +140,7 @@
                 </div>
                 <div class="col-sm-6">
                     <h1>Registro de bodega</h1>
-                    <form method="POST" action="<%=request.getContextPath()%>/Admin2Servlet?accion=registrar">
+                    <form method="POST" action="<%=request.getContextPath()%>/AdminServlet?accion=registrar">
                         <div class="form-group row">
                             <label for="nombreBodega" class="col-sm-2 col-form-label">Nombre:</label>
                             <div class="col-sm-10">
@@ -216,7 +216,7 @@
                         </div>
                         <a  onclick="return confirm('¿Estas seguro que deseas salir del registro de la bodega? ' +
                          'Todos los datos ingresados serán borrados')"
-                            href="<%=request.getContextPath()%>/Admin2Servlet" class="btn btn-danger">Regresar</a>
+                            href="<%=request.getContextPath()%>/AdminServlet" class="btn btn-danger">Regresar</a>
                         <button type="submit" class="btn btn-success pull-right">Registrar</button>
                     </form>
                 </div>
