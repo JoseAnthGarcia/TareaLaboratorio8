@@ -146,7 +146,7 @@
                                name="correo"
                                id="inputEmail" <%=request.getParameter("correo")==null?"":"value='"+request.getParameter("correo")+"'"%>>
                         <div id="inputEmailFeedback" class="invalid-feedback">
-                            Ingrese datos, por favor.
+                            Ingrese datos validos, por favor.
                         </div>
                     </div>
                 </div>
