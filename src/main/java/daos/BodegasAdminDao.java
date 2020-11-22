@@ -1,6 +1,6 @@
 package daos;
 
-import beans.BodegasAdminBean;
+import main.java.beans.BodegasAdminBean;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -36,13 +36,6 @@ public class BodegasAdminDao {
 
     public ArrayList<BodegasAdminBean> obtenerListaBodegas(int pagina){
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
         ArrayList<BodegasAdminBean> listaBodegas = new ArrayList<>();
 
         int limit = (pagina-1)*5;
@@ -70,6 +63,47 @@ public class BodegasAdminDao {
 
         return listaBodegas;
 
+    }
+
+
+    public static boolean pedidoPendiente(String nombreBodega){    //devuelve true si presenta al menos un pedido en estado pendiente
+        boolean pedidoPendiente = false;
+
+        String sql = "select estado from pedido where idBodega=(select idBodega from bodega where nombreBodega = ?);";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, nombreBodega);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                while(rs.next()){
+                    if(rs.getString(1).toLowerCase().equals("pendiente")){
+                        pedidoPendiente = true;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return pedidoPendiente;
+    }
+
+    public static void actualizarEstadoBodega(String nombreBodega,boolean estado){
+
+        String sql;
+
+        //estado=true -> se bloquea la bodega
+        sql = estado ? "update bodega set estado = \"Bloqueado\" where nombreBodega = ?;" : "update bodega set estado = \"Activo\" where nombreBodega = ?;";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, nombreBodega);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

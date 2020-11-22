@@ -1,4 +1,4 @@
-<%@ page import="beans.BodegasAdminBean" %>
+<%@ page import="main.java.beans.BodegasAdminBean" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
