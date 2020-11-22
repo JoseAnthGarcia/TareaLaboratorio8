@@ -137,7 +137,8 @@
                         </a>
                     </td>
                     <td>
-                        <a href="<%=request.getContextPath()%>/BodegaServlet?accion=eliminar&idProducto=<%=producto.getId()%>">
+                        <a onclick="return confirm('¿Estas seguro que desea eliminar <%=producto.getNombreProducto()%>')"
+                           href="<%=request.getContextPath()%>/BodegaServlet?accion=eliminar&idProducto=<%=producto.getId()%>">
                             <i class="fa fa-trash btn"></i>
                         </a>
                     </td>

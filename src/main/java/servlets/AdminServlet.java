@@ -1,6 +1,6 @@
 package servlets;
 
-import main.java.beans.BodegasAdminBean;
+import beans.BodegasAdminBean;
 import daos.BodegasAdminDao;
 
 import javax.servlet.RequestDispatcher;
