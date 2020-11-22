@@ -1,15 +1,13 @@
-<%@ page import="beans.BodegasAdminBean" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.daos.BodegasAdminDao" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    ArrayList<BodegasAdminBean> listaBodegas = (ArrayList<BodegasAdminBean>) request.getAttribute("lista");
+    ArrayList<main.java.beans.BodegasAdminBean> listaBodegas = (ArrayList<main.java.beans.BodegasAdminBean>) request.getAttribute("lista");
 %>
 
 <jsp:useBean id="cantPag" scope="request" type="java.lang.Integer"/>
 <jsp:useBean id="paginaAct" scope="request" type="java.lang.Integer"/>
-<%-- int paginaAct = 1;--%>
-<%-- int cantPag = 1;--%>
 
 
 <html>
@@ -30,16 +28,17 @@
             background-color: #f05454;
         }
         .btn-activar{
-            background-color: #d6d2c4;
+            background-color: #8DBC81;
             border: none;
             color: black;
-            padding: 12px 22px;
+            padding: 12px 24px;
             font-size: 15px;
             cursor: pointer;
         }
         /* Darker background on mouse-over */
         .btn-activar:hover {
-            background-color: #f05454;
+            background-color: #34A100;
+            color: white;
         }
         .btn-boton2 {
             background-color: #343a40;
@@ -72,30 +71,30 @@
     <title>Lista de bodegas</title>
 </head>
 <body>
-    <header>
-        <div class="collapse bg-dark" id="navbarHeader">
-            <div class="container">
+<header>
+    <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
 
-            </div>
         </div>
-        <div class="navbar navbar-dark bg-dark box-shadow">
-            <div class="container d-flex justify-content-between">
-                <a href="#" class="navbar-brand d-flex align-items-center">
-                    <strong>MiMarca.com</strong>
-                </a>
-                <a href="#" class="navbar-brand d-flex align-items-center">
-                    <strong>Administración</strong>
-                </a>
-                <a href="#" class="navbar-brand d-flex align-items-center">
-                    <strong>Registrar bodega</strong>
-                </a>
-                <a href="#" class="navbar-brand d-flex align-items-center">
-                    <strong>Lista de bodegas</strong>
-                </a>
-                <a href="#" ><img src="imagenes/sigout.png" height="30px"/></a>
-            </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <strong>MiMarca.com</strong>
+            </a>
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <strong>Administración</strong>
+            </a>
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <strong>Registrar bodega</strong>
+            </a>
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <strong>Lista de bodegas</strong>
+            </a>
+            <a href="#" ><img src="imagenes/sigout.png" height="30px"/></a>
         </div>
-    </header>
+    </div>
+</header>
 <div class ='container'>
     <h1 class="margen">Mis Bodegas</h1>
     <div class="container-fluid">
@@ -107,16 +106,27 @@
                 <th>Bloquear bodega</th>
             </tr>
             <%
-                for(BodegasAdminBean bodega : listaBodegas){
+                for(main.java.beans.BodegasAdminBean bodega : listaBodegas){
             %>
             <tr>
                 <td><%= bodega.getRucBodega() %></td>
                 <td><%= bodega.getNombreBodega() %></td>
                 <td><%= bodega.getEstadoBodega() %></td>
                 <% if(bodega.getEstadoBodega().toLowerCase().equals("activo")){%>
-                <td><button type="button" class="btn btn-danger">Bloquear</button></td>
+                <%if(BodegasAdminDao.pedidoPendiente(bodega.getNombreBodega())){ %>
+                <td>
+                    <a onclick="return confirm('No es posible bloquear esta bodega porque presenta al menos un pedido en estado pendiente')"
+                       class="btn btn-danger">Bloquear</a></td>
                 <% }else{%>
-                <td><button type="button" class="btn btn-activar">Activar</button></td>
+                <td>
+                    <a onclick="return confirm('¿Estas seguro que deseas bloquear?')"
+                       href="<%=request.getContextPath()%>/AdminServlet?accion=bloquear&nombreB=<%=bodega.getNombreBodega()%>&state=true"
+                       class="btn btn-danger">Bloquear</a></td>
+                <% }%>
+                <% }else{%>
+                <td><a onclick="return confirm('¿Estas seguro que deseas activar esta bodega?')"
+                       href="<%=request.getContextPath()%>/AdminServlet?accion=bloquear&&nombreB=<%=bodega.getNombreBodega()%>&state=false"
+                       class="btn btn-activar">Activar</a></td>
                 <%} %>
             </tr>
             <%

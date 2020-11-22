@@ -1,6 +1,6 @@
 package servlets;
 
-import beans.BodegasAdminBean;
+import main.java.beans.BodegasAdminBean;
 import daos.BodegasAdminDao;
 
 import javax.servlet.RequestDispatcher;
@@ -22,28 +22,43 @@ public class AdminServlet extends HttpServlet {
 
         BodegasAdminDao bodegaDao = new BodegasAdminDao();
 
-            String pag = request.getParameter("pag") == null ? "1" : request.getParameter("pag");
+        String accion = request.getParameter("accion") == null ?
+                "listar" :
+                request.getParameter("accion");
 
-        int cantPag = BodegasAdminDao.calcularCantPag();
-        int paginaAct;
-        try{
-            paginaAct = Integer.parseInt(pag); //try
-            if(paginaAct>cantPag){
-                paginaAct = 1;
-            }
-        }catch(NumberFormatException e){
-            paginaAct = 1;
+        switch(accion){
+            case "listar":
+                String pag = request.getParameter("pag") == null ? "1" : request.getParameter("pag");
+
+                int cantPag = BodegasAdminDao.calcularCantPag();
+                int paginaAct;
+                try{
+                    paginaAct = Integer.parseInt(pag); //try
+                    if(paginaAct>cantPag){
+                        paginaAct = 1;
+                    }
+                }catch(NumberFormatException e){
+                    paginaAct = 1;
+                }
+
+                ArrayList<BodegasAdminBean> listaBodegas = bodegaDao.obtenerListaBodegas(paginaAct);
+
+                request.setAttribute("lista", listaBodegas);
+                request.setAttribute("cantPag", cantPag);
+                request.setAttribute("paginaAct",paginaAct);
+
+
+                RequestDispatcher view = request.getRequestDispatcher("listarBodegasAdmin.jsp");
+                view.forward(request,response);
+                break;
+            case "bloquear":
+                String nombreBodega = request.getParameter("nombreB");
+                boolean estado = Boolean.parseBoolean(request.getParameter("state"));
+                BodegasAdminDao.actualizarEstadoBodega(nombreBodega,estado);
+                response.sendRedirect("AdminServlet");
+                break;
         }
 
-        ArrayList<BodegasAdminBean> listaBodegas = bodegaDao.obtenerListaBodegas(paginaAct);
-
-        request.setAttribute("lista", listaBodegas);
-        request.setAttribute("cantPag", cantPag);
-        request.setAttribute("paginaAct",paginaAct);
-
-
-        RequestDispatcher view = request.getRequestDispatcher("listarBodegasAdmin.jsp");
-        view.forward(request,response);
 
     }
 }
