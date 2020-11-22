@@ -4,10 +4,40 @@ import beans.MiBodegaProductosBean;
 import beans.PedidoBean;
 import beans.ProductoBean;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class BodegaDao extends BaseDao{
+
+    public static void crearProducto(String nombreProducto, String descripcion, int stock, BigDecimal precioUnitario){
+        // TODO: añadir el manejo de imagenes
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // TODO: idBodega, nombreFoto, rutaFoto se ha hardcodeado
+        String sql = "insert into producto (nombreFoto,rutaFoto,nombreProducto,descripcion,stock,precioUnitario,idBodega) values (\n" +
+                "'foto random', '/fotoRandom', ?, ?, ?, ?, 1);";  // numero de paginas
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            // todo: cuando se añada rutaFoto y nombreFoto esto tmb cambiará
+            pstmt.setString(1, nombreProducto);
+            pstmt.setString(2, descripcion);
+            pstmt.setInt(3, stock);
+            pstmt.setBigDecimal(4, precioUnitario);
+
+            pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     public int calcularCantPag(){
 
         try {
