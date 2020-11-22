@@ -94,7 +94,7 @@
                 <%}%>
             </div>
             <div class="col-sm-1">
-                <a href="<%=request.getContextPath()%>/BodegaServlet?action=formAdd">
+                <a href="<%=request.getContextPath()%>/BodegaServlet?accion=agregar">
                     <button class="btn"><i class="fa fa-plus"></i></button>
                 </a>
             </div>

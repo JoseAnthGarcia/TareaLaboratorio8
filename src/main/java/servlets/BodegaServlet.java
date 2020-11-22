@@ -24,7 +24,7 @@ public class BodegaServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String accion = request.getParameter("accion") == null ?
-                "nada" : request.getParameter("accion");
+                "listar" : request.getParameter("accion");
 
         System.out.println(accion);
 
@@ -47,11 +47,14 @@ public class BodegaServlet extends HttpServlet {
         request.setAttribute("paginaAct",paginaAct);
 
         switch (accion){
-            case "nada":
+            case "listar":
                 view = request.getRequestDispatcher("MiBodegaProductos.jsp");
                 view.forward(request,response);
+                break;
 
             case "agregar":
+                view = request.getRequestDispatcher("anadirProducto.jsp");
+                view.forward(request,response);
                 break;
             case "editar":
                 int idProducto = Integer.parseInt(request.getParameter("idProducto"));
