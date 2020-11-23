@@ -15,6 +15,8 @@
     boolean validPrecioUnitario = request.getAttribute("validPrecioUnitario") != null ?
             ((boolean) request.getAttribute("validPrecioUnitario")) : true;
 
+    boolean validNombreProducto = request.getAttribute("validNombreProducto") != null ?
+            ((boolean) request.getAttribute("validNombreProducto")) : true;
 %>
 
 <html>
@@ -81,23 +83,24 @@
                     <div class="card-body">
 
                         <!-- FORMULARIO -->
-                        <%
-                        if (validStock == false){
-                        %>
-                        <h2>Error!!</h2>
-                        <%
-                            }
-                        %>
-
                         <% System.out.println(request.getContextPath()); %>
                         <form method="POST" action="<%=request.getContextPath()%>/BodegaServlet?accion=guardar">
+
+                            <!-- NOMBRE -->
                             <div class="form-group row">
                                 <label for="nombreProducto" class="col-md-4 col-form-label text-md-right">Producto</label>
                                 <div class="col-md-6">
-                                    <input  type="text" id="nombreProducto" class="form-control" name="nombreProducto">
+                                    <input type="text" class="form-control <%=validNombreProducto?"":"is-invalid"%>" name="nombreProducto"
+                                           id="nombreProducto"
+                                           aria-describedby="validationServer05Feedback" required>
+                                    <div id="validationServer05Feedback" class="invalid-feedback">
+                                        No puede estar vacío
+                                    </div>
+
                                 </div>
                             </div>
 
+                            <!-- DESCRIPCIO -->
                             <div class="form-group row">
                                 <label for="Descripcion" class="col-md-4 col-form-label text-md-right">Descripción</label>
                                 <div class="col-md-6">
@@ -105,15 +108,7 @@
                                 </div>
                             </div>
 
-                            <!--
-                            <div class="form-group row">
-                                <label for="Stock" class="col-md-4 col-form-label text-md-right">Stock</label>
-                                <div class="col-md-6">
-                                    <input  type="number" min="0" id="Stock" class="form-control" name="stock">
-                                </div>
-                            </div>
-                            -->
-
+                            <!-- STOCK -->
                             <div class="form-group row">
                                 <label for="Stock" class="col-md-4 col-form-label text-md-right">Stock</label>
                                 <div class="col-md-6">
@@ -126,11 +121,16 @@
                                 </div>
                             </div>
 
-
+                            <!-- PRECIO UNITARIO -->
                             <div class="form-group row">
                                 <label for="Precio" class="col-md-4 col-form-label text-md-right">Precio Unitario</label>
                                 <div class="col-md-6">
-                                    <input  type="number" min="0" step=".01" id="Precio" class="form-control" name="precioProducto">
+                                    <input type="text" class="form-control <%=validPrecioUnitario?"":"is-invalid"%>" name="precioProducto"
+                                           id="Precio"
+                                           aria-describedby="validationServer04Feedback" required>
+                                    <div id="validationServer04Feedback" class="invalid-feedback">
+                                        Debe ser un número
+                                    </div>
                                 </div>
 
                             </div>
@@ -147,14 +147,13 @@
                                 </div>
                             </div> -->
 
+                            <!-- BOTONES CONFIRMAR Y CANCELAR <-->
                             <div class="col-md-6 offset-md-4">
                                 <a>
                                     <input type="submit" value="Confirmar" class="btn btn-outline-secondary">
                                 </a>
-                                <a href="<%=request.getContextPath()%>/BodegaServlet">
-                                    <button class="btn btn-outline-danger">
+                                <a class="btn btn-outline-danger" href="<%=request.getContextPath()%>/BodegaServlet">
                                         Cancelar
-                                    </button>
                                 </a>
                             </div>
 
