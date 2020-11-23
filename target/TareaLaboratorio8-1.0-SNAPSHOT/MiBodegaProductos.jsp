@@ -1,6 +1,4 @@
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="beans.MiBodegaProductosBean" %>
-<%@ page import="daos.MiBodegaProductosDao" %>
 <%@ page import="java.math.BigDecimal" %>
 <%@ page import="beans.ProductoBean" %>
 <%@ page import="beans.PedidoBean" %><%--

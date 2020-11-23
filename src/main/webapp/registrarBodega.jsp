@@ -1,4 +1,4 @@
-<%@ page import="beans.BodegasAdminBean" %>
+<%@ page import="beans.BodegaBean" %>
 <%@ page import="beans.DistritoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="listaDistritos" scope="request" type="java.util.ArrayList<beans.DistritoBean>"/>

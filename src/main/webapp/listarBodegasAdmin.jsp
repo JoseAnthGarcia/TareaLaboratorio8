@@ -1,9 +1,10 @@
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="daos.BodegasAdminDao" %>
+<%@ page import="daos.AdminDao" %>
+<%@ page import="beans.BodegaBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    ArrayList<beans.BodegasAdminBean> listaBodegas = (ArrayList<beans.BodegasAdminBean>) request.getAttribute("lista");
+    ArrayList<BodegaBean> listaBodegas = (ArrayList<BodegaBean>) request.getAttribute("lista");
 %>
 
 <jsp:useBean id="cantPag" scope="request" type="java.lang.Integer"/>
@@ -106,14 +107,14 @@
                 <th>Bloquear bodega</th>
             </tr>
             <%
-                for(beans.BodegasAdminBean bodega : listaBodegas){
+                for(BodegaBean bodega : listaBodegas){
             %>
             <tr>
                 <td><%= bodega.getRucBodega() %></td>
                 <td><%= bodega.getNombreBodega() %></td>
                 <td><%= bodega.getEstadoBodega() %></td>
                 <% if(bodega.getEstadoBodega().toLowerCase().equals("activo")){%>
-                <%if(BodegasAdminDao.pedidoPendiente(bodega.getNombreBodega())){ %>
+                <%if(AdminDao.pedidoPendiente(bodega.getNombreBodega())){ %>
                 <td>
                     <a onclick="return confirm('No es posible bloquear esta bodega porque presenta al menos un pedido en estado pendiente')"
                        class="btn btn-danger">Bloquear</a></td>

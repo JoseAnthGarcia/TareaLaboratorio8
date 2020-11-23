@@ -1,10 +1,8 @@
 package servlets;
 
-import beans.MiBodegaProductosBean;
 import beans.PedidoBean;
 import beans.ProductoBean;
 import daos.BodegaDao;
-import daos.MiBodegaProductosDao;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

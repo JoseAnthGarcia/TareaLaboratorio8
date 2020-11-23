@@ -1,6 +1,6 @@
-import beans.BodegasAdminBean;
+import beans.BodegaBean;
 import beans.DistritoBean;
-import daos.BodegasAdminDao;
+import daos.AdminDao;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -70,7 +70,7 @@ public class AdminServlet extends HttpServlet {
 
         String accion = (String) request.getParameter("accion") == null ? "listar":
                 (String) request.getParameter("accion");
-        BodegasAdminDao bodegaDao = new BodegasAdminDao();
+        AdminDao bodegaDao = new AdminDao();
 
         String ruc = request.getParameter("ruc");
         String direccion = request.getParameter("direccion");
@@ -109,7 +109,7 @@ public class AdminServlet extends HttpServlet {
                     }else{
                         request.setAttribute("rucExis", rucExis);
                         request.setAttribute("distritoSelected", distritoSelected);
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("registrarBodega.jsp");
+                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("registrarBodega.jsp");
                         requestDispatcher.forward(request, response);
                     }
                 }else{
@@ -130,14 +130,14 @@ public class AdminServlet extends HttpServlet {
         String accion = (String) request.getParameter("accion") == null ? "listar":
                 (String) request.getParameter("accion");
 
-        BodegasAdminDao bodegaDao = new BodegasAdminDao();
+        AdminDao bodegaDao = new AdminDao();
 
 
         switch (accion){
             case "listar":
                 String pag = request.getParameter("pag") == null ? "1" : request.getParameter("pag");
 
-                int cantPag = BodegasAdminDao.calcularCantPag();
+                int cantPag = AdminDao.calcularCantPag();
                 int paginaAct;
                 try{
                     paginaAct = Integer.parseInt(pag); //try
@@ -148,7 +148,7 @@ public class AdminServlet extends HttpServlet {
                     paginaAct = 1;
                 }
 
-                ArrayList<BodegasAdminBean> listaBodegas = bodegaDao.obtenerListaBodegas(paginaAct);
+                ArrayList<BodegaBean> listaBodegas = bodegaDao.obtenerListaBodegas(paginaAct);
 
                 request.setAttribute("lista", listaBodegas);
                 request.setAttribute("cantPag", cantPag);
@@ -167,7 +167,7 @@ public class AdminServlet extends HttpServlet {
             case "bloquear":
                 String nombreBodega = request.getParameter("nombreB");
                 boolean estado = Boolean.parseBoolean(request.getParameter("state"));
-                BodegasAdminDao.actualizarEstadoBodega(nombreBodega,estado);
+                AdminDao.actualizarEstadoBodega(nombreBodega,estado);
                 response.sendRedirect("AdminServlet");
                 break;
         }

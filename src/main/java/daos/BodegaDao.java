@@ -1,6 +1,5 @@
 package daos;
 
-import beans.MiBodegaProductosBean;
 import beans.PedidoBean;
 import beans.ProductoBean;
 
@@ -192,4 +191,6 @@ public class BodegaDao extends BaseDao{
         }
     }
 
+
+    //-------------------------------Flujo bodega---------------------------
 }

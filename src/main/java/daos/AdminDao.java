@@ -1,6 +1,6 @@
 package daos;
 
-import beans.BodegasAdminBean;
+import beans.BodegaBean;
 import beans.DistritoBean;
 
 import java.sql.*;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import static daos.BaseDao.getConnection;
 
-public class BodegasAdminDao {
+public class AdminDao {
 
     public static int calcularCantPag() {
         try {
@@ -35,9 +35,9 @@ public class BodegasAdminDao {
 
 
 
-    public ArrayList<BodegasAdminBean> obtenerListaBodegas(int pagina){
+    public ArrayList<BodegaBean> obtenerListaBodegas(int pagina){
 
-        ArrayList<BodegasAdminBean> listaBodegas = new ArrayList<>();
+        ArrayList<BodegaBean> listaBodegas = new ArrayList<>();
 
         int limit = (pagina-1)*5;
         String sql = "select * from bodega where idAdministrador=5 limit ?,5;";
@@ -49,7 +49,7 @@ public class BodegasAdminDao {
 
             try(ResultSet rs = pstmt.executeQuery();){
                 while(rs.next()){
-                    BodegasAdminBean bodega = new BodegasAdminBean();
+                    BodegaBean bodega = new BodegaBean();
                     bodega.setRucBodega(rs.getInt("ruc"));
                     bodega.setNombreBodega(rs.getString("nombreBodega"));
                     bodega.setEstadoBodega(rs.getString("estado"));
@@ -135,32 +135,6 @@ public class BodegasAdminDao {
         }
     }
 
-    public void enviarCorreo(String correo){
-
-
-        // Esto es lo que va delante de @gmail.com en tu cuenta de correo. Es el remitente también.
-        private String remitente = "nomcuenta";  //Para la dirección nomcuenta@gmail.com
-
-        Properties props = System.getProperties();
-        props.put("mail.smtp.host", "smtp.gmail.com");  //El servidor SMTP de Google
-        props.put("mail.smtp.user", remitente);
-        props.put("mail.smtp.clave", "miClaveDeGMail");    //La clave de la cuenta
-        props.put("mail.smtp.auth", "true");    //Usar autenticación mediante usuario y clave
-        props.put("mail.smtp.starttls.enable", "true"); //Para conectar de manera segura al servidor SMTP
-        props.put("mail.smtp.port", "587"); //El puerto SMTP seguro de Google
-
-        Session session = Session.getDefaultInstance(props);
-        MimeMessage message = new MimeMessage(session);
-
-        try {
-            message.setFrom(new InternetAddress(remitente));
-            message.addRecipient(Message.RecipientType.TO, dest;
-        }
-
-    }
-    public void guardarContrasenia(String contrasenia){
-
-    }
 
     public ArrayList<DistritoBean> obtenerDistritos(){
 
@@ -183,7 +157,6 @@ public class BodegasAdminDao {
 
         return listaDistritos;
     }
-
 
     public DistritoBean buscarDistrito(String idDistrito){
 
@@ -208,6 +181,7 @@ public class BodegasAdminDao {
 
         return distrito;
     }
+
     public boolean buscarRuc(String ruc){
         boolean encontrado = false;
 

@@ -1,6 +1,6 @@
 package beans;
 
-public class BodegasAdminBean {
+public class BodegaBean {
 
     private int rucBodega;
     private String nombreBodega;
