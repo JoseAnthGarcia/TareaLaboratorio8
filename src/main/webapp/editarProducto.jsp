@@ -1,6 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="producto" scope="request" type="beans.ProductoBean" />
 
+<!-- validaciones de input -->
+<%
+    boolean validStock = request.getAttribute("validStock") != null ?
+            ((boolean) request.getAttribute("validStock")) : true;
+
+    boolean validPrecioUnitario = request.getAttribute("validPrecioUnitario") != null ?
+            ((boolean) request.getAttribute("validPrecioUnitario")) : true;
+
+    boolean validNombreProducto = request.getAttribute("validNombreProducto") != null ?
+            ((boolean) request.getAttribute("validNombreProducto")) : true;
+%>
+
 <html>
 <head>
 
@@ -19,7 +31,7 @@
         }
     </style>
 
-    <title>Agregar Producto</title>
+    <title>Editar Producto</title>
 
 </head>
 
@@ -61,42 +73,51 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Registrar Producto</div>
+                    <div class="card-header">Editar Producto: <%=producto.getNombreProducto()%></div>
                     <div class="card-body">
-                        <form name="my-form" action="<%=request.getContextPath()%>/BodegaProductos?action=addProduct" method="POST">
-                            <div class="form-group row">
-                                <label for="nombreProducto" class="col-md-4 col-form-label text-md-right">Producto</label>
-                                <div class="col-md-6">
-                                    <input type="text" id="nombreProducto" class="form-control" name="nombreProducto" value="<%=producto.getNombreProducto()%>">
-                                </div>
-                            </div>
 
+                        <!-- FORMULARIO -->
+                        <% System.out.println(request.getContextPath()); %>
+                        <form method="POST" action="<%=request.getContextPath()%>/BodegaServlet?accion=actualizar">
 
+                            <!-- DESCRIPCIO -->
                             <div class="form-group row">
                                 <label for="Descripcion" class="col-md-4 col-form-label text-md-right">Descripción</label>
                                 <div class="col-md-6">
-                                    <input type="text" id="Descripcion" class="form-control" name="descripcion" value="<%=producto.getDescripcion()%>">
+                                    <input  type="text" id="Descripcion" class="form-control" name="descripcion" value="<%=producto.getDescripcion()%>">
                                 </div>
                             </div>
 
-
+                            <!-- STOCK -->
                             <div class="form-group row">
                                 <label for="Stock" class="col-md-4 col-form-label text-md-right">Stock</label>
                                 <div class="col-md-6">
-                                    <input type="number" min="0" id="Stock" class="form-control" name="stock" value="<%=producto.getStock()%>">
+                                    <input type="text" class="form-control <%=validStock?"":"is-invalid"%>" name="stock" value="<%=producto.getStock()%>"
+                                           id="Stock"
+                                           aria-describedby="validationServer03Feedback" required>
+                                    <div id="validationServer03Feedback" class="invalid-feedback">
+                                        Debe ser un número
+                                    </div>
                                 </div>
                             </div>
 
+                            <!-- PRECIO UNITARIO -->
                             <div class="form-group row">
                                 <label for="Precio" class="col-md-4 col-form-label text-md-right">Precio Unitario</label>
                                 <div class="col-md-6">
-                                    <input type="number" min="0" step=".01" id="Precio" class="form-control" name="precioProducto" value="<%=producto.getPrecioProducto()%>">
+                                    <input type="text" class="form-control <%=validPrecioUnitario?"":"is-invalid"%>" name="precioProducto" value="<%=producto.getPrecioProducto()%>"
+                                           id="Precio"
+                                           aria-describedby="validationServer04Feedback" required>
+                                    <div id="validationServer04Feedback" class="invalid-feedback">
+                                        Debe ser un número
+                                    </div>
                                 </div>
 
                             </div>
 
+                            <!--TODO: como se maneja el subir imagenes
                             <div class="form-group row">
-                                <!--TODO: como se maneja el subir imagenes-->
+
                                 <label for="Imagen de la bodega" class="col-md-4 col-form-label text-md-right">Imagen del Producto</label>
                                 <div class="col-md-6">
                                     <form enctype="multipart/form-data" action="uploader.php" method="POST">
@@ -104,23 +125,21 @@
                                     </form>
                                     <img src="frutas.svg" height="60px"/>
                                 </div>
-                            </div>
+                            </div> -->
 
+                            <!-- BOTONES CONFIRMAR Y CANCELAR <-->
                             <div class="col-md-6 offset-md-4">
-                                <a href="<%=request.getContextPath()%>/BodegaServlet?action=lista">
-                                    <button type="button" class="btn btn-outline-secondary">
-                                        Confirmar
-                                    </button>
+                                <a>
+                                    <input type="submit" value="Confirmar" class="btn btn-outline-secondary">
                                 </a>
-                                <a href="<%=request.getContextPath()%>/BodegaServlet?action=lista">
-                                    <button class="btn btn-outline-danger">
-                                        Cancelar
-                                    </button>
+                                <a class="btn btn-outline-danger" href="<%=request.getContextPath()%>/BodegaServlet">
+                                    Cancelar
                                 </a>
                             </div>
 
                     </div>
                 </div>
+
                 </form>
             </div>
         </div>
