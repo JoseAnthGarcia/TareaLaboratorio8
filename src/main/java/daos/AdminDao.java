@@ -185,7 +185,7 @@ public class AdminDao {
     public boolean buscarRuc(String ruc){
         boolean encontrado = false;
 
-        String sql = "SELECT * FROM usuario WHERE ruc = ?";
+        String sql = "SELECT * FROM bodega WHERE ruc = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {

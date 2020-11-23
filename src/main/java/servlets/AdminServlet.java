@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @WebServlet(name = "AdminServlet",urlPatterns = {"/AdminServlet"} )
 public class AdminServlet extends HttpServlet {
@@ -52,11 +54,24 @@ public class AdminServlet extends HttpServlet {
     }
     public boolean validarCorreo(String input){
         boolean resultado = true;
-        if(input.contains("@")){
-            System.out.println("contiene arroba");
+
+        // Patrón para validar el email
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+
+        // El email a validar
+        String email = input;
+
+        Matcher mather = pattern.matcher(email);
+
+        if (mather.find() == false) {
+            resultado = false;
         }
+
         return resultado;
     }
+
     public boolean validarNumero(String input){
         boolean resultado = true;
         try{

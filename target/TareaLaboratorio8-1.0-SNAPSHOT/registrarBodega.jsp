@@ -105,7 +105,9 @@
                         <a href="<%=request.getContextPath()%>/AdminServlet?accion=registrar" class="navbar-brand d-flex align-items-center">
                             <strong>Registrar bodega</strong>
                         </a>
-                        <a href="<%=request.getContextPath()%>/AdminServlet" class="navbar-brand d-flex align-items-center">
+                        <a onclick="return confirm('¿Estas seguro que deseas salir del registro de la bodega? ' +
+                         '')"
+                                href="<%=request.getContextPath()%>/AdminServlet" class="navbar-brand d-flex align-items-center">
                             <strong>Lista de bodegas</strong>
                         </a>
                         <a href="#" ><img src="imagenes/sigout.png" height="30px"/></a>
@@ -149,7 +151,7 @@
                                        name="nombreBodega"
                                        id="nombreBodega" <%=request.getParameter("nombreBodega")==null?"":"value='"+request.getParameter("nombreBodega")+"'"%>>
                                 <div id="inputNameFeedback" class="invalid-feedback">
-                                    Ingrese datos, por favor.
+                                    El nombre ingresado no es válido.
                                 </div>
                             </div>
                         </div>
@@ -161,7 +163,7 @@
                                        name="direccion"
                                        id="direccion" <%=request.getParameter("direccion")==null?"":"value='"+request.getParameter("direccion")+"'"%>>
                                 <div id="inputdireccionFeedback" class="invalid-feedback">
-                                    Ingrese datos, por favor.
+                                    La dirección ingresada no es válida.
                                 </div>
                             </div>
                         </div>
@@ -173,7 +175,7 @@
                                        name="ruc"
                                        id="inputruc" <%=request.getParameter("ruc")==null?"":"value='"+request.getParameter("ruc")+"'"%>>
                                 <div id="inputrucFeedback" class="invalid-feedback">
-                                    Ingrese datos validos, por favor.
+                                    El RUC ingresado no es válido.
                                 </div>
                             </div>
                         </div>
@@ -185,7 +187,7 @@
                                        name="correo"
                                        id="inputEmail" <%=request.getParameter("correo")==null?"":"value='"+request.getParameter("correo")+"'"%>>
                                 <div id="inputEmailFeedback" class="invalid-feedback">
-                                    Ingrese datos, por favor.
+                                    El correo ingresado no es válido.
                                 </div>
                             </div>
                         </div>
@@ -208,14 +210,14 @@
                                         <% } %>
                                     </select>
                                     <div id="idDistritoFeedback" class="invalid-feedback">
-                                        Seleccione una opcion valida, por favor.
+                                        Seleccione una opcion válida, por favor.
                                     </div>
                             </div>
 
 
                         </div>
                         <a  onclick="return confirm('¿Estas seguro que deseas salir del registro de la bodega? ' +
-                         'Todos los datos ingresados serán borrados')"
+                         '')"
                             href="<%=request.getContextPath()%>/AdminServlet" class="btn btn-danger">Regresar</a>
                         <button type="submit" class="btn btn-success pull-right">Registrar</button>
                     </form>
