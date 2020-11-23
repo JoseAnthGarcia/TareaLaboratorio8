@@ -1,3 +1,5 @@
+package servlets;
+
 import beans.BodegaBean;
 import beans.DistritoBean;
 import daos.AdminDao;
