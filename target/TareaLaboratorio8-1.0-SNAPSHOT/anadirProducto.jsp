@@ -66,7 +66,7 @@
             </a>
             <a>
                 <div class="card"><a href="login.html" >
-                    <img src="signout.png" height="30px"/>
+                    <img src="imagenes/sigout.png" height="30px"/>
                 </a>
                 </div>
             </a>

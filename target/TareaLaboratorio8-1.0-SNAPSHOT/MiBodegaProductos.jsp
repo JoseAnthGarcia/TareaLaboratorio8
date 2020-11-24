@@ -36,6 +36,16 @@
         .btn:hover {
             background-color: #767676;
         }
+
+        /* Paginacion */
+        .page-item .page-link {
+            color: #343a40;
+            border-color: #343a40;
+        }
+        .page-item.active .page-link {
+            border-color: #343a40;
+            background-color: #343a40;
+        }
     </style>
 
     <title>Productos</title>
