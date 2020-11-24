@@ -20,7 +20,7 @@ public class BodegaDao extends BaseDao{
 
         // TODO: idBodega, nombreFoto, rutaFoto se ha hardcodeado
         String sql = "insert into producto (nombreFoto,rutaFoto,nombreProducto,descripcion,stock,precioUnitario,idBodega) values (\n" +
-                "'foto random', '/fotoRandom', ?, ?, ?, ?, 1);";  // numero de paginas
+                "'foto random', '/fotoRandom', ?, ?, ?, ?, 30);";  // numero de paginas
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -48,7 +48,7 @@ public class BodegaDao extends BaseDao{
         String url = "jdbc:mysql://localhost:3306/mydb?serverTimezone=America/Lima";
 
         // TODO: idBodega se ha hardcodeado
-        String sql = "select ceil(count(*)/5) from producto where idBodega=1 AND estado='Existente'";  // numero de paginas
+        String sql = "select ceil(count(*)/5) from producto where idBodega=30 AND estado='Existente'";  // numero de paginas
 
         int cantPag = 0;
         try (Connection conn = DriverManager.getConnection(url, "root", "root");
@@ -70,7 +70,7 @@ public class BodegaDao extends BaseDao{
         String url = "jdbc:mysql://localhost:3306/mydb?serverTimezone=America/Lima";
 
         int limit = (pagina-1)*5;
-        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=1 AND estado='Existente' limit ?,5;";
+        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=30 AND estado='Existente' limit ?,5;";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -101,7 +101,7 @@ public class BodegaDao extends BaseDao{
 
         boolean exisProduct = false;
 
-        String sql = "SELECT * FROM producto WHERE idProducto = ?";
+        String sql = "SELECT * FROM producto WHERE idProducto = ? AND idBodega=30";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
