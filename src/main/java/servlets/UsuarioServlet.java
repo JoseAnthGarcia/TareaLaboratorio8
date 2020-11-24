@@ -103,7 +103,7 @@ public class UsuarioServlet extends HttpServlet {
         ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
         /*Para editar*/
-        int usuarioId =2;
+        int usuarioId =26;
         UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
         request.setAttribute("usuario", bUsuario);
         ArrayList<DistritoBean> listaDistritos2 = usuarioDao.obtenerDistritos();
@@ -247,7 +247,7 @@ public class UsuarioServlet extends HttpServlet {
         String accion = request.getParameter("accion") == null ?
                 "nada" : request.getParameter("accion");
         UsuarioDao usuarioDao = new UsuarioDao();
-        int usuarioId=2;
+        int usuarioId=26;
 
         switch (accion) {
             case "nada":
