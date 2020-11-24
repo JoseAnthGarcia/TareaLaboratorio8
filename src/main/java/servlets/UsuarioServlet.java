@@ -229,9 +229,9 @@ public class UsuarioServlet extends HttpServlet {
                     UsuarioBean usuarioDopel = usuarioDao.obtenerUsuario(usuarioId);
                     //los hiddens no funcionan sin un busuario nuevo.....u.u
                     request.setAttribute("busuario",usuarioDopel);
-                    //request.setAttribute("contraseniaB",contraseniaBB);
-                    //request.setAttribute("contrasenia2B",contrasenia2BB);
-                    //request.setAttribute("contrasenia2A",contrasenia2A);
+                    request.setAttribute("contraseniaB",!contraseniaBB.equals(""));
+                    request.setAttribute("contrasenia2B",!contrasenia2BB.equals(""));
+                    request.setAttribute("contrasenia2A",!contrasenia2A.equals(""));
                     request.setAttribute("contIguales",contIguales);
                     request.setAttribute("contAntIguales",contAntIguales);
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("cambioContrasenia.jsp");
