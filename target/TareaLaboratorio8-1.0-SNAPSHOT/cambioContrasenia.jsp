@@ -98,7 +98,7 @@
                                aria-describedby="inputPasswordFeedback"
                                name="contrasenia2A" id="inputPassword" <%=request.getParameter("contrasenia2A")==null?"":"value='"+request.getParameter("contrasenia2A")+"'"%> >
                         <div id="inputPasswordFeedback" class="invalid-feedback">
-                            Ingrese una contraseña valida, por favor.
+                            Ingrese una contraseña válida
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                                aria-describedby="inputPasswordBFeedback"
                                name="contraseniaB" id="inputPassword1" <%=request.getParameter("contraseniaB")==null?"":"value='"+request.getParameter("contraseniaB")+"'"%> >
                         <div id="inputPasswordBFeedback" class="invalid-feedback">
-                            Ingrese una contraseña valida, por favor.
+                            Ingrese una contraseña válida
                         </div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                                aria-describedby="inputPassword2BFeedback"
                                name="contrasenia2B" id="inputPassword2" <%=request.getParameter("contrasenia2B")==null?"":"value='"+request.getParameter("contrasenia2B")+"'"%> >
                         <div id="inputPassword2BFeedback" class="invalid-feedback">
-                            Ingrese una contraseña valida, por favor.
+                            Ingrese una contraseña válida
                         </div>
                     </div>
                 </div>
