@@ -18,21 +18,56 @@ import java.util.regex.Pattern;
 @WebServlet(name = "AdminServlet",urlPatterns = {"/AdminServlet"} )
 public class AdminServlet extends HttpServlet {
 
-    public boolean validarRuc(String ruc){
-        boolean resultado = true;
-        try{
-            Long ruc_number = Long.parseLong(ruc);
-            //se debe agregar dos ceros porque el ruc tiene 11 digitos
-            if(ruc_number<0 || ruc_number>1000000000){
-                resultado = false;
+    public static boolean isRUCValid(long ruc){
+        return isRUCValid(String.valueOf(ruc));
+    }
+
+    public static boolean isRUCValid(String ruc){
+        if (ruc == null) {
+            return false;
+        }
+
+        final int[] multipliers = {5,4,3,2,7,6,5,4,3,2};
+        final String[] prefixes = getRucPrefixes();
+        final int length = multipliers.length + 1;
+
+        if(ruc.length() != length){
+            return false;
+        }
+
+        boolean isPrefixOk = false;
+
+        for (String prefix : prefixes){
+            if(ruc.substring(0,2).equals(prefix)){
+                isPrefixOk = true;
+                break;
             }
-        } catch (NumberFormatException e) {
-            resultado = false;
         }
-        if(ruc.equalsIgnoreCase("")){
-            resultado = false;
+
+        if(!isPrefixOk){
+            return false;
         }
-        return resultado;
+
+        int sum = 0;
+
+        for(int i = 0; i < multipliers.length; i++){
+            final char section = ruc.charAt(i);
+
+            if(!Character.isDigit(section)){
+                return false;
+            }
+
+            sum += Character.getNumericValue(ruc.charAt(i)) * multipliers[i];
+        }
+
+        final int rest = sum % length;
+        final String response = String.valueOf(length - rest);
+
+        return response.charAt(response.length() - 1) == ruc.charAt(ruc.length() - 1);
+    }
+
+    public static String[] getRucPrefixes(){
+        return new String[]{"10", "15", "17", "20"};
     }
 
     public boolean validarString(String input){
@@ -95,7 +130,7 @@ public class AdminServlet extends HttpServlet {
         String correo = request.getParameter("correo");
         String idDistrito = request.getParameter("idDistrito");
 
-        boolean rucB = validarRuc(ruc);
+        boolean rucB = isRUCValid(ruc);
         boolean direccionB = validarString(direccion);
         boolean nombreBodegaB = validarString(nombreBodega);
         boolean distritoB = validarNumero(String.valueOf(idDistrito));
