@@ -164,12 +164,15 @@
                             <%=((request.getParameter("idDistrito")).equals("0") || distritoSelected==false)?"is-invalid":""%>"
                                         aria-describedby="idDistritoFeedback" id="selectDistrict" name="idDistrito">
                                     <% } %>
-                                    <option selected value="0">Elija un distrito</option>
+                                    <option  value="0">Elija un distrito</option>
+                                    <option selected value="<%=usuario.getDistrito().getId()%>"><%=usuario.getDistrito().getNombre()%></option>
                                     <%for (DistritoBean distrito : listaDistritos2) {%>
+                                    <%if(distrito.getId()== usuario.getDistrito().getId()){continue;}else{%>
                                     <option value="<%=distrito.getId()%>"
                                             <%=(request.getParameter("idDistrito")!=null &&
                                                     request.getParameter("idDistrito").equals(String.valueOf(distrito.getId())))?"selected":""%>><%=distrito.getNombre()%>
                                     </option>
+                                    <%}%>
                                     <% } %>
                                 </select>
                                 <div id="idDistritoFeedback" class="invalid-feedback">
