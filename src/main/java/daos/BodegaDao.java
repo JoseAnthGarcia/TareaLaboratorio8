@@ -124,7 +124,7 @@ public class BodegaDao extends BaseDao{
 
         ProductoBean producto = null;
 
-        String sql = "SELECT nombreProducto, descripcion, stock, precioUnitario FROM producto WHERE idProducto = ?";
+        String sql = "SELECT idProducto, nombreProducto, descripcion, stock, precioUnitario FROM producto WHERE idProducto = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -134,6 +134,7 @@ public class BodegaDao extends BaseDao{
             try(ResultSet rs = pstmt.executeQuery();){
                 if(rs.next()){
                     producto = new ProductoBean();
+                    producto.setId(rs.getInt("idProducto"));
                     producto.setNombreProducto(rs.getString("nombreProducto"));
                     producto.setDescripcion(rs.getString("descripcion"));
                     producto.setStock(rs.getInt("stock"));
@@ -193,4 +194,23 @@ public class BodegaDao extends BaseDao{
 
 
     //-------------------------------Flujo bodega---------------------------
+
+    public void actualizarProducto( int idProducto, String descripcion, int stock, BigDecimal precioUnitario) {
+
+        String sql = "UPDATE producto SET descripcion = ?, stock = ?, precioUnitario = ? WHERE idProducto = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setString(1, descripcion);
+            pstmt.setInt(2, stock);
+            pstmt.setBigDecimal(3, precioUnitario);
+            pstmt.setInt(4, idProducto);
+
+            pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
 }
