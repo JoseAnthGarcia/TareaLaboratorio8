@@ -205,7 +205,7 @@ public class BodegaServlet extends HttpServlet {
 
                 int idProductoInt2 = -1;
                 try {
-                    idProductoInt = Integer.parseInt(idProductoString);
+                    idProductoInt2 = Integer.parseInt(idProductoString);
                 } catch (NumberFormatException e) {
                     idProductoNumber = false;
                 }
