@@ -1,3 +1,4 @@
+<%@ page import="beans.ProductoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="producto" scope="request" type="beans.ProductoBean" />
 
@@ -9,8 +10,8 @@
     boolean validPrecioUnitario = request.getAttribute("validPrecioUnitario") != null ?
             ((boolean) request.getAttribute("validPrecioUnitario")) : true;
 
-    boolean validNombreProducto = request.getAttribute("validNombreProducto") != null ?
-            ((boolean) request.getAttribute("validNombreProducto")) : true;
+    boolean validDescr = request.getAttribute("validDescr") != null ?
+            ((boolean) request.getAttribute("validDescr")) : true;
 %>
 
 <html>
@@ -82,7 +83,12 @@
                             <div class="form-group row">
                                 <label for="Descripcion" class="col-md-4 col-form-label text-md-right">Descripción</label>
                                 <div class="col-md-6">
-                                    <input  type="text" id="Descripcion" class="form-control" name="descripcion" value="<%=producto.getDescripcion()%>">
+                                    <input  type="text" id="Descripcion" class="form-control <%=validDescr?"":"is-invalid"%>"
+                                            name="descripcion"
+                                            value="<%=producto.getDescripcion()%>">
+                                    <div class="invalid-feedback">
+                                        Ingrese una descripcion valida, por favor.
+                                    </div>
                                 </div>
                             </div>
 
