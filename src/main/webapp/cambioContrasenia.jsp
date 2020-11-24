@@ -89,7 +89,7 @@
                 <input type="hidden" class="form-control" name="apellidos" id="apellidos" value="<%=busuario.getApellido()%>">
                 <input type="hidden" class="form-control" name="idDistrito" id="idDistrito" value="<%=busuario.getDistrito()%>">
                 <!-- Fin de codigo -->
-                <input type="hidden" class="form-control" name="contrasenia" id="contrasenia" value="<%=busuario.getContrasenia()%>">
+                <input type="hidden" class="form-control" name="contrasenia" id="contrasenia" value="la contraseña no esta aquí">
 
                 <div class="form-group row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña Actual:</label>
