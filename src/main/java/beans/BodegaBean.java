@@ -2,7 +2,7 @@ package beans;
 
 public class BodegaBean {
 
-    private int rucBodega;
+    private long rucBodega;
     private String nombreBodega;
     private String estadoBodega;
     private String direccionBodega;
@@ -11,11 +11,11 @@ public class BodegaBean {
     private int idAdministrador;
     private String contraseniaBodega;
 
-    public int getRucBodega() {
+    public long getRucBodega() {
         return rucBodega;
     }
 
-    public void setRucBodega(int rucBodega) {
+    public void setRucBodega(long rucBodega) {
         this.rucBodega = rucBodega;
     }
 

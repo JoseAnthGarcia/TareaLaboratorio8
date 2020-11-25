@@ -50,7 +50,7 @@ public class AdminDao {
             try(ResultSet rs = pstmt.executeQuery();){
                 while(rs.next()){
                     BodegaBean bodega = new BodegaBean();
-                    bodega.setRucBodega(rs.getInt("ruc"));
+                    bodega.setRucBodega(rs.getLong("ruc"));
                     bodega.setNombreBodega(rs.getString("nombreBodega"));
                     bodega.setEstadoBodega(rs.getString("estado"));
 
