@@ -206,7 +206,8 @@ public class UsuarioServlet extends HttpServlet {
 
             case "validarContra":
                 //obtener usuarioID , o antes ya lo tengo para usar
-                String contraseniaA = request.getParameter("contrasenia");
+                //String contraseniaA = request.getParameter("contrasenia");
+                String contraseniaA = bUsuario.getContrasenia();
                 String contrasenia2A = request.getParameter("contrasenia2A");
                 String contraseniaBB = request.getParameter("contraseniaB");
                 String contrasenia2BB = request.getParameter("contrasenia2B");
