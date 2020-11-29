@@ -296,6 +296,10 @@ public class UsuarioServlet extends HttpServlet {
                 requestDispatcher = request.getRequestDispatcher("cambioContrasenia.jsp");
                 requestDispatcher.forward(request,response);
                 break;
+            case "realizarPedido":
+                requestDispatcher = request.getRequestDispatcher("/cliente/realizarUnPedido.jsp");
+                requestDispatcher.forward(request, response);
+                break;
 
         }
     }
