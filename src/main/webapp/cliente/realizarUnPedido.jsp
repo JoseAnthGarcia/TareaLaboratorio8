@@ -46,27 +46,21 @@
         </div>
 
     </div>
-
+    <form method="post" action="<%=request.getContextPath()%>/UsuarioServlet?accion=buscar">
         <div class="form-group row">
             <div class="col-10">
-                <input class="form-control" type="text" placeholder="Buscar empleado"
+                <input class="form-control" type="text" placeholder="Buscar producto"
                        name="textoBuscar"/>
             </div>
             <div class="col-2">
                 <a class="btn btn-danger"
-                   href="<%= request.getContextPath()%>/EmployeeServlet">Limpiar</a>
+                   href="<%= request.getContextPath()%>/UsuarioServlet?accion=realizarPedido">Limpiar</a>
             </div>
         </div>
+    </form>
 
 
-    <div class="row">
-        <form>
-            <div class="form-group">
-                <input type="text" class="form-control" id="formGroupExampleInput"
-                       placeholder="Example input placeholder">
-            </div>
-        </form>
-    </div>
+
 
     <div class="row">
         <%//Listar productos de cierta bodega%>
