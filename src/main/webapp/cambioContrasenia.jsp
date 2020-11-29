@@ -89,7 +89,7 @@
                 <input type="hidden" class="form-control" name="apellidos" id="apellidos" value="<%=busuario.getApellido()%>">
                 <input type="hidden" class="form-control" name="idDistrito" id="idDistrito" value="<%=busuario.getDistrito()%>">
                 <!-- Fin de codigo -->
-                <input type="hidden" class="form-control" name="contrasenia" id="contrasenia" value="<%=busuario.getContrasenia()%>">
+                <input type="hidden" class="form-control" name="contrasenia" id="contrasenia" value="la contraseña no esta aquí">
 
                 <div class="form-group row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña Actual:</label>
@@ -98,7 +98,7 @@
                                aria-describedby="inputPasswordFeedback"
                                name="contrasenia2A" id="inputPassword" <%=request.getParameter("contrasenia2A")==null?"":"value='"+request.getParameter("contrasenia2A")+"'"%> required>
                         <div id="inputPasswordFeedback" class="invalid-feedback">
-                            Ingrese una contraseña valida, por favor.
+                            Ingrese una contraseña válida
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                                aria-describedby="inputPasswordBFeedback"
                                name="contraseniaB" id="inputPassword1" <%=request.getParameter("contraseniaB")==null?"":"value='"+request.getParameter("contraseniaB")+"'"%> required>
                         <div id="inputPasswordBFeedback" class="invalid-feedback">
-                            Ingrese una contraseña valida, por favor.
+                            Ingrese una contraseña válida
                         </div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                                aria-describedby="inputPassword2BFeedback"
                                name="contrasenia2B" id="inputPassword2" <%=request.getParameter("contrasenia2B")==null?"":"value='"+request.getParameter("contrasenia2B")+"'"%> required>
                         <div id="inputPassword2BFeedback" class="invalid-feedback">
-                            Ingrese una contraseña valida, por favor.
+                            Ingrese una contraseña válida
                         </div>
                     </div>
                 </div>

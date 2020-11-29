@@ -101,7 +101,7 @@ public class BodegaDao extends BaseDao{
 
         boolean exisProduct = false;
 
-        String sql = "SELECT * FROM producto WHERE idProducto = ?";
+        String sql = "SELECT * FROM producto WHERE idProducto = ? AND idBodega=30";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
