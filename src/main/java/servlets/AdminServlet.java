@@ -141,7 +141,6 @@ public class AdminServlet extends HttpServlet {
 
         switch (accion){
             case  "registrar":
-
                 if(rucB && direccionB && nombreBodegaB && correoB && distritoB){
 
                     int idDistritoInt = Integer.parseInt(idDistrito);
@@ -173,6 +172,33 @@ public class AdminServlet extends HttpServlet {
                     requestDispatcher.forward(request, response);
                 }
                 break;
+            case "definirContrasenia":
+
+                String contrasenia = request.getParameter("contrasenia");
+                String contrasenia2 = request.getParameter("contrasenia2");
+                boolean contraseniaB = validarString(contrasenia);
+                boolean contrasenia2B = validarString(contrasenia2);
+                if(contraseniaB && contrasenia2B ){
+
+                    boolean contIguales = false;
+                    if(contrasenia.equals(contrasenia2)) {
+                        contIguales = true;
+                    }
+
+                    if(contIguales){
+                        bodegaDao.registrarContrasenia(ruc,contrasenia);
+                        response.sendRedirect(request.getContextPath()+"/AdminServlet");
+                    }else{
+                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
+                        requestDispatcher.forward(request, response);
+                    }
+                }else{
+                    request.setAttribute("rucB",rucB);
+                    request.setAttribute("contraseniaB",correoB);
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
+                    requestDispatcher.forward(request, response);
+                }
+                break;
 
         }
     }
@@ -183,6 +209,7 @@ public class AdminServlet extends HttpServlet {
                 (String) request.getParameter("accion");
 
         AdminDao bodegaDao = new AdminDao();
+        BodegaBean bodegaBean= new BodegaBean();
 
 
         switch (accion){
@@ -221,6 +248,12 @@ public class AdminServlet extends HttpServlet {
                 boolean estado = Boolean.parseBoolean(request.getParameter("state"));
                 AdminDao.actualizarEstadoBodega(nombreBodega,estado);
                 response.sendRedirect("AdminServlet");
+                break;
+            case "definirContrasenia":
+                Long rucBodega= bodegaBean.getRucBodega();
+                request.setAttribute("rucBodega", rucBodega);
+                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
+                requestDispatcher2.forward(request,response);
                 break;
         }
 
