@@ -37,67 +37,66 @@
 <div class="container" style="margin-top: 65px; margin-left: 210px">
 
     <div class="row">
-
-        <div class="col-sm-6">
-            <div class="row">
-                <h1>Realiza un pedido</h1>
-                <h3>Bodega seleccionada: #####</h3>
-                <h5>Productos seleccionados:</h5>
-            </div>
+        <div class="col-sm-8">
+            <h1>Realiza un pedido</h1>
+            <h3>Bodega seleccionada: #####</h3>
         </div>
-
-        <div class="col-sm-6">
-            <div class="row mb-2">
-                <button class="btn btn-secondary" href="#">Cancelar y elegir otra bodega</button>
-            </div>
-
-            <div class="row">
-                <form>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input placeholder">
-                    </div>
-                </form>
-            </div>
-
-            <div class="row">
-                <%//Listar productos de cierta bodega%>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Producto</th>
-                        <th scope="col">Precio Unitario</th>
-                        <th scope="col"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>Imagen x</td>
-                        <td>nombre del producto</td>
-                        <td>precio</td>
-                    </tr>
-                    <tr>
-                        <td>Imagen x</td>
-                        <td>nombre del producto</td>
-                        <td>precio</td>
-                    </tr>
-                    <tr>
-                        <td>Imagen x</td>
-                        <td>nombre del producto</td>
-                        <td>precio</td>
-                    </tr>
-                    <tr>
-                        <td>Imagen x</td>
-                        <td>nombre del producto</td>
-                        <td>precio</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
+        <div class="col-sm-4">
+            <button class="btn btn-secondary" href="#">Cancelar y elegir otra bodega</button>
         </div>
 
     </div>
+
+
+    <div class="row">
+        <form>
+            <div class="form-group">
+                <input type="text" class="form-control" id="formGroupExampleInput"
+                       placeholder="Example input placeholder">
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <%//Listar productos de cierta bodega%>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Producto</th>
+                <th scope="col">Precio Unitario</th>
+                <th scope="col">
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Imagen x</td>
+                <td>nombre del producto</td>
+                <td>precio</td>
+                <td>
+                    <button class="btn btn-secondary" href="#">Seleccionar</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Imagen x</td>
+                <td>nombre del producto</td>
+                <td>precio</td>
+            </tr>
+            <tr>
+                <td>Imagen x</td>
+                <td>nombre del producto</td>
+                <td>precio</td>
+            </tr>
+            <tr>
+                <td>Imagen x</td>
+                <td>nombre del producto</td>
+                <td>precio</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 
 </div>
 

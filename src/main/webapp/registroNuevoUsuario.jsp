@@ -17,7 +17,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <jsp:include page="bootstrapRepository.jsp"/>
+    <jsp:include page="../bootstrapRepository.jsp"/>
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
@@ -71,7 +71,7 @@
             <a href="#" class="navbar-brand d-flex align-items-center">
                 <strong>MiMarca.com</strong>
             </a>
-            <a href="#"><img src="imagenes/sigout.png" height="30px"/></a>
+            <a href="#"><img src="../imagenes/sigout.png" height="30px"/></a>
 
         </div>
     </div>
