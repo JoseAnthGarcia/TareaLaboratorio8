@@ -4,7 +4,7 @@
 <jsp:useBean id="cantPag" scope="request" type="java.lang.Integer"/>
 <jsp:useBean id="paginaAct" scope="request" type="java.lang.Integer"/>
 <!DOCTYPE html>
-<jsp:useBean id="listaProductos" type="java.util.ArrayList<beans.ProductoBean>" scope="request"/>
+
 <html>
 <head>
     <jsp:include page="/bootstrapRepository.jsp"/>
