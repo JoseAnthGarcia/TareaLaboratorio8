@@ -175,20 +175,41 @@ public class UsuarioDao extends BaseDao{
     }
 
     //Parte de realizarUnPedido:
+    public int calcularCantPagQuery(String query, int cantPorPag){
 
-    public static ArrayList<ProductoBean> listarProductosBodega(int pagina, int idBodega) {
+        String sql = query;  // numero de paginas
+        int cantPag = 0;
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql);) {
+
+            while(rs.next()){
+                cantPag++;
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return (int)Math.ceil((double)cantPag/cantPorPag);
+    }
+
+
+    public static ArrayList<ProductoBean> listarProductosBodega(int idBodega, int pagina, int CantPorPag) {
 
         ArrayList<ProductoBean> listaProductos = new ArrayList<>();
 
         String url = "jdbc:mysql://localhost:3306/mydb?serverTimezone=America/Lima";
 
-        int limit = (pagina - 1) * 5;
-        String sql = "";
+        int limit = (pagina - 1) * CantPorPag;
+
+        String sql = "SELECT * FROM producto WHERE idBodega=?\n" +
+                "limit ?,?;";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
-            pstmt.setInt(1, limit);
+            pstmt.setInt(1,idBodega);
+            pstmt.setInt(2, limit);
+            pstmt.setInt(3,CantPorPag);
 
             try (ResultSet rs = pstmt.executeQuery();) {
                 while (rs.next()) {
@@ -197,8 +218,6 @@ public class UsuarioDao extends BaseDao{
                     producto.setNombreFoto(rs.getString(2));
                     producto.setRutaFoto(rs.getString(3));
                     producto.setNombreProducto(rs.getString(4));
-                    producto.setDescripcion(rs.getString(5));
-                    producto.setStock(rs.getInt(6));
                     producto.setPrecioProducto(rs.getBigDecimal(7));
                     listaProductos.add(producto);
                 }
