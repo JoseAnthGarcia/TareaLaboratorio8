@@ -47,9 +47,11 @@
 
     </div>
 
+
+    <div class="row">
         <div class="form-group row">
             <div class="col-10">
-                <input class="form-control" type="text" placeholder="Buscar empleado"
+                <input class="form-control" type="text" placeholder="Buscar producto"
                        name="textoBuscar"/>
             </div>
             <div class="col-2">
@@ -57,15 +59,6 @@
                    href="<%= request.getContextPath()%>/EmployeeServlet">Limpiar</a>
             </div>
         </div>
-
-
-    <div class="row">
-        <form>
-            <div class="form-group">
-                <input type="text" class="form-control" id="formGroupExampleInput"
-                       placeholder="Example input placeholder">
-            </div>
-        </form>
     </div>
 
     <div class="row">

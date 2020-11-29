@@ -49,12 +49,16 @@
 
 
     <div class="row">
-        <form>
-            <div class="form-group">
-                <input type="text" class="form-control" id="formGroupExampleInput"
-                       placeholder="Example input placeholder">
+        <div class="form-group row">
+            <div class="col-10">
+                <input class="form-control" type="text" placeholder="Buscar producto"
+                       name="textoBuscar"/>
             </div>
-        </form>
+            <div class="col-2">
+                <a class="btn btn-danger"
+                   href="<%= request.getContextPath()%>/EmployeeServlet">Limpiar</a>
+            </div>
+        </div>
     </div>
 
     <div class="row">
