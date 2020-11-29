@@ -47,6 +47,17 @@
 
     </div>
 
+        <div class="form-group row">
+            <div class="col-10">
+                <input class="form-control" type="text" placeholder="Buscar empleado"
+                       name="textoBuscar"/>
+            </div>
+            <div class="col-2">
+                <a class="btn btn-danger"
+                   href="<%= request.getContextPath()%>/EmployeeServlet">Limpiar</a>
+            </div>
+        </div>
+
 
     <div class="row">
         <form>
