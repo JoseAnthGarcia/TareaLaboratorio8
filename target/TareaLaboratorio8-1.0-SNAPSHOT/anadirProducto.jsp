@@ -104,7 +104,7 @@
                             <div class="form-group row">
                                 <label for="Descripcion" class="col-md-4 col-form-label text-md-right">Descripción</label>
                                 <div class="col-md-6">
-                                    <input  type="text" id="Descripcion" class="form-control" name="descripcion">
+                                    <textarea  type="text" id="Descripcion" class="form-control" name="descripcion">Ingrese una descripcion</textarea>
                                 </div>
                             </div>
 
@@ -116,7 +116,7 @@
                                            id="Stock"
                                            aria-describedby="validationServer03Feedback" required>
                                     <div id="validationServer03Feedback" class="invalid-feedback">
-                                        Debe ser un número
+                                        Debe ser un número válido
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
                                            id="Precio"
                                            aria-describedby="validationServer04Feedback" required>
                                     <div id="validationServer04Feedback" class="invalid-feedback">
-                                        Debe ser un número
+                                        Debe ser un número válido
                                     </div>
                                 </div>
 
