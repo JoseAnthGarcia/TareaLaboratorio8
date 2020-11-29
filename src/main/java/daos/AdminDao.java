@@ -135,6 +135,29 @@ public class AdminDao {
         }
     }
 
+    public void registrarContrasenia(String ruc,String contrasenia){
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        String sql = "UPDATE bodega SET contrasenia = ? WHERE ruc = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setString(1,contrasenia);
+            pstmt.setString(2,ruc);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
 
     public ArrayList<DistritoBean> obtenerDistritos(){
 
