@@ -297,6 +297,7 @@ public class UsuarioServlet extends HttpServlet {
                 requestDispatcher.forward(request,response);
                 break;
             case "realizarPedido":
+
                 requestDispatcher = request.getRequestDispatcher("/cliente/realizarUnPedido.jsp");
                 requestDispatcher.forward(request, response);
                 break;

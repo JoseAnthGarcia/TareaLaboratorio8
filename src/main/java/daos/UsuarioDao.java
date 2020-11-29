@@ -1,6 +1,7 @@
 package daos;
 
 import beans.DistritoBean;
+import beans.ProductoBean;
 import beans.UsuarioBean;
 
 import java.sql.*;
@@ -95,6 +96,7 @@ public class UsuarioDao extends BaseDao{
 
         return encontrado;
     }
+
     /*Para la parte de editar*/
     public UsuarioBean obtenerUsuario(int usuarioId){
 
@@ -134,6 +136,7 @@ public class UsuarioDao extends BaseDao{
 
         return usuarioBean;
     }
+
     public void actualizarUsuario(String nombres, String apellidos,
                                       int idDistrito, int idUsuario){
 
@@ -169,6 +172,42 @@ public class UsuarioDao extends BaseDao{
             throwables.printStackTrace();
         }
 
+    }
+
+    //Parte de realizarUnPedido:
+
+    public static ArrayList<ProductoBean> listarProductosBodega(int pagina, int idBodega) {
+
+        ArrayList<ProductoBean> listaProductos = new ArrayList<>();
+
+        String url = "jdbc:mysql://localhost:3306/mydb?serverTimezone=America/Lima";
+
+        int limit = (pagina - 1) * 5;
+        String sql = "";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setInt(1, limit);
+
+            try (ResultSet rs = pstmt.executeQuery();) {
+                while (rs.next()) {
+                    ProductoBean producto = new ProductoBean();
+                    producto.setId(rs.getInt(1));
+                    producto.setNombreFoto(rs.getString(2));
+                    producto.setRutaFoto(rs.getString(3));
+                    producto.setNombreProducto(rs.getString(4));
+                    producto.setDescripcion(rs.getString(5));
+                    producto.setStock(rs.getInt(6));
+                    producto.setPrecioProducto(rs.getBigDecimal(7));
+                    listaProductos.add(producto);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return listaProductos;
     }
 
 
