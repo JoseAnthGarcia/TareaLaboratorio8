@@ -1,5 +1,12 @@
+<%@ page import="beans.ProductoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:useBean id="listaProductos" type="java.util.ArrayList<beans.ProductoBean>" scope="request"/>
+
+<% int cantPag = request.getAttribute("cantPag") == null ? -1 : (int) request.getAttribute("cantPag");%>
+<% int paginaAct = request.getAttribute("paginaAct") == null ? -1 : (int) request.getAttribute("paginaAct");%>
+
 <!DOCTYPE html>
+
 <html>
 <head>
     <jsp:include page="/bootstrapRepository.jsp"/>
@@ -7,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <title>Bienvenido Bodega!</title>
+
 </head>
 <body>
 
@@ -47,15 +55,19 @@
 
     </div>
 
-
-    <div class="row">
-        <form>
-            <div class="form-group">
-                <input type="text" class="form-control" id="formGroupExampleInput"
-                       placeholder="Example input placeholder">
+    <form method="post" action="<%=request.getContextPath()%>/UsuarioServlet?accion=buscar">
+        <div class="form-group row">
+            <div class="col-10">
+                <input class="form-control" type="text" placeholder="Buscar empleado"
+                       name="textoBuscar"/>
             </div>
-        </form>
-    </div>
+            <div class="col-2">
+                <a class="btn btn-danger"
+                   href="<%= request.getContextPath()%>/UsuarioServlet?accion=realizarPedido">Limpiar</a>
+            </div>
+        </div>
+    </form>
+
 
     <div class="row">
         <%//Listar productos de cierta bodega%>
@@ -70,31 +82,70 @@
             </tr>
             </thead>
             <tbody>
+            <%for (ProductoBean producto : listaProductos) {%>
             <tr>
                 <td>Imagen x</td>
-                <td>nombre del producto</td>
-                <td>precio</td>
+                <td><%=producto.getNombreProducto()%>
+                </td>
+                <td><%=producto.getPrecioProducto()%>
+                </td>
                 <td>
                     <button class="btn btn-secondary" href="#">Seleccionar</button>
                 </td>
             </tr>
-            <tr>
-                <td>Imagen x</td>
-                <td>nombre del producto</td>
-                <td>precio</td>
-            </tr>
-            <tr>
-                <td>Imagen x</td>
-                <td>nombre del producto</td>
-                <td>precio</td>
-            </tr>
-            <tr>
-                <td>Imagen x</td>
-                <td>nombre del producto</td>
-                <td>precio</td>
-            </tr>
+            <%}%>
             </tbody>
         </table>
+    </div>
+
+    <div class="row">
+
+        <a href="#" class="btn btn-outline-danger">Volver</a>
+        <%if (cantPag != -1) {%>
+        <!-- paginacion -->
+        <nav aria-label="Page navigation example" class="mx-auto"> <!-- Recordar centro !! -->
+            <ul class="pagination justify-content-center">
+                <%if (paginaAct == 1) {%>
+                <li class="page-item disabled">
+                    <span class="page-link">Anterior</span>
+                </li>
+                <%} else {%>
+                <li class="page-item">
+                    <a class="page-link"
+                       href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido&pag=<%=paginaAct-1%>">Anterior</a>
+                </li>
+                <%}%>
+
+                <% for (int k = 1; k <= cantPag; k++) {
+                    if (k == paginaAct) {%>
+                <li class="page-item active">
+                          <span class="page-link"><%=k%><span class="sr-only">(current)</span>
+                          </span>
+                </li>
+                <% } else {%>
+                <li class="page-item"><a class="page-link"
+                                         href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido&pag=<%=k%>"><%=k%>
+                </a></li>
+                <% }
+                } %>
+
+
+                <%if (paginaAct == cantPag) {%>
+                <li class="page-item disabled">
+                    <span class="page-link">Siguiente</span>
+                </li>
+                <%} else {%>
+                <li class="page-item">
+                    <a class="page-link"
+                       href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido&pag=<%=paginaAct+1%>">Siguiente</a>
+                </li>
+                <%}%>
+
+            </ul>
+        </nav>
+        <%}%>
+        <a href="#" class="btn btn-outline-success">Realizar un pedido</a>
+
     </div>
 
 

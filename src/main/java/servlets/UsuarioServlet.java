@@ -1,5 +1,6 @@
 package servlets;
 import beans.DistritoBean;
+import beans.ProductoBean;
 import beans.UsuarioBean;
 import daos.UsuarioDao;
 
@@ -88,17 +89,16 @@ public class UsuarioServlet extends HttpServlet {
                 "nada" : request.getParameter("accion");
 
         UsuarioDao usuarioDao = new UsuarioDao();
-        String nombres = request.getParameter("nombres");
-        String apellidos = request.getParameter("apellidos");
-        String idDistrito = request.getParameter("idDistrito");
 
-        System.out.println(nombres);
-        System.out.println(apellidos);
-        System.out.println(idDistrito);
+        String nombres;
+        String apellidos;
+        String idDistrito;
 
-        boolean nombresB = validarString(nombres);
-        boolean apellidosB = validarString(apellidos);
-        boolean distritoBoolean = validarNumero(idDistrito);
+        boolean nombresB;
+        boolean apellidosB;
+        boolean distritoBoolean;
+
+
 
         ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
@@ -115,6 +115,14 @@ public class UsuarioServlet extends HttpServlet {
                 break;
 
             case "agregar":
+                nombres = request.getParameter("nombres");
+                apellidos = request.getParameter("apellidos");
+                idDistrito = request.getParameter("idDistrito");
+
+                nombresB = validarString(nombres);
+                apellidosB = validarString(apellidos);
+                distritoBoolean = validarNumero(idDistrito);
+
                 String dni = request.getParameter("dni");
                 String correo = request.getParameter("correo");
                 String contrasenia = request.getParameter("contrasenia");
@@ -146,6 +154,7 @@ public class UsuarioServlet extends HttpServlet {
 
                     if(distritoSelected && contIguales && !correoExis && idDistritoInt != 0){
                         usuarioDao.regitrarNuevoUsuario(nombres, apellidos, dni, correo, contrasenia, idDistritoInt);
+                        //FALTA ENVIAR CORREO
                         response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
                     }else{
                         request.setAttribute("contIguales", contIguales);
@@ -171,6 +180,14 @@ public class UsuarioServlet extends HttpServlet {
                 break;
 
             case "actualizar":
+                nombres = request.getParameter("nombres");
+                apellidos = request.getParameter("apellidos");
+                idDistrito = request.getParameter("idDistrito");
+
+                nombresB = validarString(nombres);
+                apellidosB = validarString(apellidos);
+                distritoBoolean = validarNumero(idDistrito);
+
                 String cambiar = request.getParameter("cambiar") == null ?
                         "nada" : request.getParameter("cambiar");
                 request.setAttribute("cambiar",cambiar);
@@ -239,6 +256,16 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher.forward(request,response);
                 }
                 break;
+            case "buscar":
+                int idBodega=30;
+
+                String textoBuscar = request.getParameter("textoBuscar");
+
+                request.setAttribute("listaProductos", usuarioDao.buscarProducto(idBodega,textoBuscar));
+                RequestDispatcher view = request.getRequestDispatcher("cliente/realizarUnPedido.jsp");
+                view.forward(request, response);
+                break;
+
         }
 
     }
@@ -297,9 +324,30 @@ public class UsuarioServlet extends HttpServlet {
                 requestDispatcher.forward(request,response);
                 break;
             case "realizarPedido":
-                //obtengo dicho producto
-                //mando a la vista(product selec)
-                //mandar todas los productos
+                int idBodega=30;
+                int cantPorPagina=4;
+                //calculamos paginas:
+                String query = "SELECT * FROM producto WHERE idBodega="+idBodega+";";
+                int cantPag = usuarioDao.calcularCantPagQuery(query, cantPorPagina);
+
+                String pag = request.getParameter("pag") == null ?
+                        "1" : request.getParameter("pag");
+                int paginaAct;
+                try{
+                    paginaAct = Integer.parseInt(pag); //try
+                    if(paginaAct>cantPag){
+                        paginaAct = 1;
+                    }
+                }catch(NumberFormatException e){
+                    paginaAct = 1;
+                }
+
+                ArrayList<ProductoBean> listaProductos = usuarioDao.listarProductosBodega(idBodega, paginaAct, cantPorPagina);
+
+                request.setAttribute("listaProductos",listaProductos);
+                request.setAttribute("cantPag", cantPag);
+                request.setAttribute("paginaAct",paginaAct);
+
                 requestDispatcher = request.getRequestDispatcher("/cliente/realizarUnPedido.jsp");
                 requestDispatcher.forward(request, response);
                 break;
