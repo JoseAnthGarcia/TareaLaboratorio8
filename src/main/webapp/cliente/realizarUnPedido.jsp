@@ -1,8 +1,10 @@
 <%@ page import="beans.ProductoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="listaProductos" type="java.util.ArrayList<beans.ProductoBean>" scope="request" />
-<jsp:useBean id="cantPag" scope="request" type="java.lang.Integer"/>
-<jsp:useBean id="paginaAct" scope="request" type="java.lang.Integer"/>
+<jsp:useBean id="listaProductos" type="java.util.ArrayList<beans.ProductoBean>" scope="request"/>
+
+<% int cantPag = request.getAttribute("cantPag") == null ? -1 : (int) request.getAttribute("cantPag");%>
+<% int paginaAct = request.getAttribute("paginaAct") == null ? -1 : (int) request.getAttribute("paginaAct");%>
+
 <!DOCTYPE html>
 
 <html>
@@ -80,11 +82,13 @@
             </tr>
             </thead>
             <tbody>
-            <%for(ProductoBean producto: listaProductos){%>
+            <%for (ProductoBean producto : listaProductos) {%>
             <tr>
                 <td>Imagen x</td>
-                <td><%=producto.getNombreProducto()%></td>
-                <td><%=producto.getPrecioProducto()%></td>
+                <td><%=producto.getNombreProducto()%>
+                </td>
+                <td><%=producto.getPrecioProducto()%>
+                </td>
                 <td>
                     <button class="btn btn-secondary" href="#">Seleccionar</button>
                 </td>
@@ -94,51 +98,57 @@
         </table>
     </div>
 
-    <!-- paginacion -->
     <div class="row">
 
         <a href="#" class="btn btn-outline-danger">Volver</a>
-
-        <nav aria-label="Page navigation example" class = "mx-auto"> <!-- Recordar centro !! -->
+        <%if (cantPag != -1) {%>
+        <!-- paginacion -->
+        <nav aria-label="Page navigation example" class="mx-auto"> <!-- Recordar centro !! -->
             <ul class="pagination justify-content-center">
-                <%if(paginaAct==1){%>
+                <%if (paginaAct == 1) {%>
                 <li class="page-item disabled">
                     <span class="page-link">Anterior</span>
                 </li>
-                <%}else{%>
+                <%} else {%>
                 <li class="page-item">
-                    <a class="page-link" href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido&pag=<%=paginaAct-1%>">Anterior</a>
+                    <a class="page-link"
+                       href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido&pag=<%=paginaAct-1%>">Anterior</a>
                 </li>
                 <%}%>
 
-                <% for(int k=1; k<=cantPag; k++){
-                    if(k==paginaAct){%>
+                <% for (int k = 1; k <= cantPag; k++) {
+                    if (k == paginaAct) {%>
                 <li class="page-item active">
                           <span class="page-link"><%=k%><span class="sr-only">(current)</span>
                           </span>
                 </li>
-                <%      }else{%>
-                <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido&pag=<%=k%>"><%=k%></a></li>
-                <%      }
+                <% } else {%>
+                <li class="page-item"><a class="page-link"
+                                         href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido&pag=<%=k%>"><%=k%>
+                </a></li>
+                <% }
                 } %>
 
 
-                <%if(paginaAct==cantPag){%>
+                <%if (paginaAct == cantPag) {%>
                 <li class="page-item disabled">
                     <span class="page-link">Siguiente</span>
                 </li>
-                <%}else{%>
+                <%} else {%>
                 <li class="page-item">
-                    <a class="page-link" href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido&pag=<%=paginaAct+1%>">Siguiente</a>
+                    <a class="page-link"
+                       href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido&pag=<%=paginaAct+1%>">Siguiente</a>
                 </li>
                 <%}%>
 
             </ul>
         </nav>
-
+        <%}%>
         <a href="#" class="btn btn-outline-success">Realizar un pedido</a>
 
     </div>
+
+
 </div>
 
 <footer class="page-footer font-small blue" style="margin-top: 20px">
