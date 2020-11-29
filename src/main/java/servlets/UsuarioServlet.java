@@ -1,5 +1,6 @@
 package servlets;
 import beans.DistritoBean;
+import beans.ProductoBean;
 import beans.UsuarioBean;
 import daos.UsuarioDao;
 
@@ -297,9 +298,30 @@ public class UsuarioServlet extends HttpServlet {
                 requestDispatcher.forward(request,response);
                 break;
             case "realizarPedido":
-                //obtengo dicho producto
-                //mando a la vista(product selec)
-                //mandar todas los productos
+                int idBodega=30;
+                int cantPorPagina=4;
+                //calculamos paginas:
+                String query = "SELECT * FROM producto WHERE idBodega="+idBodega+";";
+                int cantPag = usuarioDao.calcularCantPagQuery(query, cantPorPagina);
+
+                String pag = request.getParameter("pag") == null ?
+                        "1" : request.getParameter("pag");
+                int paginaAct;
+                try{
+                    paginaAct = Integer.parseInt(pag); //try
+                    if(paginaAct>cantPag){
+                        paginaAct = 1;
+                    }
+                }catch(NumberFormatException e){
+                    paginaAct = 1;
+                }
+
+                ArrayList<ProductoBean> listaProductos = usuarioDao.listarProductosBodega(idBodega, paginaAct, cantPorPagina);
+
+                request.setAttribute("listaProductos",listaProductos);
+                request.setAttribute("cantPag", cantPag);
+                request.setAttribute("paginaAct",paginaAct);
+
                 requestDispatcher = request.getRequestDispatcher("/cliente/realizarUnPedido.jsp");
                 requestDispatcher.forward(request, response);
                 break;
