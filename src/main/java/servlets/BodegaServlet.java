@@ -35,14 +35,19 @@ public class BodegaServlet extends HttpServlet {
                 int stock = 0;
                 BigDecimal precioUnitario = BigDecimal.valueOf(0);
 
-                // se valida ue el nombre no esté vacio
-                if (nombreProducto.isEmpty()){
+                // se valida ue el nombre no esté vacio o lleno de espacios
+                if (nombreProducto.trim().isEmpty()){
                     validNombreProducto = false;
                 }
 
                 // se valida el stock
                 try {
                     stock = Integer.parseInt(request.getParameter("stock"));
+
+                    // valida stock negativo
+                    if (stock < 0){
+                        validStock = false;
+                    }
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                     validStock = false;
@@ -51,6 +56,11 @@ public class BodegaServlet extends HttpServlet {
                 // se valida el precioUnitario
                 try {
                     precioUnitario = BigDecimal.valueOf(Double.parseDouble(request.getParameter("precioProducto")));
+
+                    // valida stock negativo
+                    if (precioUnitario.compareTo(BigDecimal.valueOf(0)) == -1){
+                        validPrecioUnitario = false;
+                    }
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                     validPrecioUnitario = false;
