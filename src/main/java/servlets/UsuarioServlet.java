@@ -239,6 +239,13 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher.forward(request,response);
                 }
                 break;
+            case "buscar":
+                String textoBuscar = request.getParameter("textoBuscar");
+                request.setAttribute("listaProductos", usuarioDao.buscarProducto(textoBuscar));
+                RequestDispatcher view = request.getRequestDispatcher("cliente/realizarUnPedido.jsp");
+                view.forward(request, response);
+                break;
+
         }
 
     }

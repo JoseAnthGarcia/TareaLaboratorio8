@@ -209,6 +209,40 @@ public class UsuarioDao extends BaseDao{
 
         return listaProductos;
     }
+    public ArrayList<ProductoBean> buscarProducto(String textoBuscar) {
+
+        ArrayList<ProductoBean> listaProductos = new ArrayList<>();
+        String sql = "select idProducto, nombreFoto, nombreProducto, descripcion, stock, precioUnitario, rutaFoto\n" +
+                "from producto p where idBodega =30 and lower(nombreProducto) like ? ;";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setString(1,"%"+textoBuscar+"%");
+
+
+            try (ResultSet rs = pstmt.executeQuery();) {
+
+                while (rs.next()) {
+                    ProductoBean productoBean = new ProductoBean();
+                    productoBean.setId(rs.getInt(1));
+                    productoBean.setNombreFoto(rs.getString(2));
+                    productoBean.setNombreProducto(rs.getString(3));
+                    productoBean.setDescripcion(rs.getString(4));
+                    productoBean.setStock(rs.getInt(5));
+                    productoBean.setPrecioProducto(rs.getBigDecimal(6));
+                    productoBean.setRutaFoto(rs.getString(7));
+
+
+                    listaProductos.add(productoBean);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return listaProductos;
+    }
 
 
 
