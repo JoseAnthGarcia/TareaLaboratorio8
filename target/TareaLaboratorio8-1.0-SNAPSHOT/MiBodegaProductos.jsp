@@ -121,6 +121,7 @@
         </form>
     </div>
 
+    <!-- LISTA DE PRODUCTOS -->
     <form>
         <div class="row">
             <table class="table table-hover">

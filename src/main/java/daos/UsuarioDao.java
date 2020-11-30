@@ -260,5 +260,9 @@ public class UsuarioDao extends BaseDao {
         return listaProductos;
     }
 
+    public void enviarCorreo(){
+
+    }
+
 
 }

@@ -4,6 +4,8 @@ import beans.ProductoBean;
 import beans.UsuarioBean;
 import daos.UsuarioDao;
 
+
+import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -155,7 +157,14 @@ public class UsuarioServlet extends HttpServlet {
                     if(distritoSelected && contIguales && !correoExis && idDistritoInt != 0){
                         usuarioDao.regitrarNuevoUsuario(nombres, apellidos, dni, correo, contrasenia, idDistritoInt);
                         //FALTA ENVIAR CORREO
-                        request.setAttribute("correo",correo);
+                        //request.setAttribute("correo",correo);
+/*
+                        Emails emails = new Emails();
+                        try {
+                            emails.enviarCorreo();
+                        } catch (MessagingException e) {
+                            System.out.println("Se capturo excepcion en envio de correo");
+                        }*/
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/envioCorreo.jsp");
                         //response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
                     }else{

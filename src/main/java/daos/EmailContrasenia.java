@@ -12,6 +12,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class EmailContrasenia {
+    /*
     private final Properties props;
 
     public EmailContrasenia() {
@@ -21,10 +22,6 @@ public class EmailContrasenia {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
-        //username: correo de origen
-        /*el correo de origen debe tener habilitado en el apartado seguridad
-        el acceso para aplicaciones poco seguras
-         */
         props.put("from", "pruebasdejalea@gmail.com");
         props.put("username", "pruebasdejalea@gmail.com");
         props.put("password", "Kotto9Contra12");
@@ -54,5 +51,5 @@ public class EmailContrasenia {
                 "y registre una contraseña ";
         //correo de destino, motivo, contenido del correo
         emails.enviar("a20181563@pucp.edu.pe", "Continua con el registro de la bodega!",contenido);
-    }
+    }*/
 }

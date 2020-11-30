@@ -1,15 +1,7 @@
 package daos;
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 public class CorreoRegistroUsuario {
+/*
     private final Properties props;
     public EmailContrasenia() {
         props = new Properties();
@@ -22,7 +14,7 @@ public class CorreoRegistroUsuario {
         /*el correo de origen debe tener habilitado en el apartado seguridad
         el acceso para aplicaciones poco seguras
          */
-        props.put("from", "pruebasdejalea@gmail.com");
+ /*       props.put("from", "pruebasdejalea@gmail.com");
         props.put("username", "pruebasdejalea@gmail.com");
         props.put("password", "Kotto9Contra12");
     }
@@ -50,5 +42,5 @@ public class CorreoRegistroUsuario {
                 "Para continuar con el registro acceda al link de confirmación. ";
         //correo de destino, motivo, contenido del correo
         emails.enviar("a20181563@pucp.edu.pe", "Continua con el registro de la bodega!",contenido);
-    }
+    }*/
 }
