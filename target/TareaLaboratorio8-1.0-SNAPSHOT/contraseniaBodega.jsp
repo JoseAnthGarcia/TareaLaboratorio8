@@ -1,13 +1,14 @@
 <%@ page import="beans.BodegaBean" %>
 <%@ page import="beans.DistritoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="rucBodega" scope="request" type="java.util.StringJoiner"/>
+<jsp:useBean id="idBodega" scope="request" type="java.lang.Integer"/>
 
 <%
     boolean contraseniaB = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
     boolean contrasenia2B = request.getAttribute("contrasenia2B") == null ? true : (Boolean) request.getAttribute("contrasenia2B");
     boolean contIguales = request.getAttribute("contIguales") == null ? true : (Boolean) request.getAttribute("contIguales");
 %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -50,13 +51,11 @@
         </style>
 
         <title>Definir contraseña</title>
-
     </head>
     <body>
 
         <!-- todo:  corregir el espaciado entre Mi Bodega, Pedidos y Productos -->
         <header>
-
             <div class="collapse bg-dark" id="navbarHeader">
                 <div class="container">
 
@@ -64,13 +63,10 @@
             </div>
             <div class="navbar navbar-dark bg-dark box-shadow">
                 <div class="container d-flex justify-content-between">
-                    <div class="container d-flex justify-content-between">
-                        <a href="#" class="navbar-brand d-flex align-items-center">
-                            <strong>MiMarca.com</strong>
-                        </a>
-
-                        <a href="#" ><img src="imagenes/sigout.png" height="30px"/></a>
-                    </div>
+                    <a href="#" class="navbar-brand d-flex align-items-center">
+                        <strong>MiMarca.com</strong>
+                    </a>
+                    <a href="#"><img src="/imagenes/sigout.png" height="30px"/></a>
 
                 </div>
             </div>
@@ -100,9 +96,8 @@
                 <div class="col-sm-3">
                 </div>
                 <div class="col-sm-6">
-                    <h1>Defina su contraseña</h1>
+                    <h1>Registro de contraseña</h1>
                     <form method="POST" action="<%=request.getContextPath()%>/AdminServlet?accion=definirContrasenia">
-
                         <div class="form-group row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña:</label>
                             <div class="col-sm-10">
@@ -125,20 +120,17 @@
                                 </div>
                             </div>
                         </div>
-                        <a  onclick="return confirm('¿Estas seguro que deseas salir del registro de la bodega? ' +
-                         '')"
-                            href="<%=request.getContextPath()%>/AdminServlet" class="btn btn-danger">Regresar</a>
-                        <button type="submit" class="btn btn-success pull-right">Registrar</button>
-                    </form>
-                </div>
-                <div class="col-sm-3">
-                    <%if(!contIguales){%>
-                    <div class="alert alert-danger" role="alert">
-                        Las contraseñas no coinciden!
-                    </div>
-                    <%}%>
-                </div>
+                <button type="submit" class="btn btn-success pull-right">Registrarse</button>
+                </form>
             </div>
+            <div class="col-sm-3">
+                <%if(!contIguales){%>
+                <div class="alert alert-danger" role="alert">
+                    Las contraseñas no coinciden!
+                </div>
+                <%}%>
+            </div>
+        </div>
         </div>
 
 

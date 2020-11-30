@@ -14,6 +14,13 @@
 
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+
+        .container-fluid{
+            padding: 7% 15% ;
+        }
+
+    </style>
 </head>
 <header>
     <div class="collapse bg-dark" id="navbarHeader">
@@ -39,7 +46,11 @@
     </div>
 </header>
 <body>
+<div class="container-fluid">
+    <h1>Registro exitoso</h1>
+    <p>Se ha enviado un mensaje de confirmación al correo <%=correo%>. Por favor, verifica tu cuenta.</p>
 
+</div>
 
 
 </body>
