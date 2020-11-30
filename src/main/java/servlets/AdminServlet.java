@@ -130,17 +130,16 @@ public class AdminServlet extends HttpServlet {
         String correo = request.getParameter("correo");
         String idDistrito = request.getParameter("idDistrito");
 
-        boolean rucB = isRUCValid(ruc);
-        boolean direccionB = validarString(direccion);
-        boolean nombreBodegaB = validarString(nombreBodega);
-        boolean distritoB = validarNumero(String.valueOf(idDistrito));
-        boolean correoB = validarCorreo(correo);
-
         ArrayList<DistritoBean> listaDistritos = bodegaDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
 
         switch (accion){
             case  "registrar":
+                boolean rucB = isRUCValid(ruc);
+                boolean direccionB = validarString(direccion);
+                boolean nombreBodegaB = validarString(nombreBodega);
+                boolean distritoB = validarNumero(String.valueOf(idDistrito));
+                boolean correoB = validarCorreo(correo);
 
                 if(rucB && direccionB && nombreBodegaB && correoB && distritoB){
 
