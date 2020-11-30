@@ -1,6 +1,8 @@
 package daos;
 
 //es necesario usar la libreria jakarta.mail.java
+import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
+
 import java.util.Properties;
 
 import javax.mail.Message;
