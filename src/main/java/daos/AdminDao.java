@@ -135,7 +135,7 @@ public class AdminDao {
         }
     }
 
-    public void registrarContrasenia(String ruc,String contrasenia){
+    public void registrarContrasenia(int idBodega,String contrasenia){
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -149,7 +149,7 @@ public class AdminDao {
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
             pstmt.setString(1,contrasenia);
-            pstmt.setString(2,ruc);
+            pstmt.setInt(2,idBodega);
 
             pstmt.executeUpdate();
 

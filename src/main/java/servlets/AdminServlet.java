@@ -124,12 +124,17 @@ public class AdminServlet extends HttpServlet {
                 (String) request.getParameter("accion");
         AdminDao bodegaDao = new AdminDao();
 
+        String idBodega = request.getParameter("idBodega");
         String ruc = request.getParameter("ruc");
         String direccion = request.getParameter("direccion");
         String nombreBodega = request.getParameter("nombreBodega");
         String correo = request.getParameter("correo");
         String idDistrito = request.getParameter("idDistrito");
+        String contrasenia = request.getParameter("contrasenia");
+        String contrasenia2 = request.getParameter("contrasenia2");
 
+        boolean contraseniaB = validarString(contrasenia);
+        boolean contrasenia2B = validarString(contrasenia2);
         boolean rucB = isRUCValid(ruc);
         boolean direccionB = validarString(direccion);
         boolean nombreBodegaB = validarString(nombreBodega);
@@ -174,27 +179,19 @@ public class AdminServlet extends HttpServlet {
                 break;
             case "definirContrasenia":
 
-                String contrasenia = request.getParameter("contrasenia");
-                String contrasenia2 = request.getParameter("contrasenia2");
-                boolean contraseniaB = validarString(contrasenia);
-                boolean contrasenia2B = validarString(contrasenia2);
                 if(contraseniaB && contrasenia2B ){
-
                     boolean contIguales = false;
                     if(contrasenia.equals(contrasenia2)) {
                         contIguales = true;
                     }
-
                     if(contIguales){
-                        bodegaDao.registrarContrasenia(ruc,contrasenia);
+                        bodegaDao.registrarContrasenia(Integer.parseInt(idBodega),contrasenia);
                         response.sendRedirect(request.getContextPath()+"/AdminServlet");
                     }else{
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
                         requestDispatcher.forward(request, response);
                     }
                 }else{
-                    request.setAttribute("rucB",rucB);
-                    request.setAttribute("contraseniaB",correoB);
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
                     requestDispatcher.forward(request, response);
                 }
@@ -250,8 +247,8 @@ public class AdminServlet extends HttpServlet {
                 response.sendRedirect("AdminServlet");
                 break;
             case "definirContrasenia":
-                Long rucBodega= bodegaBean.getRucBodega();
-                request.setAttribute("rucBodega", rucBodega);
+                int idBodega= 42;
+                request.setAttribute("idBodega", idBodega);
                 RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
                 requestDispatcher2.forward(request,response);
                 break;

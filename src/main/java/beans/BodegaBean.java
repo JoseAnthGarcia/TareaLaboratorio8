@@ -2,6 +2,7 @@ package beans;
 
 public class BodegaBean {
 
+    private  int idBodega;
     private long rucBodega;
     private String nombreBodega;
     private String estadoBodega;
@@ -74,5 +75,13 @@ public class BodegaBean {
 
     public void setContraseniaBodega(String contraseniaBodega) {
         this.contraseniaBodega = contraseniaBodega;
+    }
+
+    public int getIdBodega() {
+        return idBodega;
+    }
+
+    public void setIdBodega(int idBodega) {
+        this.idBodega = idBodega;
     }
 }
