@@ -120,20 +120,18 @@
                                 </div>
                             </div>
                         </div>
-                <button type="submit" class="btn btn-success pull-right">Registrarse</button>
-                </form>
-            </div>
-            <div class="col-sm-3">
-                <%if(!contIguales){%>
-                <div class="alert alert-danger" role="alert">
-                    Las contraseñas no coinciden!
+                        <button type="submit" class="btn btn-success pull-right">Registrar</button>
+                    </form>
                 </div>
-                <%}%>
+                <div class="col-sm-3">
+                    <%if(!contIguales){%>
+                    <div class="alert alert-danger" role="alert">
+                        Las contraseñas no coinciden!
+                    </div>
+                    <%}%>
+                </div>
             </div>
         </div>
-        </div>
-
-
         </div>
         <footer class="page-footer font-small blue" style="margin-top: 20px">
             <div class="footer-copyright text-center py-3">© 2020 Copyright:
