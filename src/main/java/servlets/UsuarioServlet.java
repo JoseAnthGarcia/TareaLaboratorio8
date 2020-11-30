@@ -157,8 +157,8 @@ public class UsuarioServlet extends HttpServlet {
                     if(distritoSelected && contIguales && !correoExis && idDistritoInt != 0){
                         usuarioDao.regitrarNuevoUsuario(nombres, apellidos, dni, correo, contrasenia, idDistritoInt);
                         //FALTA ENVIAR CORREO
-                        //request.setAttribute("correo",correo);
-
+                        //
+                        /*
                         Emails emails = new Emails();
                         String correoAenviar = "";
                         String asunto = "";
@@ -169,8 +169,10 @@ public class UsuarioServlet extends HttpServlet {
                         } catch (MessagingException e) {
                             System.out.println("Se capturo excepcion en envio de correo");
                         }*/
-
+                        request.setAttribute("correo",correo);
+                        request.setAttribute("nombres",nombres);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/envioCorreo.jsp");
+                        requestDispatcher.forward(request, response);
                         //response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
                     }else{
                         request.setAttribute("contIguales", contIguales);
