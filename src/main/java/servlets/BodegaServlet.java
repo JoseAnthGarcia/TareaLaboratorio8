@@ -142,7 +142,26 @@ public class BodegaServlet extends HttpServlet {
 
                 break;
 
+            case "buscar":
+                // para la barra de busqueda
+                // TODO: MANEJAR PAGINACION CON VARIOS PRODUCTOS
 
+
+                String textoBuscar = request.getParameter("textoBuscar");
+
+                int cantPag = BodegaDao.calcularCantPag(textoBuscar);
+                int paginaAct = 1; // primera vista en la pagina 1
+
+
+                request.setAttribute("cantPag", cantPag);
+                request.setAttribute("paginaAct", paginaAct);
+
+
+                request.setAttribute("listaProductoBodegas", BodegaDao.listarProductoBodega(paginaAct,textoBuscar)
+                        );
+                view = request.getRequestDispatcher("MiBodegaProductos.jsp");
+                view.forward(request, response);
+                break;
         }
 
     }

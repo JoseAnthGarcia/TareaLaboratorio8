@@ -109,6 +109,19 @@
         </div>
     </div>
 
+    <!-- BARRA DE BUSQUEDA -->
+    <div>
+        <form method="post" action="<%=request.getContextPath()%>/BodegaServlet?accion=buscar">
+            <div class="form-group row">
+                <div class="col-10">
+                    <input class="form-control" type="text" placeholder="Buscar producto"
+                           name="textoBuscar"/>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- LISTA DE PRODUCTOS -->
     <form>
         <div class="row">
             <table class="table table-hover">
