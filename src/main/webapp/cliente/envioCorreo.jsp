@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>Correo de confirmación</title>
-    <jsp:include page="bootstrapRepository.jsp"/>
+    <jsp:include page="/bootstrapRepository.jsp"/>
 
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

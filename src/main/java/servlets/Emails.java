@@ -42,33 +42,9 @@ public class Emails {
         System.out.println("Mensaje enviado!");
     }
 
-    public void enviarCorreo() throws MessagingException {
+    public void enviarCorreo(String correo, String subject, String Cont) throws MessagingException {
         Emails emails = new Emails();
-        String contenido="Examinando, en fin,\n" +
-                "\n" +
-                "sus encontradas piezas, su retrete,\n" +
-                "\n" +
-                "su desesperación, al terminar su día atroz, borrándolo...\n" +
-                "\n" +
-                "Comprendiendo\n" +
-                "\n" +
-                "que él sabe que le quiero,\n" +
-                "\n" +
-                "que le odio con afecto y me es, en suma, indiferente...\n" +
-                "\n" +
-                "Considerando sus documentos generales\n" +
-                "\n" +
-                "y mirando con lentes aquel certificado\n" +
-                "\n" +
-                "que prueba que nació muy pequeñito...\n" +
-                "\n" +
-                "le hago una seña,\n" +
-                "\n" +
-                "viene, y le doy un abrazo, emocionado.\n" +
-                "\n" +
-                "¡Qué más da! Emocionado... Emocionado...\n"+
-                "";
         //correo de destino, motivo, contenido del correo
-        emails.enviar("garcia.josea@pucp.edu.pe", "Hola! Soy un mensaje enviado desde Java!",contenido);
+        emails.enviar(correo, subject,Cont);
     }
 }

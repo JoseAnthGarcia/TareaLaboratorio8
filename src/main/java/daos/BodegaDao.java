@@ -75,7 +75,7 @@ public class BodegaDao extends BaseDao{
         }
 
         // TODO: idBodega se ha hardcodeado
-        String sql = "select * from producto where idBodega=1 and lower(nombreProducto) like ? and estado='Existente';";  // numero de paginas
+        String sql = "select * from producto where idBodega=30 and lower(nombreProducto) like ? and estado='Existente';";  // numero de paginas
 
         int cantPag = 0;
         try (Connection conn = getConnection();
@@ -136,7 +136,7 @@ public class BodegaDao extends BaseDao{
 
         // TODO: idBodega se ha hardcodeado
         int limit = (pagina-1)*5;
-        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=1 AND lower(nombreProducto) like ? AND estado='Existente' limit ?,5;";  // numero de paginas
+        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=30 AND lower(nombreProducto) like ? AND estado='Existente' limit ?,5;";  // numero de paginas
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
