@@ -4,6 +4,7 @@ import beans.BodegaBean;
 import beans.DistritoBean;
 import daos.AdminDao;
 
+import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -167,6 +168,20 @@ public class AdminServlet extends HttpServlet {
 
                     if(distritoSelected && !rucExis && idDistritoInt != 0){
                         bodegaDao.guardarBodega(ruc,direccion,nombreBodega,correo,idDistritoInt);
+
+                        Emails emails = new Emails();
+                        String correoAenviar = correo;
+                        String asunto = "REGISTRAR CONTRASEÑA";
+                        String contenido = "Se ha iniciado el registro de su bodega, para continuar con el " +
+                                "registro ingrese al siguiente link y establezca una contraseña:" +
+                                "http://localhost:8082/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia";
+
+                        try {
+                            emails.enviarCorreo(correoAenviar, asunto, contenido);
+                        } catch (MessagingException e) {
+                            System.out.println("Se capturo excepcion en envio de correo");
+                        }
+
                         response.sendRedirect(request.getContextPath()+"/AdminServlet");
                     }else{
                         request.setAttribute("rucExis", rucExis);
