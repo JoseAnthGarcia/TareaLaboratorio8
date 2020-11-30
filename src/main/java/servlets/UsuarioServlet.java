@@ -158,13 +158,18 @@ public class UsuarioServlet extends HttpServlet {
                         usuarioDao.regitrarNuevoUsuario(nombres, apellidos, dni, correo, contrasenia, idDistritoInt);
                         //FALTA ENVIAR CORREO
                         //request.setAttribute("correo",correo);
-/*
+
                         Emails emails = new Emails();
+                        String correoAenviar = "";
+                        String asunto = "";
+                        String contenido = "";
+                        /*
                         try {
-                            emails.enviarCorreo();
+                            emails.enviarCorreo(correoAenviar, asunto, contenido);
                         } catch (MessagingException e) {
                             System.out.println("Se capturo excepcion en envio de correo");
                         }*/
+
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/envioCorreo.jsp");
                         //response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
                     }else{
@@ -268,7 +273,7 @@ public class UsuarioServlet extends HttpServlet {
                 }
                 break;
             case "buscar":
-                int idBodega=1;
+                int idBodega=30;
 
                 String textoBuscar = request.getParameter("textoBuscar");
 
@@ -335,7 +340,7 @@ public class UsuarioServlet extends HttpServlet {
                 requestDispatcher.forward(request,response);
                 break;
             case "realizarPedido":
-                int idBodega=1;
+                int idBodega=30;
                 int cantPorPagina=4;
                 //calculamos paginas:
                 String query = "SELECT * FROM producto WHERE idBodega="+idBodega+";";
