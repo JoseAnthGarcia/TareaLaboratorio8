@@ -1,8 +1,6 @@
 package daos;
 
 //es necesario usar la libreria jakarta.mail.java
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
-
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -52,7 +50,8 @@ public class EmailContrasenia {
     public static void main(String[] args) throws MessagingException {
         EmailContrasenia emails = new EmailContrasenia();
         String contenido="Se ha registrado la bodega (nombre) con RUC ()." +
-                "Para continuar con el registro acceda al link y regsitre una contraseña ";
+                "Para continuar con el registro acceda al link http://localhost:8081/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia" +
+                "y registre una contraseña ";
         //correo de destino, motivo, contenido del correo
         emails.enviar("a20181563@pucp.edu.pe", "Continua con el registro de la bodega!",contenido);
     }
