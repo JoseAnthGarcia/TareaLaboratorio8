@@ -1,14 +1,12 @@
 <%@ page import="beans.BodegaBean" %>
 <%@ page import="beans.DistritoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <jsp:useBean id="idBodega" scope="request" type="java.lang.Integer"/>
 
 <%
-    boolean contraseniaB = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
-    boolean contrasenia2B = request.getAttribute("contrasenia2B") == null ? true : (Boolean) request.getAttribute("contrasenia2B");
     boolean contIguales = request.getAttribute("contIguales") == null ? true : (Boolean) request.getAttribute("contIguales");
 %>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -101,7 +99,7 @@
                         <div class="form-group row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña:</label>
                             <div class="col-sm-10">
-                                <input type="password" class="form-control <%=contraseniaB?"":"is-invalid"%>"
+                                <input type="password" class="form-control "
                                        aria-describedby="inputPasswordFeedback"
                                        name="contrasenia" id="inputPassword" <%=request.getParameter("contrasenia")==null?"":"value='"+request.getParameter("contrasenia")+"'"%>>
                                 <div id="inputPasswordFeedback" class="invalid-feedback">
@@ -112,7 +110,7 @@
                         <div class="form-group row">
                             <label for="inputPassword2" class="col-sm-2 col-form-label">Confirmar contraseña:</label>
                             <div class="col-sm-10">
-                                <input type="password" class="form-control <%=contrasenia2B?"":"is-invalid"%>"
+                                <input type="password" class="form-control "
                                        aria-describedby="inputPassword2Feedback"
                                        name="contrasenia2" id="inputPassword2" <%=request.getParameter("contrasenia2")==null?"":"value='"+request.getParameter("contrasenia2")+"'"%>>
                                 <div id="inputPassword2Feedback" class="invalid-feedback">
@@ -120,20 +118,18 @@
                                 </div>
                             </div>
                         </div>
-                <button type="submit" class="btn btn-success pull-right">Registrarse</button>
-                </form>
-            </div>
-            <div class="col-sm-3">
-                <%if(!contIguales){%>
-                <div class="alert alert-danger" role="alert">
-                    Las contraseñas no coinciden!
+                        <button type="submit" class="btn btn-success pull-right">Registrar</button>
+                    </form>
                 </div>
-                <%}%>
+                <div class="col-sm-3">
+                    <%if(!contIguales){%>
+                    <div class="alert alert-danger" role="alert">
+                        Las contraseñas no coinciden!
+                    </div>
+                    <%}%>
+                </div>
             </div>
         </div>
-        </div>
-
-
         </div>
         <footer class="page-footer font-small blue" style="margin-top: 20px">
             <div class="footer-copyright text-center py-3">© 2020 Copyright:

@@ -7,10 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%String correo = (String) request.getAttribute("correo");%>
+<%String nombres = (String) request.getAttribute("nombres");%>
 <html>
 <head>
     <title>Correo de confirmación</title>
-    <jsp:include page="bootstrapRepository.jsp"/>
+    <jsp:include page="/bootstrapRepository.jsp"/>
 
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -18,6 +19,9 @@
 
         .container-fluid{
             padding: 7% 15% ;
+        }
+        h1{
+            font-size: 4rem;
         }
 
     </style>
@@ -48,7 +52,7 @@
 <body>
 <div class="container-fluid">
     <h1>Registro exitoso</h1>
-    <p>Se ha enviado un mensaje de confirmación al correo <%=correo%>. Por favor, verifica tu cuenta.</p>
+    <h3><%=nombres%>, se ha enviado un mensaje de confirmación al correo '<%=correo%>'. Por favor, verifica tu cuenta.</h3>
 
 </div>
 
