@@ -14,6 +14,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <title>Bienvenido Bodega!</title>
+    <style>
+        .izquierda1{
+            left: 20px;
+        }
+        .izquierda2{
+            left: 15px;
+        }
+        .izq{
+            position: absolute;
+            left: 15% ;
+        }
+        .der{
+            position: absolute;
+            right: 10% ;
+        }
+    </style>
 
 </head>
 <body>
@@ -42,12 +58,12 @@
     </div>
 </header>
 
-<div class="container" style="margin-top: 65px; margin-left: 210px">
+<div class="container" style="margin-top: 65px; margin-left: 15%; margin-right: 15%">
 
     <div class="row">
         <div class="col-sm-8">
             <h1>Realiza un pedido</h1>
-            <h3>Bodega seleccionada: #####</h3>
+            <h3>Bodega seleccionada: Todo Fresco</h3>
         </div>
         <div class="col-sm-4">
             <button class="btn btn-secondary" href="#">Cancelar y elegir otra bodega</button>
@@ -58,7 +74,7 @@
     <form method="post" action="<%=request.getContextPath()%>/UsuarioServlet?accion=buscar">
         <div class="form-group row">
             <div class="col-10">
-                <input class="form-control" type="text" placeholder="Buscar empleado"
+                <input class="form-control" type="text" placeholder="Buscar producto"
                        name="textoBuscar"/>
             </div>
             <div class="col-2">
@@ -71,6 +87,7 @@
 
     <div class="row">
         <%//Listar productos de cierta bodega%>
+        <%if(listaProductos.size()!=0){%>
         <table class="table">
             <thead>
             <tr>
@@ -98,9 +115,9 @@
         </table>
     </div>
 
-    <div class="row">
+    <div class="row mt-5">
 
-        <a href="#" class="btn btn-outline-danger">Volver</a>
+        <a href="#" class="btn btn-outline-danger <%=listaProductos.size()!=0?"izq":""%>">Volver</a>
         <%if (cantPag != -1) {%>
         <!-- paginacion -->
         <nav aria-label="Page navigation example" class="mx-auto"> <!-- Recordar centro !! -->
@@ -144,18 +161,32 @@
             </ul>
         </nav>
         <%}%>
-        <a href="#" class="btn btn-outline-success">Realizar un pedido</a>
+        <a href="#" class="btn btn-outline-success <%=listaProductos.size()!=0?"der":""%>">Realizar un pedido</a>
+        <%}else{%>
+        <div class="row">
+            <div class="izquierda1 col-12 alert alert-danger ml-2" role="alert">
+                No se ha encontrado ningún producto con ese nombre.
+            </div>
+            <div class="izquierda2 col-2" >
+                <a href="<%= request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-danger">Volver</a>
+            </div>
+        </div>
 
+
+        <%}%>
     </div>
 
 
 </div>
+<div class="container mt-5">
+    <footer class="page-footer font-small blue" style="margin-top: 20px">
+        <div class="footer-copyright text-center py-3">© 2020 Copyright:
+            <a href="#">MiMarca</a>
+        </div>
+    </footer>
 
-<footer class="page-footer font-small blue" style="margin-top: 20px">
-    <div class="footer-copyright text-center py-3">© 2020 Copyright:
-        <a href="#">MiMarca</a>
-    </div>
-</footer>
+</div>
+
 
 
 </body>
