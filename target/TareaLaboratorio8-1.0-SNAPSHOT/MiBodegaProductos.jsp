@@ -12,6 +12,7 @@
 <jsp:useBean id="listaProductoBodegas" scope="request" type="java.util.ArrayList<beans.ProductoBean>"/>
 <jsp:useBean id="cantPag" scope="request" type="java.lang.Integer"/>
 <jsp:useBean id="paginaAct" scope="request" type="java.lang.Integer"/>
+<jsp:useBean id="productoBusqueda" scope="request" type="java.lang.String"/>
 <%ArrayList<PedidoBean> pedidosConProducto = request.getAttribute("pedidosConProducto")==null?null:(ArrayList<PedidoBean>)request.getAttribute("pedidosConProducto");%>
 
 <html>
@@ -184,7 +185,7 @@
                 </li>
                 <%}else{%>
                 <li class="page-item">
-                    <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=paginaAct-1%>">Anterior</a>
+                    <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=paginaAct-1%>&productoBusqueda=<%=productoBusqueda%>">Anterior</a>
                 </li>
                 <%}%>
 
@@ -195,7 +196,7 @@
                           </span>
                 </li>
                 <%      }else{%>
-                <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=k%>"><%=k%></a></li>
+                <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=k%>&productoBusqueda=<%=productoBusqueda%>"><%=k%></a></li>
                 <%      }
                 } %>
 
@@ -206,7 +207,7 @@
                 </li>
                 <%}else{%>
                 <li class="page-item">
-                    <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=paginaAct+1%>">Siguiente</a>
+                    <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=paginaAct+1%>&productoBusqueda=<%=productoBusqueda%>">Siguiente</a>
                 </li>
                 <%}%>
 

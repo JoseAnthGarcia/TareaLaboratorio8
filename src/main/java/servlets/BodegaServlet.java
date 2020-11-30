@@ -144,8 +144,9 @@ public class BodegaServlet extends HttpServlet {
 
             case "buscar":
                 // para la barra de busqueda
-                // TODO: MANEJAR PAGINACION CON VARIOS PRODUCTOS
-
+                /**
+                 * NOTA: Al hacer la primera busqueda simepre se vera en la primera pagina
+                 */
 
                 String textoBuscar = request.getParameter("textoBuscar");
 
@@ -155,7 +156,7 @@ public class BodegaServlet extends HttpServlet {
 
                 request.setAttribute("cantPag", cantPag);
                 request.setAttribute("paginaAct", paginaAct);
-
+                request.setAttribute("productoBusqueda", textoBuscar);
 
                 request.setAttribute("listaProductoBodegas", BodegaDao.listarProductoBodega(paginaAct,textoBuscar)
                         );
@@ -169,14 +170,19 @@ public class BodegaServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+
         String accion = request.getParameter("accion") == null ?
                 "listar" : request.getParameter("accion");
 
-        System.out.println("--" + accion + "--");
+        // Por defecto se deja en un string vacio, que mostraría todos los productos
+        String productoBusqueda = "";
+        if (request.getParameter("productoBusqueda") != null && !request.getParameter("productoBusqueda").isEmpty()) {
+            productoBusqueda = request.getParameter("productoBusqueda");
+        }
 
         BodegaDao bodegaDao = new BodegaDao();
 
-        int cantPag = bodegaDao.calcularCantPag();
+        int cantPag = bodegaDao.calcularCantPag(productoBusqueda);
 
         String pag = request.getParameter("pag") == null ?
                 "1" : request.getParameter("pag");
@@ -192,11 +198,12 @@ public class BodegaServlet extends HttpServlet {
         }
 
         RequestDispatcher view;
-        ArrayList<ProductoBean> listaProductos = bodegaDao.listarProductoBodega(paginaAct); // se lista los productos de la pagina actual
+        ArrayList<ProductoBean> listaProductos = bodegaDao.listarProductoBodega(paginaAct, productoBusqueda); // se lista los productos de la pagina actual
 
         request.setAttribute("listaProductoBodegas", listaProductos);
         request.setAttribute("cantPag", cantPag);
         request.setAttribute("paginaAct", paginaAct);
+        request.setAttribute("productoBusqueda", productoBusqueda);
 
         switch (accion) {
             case "listar":
