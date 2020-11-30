@@ -155,7 +155,9 @@ public class UsuarioServlet extends HttpServlet {
                     if(distritoSelected && contIguales && !correoExis && idDistritoInt != 0){
                         usuarioDao.regitrarNuevoUsuario(nombres, apellidos, dni, correo, contrasenia, idDistritoInt);
                         //FALTA ENVIAR CORREO
-                        response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
+                        request.setAttribute("correo",correo);
+                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/envioCorreo.jsp");
+                        //response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
                     }else{
                         request.setAttribute("contIguales", contIguales);
                         request.setAttribute("correoExis", correoExis);

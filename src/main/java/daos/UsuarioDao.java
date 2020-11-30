@@ -7,6 +7,7 @@ import beans.UsuarioBean;
 import java.sql.*;
 import java.util.ArrayList;
 
+
 public class UsuarioDao extends BaseDao {
 
     public ArrayList<DistritoBean> obtenerDistritos() {
