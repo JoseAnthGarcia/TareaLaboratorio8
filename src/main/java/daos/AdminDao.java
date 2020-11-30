@@ -143,7 +143,7 @@ public class AdminDao {
             e.printStackTrace();
         }
 
-        String sql = "UPDATE bodega SET contrasenia = ? WHERE ruc = ?";
+        String sql = "UPDATE bodega SET contrasenia = ? WHERE idBodega = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
