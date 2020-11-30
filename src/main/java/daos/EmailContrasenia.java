@@ -1,6 +1,6 @@
 package daos;
 
-//es necesario usar la libreria jakarta.mail.java
+//es necesario usar lar libreria jakarta.mail.java
 import java.util.Properties;
 
 import javax.mail.Message;

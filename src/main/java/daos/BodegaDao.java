@@ -37,7 +37,7 @@ public class BodegaDao extends BaseDao{
         }
     }
 
-    public int calcularCantPag(){
+    public static int calcularCantPag(){
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -48,7 +48,7 @@ public class BodegaDao extends BaseDao{
         String url = "jdbc:mysql://localhost:3306/mydb?serverTimezone=America/Lima";
 
         // TODO: idBodega se ha hardcodeado
-        String sql = "select ceil(count(*)/5) from producto where idBodega=1 AND estado='Existente'";  // numero de paginas
+        String sql = "(count(*)/5) from producto where idBodega=1 AND estado='Existente'";  // numero de paginas
 
         int cantPag = 0;
         try (Connection conn = DriverManager.getConnection(url, "root", "root");
@@ -63,11 +63,41 @@ public class BodegaDao extends BaseDao{
         return cantPag;
     }
 
+    public static int calcularCantPag(String productName) {
+        /**
+         *  Para barra de busqueda
+         */
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // TODO: idBodega se ha hardcodeado
+        String sql = "select * from producto where idBodega=1 and lower(nombreProducto) like ? and estado='Existente';";  // numero de paginas
+
+        int cantPag = 0;
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setString(1, productName+"%");
+
+            try (ResultSet rs = pstmt.executeQuery();) {
+                while (rs.next()) {
+                    cantPag++;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return (int) Math.ceil((double) cantPag / 5);
+    }
+
+
     public static ArrayList<ProductoBean> listarProductoBodega(int pagina){
 
         ArrayList<ProductoBean> listaProductos = new ArrayList<>();
-
-        String url = "jdbc:mysql://localhost:3306/mydb?serverTimezone=America/Lima";
 
         int limit = (pagina-1)*5;
         String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=1 AND estado='Existente' limit ?,5;";
@@ -76,6 +106,43 @@ public class BodegaDao extends BaseDao{
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
             pstmt.setInt(1, limit);
+
+            try(ResultSet rs = pstmt.executeQuery();){
+                while (rs.next()) {
+                    ProductoBean producto = new ProductoBean();
+                    producto.setId(rs.getInt(1));
+                    producto.setNombreFoto(rs.getString(2));
+                    producto.setRutaFoto(rs.getString(3));
+                    producto.setNombreProducto(rs.getString(4));
+                    producto.setDescripcion(rs.getString(5));
+                    producto.setStock(rs.getInt(6));
+                    producto.setPrecioProducto(rs.getBigDecimal(7));
+                    listaProductos.add(producto);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return listaProductos;
+    }
+
+    public static ArrayList<ProductoBean> listarProductoBodega(int pagina, String productName){
+        /**
+         *  Para barra de busqueda
+         */
+
+        ArrayList<ProductoBean> listaProductos = new ArrayList<>();
+
+        // TODO: idBodega se ha hardcodeado
+        int limit = (pagina-1)*5;
+        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=1 AND lower(nombreProducto) like ? AND estado='Existente' limit ?,5;";  // numero de paginas
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setString(1, productName+"%");
+            pstmt.setInt(2, limit);
 
             try(ResultSet rs = pstmt.executeQuery();){
                 while (rs.next()) {

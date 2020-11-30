@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 
 public class Main {
     public static void main(String[] args){
-        BodegaDao.crearProducto("nombre", "descipr", 99, BigDecimal.valueOf(29.01));
-        for(ProductoBean productoBean : BodegaDao.listarProductoBodega(2)){
-            System.out.println(productoBean.getNombreFoto());
+        System.out.println(BodegaDao.calcularCantPag("lapa"));
+        for(ProductoBean productoBean : BodegaDao.listarProductoBodega(1, "lapa")){
+            System.out.println(productoBean.getNombreProducto());
         }
     }
 }

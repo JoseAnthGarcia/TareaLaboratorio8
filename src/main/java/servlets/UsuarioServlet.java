@@ -257,7 +257,7 @@ public class UsuarioServlet extends HttpServlet {
                 }
                 break;
             case "buscar":
-                int idBodega=30;
+                int idBodega=1;
 
                 String textoBuscar = request.getParameter("textoBuscar");
 
@@ -324,7 +324,7 @@ public class UsuarioServlet extends HttpServlet {
                 requestDispatcher.forward(request,response);
                 break;
             case "realizarPedido":
-                int idBodega=30;
+                int idBodega=1;
                 int cantPorPagina=4;
                 //calculamos paginas:
                 String query = "SELECT * FROM producto WHERE idBodega="+idBodega+";";
