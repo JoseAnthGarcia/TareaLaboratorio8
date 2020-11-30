@@ -5,9 +5,34 @@ public class PedidoBean {
     private int id;
     private String codigo;
     private String estado;
-    //falta fechas
-    //falta bodegaBean
+    private String fecha_registro;
+    private String fecha_recojo;
+    private BodegaBean bodegaBean;
     private UsuarioBean usuario;
+
+    public String getFecha_registro() {
+        return fecha_registro;
+    }
+
+    public void setFecha_registro(String fecha_registro) {
+        this.fecha_registro = fecha_registro;
+    }
+
+    public String getFecha_recojo() {
+        return fecha_recojo;
+    }
+
+    public void setFecha_recojo(String fecha_recojo) {
+        this.fecha_recojo = fecha_recojo;
+    }
+
+    public BodegaBean getBodegaBean() {
+        return bodegaBean;
+    }
+
+    public void setBodegaBean(BodegaBean bodegaBean) {
+        this.bodegaBean = bodegaBean;
+    }
 
     public int getId() {
         return id;
