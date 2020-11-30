@@ -1,13 +1,14 @@
 <%@ page import="beans.BodegaBean" %>
 <%@ page import="beans.DistritoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="rucBodega" scope="request" type="java.util.StringJoiner"/>
+<jsp:useBean id="idBodega" scope="request" type="java.lang.Integer"/>
 
 <%
     boolean contraseniaB = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
     boolean contrasenia2B = request.getAttribute("contrasenia2B") == null ? true : (Boolean) request.getAttribute("contrasenia2B");
     boolean contIguales = request.getAttribute("contIguales") == null ? true : (Boolean) request.getAttribute("contIguales");
 %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -68,7 +69,6 @@
                         <a href="#" class="navbar-brand d-flex align-items-center">
                             <strong>MiMarca.com</strong>
                         </a>
-
                         <a href="#" ><img src="imagenes/sigout.png" height="30px"/></a>
                     </div>
 
@@ -100,7 +100,7 @@
                 <div class="col-sm-3">
                 </div>
                 <div class="col-sm-6">
-                    <h1>Defina su contraseña</h1>
+                    <h1>Registro de bodega</h1>
                     <form method="POST" action="<%=request.getContextPath()%>/AdminServlet?accion=definirContrasenia">
 
                         <div class="form-group row">
@@ -125,7 +125,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a  onclick="return confirm('¿Estas seguro que deseas salir del registro de la bodega? ' +
+                        <a  onclick="return confirm('¿Estas seguro que deseas salir del registro de la contraseña? ' +
                          '')"
                             href="<%=request.getContextPath()%>/AdminServlet" class="btn btn-danger">Regresar</a>
                         <button type="submit" class="btn btn-success pull-right">Registrar</button>
@@ -140,7 +140,6 @@
                 </div>
             </div>
         </div>
-
 
         </div>
         <footer class="page-footer font-small blue" style="margin-top: 20px">
