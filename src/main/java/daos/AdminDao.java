@@ -224,5 +224,22 @@ public class AdminDao {
 
         return encontrado;
     }
+    public int buscarIdBodega(String ruc){
+        String sql = "SELECT idBodega FROM bodega WHERE ruc = ?";
+        int idBodega=0;
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setString(1,ruc);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    idBodega = rs.getInt(1);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return idBodega;
+    }
 
 }
