@@ -105,9 +105,6 @@
                         <a href="<%=request.getContextPath()%>/AdminServlet?accion=registrar" class="navbar-brand d-flex align-items-center">
                             <strong>Registrar bodega</strong>
                         </a>
-                        <a href="<%=request.getContextPath()%>/AdminServlet?accion=definirContrasenia" class="navbar-brand d-flex align-items-center">
-                            <strong>Contraseña</strong>
-                        </a>
                         <a onclick="return confirm('¿Estas seguro que deseas salir del registro de la bodega? ' +
                          '')"
                                 href="<%=request.getContextPath()%>/AdminServlet" class="navbar-brand d-flex align-items-center">

@@ -65,8 +65,6 @@
                     <a href="#" class="navbar-brand d-flex align-items-center">
                         <strong>MiMarca.com</strong>
                     </a>
-                    <a href="#"><img src="/imagenes/sigout.png" height="30px"/></a>
-
                 </div>
             </div>
         </header>
@@ -98,7 +96,6 @@
                     <h1>Registro de contraseña</h1>
                     <form method="POST" action="<%=request.getContextPath()%>/AdminServlet?accion=definirContrasenia&idBodega=<%=idBodega%>">
                         <div class="form-group row">
-                            <% if (Integer.parseInt(idBodega)>0){ %>
                             <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña:</label>
                             <div class="col-sm-10">
                                 <input type="password" class="form-control <%=contraseniaB?"":"is-invalid"%>"
@@ -121,7 +118,6 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-success pull-right">Registrar</button>
-                        <% }  %>
                     </form>
                 </div>
                 <div class="col-sm-3">
