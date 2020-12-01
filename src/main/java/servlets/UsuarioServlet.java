@@ -160,9 +160,9 @@ public class UsuarioServlet extends HttpServlet {
                         //TODO: ENVIO DE CORREO FUCIONAL !!!
                         //TODO: cambien los valores de correoAenviar, asunto,contenido !!!
                         Emails emails = new Emails();
-                        String correoAenviar = "";
-                        String asunto = "";
-                        String contenido = "";
+                        String correoAenviar = "a20181563@pucp.edu.pe";
+                        String asunto = "Espero que nadie haya cagado el correo :/";
+                        String contenido = "A la de dios :c";
 
                         try {
                             emails.enviarCorreo(correoAenviar, asunto, contenido);
