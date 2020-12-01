@@ -1,9 +1,10 @@
 <%@ page import="beans.BodegaBean" %>
 <%@ page import="beans.DistritoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:useBean id="idBodega" scope="request" type="java.lang.Integer"/>
 
 <%
-    String idBodega= (String) request.getAttribute("idBodega");
+    //int idBodega= (int) request.getAttribute("idBodega");
     boolean contraseniaB = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
     boolean contrasenia2B = request.getAttribute("contrasenia2B") == null ? true : (Boolean) request.getAttribute("contrasenia2B");
     boolean contIguales = request.getAttribute("contIguales") == null ? true : (Boolean) request.getAttribute("contIguales");

@@ -145,7 +145,7 @@ public class AdminServlet extends HttpServlet {
         ArrayList<DistritoBean> listaDistritos = bodegaDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
 
-        int idBodega = 0;
+        int idBodega ;
 
         switch (accion){
             case  "registrar":
@@ -208,7 +208,7 @@ public class AdminServlet extends HttpServlet {
             case "definirContrasenia":
                 int idBodega2= Integer.parseInt(request.getParameter("idBodega") == null ?
                              "nada" : request.getParameter("idBodega"));
-                        request.setAttribute("idBodega",idBodega);
+                        request.setAttribute("idBodega",idBodega2);
 
                 String contrasenia = request.getParameter("contrasenia");
                 String contrasenia2 = request.getParameter("contrasenia2");
@@ -289,8 +289,8 @@ public class AdminServlet extends HttpServlet {
                 response.sendRedirect("AdminServlet");
                 break;
             case "definirContrasenia":
-                String idBodega= String.valueOf(Integer.parseInt(request.getParameter("idBodega") == null ?
-                     "nada" : request.getParameter("idBodega")));
+                int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
+                     "nada" : request.getParameter("idBodega"));
                 request.setAttribute("idBodega",idBodega);
                 RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
                 requestDispatcher2.forward(request,response);
