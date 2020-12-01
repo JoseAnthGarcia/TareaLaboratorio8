@@ -65,6 +65,24 @@ public class AdminDao {
         return listaBodegas;
 
     }
+    public BodegaBean buscarBodega(int idBodega){
+        BodegaBean bodega= new BodegaBean();
+        String sql = "SELECT * FROM bodega WHERE idBodega = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1,idBodega);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    bodega.setNombreBodega(rs.getString("nombreBodega"));
+                    bodega.setRucBodega(rs.getLong("ruc"));
+                    bodega.setCorreoBodega(rs.getString("correo"));
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return bodega;
+    }
     public int buscarIdBodega(Long ruc){
         String sql = "SELECT idBodega FROM bodega WHERE ruc = ?";
         int idBodega=0;

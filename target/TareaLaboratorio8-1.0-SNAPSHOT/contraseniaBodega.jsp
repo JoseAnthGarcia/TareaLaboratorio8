@@ -2,6 +2,7 @@
 <%@ page import="beans.DistritoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="idBodega" scope="request" type="java.lang.Integer"/>
+<jsp:useBean id="rucBodega" scope="request" type="java.lang.Long"/>
 
 <%
     //int idBodega= (int) request.getAttribute("idBodega");
@@ -95,7 +96,7 @@
                 </div>
                 <div class="col-sm-6">
                     <h1>Registro de contraseña</h1>
-                    <form method="POST" action="<%=request.getContextPath()%>/AdminServlet?accion=definirContrasenia&idBodega=<%=idBodega%>">
+                    <form method="POST" action="<%=request.getContextPath()%>/AdminServlet?accion=definirContrasenia&idBodega=<%=idBodega%>&ruc=<%=rucBodega%>">
                         <div class="form-group row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña:</label>
                             <div class="col-sm-10">

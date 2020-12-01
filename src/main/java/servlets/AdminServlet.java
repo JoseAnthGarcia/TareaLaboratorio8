@@ -146,6 +146,7 @@ public class AdminServlet extends HttpServlet {
         request.setAttribute("listaDistritos", listaDistritos);
 
         int idBodega ;
+        Long rucBodega;
 
         switch (accion){
             case  "registrar":
@@ -171,14 +172,17 @@ public class AdminServlet extends HttpServlet {
                     if(distritoSelected && !rucExis && idDistritoInt != 0){
                         bodegaDao.guardarBodega(ruc,direccion,nombreBodega,correo,idDistritoInt);
                         idBodega = bodegaDao.buscarIdBodega(ruc);
+                        rucBodega= Long.valueOf(ruc);
                         request.setAttribute("idBodega",idBodega);
+                        request.setAttribute("rucBodega",rucBodega);
 
                         Emails emails = new Emails();
                         String correoAenviar = correo;
                         String asunto = "REGISTRAR CONTRASEÑA";
-                        String contenido = "Se ha iniciado el registro de su bodega "+nombreBodega+" con RUC:"+ruc+
+                        String contenido = "Se ha iniciado el registro de su bodega "+nombreBodega+" con RUC:"+rucBodega+
                                 ", para continuar con el registro ingrese al siguiente link y establezca su contraseña:" +
-                                "http://localhost:8082/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia&idBodega="+idBodega;
+                                "http://localhost:8082/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia&idBodega="
+                                +idBodega+"&ruc="+rucBodega;
 
                         try {
                             emails.enviarCorreo(correoAenviar, asunto, contenido);
@@ -208,34 +212,47 @@ public class AdminServlet extends HttpServlet {
             case "definirContrasenia":
                 int idBodega2= Integer.parseInt(request.getParameter("idBodega") == null ?
                              "nada" : request.getParameter("idBodega"));
-                        request.setAttribute("idBodega",idBodega2);
+                Long rucBodega2= Long.valueOf((request.getParameter("rucBodega") == null ?
+                        "nada" : request.getParameter("rucBodega")));
+                request.setAttribute("idBodega",idBodega2);
+                request.setAttribute("rucBodega",rucBodega2);
 
-                String contrasenia = request.getParameter("contrasenia");
-                String contrasenia2 = request.getParameter("contrasenia2");
+                if(idBodega2==bodegaDao.buscarIdBodega(rucBodega2)) {
 
-                boolean contraseniaB = validarContrasenia(contrasenia);
-                boolean contrasenia2B = validarContrasenia(contrasenia2);
-                boolean contIguales = false;
-                if(contrasenia.equals(contrasenia2)) {
-                    contIguales = true;
-                }
-                if(contraseniaB && contrasenia2B ){
-                    if(contIguales){
-                        bodegaDao.registrarContrasenia(idBodega2,contrasenia);
-                        request.setAttribute("ruc",ruc);
-                        request.setAttribute("nombreBodega",nombreBodega);
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("ContraseniaExitosa.jsp");
-                        requestDispatcher.forward(request, response);;
-                    }else{
+                    String contrasenia = request.getParameter("contrasenia");
+                    String contrasenia2 = request.getParameter("contrasenia2");
+
+                    boolean contraseniaB = validarContrasenia(contrasenia);
+                    boolean contrasenia2B = validarContrasenia(contrasenia2);
+                    boolean contIguales = false;
+                    if (contrasenia.equals(contrasenia2)) {
+                        contIguales = true;
+                    }
+                    if (contraseniaB && contrasenia2B) {
+                        if (contIguales) {
+                            bodegaDao.registrarContrasenia(idBodega2, contrasenia);
+                            BodegaBean bodega = bodegaDao.buscarBodega(idBodega2);
+                            nombreBodega = bodega.getNombreBodega();
+                            Long ruc3 = bodega.getRucBodega();
+                            request.setAttribute("ruc2", ruc3);
+                            request.setAttribute("nombreBodega", nombreBodega);
+                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("ContraseniaExitosa.jsp");
+                            requestDispatcher.forward(request, response);
+                            ;
+                        } else {
+                            request.setAttribute("contIguales", contIguales);
+                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
+                            requestDispatcher.forward(request, response);
+                        }
+                    } else {
+                        request.setAttribute("contraseniaB", contraseniaB);
+                        request.setAttribute("contrasenia2B", contrasenia2B);
                         request.setAttribute("contIguales", contIguales);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
                         requestDispatcher.forward(request, response);
                     }
                 }else{
-                    request.setAttribute("contraseniaB",contraseniaB);
-                    request.setAttribute("contrasenia2B",contrasenia2B);
-                    request.setAttribute("contIguales",contIguales);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("ErrorIdBodega.jsp");
                     requestDispatcher.forward(request, response);
                 }
                 break;
@@ -292,6 +309,9 @@ public class AdminServlet extends HttpServlet {
                 int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
                      "nada" : request.getParameter("idBodega"));
                 request.setAttribute("idBodega",idBodega);
+                Long rucBodega= Long.parseLong(request.getParameter("rucBodega") == null ?
+                        "nada" : request.getParameter("rucBodega"));
+                request.setAttribute("rucBodega",rucBodega);
                 RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
                 requestDispatcher2.forward(request,response);
                 break;

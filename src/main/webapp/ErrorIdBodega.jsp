@@ -1,9 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%Long ruc2 = (Long) request.getAttribute("ruc2");%>
-<%String nombreBodega = (String) request.getAttribute("nombreBodega");%>
 <html>
     <head>
-        <title>Correo de confirmación</title>
+        <title>Error</title>
         <jsp:include page="/bootstrapRepository.jsp"/>
 
         <!-- para los iconos como botones -->
@@ -35,9 +33,8 @@
     </header>
     <body>
         <div class="container-fluid">
-            <h1>Registro exitoso</h1>
-            <h3>Se ha registrado exitosamente la contaseña de la bodega <%=nombreBodega%>
-                con RUC <%=ruc2%>.</h3>
+            <h1>Registro inválido</h1>
+            <h3>No puedes establecer la contraseña de otra bodega.</h3>
 
         </div>
         <footer class="page-footer font-small blue" style="margin-top: 20px">
