@@ -170,7 +170,7 @@ public class AdminServlet extends HttpServlet {
                         bodegaDao.guardarBodega(ruc,direccion,nombreBodega,correo,idDistritoInt);
 
                         Emails emails = new Emails();
-                        String correoAenviar = correo;
+                        String correoAenviar = "garcia.josea@pucp.edu.pe";
                         String asunto = "REGISTRAR CONTRASEÑA";
                         String contenido = "Se ha iniciado el registro de su bodega, para continuar con el " +
                                 "registro ingrese al siguiente link y establezca una contraseña:" +
