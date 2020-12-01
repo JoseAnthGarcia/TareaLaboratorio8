@@ -170,11 +170,12 @@ public class AdminServlet extends HttpServlet {
                         bodegaDao.guardarBodega(ruc,direccion,nombreBodega,correo,idDistritoInt);
 
                         Emails emails = new Emails();
-                        String correoAenviar = "garcia.josea@pucp.edu.pe";
+                        String correoAenviar = correo;
+                        int idBodega= bodegaDao.buscarIdBodega(ruc);
                         String asunto = "REGISTRAR CONTRASEÑA";
                         String contenido = "Se ha iniciado el registro de su bodega, para continuar con el " +
                                 "registro ingrese al siguiente link y establezca una contraseña:" +
-                                "http://localhost:8082/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia";
+                                "http://localhost:8082/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia?idBodega="+idBodega;
 
                         try {
                             emails.enviarCorreo(correoAenviar, asunto, contenido);
@@ -199,8 +200,9 @@ public class AdminServlet extends HttpServlet {
                 }
                 break;
             case "definirContrasenia":
+                String idBodega= request.getParameter("idBodega") == null ?
+                        "nada" : request.getParameter("idBodega");
 
-                int idBodega = 43;;
                 String contrasenia = request.getParameter("contrasenia");
                 String contrasenia2 = request.getParameter("contrasenia2");
 
@@ -212,7 +214,7 @@ public class AdminServlet extends HttpServlet {
                 }
                 if(contraseniaB && contrasenia2B ){
                     if(contIguales){
-                        bodegaDao.registrarContrasenia(idBodega,contrasenia);
+                        bodegaDao.registrarContrasenia(Integer.parseInt(idBodega),contrasenia);
                         response.sendRedirect(request.getContextPath()+"/AdminServlet");
                     }else{
                         request.setAttribute("contIguales", contIguales);
@@ -277,6 +279,9 @@ public class AdminServlet extends HttpServlet {
                 response.sendRedirect("AdminServlet");
                 break;
             case "definirContrasenia":
+                String idBodega= request.getParameter("idBodega") == null ?
+                        "nada" : request.getParameter("idBodega");
+                request.setAttribute("idBodega",idBodega);
                 RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
                 requestDispatcher2.forward(request,response);
                 break;
