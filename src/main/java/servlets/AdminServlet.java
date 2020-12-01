@@ -3,6 +3,7 @@ package servlets;
 import beans.BodegaBean;
 import beans.DistritoBean;
 import daos.AdminDao;
+import daos.BodegaDao;
 
 import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
@@ -182,7 +183,7 @@ public class AdminServlet extends HttpServlet {
                         String contenido = "Se ha iniciado el registro de su bodega "+nombreBodega+" con RUC:"+rucBodega+
                                 ", para continuar con el registro ingrese al siguiente link y establezca su contraseña:" +
                                 "http://localhost:8082/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia&idBodega="
-                                +idBodega+"&ruc="+rucBodega;
+                                +idBodega+"&rucBodega="+rucBodega;
 
                         try {
                             emails.enviarCorreo(correoAenviar, asunto, contenido);
@@ -212,13 +213,12 @@ public class AdminServlet extends HttpServlet {
             case "definirContrasenia":
                 int idBodega2= Integer.parseInt(request.getParameter("idBodega") == null ?
                              "nada" : request.getParameter("idBodega"));
-                Long rucBodega2= Long.valueOf((request.getParameter("rucBodega") == null ?
+                Long rucBodega2= Long.parseLong((request.getParameter("rucBodega") == null ?
                         "nada" : request.getParameter("rucBodega")));
+
                 request.setAttribute("idBodega",idBodega2);
                 request.setAttribute("rucBodega",rucBodega2);
-
                 if(idBodega2==bodegaDao.buscarIdBodega(rucBodega2)) {
-
                     String contrasenia = request.getParameter("contrasenia");
                     String contrasenia2 = request.getParameter("contrasenia2");
 
@@ -306,14 +306,23 @@ public class AdminServlet extends HttpServlet {
                 response.sendRedirect("AdminServlet");
                 break;
             case "definirContrasenia":
-                int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
-                     "nada" : request.getParameter("idBodega"));
-                request.setAttribute("idBodega",idBodega);
-                Long rucBodega= Long.parseLong(request.getParameter("rucBodega") == null ?
-                        "nada" : request.getParameter("rucBodega"));
-                request.setAttribute("rucBodega",rucBodega);
-                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
-                requestDispatcher2.forward(request,response);
+
+                try{
+                    int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
+                            "nada" : request.getParameter("idBodega"));
+                    request.setAttribute("idBodega",idBodega);
+                    String rucBodegaString = request.getParameter("rucBodega")==null?"nada":request.getParameter("rucBodega");
+                    Long rucBodega= Long.parseLong(request.getParameter("rucBodega") == null ?
+                            "nada" : request.getParameter("rucBodega"));
+
+                    request.setAttribute("rucBodega",rucBodega);
+                    RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
+                    requestDispatcher2.forward(request,response);
+                }catch (NumberFormatException e){
+                    e.printStackTrace();
+                    RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("ErrorIdBodega.jsp");
+                    requestDispatcher2.forward(request,response);
+                }
                 break;
         }
 
