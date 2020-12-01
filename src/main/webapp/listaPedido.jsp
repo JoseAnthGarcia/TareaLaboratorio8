@@ -1,10 +1,3 @@
-<%@ page import="beans.PedidosBodegaBean" %><%--
-  Created by IntelliJ IDEA.
-  User: lizbe
-  Date: 8/11/2020
-  Time: 14:49
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page import = "java.util.ArrayList" %>
 <%@ page import= "beans.PedidoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>

@@ -160,8 +160,8 @@ public class UsuarioServlet extends HttpServlet {
                         //TODO: ENVIO DE CORREO FUCIONAL !!!
                         //TODO: cambien los valores de correoAenviar, asunto,contenido !!!
                         Emails emails = new Emails();
-                        String correoAenviar = "a20181823@pucp.edu.pe";
-                        String asunto = "REGISTRO EXITOSO EN 'MI MARCA'";
+                        String correoAenviar = correo;
+                        String asunto = "BIENVENIDO A *MI MARCA* !!!!";
                         String contenido = "Hola "+nombres+", te has registrado exitosamente en 'MI MARCA'.Para " +
                                 "poder empezar a realizar pedidos, ingresa al link : http://localhost:8050/TareaLaboratorio8_war_exploded/UsuarioServlet";
 
