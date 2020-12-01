@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -63,6 +64,9 @@ public class PedidoServlet extends HttpServlet {
                 break;
             case "cancelar":
                 if (pedidoDao.obtenerPedidoBodega(codigo) != null) {
+                    HttpSession session = request.getSession();
+                    boolean valCancelar = pedidoDao.verificarCancelarPedido(codigo);
+                    session.setAttribute("valCancelar", valCancelar);
                     pedidoDao.cancelarPedido(codigo);
                 }
                 response.sendRedirect(request.getContextPath() + "/PedidosServlet");

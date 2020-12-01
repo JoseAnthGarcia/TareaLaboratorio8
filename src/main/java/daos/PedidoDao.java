@@ -133,6 +133,23 @@ public class PedidoDao extends BaseDao{
         }
     }
 
+    public boolean verificarCancelarPedido(String codigo){
+        boolean esPosible=false;
+        String sql = "select * from pedido where codigo = ?  AND (datediff(now(), fecha_recojo) > 1)";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, codigo);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    esPosible = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return esPosible;
+    }
+
     public void cancelarPedido(String codigo) {
         try (Connection conn = getConnection();) {
             String sql = "update mydb.pedido set estado = 'Cancelado' where codigo = ?  AND (datediff(now(), fecha_recojo) > 1)";
