@@ -1,5 +1,6 @@
 package daos;
 
+import beans.BodegaBean;
 import beans.DistritoBean;
 import beans.ProductoBean;
 import beans.UsuarioBean;
@@ -283,5 +284,45 @@ public class UsuarioDao extends BaseDao {
         return usuarioBean;
     }
 
+    //Realizar pedido----------------------------
+    public BodegaBean obtenerBodega(int idBodega){
+        BodegaBean bodega = null;
+        String sql = "SELECT * FROM bodega WHERE idBodega=?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, idBodega);
+            try(ResultSet rs = pstmt.executeQuery()){
+                rs.next();
+                bodega = new BodegaBean();
+                bodega.setIdBodega(rs.getInt("idBodega"));
+                bodega.setNombreBodega(rs.getString("nombreBodega"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return bodega;
+    }
+
+    //ojo: ya el producto esta como existente, pues sino no se muestra en la lista
+    public ProductoBean obtenerProducto(int idProducto){
+        ProductoBean producto = null;
+        String sql = "SELECT * FROM producto WHERE idProducto=?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, idProducto);
+            try(ResultSet rs = pstmt.executeQuery()){
+                //TODO: FALTA O DE FOTOS :C
+                rs.next();
+                producto = new ProductoBean();
+                producto.setId(rs.getInt("idProducto"));
+                producto.setNombreProducto(rs.getString("nombreProducto"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return producto;
+    }
 
 }

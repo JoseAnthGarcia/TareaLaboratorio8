@@ -1,4 +1,5 @@
 <%@ page import="beans.ProductoBean" %>
+<%@ page import="beans.BodegaBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="listaProductos" type="java.util.ArrayList<beans.ProductoBean>" scope="request"/>
 
@@ -82,7 +83,8 @@
     <div class="row">
         <div class="col-sm-8">
             <h1>Realiza un pedido</h1>
-            <h3>Bodega seleccionada: Todo Fresco</h3>
+            <%BodegaBean bodegaSeleccionada = (BodegaBean) session.getAttribute("bodegaEscogida");%>
+            <h3>Bodega seleccionada: <%=bodegaSeleccionada.getNombreBodega()%></h3>
         </div>
         <div class="col-sm-4">
             <button class="btn btn-secondary" href="#">Cancelar y elegir otra bodega</button>
@@ -126,7 +128,7 @@
                 <td><%=producto.getPrecioProducto()%>
                 </td>
                 <td>
-                    <button class="btn btn-secondary" href="#">Seleccionar</button>
+                    <a class="btn btn-secondary" href="<%=request.getContextPath()%>/UsuarioServlet?accion=agregarCarrito&productSelect=<%=producto.getId()%>">Seleccionar</a>
                 </td>
             </tr>
             <%}%>
@@ -180,7 +182,7 @@
             </ul>
         </nav>
         <%}%>
-        <a href="#" class="btn btn-outline-success <%=listaProductos.size()!=0?"der":""%>">Realizar un pedido</a>
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=verCarrito" class="btn btn-outline-success <%=listaProductos.size()!=0?"der":""%>">Realizar pedido</a>
         <%}else{%>
         <div class="row">
             <div class="izquierda1 col-12 alert alert-danger ml-2" role="alert">
