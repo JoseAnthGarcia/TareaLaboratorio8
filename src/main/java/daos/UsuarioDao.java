@@ -35,8 +35,8 @@ public class UsuarioDao extends BaseDao {
     public void regitrarNuevoUsuario(String nombres, String apellidos,
                                      String dni, String correo,
                                      String contrasenia, int idDistrito) {
-        String sql = "INSERT INTO usuario(nombreUsuario, apellido, dni, correo, contrasenia, idDistrito)\n" +
-                "VALUES (?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO usuario(nombreUsuario, apellido, dni, correo, contrasenia, idDistrito,contraseniaHashed)\n" +
+                "VALUES (?, ?, ?, ?, ?, ?, sha2(?,256));";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -47,6 +47,8 @@ public class UsuarioDao extends BaseDao {
             pstmt.setString(4, correo);
             pstmt.setString(5, contrasenia);
             pstmt.setInt(6, idDistrito);
+            pstmt.setString(7, contrasenia);
+
 
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
@@ -260,8 +262,25 @@ public class UsuarioDao extends BaseDao {
         return listaProductos;
     }
 
-    public void enviarCorreo(){
+    public UsuarioBean validarUsuarioPassword(String user, String password){
+        String sql = "select* from usuario where correo=? and contraseniaHashed=sha2(?,256);";
+        UsuarioBean usuarioBean = null;
+        try(Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql);){
 
+            pstmt.setString(1,user);
+            pstmt.setString(2,password);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    int usuarioId = rs.getInt(1);
+                    usuarioBean = this.obtenerUsuario(usuarioId);
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return usuarioBean;
     }
 
 
