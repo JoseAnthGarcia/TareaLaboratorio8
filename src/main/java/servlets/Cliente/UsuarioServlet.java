@@ -111,7 +111,7 @@ public class UsuarioServlet extends HttpServlet {
         ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
         /*Para editar*/
-        int usuarioId = 26;
+        int usuarioId = usuarioBean.getIdUsuario();
         UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
         request.setAttribute("usuario", bUsuario);
         ArrayList<DistritoBean> listaDistritos2 = usuarioDao.obtenerDistritos();
