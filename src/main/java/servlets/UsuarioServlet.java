@@ -1,7 +1,9 @@
 package servlets;
 import beans.DistritoBean;
+import beans.PedidoBean;
 import beans.ProductoBean;
 import beans.UsuarioBean;
+import daos.PedidosUsuarioDao;
 import daos.UsuarioDao;
 
 
@@ -161,7 +163,7 @@ public class UsuarioServlet extends HttpServlet {
                         //TODO: cambien los valores de correoAenviar, asunto,contenido !!!
                         Emails emails = new Emails();
                         String correoAenviar = correo;
-                        String asunto = "REGISTRO EXITOSO EN 'MI MARCA'";
+                        String asunto = "BIENVENIDO A *MI MARCA* !!!!";
                         String contenido = "Hola "+nombres+", te has registrado exitosamente en 'MI MARCA'.Para " +
                                 "poder empezar a realizar pedidos, ingresa al link : http://localhost:8050/TareaLaboratorio8_war_exploded/UsuarioServlet";
 
@@ -371,7 +373,39 @@ public class UsuarioServlet extends HttpServlet {
                 requestDispatcher = request.getRequestDispatcher("/cliente/realizarUnPedido.jsp");
                 requestDispatcher.forward(request, response);
                 break;
+            case "listar":
 
+                PedidosUsuarioDao pedidosUsuarioDao = new PedidosUsuarioDao();
+
+                pag = request.getParameter("pag") == null ?
+                        "1" : request.getParameter("pag");
+
+
+                cantPag = pedidosUsuarioDao.calcularCantPag();
+                try{
+
+                    paginaAct = Integer.parseInt(pag); //try
+                    if(paginaAct>cantPag){
+                        paginaAct = 1;
+                    }
+                }catch(NumberFormatException e){
+                    paginaAct = 1;
+                }
+
+                ArrayList<PedidoBean> listaPedidos = pedidosUsuarioDao.listarPedidosCliente(paginaAct);
+                request.setAttribute("listaPedidos", listaPedidos);
+                request.setAttribute("cantPag", cantPag);
+                request.setAttribute("paginaAct",paginaAct);
+
+                RequestDispatcher view = request.getRequestDispatcher("/cliente/listarPedidosUsuario.jsp");
+                view.forward(request,response);
+                break;
+            case "cancelar":
+                String idPedido = request.getParameter("idPedido");
+                PedidosUsuarioDao pedidosUsuarioDao1 = new PedidosUsuarioDao();
+                pedidosUsuarioDao1.cancelarPedido(Integer.parseInt(idPedido));
+                response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=listar");
+                break;
         }
     }
 }

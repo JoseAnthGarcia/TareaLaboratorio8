@@ -1,10 +1,3 @@
-<%@ page import="beans.PedidosBodegaBean" %><%--
-  Created by IntelliJ IDEA.
-  User: lizbe
-  Date: 8/11/2020
-  Time: 14:49
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page import = "java.util.ArrayList" %>
 <%@ page import= "beans.PedidoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -72,8 +65,23 @@
     </div>
 </header>
 <div class="container" style="margin-top: 20px">
-    <h1 class="margen">Pedidos</h1>
     <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1 class="margen">Pedidos</h1>
+            </div>
+            <div class="col-sm-6">
+                <%if(session.getAttribute("valCancelar")!=null){
+                if(!(boolean)session.getAttribute("valCancelar")){%>
+                <div class="alert alert-danger" role="alert">
+                    Aún no es posible cancelar este pedido.
+                    Recuerde que solo es posible pasado una hora de
+                    la fecha de recojo.
+                </div>
+                <%}%>
+                <%session.removeAttribute("valCancelar");}%>
+            </div>
+        </div>
         <table class="table container-fluid">
             <tr>
                 <th>Codigo</th>

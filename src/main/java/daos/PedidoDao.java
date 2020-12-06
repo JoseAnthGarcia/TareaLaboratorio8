@@ -13,7 +13,7 @@ public class PedidoDao extends BaseDao{
             e.printStackTrace();
         }
 
-        String sql = "select ceil(count(codigo)/5) from pedido where idBodega = 1";
+        String sql = "select ceil(count(codigo)/5) from pedido where idBodega = 30";
 
         int cantPag = 0;
         try (Connection conn = getConnection();
@@ -31,7 +31,7 @@ public class PedidoDao extends BaseDao{
     public ArrayList<PedidoBean> obtenerListaPedidos(int pagina) {
         int limit = (pagina-1)*5;
         ArrayList<PedidoBean> listaPedidos = new ArrayList<>();
-        String sql = "select idPedido, codigo, estado from pedido where idBodega = 1 limit ?, 5";
+        String sql = "select idPedido, codigo, estado from pedido where idBodega = 30 limit ?, 5";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -131,6 +131,23 @@ public class PedidoDao extends BaseDao{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean verificarCancelarPedido(String codigo){
+        boolean esPosible=false;
+        String sql = "select * from pedido where codigo = ?  AND (datediff(now(), fecha_recojo) > 1)";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, codigo);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    esPosible = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return esPosible;
     }
 
     public void cancelarPedido(String codigo) {
