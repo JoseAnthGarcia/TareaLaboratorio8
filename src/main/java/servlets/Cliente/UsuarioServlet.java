@@ -319,14 +319,14 @@ public class UsuarioServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         RequestDispatcher view2;
-        UsuarioBean usuarioBean = (UsuarioBean) session.getAttribute("usuario");
+        UsuarioBean clienteActual = (UsuarioBean) session.getAttribute("usuario");
         String accion = request.getParameter("accion") == null ?
                 "nada" : request.getParameter("accion");
         UsuarioDao usuarioDao = new UsuarioDao();
-        if (usuarioBean != null && usuarioBean.getIdUsuario() > 0 && !(accion.equals("agregar"))) {
+        if (clienteActual != null && clienteActual.getIdUsuario() > 0 && !(accion.equals("agregar"))) {
             RequestDispatcher requestDispatcher;
 
-            int usuarioId = usuarioBean.getIdUsuario();
+            int usuarioId = clienteActual.getIdUsuario();
 
             switch (accion) {
                 case "nada":
@@ -489,7 +489,7 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher.forward(request, response);
                     break;
             }
-        } else if (usuarioBean == null && accion.equals("agregar")) {
+        } else if (clienteActual == null && accion.equals("agregar")) {
             ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();
             request.setAttribute("listaDistritos", listaDistritos);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("registroNuevoUsuario.jsp");
