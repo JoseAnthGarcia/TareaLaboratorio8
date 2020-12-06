@@ -11,6 +11,8 @@
 <%@ page import="java.lang.reflect.Array" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="beans.ProductoBean" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Map" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 
@@ -66,43 +68,60 @@
 </header>
 
 <div class="container" style="margin-top: 65px; margin-left: 15%; margin-right: 15%">
-
     <div class="row">
-        <%//Listar productos de cierta bodega%>
+        <div class="col-sm-8">
+            <h1>Mi carrito</h1>
+        </div>
+        <div class="col-sm-4">
+            <img src="https://image.flaticon.com/icons/png/512/116/116356.png" height="50px"/>
+        </div>
+    </div>
+    <form method="POST" action="<%=request.getContextPath()%>/UsuarioServlet?accion=generarPedido">
+    <div class="row">
         <%HttpSession session1 = request.getSession();
-            ArrayList<ProductoBean> listaProductos = (ArrayList<ProductoBean>) session1.getAttribute("carrito");
-            if(listaProductos.size()!=0){%>
+            //ArrayList<ProductoBean> listaProductos = (ArrayList<ProductoBean>) session1.getAttribute("carrito");
+            //if(listaProductos.size()!=0){
+            HashMap<Integer, ProductoBean> listaProductos = (HashMap<Integer, ProductoBean>) session1.getAttribute("carrito");
+        if(!listaProductos.isEmpty()){%>
         <table class="table">
             <thead>
             <tr>
                 <th scope="col"></th>
                 <th scope="col">Producto</th>
                 <th scope="col">Precio Unitario</th>
+                <th scope="col">Stock</th>
                 <th scope="col">
                 </th>
             </tr>
             </thead>
             <tbody>
-            <%for (ProductoBean producto : listaProductos) {%>
+            <%//for (ProductoBean producto : listaProductos) {
+                for (Map.Entry<Integer, ProductoBean> entry : listaProductos.entrySet()){%>
             <tr>
                 <td>Imagen x</td>
-                <td><%=producto.getNombreProducto()%>
+                <td><%=entry.getValue().getNombreProducto()%>
                 </td>
-                <td><%=producto.getPrecioProducto()%>
+                <td><%=entry.getValue().getPrecioProducto()%>
                 </td>
                 <td>
-                    <button class="btn btn-secondary" href="<%=request.getContextPath()%>/UsuarioServlet?accion=agregarCarrito&productSelect=<%=producto.getId()%>">Seleccionar</button>
+                    <input name="<%=entry.getValue().getId()%>" type="number" min="0" id="Stock" class="form-control" >
+                </td>
+                <td>
+                    <a class="btn btn-secondary" href="<%=request.getContextPath()%>/UsuarioServlet?accion=eliminarProductCarrito&productSelect=<%=entry.getValue().getId()%>">Eliminar</a>
                 </td>
             </tr>
             <%}%>
-            <%}else{%>
-            <div class="alert alert-secondary" role="alert">
-                El carrito se encuentra vacio.
-            </div>
-            <%}%>
             </tbody>
         </table>
+        <button type="submit" class="btn btn-success pull-right">Generar pedido</button>
+        <%}else{%>
+        <div class="alert alert-secondary" role="alert">
+            El carrito se encuentra vacio.
+        </div>
+        <%}%>
+
     </div>
+    </form>
 
 </div>
 <div class="container mt-5">

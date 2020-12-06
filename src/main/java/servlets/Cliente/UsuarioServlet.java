@@ -19,57 +19,59 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebServlet(name = "UsuarioServlet",urlPatterns = {"/UsuarioServlet"})
+@WebServlet(name = "UsuarioServlet", urlPatterns = {"/UsuarioServlet"})
 public class UsuarioServlet extends HttpServlet {
 
-    public boolean validarDni(String dni){
+    public boolean validarDni(String dni) {
         boolean resultado = true;
-        try{
+        try {
             int dni_int = Integer.parseInt(dni);
-            if(dni_int<0 || dni_int>100000000){
+            if (dni_int < 0 || dni_int > 100000000) {
                 resultado = false;
             }
         } catch (NumberFormatException e) {
             resultado = false;
         }
-        if(dni.equalsIgnoreCase("")){
+        if (dni.equalsIgnoreCase("")) {
             resultado = false;
         }
         return resultado;
     }
 
-    public boolean validarString(String input){
+    public boolean validarString(String input) {
         boolean resultado = true;
-        boolean resultado2= true;
-        if(input.equalsIgnoreCase("")){
+        boolean resultado2 = true;
+        if (input.equalsIgnoreCase("")) {
             resultado = false;
         }
-        try{
-            int numero= Integer.parseInt(input);
-            resultado2=false;
-        }catch (NumberFormatException e){
-            resultado2=true;
+        try {
+            int numero = Integer.parseInt(input);
+            resultado2 = false;
+        } catch (NumberFormatException e) {
+            resultado2 = true;
         }
-        boolean resultadoFinal= resultado&&resultado2;
+        boolean resultadoFinal = resultado && resultado2;
 
 
         return resultadoFinal;
     }
 
-    public boolean validarNumero(String input){
+    public boolean validarNumero(String input) {
         boolean resultado = true;
-        try{
+        try {
             int valor = Integer.parseInt(input);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             resultado = false;
         }
         return resultado;
     }
 
-    public boolean validarCorreo(String input){
+    public boolean validarCorreo(String input) {
         boolean resultado = true;
 
         // Patrón para validar el email
@@ -116,24 +118,8 @@ public class UsuarioServlet extends HttpServlet {
         request.setAttribute("usuario", bUsuario);
         ArrayList<DistritoBean> listaDistritos2 = usuarioDao.obtenerDistritos();
         request.setAttribute("listaDistritos2", listaDistritos2);
-        nombres = request.getParameter("nombres");
-        apellidos = request.getParameter("apellidos");
-        idDistrito = request.getParameter("idDistrito");
 
-        nombresB = validarString(nombres);
-        apellidosB = validarString(apellidos);
-        distritoBoolean = validarNumero(idDistrito);
-
-        String dni = request.getParameter("dni");
-        String correo = request.getParameter("correo");
-        String contrasenia = request.getParameter("contrasenia");
-        String contrasenia2 = request.getParameter("contrasenia2");
-        boolean dniB = validarDni(dni);
-        boolean correoB = validarCorreo(correo);
-        boolean contraseniaB = validarString(contrasenia);
-        boolean contrasenia2B = validarString(contrasenia2);
-        if(usuarioBean!=null && usuarioBean.getIdUsuario()>0 && !(accion.equals("agregar"))) {
-
+        if (usuarioBean != null && usuarioBean.getIdUsuario() > 0 && !(accion.equals("agregar"))) {
 
 
             switch (accion) {
@@ -228,8 +214,37 @@ public class UsuarioServlet extends HttpServlet {
                     view.forward(request, response);
                     break;
 
+                case "generarPedido":
+                    //TODO: VALIDAR ESPACIOS VACIOS
+                    HttpSession session2 = request.getSession();
+                    HashMap<Integer, ProductoBean> listaProductos = (HashMap<Integer, ProductoBean>) session2.getAttribute("carrito");
+                    for (Map.Entry<Integer, ProductoBean> entry : listaProductos.entrySet()){
+                        int idProducto = entry.getKey();
+                        String cant = request.getParameter(String.valueOf(idProducto));
+                        System.out.println("producto"+entry.getValue().getNombreProducto()+" | cant: "+cant);
+                    }
+
+                    break;
+
             }
-        }else if(usuarioBean==null&&accion.equals("agregar")){
+        } else if (usuarioBean == null && accion.equals("agregar")) {
+            nombres = request.getParameter("nombres");
+            apellidos = request.getParameter("apellidos");
+            idDistrito = request.getParameter("idDistrito");
+
+            nombresB = validarString(nombres);
+            apellidosB = validarString(apellidos);
+            distritoBoolean = validarNumero(idDistrito);
+
+            String dni = request.getParameter("dni");
+            String correo = request.getParameter("correo");
+            String contrasenia = request.getParameter("contrasenia");
+            String contrasenia2 = request.getParameter("contrasenia2");
+            boolean dniB = validarDni(dni);
+            boolean correoB = validarCorreo(correo);
+            boolean contraseniaB = validarString(contrasenia);
+            boolean contrasenia2B = validarString(contrasenia2);
+
             if (nombresB && apellidosB && dniB && correoB && contraseniaB
                     && contrasenia2B && distritoBoolean) {
 
@@ -293,7 +308,7 @@ public class UsuarioServlet extends HttpServlet {
                 requestDispatcher.forward(request, response);
             }
 
-        }else{
+        } else {
             view2 = request.getRequestDispatcher("cliente/access_denied.jsp");
             view2.forward(request, response);
         }
@@ -308,7 +323,7 @@ public class UsuarioServlet extends HttpServlet {
         String accion = request.getParameter("accion") == null ?
                 "nada" : request.getParameter("accion");
         UsuarioDao usuarioDao = new UsuarioDao();
-        if(usuarioBean!=null && usuarioBean.getIdUsuario()>0 && !(accion.equals("agregar"))) {
+        if (usuarioBean != null && usuarioBean.getIdUsuario() > 0 && !(accion.equals("agregar"))) {
             RequestDispatcher requestDispatcher;
 
             int usuarioId = usuarioBean.getIdUsuario();
@@ -353,8 +368,12 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher = request.getRequestDispatcher("cambioContrasenia.jsp");
                     requestDispatcher.forward(request, response);
                     break;
+
                 case "realizarPedido":
-                    int idBodega = 30;
+                    int idBodega = 30; //Se debe jalar la bodega
+                    //VERIFICAR IDBODEGA?????------------------------------
+                    HttpSession session1 = request.getSession();
+                    session1.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodega));
                     int cantPorPagina = 4;
                     //calculamos paginas:
                     String query = "SELECT * FROM producto WHERE idBodega=" + idBodega + ";";
@@ -381,6 +400,56 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher = request.getRequestDispatcher("/cliente/realizarUnPedido.jsp");
                     requestDispatcher.forward(request, response);
                     break;
+
+                case "agregarCarrito":
+                    //TODO: VALIDACION IDPRODUCTO
+                /*int idProducto = Integer.parseInt(request.getParameter("productSelect"));
+                HttpSession session2 = request.getSession();
+                if(session2.getAttribute("carrito")==null){
+                    session2.setAttribute("carrito", new ArrayList<ProductoBean>());
+                }
+                ArrayList<ProductoBean> carrito2 = (ArrayList<ProductoBean>) session2.getAttribute("carrito");
+                carrito2.add(usuarioDao.obtenerProducto(idProducto));
+                session2.removeAttribute("carrito");
+                session2.setAttribute("carrito",carrito2);
+                response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=realizarPedido");*/
+                    int idProducto = Integer.parseInt(request.getParameter("productSelect"));
+                    HttpSession session2 = request.getSession();
+                    if (session2.getAttribute("carrito") == null) {
+                        HashMap<Integer, ProductoBean> carrito2 = new HashMap<>();
+                        session2.setAttribute("carrito", carrito2);
+                    }
+                    HashMap<Integer, ProductoBean> carrito2 = (HashMap<Integer, ProductoBean>) session2.getAttribute("carrito");
+                    ProductoBean produto = usuarioDao.obtenerProducto(idProducto);
+                    if (carrito2.containsKey(produto.getId())) {
+                        session2.setAttribute("productoExistente", true);
+
+                    } else {
+                        carrito2.put(produto.getId(), produto);
+                        session2.removeAttribute("carrito");
+                        session2.setAttribute("carrito", carrito2);
+                    }
+                    response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=realizarPedido");
+                    break;
+                case "verCarrito":
+                    HttpSession session3 = request.getSession();
+                    if (session3.getAttribute("carrito") == null) {
+                        HashMap<Integer, ProductoBean> carrito = new HashMap<>();
+                        session3.setAttribute("carrito", carrito);
+                    }
+                    requestDispatcher = request.getRequestDispatcher("/cliente/carrito.jsp");
+                    requestDispatcher.forward(request, response);
+                    break;
+
+                case "eliminarProductCarrito":
+                    int idProducto1 = Integer.parseInt(request.getParameter("productSelect"));
+                    HttpSession session4 = request.getSession();
+                    ((HashMap<Integer, ProductoBean>) session4.getAttribute("carrito")).remove(idProducto1);
+                    requestDispatcher = request.getRequestDispatcher("/cliente/carrito.jsp");
+                    requestDispatcher.forward(request, response);
+                    break;
+
+
                 case "listar":
 
                     PedidosUsuarioDao pedidosUsuarioDao = new PedidosUsuarioDao();
@@ -420,12 +489,12 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher.forward(request, response);
                     break;
             }
-        }else if(usuarioBean==null&&accion.equals("agregar")){
+        } else if (usuarioBean == null && accion.equals("agregar")) {
             ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();
             request.setAttribute("listaDistritos", listaDistritos);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("registroNuevoUsuario.jsp");
             requestDispatcher.forward(request, response);
-        }else{
+        } else {
             view2 = request.getRequestDispatcher("cliente/access_denied.jsp");
             view2.forward(request, response);
         }

@@ -87,7 +87,18 @@
             <h3>Bodega seleccionada: <%=bodegaSeleccionada.getNombreBodega()%></h3>
         </div>
         <div class="col-sm-4">
-            <button class="btn btn-secondary" href="#">Cancelar y elegir otra bodega</button>
+            <div class="row">
+                <button class="btn btn-secondary" href="#">Cancelar y elegir otra bodega</button>
+            </div>
+            <div class="row">
+                <%if(session.getAttribute("productoExistente")!=null){%>
+                <div class="alert alert-danger" role="alert">
+                    El producto ya se encuentra en el carrito
+                </div>
+                <%session.removeAttribute("productoExistente");
+                }%>
+            </div>
+
         </div>
 
     </div>
