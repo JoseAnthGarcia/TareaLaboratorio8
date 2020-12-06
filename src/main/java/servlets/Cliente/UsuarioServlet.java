@@ -1,11 +1,12 @@
-package servlets;
+package servlets.Cliente;
+
 import beans.DistritoBean;
 import beans.PedidoBean;
 import beans.ProductoBean;
 import beans.UsuarioBean;
 import daos.PedidosUsuarioDao;
 import daos.UsuarioDao;
-
+import servlets.Emails;
 
 import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
@@ -14,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -299,6 +301,10 @@ public class UsuarioServlet extends HttpServlet {
         UsuarioDao usuarioDao = new UsuarioDao();
         int usuarioId=26;
 
+        HttpSession session = request.getSession();
+        ArrayList<ProductoBean> carrito = new ArrayList<>();
+        session.setAttribute("carrito", carrito);
+
         switch (accion) {
             case "nada":
                 //manda indice
@@ -346,7 +352,10 @@ public class UsuarioServlet extends HttpServlet {
                 requestDispatcher.forward(request,response);
                 break;
             case "realizarPedido":
-                int idBodega=30;
+                int idBodega=30; //Se debe jalar la bodega
+                //VERIFICAR IDBODEGA?????------------------------------
+                HttpSession session1 = request.getSession();
+                session1.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodega));
                 int cantPorPagina=4;
                 //calculamos paginas:
                 String query = "SELECT * FROM producto WHERE idBodega="+idBodega+";";
@@ -371,6 +380,49 @@ public class UsuarioServlet extends HttpServlet {
                 request.setAttribute("paginaAct",paginaAct);
 
                 requestDispatcher = request.getRequestDispatcher("/cliente/realizarUnPedido.jsp");
+                requestDispatcher.forward(request, response);
+                break;
+
+            case "agregarCarrito":
+                //TODO: VALIDACION IDPRODUCTO
+                int idProducto = Integer.parseInt(request.getParameter("productSelect"));
+                HttpSession session2 = request.getSession();
+                ((ArrayList<ProductoBean>) session2.getAttribute("carrito")).add(usuarioDao.obtenerProducto(idProducto));
+
+                //-----------------------
+                int idBodega2=30; //Se debe jalar la bodega
+                //VERIFICAR IDBODEGA?????------------------------------
+                HttpSession session3 = request.getSession();
+                session3.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodega2));
+                int cantPorPagina2=4;
+                //calculamos paginas:
+                String query2 = "SELECT * FROM producto WHERE idBodega="+idBodega2+";";
+                int cantPag2 = usuarioDao.calcularCantPagQuery(query2, cantPorPagina2);
+
+                String pag2 = request.getParameter("pag") == null ?
+                        "1" : request.getParameter("pag");
+                int paginaAct2;
+                try{
+                    paginaAct = Integer.parseInt(pag2); //try
+                    if(paginaAct>cantPag2){
+                        paginaAct = 1;
+                    }
+                }catch(NumberFormatException e){
+                    paginaAct = 1;
+                }
+
+                ArrayList<ProductoBean> listaProductos2 = usuarioDao.listarProductosBodega(idBodega2, paginaAct, cantPorPagina2);
+
+                request.setAttribute("listaProductos",listaProductos2);
+                request.setAttribute("cantPag", cantPag2);
+                request.setAttribute("paginaAct",paginaAct);
+
+                requestDispatcher = request.getRequestDispatcher("/cliente/realizarUnPedido.jsp");
+                requestDispatcher.forward(request, response);
+
+                break;
+            case "verCarrito":
+                requestDispatcher = request.getRequestDispatcher("/cliente/carrito.jsp");
                 requestDispatcher.forward(request, response);
                 break;
             case "listar":
