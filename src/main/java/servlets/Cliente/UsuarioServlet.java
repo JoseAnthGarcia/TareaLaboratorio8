@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -289,6 +291,17 @@ public class UsuarioServlet extends HttpServlet {
                 RequestDispatcher view = request.getRequestDispatcher("cliente/realizarUnPedido.jsp");
                 view.forward(request, response);
                 break;
+            case "generarPedido":
+                //TODO: VALIDAR ESPACIOS VACIOS
+                HttpSession session = request.getSession();
+                HashMap<Integer, ProductoBean> listaProductos = (HashMap<Integer, ProductoBean>) session.getAttribute("carrito");
+                for (Map.Entry<Integer, ProductoBean> entry : listaProductos.entrySet()){
+                    int idProducto = entry.getKey();
+                    String cant = request.getParameter(String.valueOf(idProducto));
+                    System.out.println("producto"+entry.getValue().getNombreProducto()+" | cant: "+cant);
+                }
+
+                break;
 
         }
 
@@ -381,7 +394,7 @@ public class UsuarioServlet extends HttpServlet {
 
             case "agregarCarrito":
                 //TODO: VALIDACION IDPRODUCTO
-                int idProducto = Integer.parseInt(request.getParameter("productSelect"));
+                /*int idProducto = Integer.parseInt(request.getParameter("productSelect"));
                 HttpSession session2 = request.getSession();
                 if(session2.getAttribute("carrito")==null){
                     session2.setAttribute("carrito", new ArrayList<ProductoBean>());
@@ -390,14 +403,39 @@ public class UsuarioServlet extends HttpServlet {
                 carrito2.add(usuarioDao.obtenerProducto(idProducto));
                 session2.removeAttribute("carrito");
                 session2.setAttribute("carrito",carrito2);
-                response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=realizarPedido");
+                response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=realizarPedido");*/
+                int idProducto = Integer.parseInt(request.getParameter("productSelect"));
+                HttpSession session2 = request.getSession();
+                if(session2.getAttribute("carrito")==null){
+                    HashMap<Integer, ProductoBean> carrito2 = new HashMap<>();
+                    session2.setAttribute("carrito", carrito2);
+                }
+                HashMap<Integer, ProductoBean> carrito2 = (HashMap<Integer, ProductoBean>) session2.getAttribute("carrito");
+                ProductoBean produto = usuarioDao.obtenerProducto(idProducto);
+                if(carrito2.containsKey(produto.getId())){
+                    session2.setAttribute("productoExistente",true);
 
+                }else{
+                    carrito2.put(produto.getId(), produto);
+                    session2.removeAttribute("carrito");
+                    session2.setAttribute("carrito",carrito2);
+                }
+                response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=realizarPedido");
                 break;
             case "verCarrito":
                 HttpSession session3 = request.getSession();
                 if(session3.getAttribute("carrito")==null){
-                    session3.setAttribute("carrito", new ArrayList<ProductoBean>());
+                    HashMap<Integer, ProductoBean> carrito = new HashMap<>();
+                    session3.setAttribute("carrito", carrito);
                 }
+                requestDispatcher = request.getRequestDispatcher("/cliente/carrito.jsp");
+                requestDispatcher.forward(request, response);
+                break;
+
+            case "eliminarProductCarrito":
+                int idProducto1 = Integer.parseInt(request.getParameter("productSelect"));
+                HttpSession session4 = request.getSession();
+                ((HashMap<Integer, ProductoBean>)session4.getAttribute("carrito")).remove(idProducto1);
                 requestDispatcher = request.getRequestDispatcher("/cliente/carrito.jsp");
                 requestDispatcher.forward(request, response);
                 break;
