@@ -301,10 +301,6 @@ public class UsuarioServlet extends HttpServlet {
         UsuarioDao usuarioDao = new UsuarioDao();
         int usuarioId=26;
 
-        HttpSession session = request.getSession();
-        ArrayList<ProductoBean> carrito = new ArrayList<>();
-        session.setAttribute("carrito", carrito);
-
         switch (accion) {
             case "nada":
                 //manda indice
@@ -387,41 +383,21 @@ public class UsuarioServlet extends HttpServlet {
                 //TODO: VALIDACION IDPRODUCTO
                 int idProducto = Integer.parseInt(request.getParameter("productSelect"));
                 HttpSession session2 = request.getSession();
-                ((ArrayList<ProductoBean>) session2.getAttribute("carrito")).add(usuarioDao.obtenerProducto(idProducto));
-
-                //-----------------------
-                int idBodega2=30; //Se debe jalar la bodega
-                //VERIFICAR IDBODEGA?????------------------------------
-                HttpSession session3 = request.getSession();
-                session3.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodega2));
-                int cantPorPagina2=4;
-                //calculamos paginas:
-                String query2 = "SELECT * FROM producto WHERE idBodega="+idBodega2+";";
-                int cantPag2 = usuarioDao.calcularCantPagQuery(query2, cantPorPagina2);
-
-                String pag2 = request.getParameter("pag") == null ?
-                        "1" : request.getParameter("pag");
-                int paginaAct2;
-                try{
-                    paginaAct = Integer.parseInt(pag2); //try
-                    if(paginaAct>cantPag2){
-                        paginaAct = 1;
-                    }
-                }catch(NumberFormatException e){
-                    paginaAct = 1;
+                if(session2.getAttribute("carrito")==null){
+                    session2.setAttribute("carrito", new ArrayList<ProductoBean>());
                 }
-
-                ArrayList<ProductoBean> listaProductos2 = usuarioDao.listarProductosBodega(idBodega2, paginaAct, cantPorPagina2);
-
-                request.setAttribute("listaProductos",listaProductos2);
-                request.setAttribute("cantPag", cantPag2);
-                request.setAttribute("paginaAct",paginaAct);
-
-                requestDispatcher = request.getRequestDispatcher("/cliente/realizarUnPedido.jsp");
-                requestDispatcher.forward(request, response);
+                ArrayList<ProductoBean> carrito2 = (ArrayList<ProductoBean>) session2.getAttribute("carrito");
+                carrito2.add(usuarioDao.obtenerProducto(idProducto));
+                session2.removeAttribute("carrito");
+                session2.setAttribute("carrito",carrito2);
+                response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=realizarPedido");
 
                 break;
             case "verCarrito":
+                HttpSession session3 = request.getSession();
+                if(session3.getAttribute("carrito")==null){
+                    session3.setAttribute("carrito", new ArrayList<ProductoBean>());
+                }
                 requestDispatcher = request.getRequestDispatcher("/cliente/carrito.jsp");
                 requestDispatcher.forward(request, response);
                 break;
