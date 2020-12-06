@@ -30,6 +30,19 @@
             position: absolute;
             right: 10% ;
         }
+        .btn {
+            background-color: #343a40;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        /* Darker background on mouse-over */
+        .btn:hover {
+            background-color: #767676;
+        }
     </style>
 
 </head>
@@ -43,18 +56,24 @@
     </div>
     <div class="navbar navbar-dark bg-dark box-shadow">
         <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Anacleto.com</strong>
+            <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="navbar-brand d-flex align-items-center">
+                <strong>MiMarca.com</strong>
             </a>
             <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Mi Bodega</strong>
+                <strong>Productos disponibles</strong>
             </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Productos</strong>
+            <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="navbar-brand d-flex align-items-center">
+                <strong>Realizar un pedido</strong>
             </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Pedidos</strong>
+            <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=listar" class="navbar-brand d-flex align-items-center">
+                <strong>Mis pedidos</strong>
             </a>
+            <a>
+                <div class="card">
+                    <a href="<%=request.getContextPath()%>/LoginServlet?accion=logout"><img src="imagenes/sigout.png" height="30px"/></a>
+                </div>
+            </a>
+
         </div>
     </div>
 </header>
@@ -130,7 +149,7 @@
 
     <div class="row mt-5">
 
-        <a href="#" class="btn btn-outline-danger <%=listaProductos.size()!=0?"izq":""%>">Volver</a>
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger <%=listaProductos.size()!=0?"izq":""%>">Regresar</a>
         <%if (cantPag != -1) {%>
         <!-- paginacion -->
         <nav aria-label="Page navigation example" class="mx-auto"> <!-- Recordar centro !! -->
@@ -181,7 +200,7 @@
                 No se ha encontrado ningún producto con ese nombre.
             </div>
             <div class="izquierda2 col-2" >
-                <a href="<%= request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-danger">Volver</a>
+                <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger">Regresar</a>
             </div>
         </div>
 
