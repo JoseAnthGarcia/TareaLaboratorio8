@@ -141,7 +141,7 @@ public class UsuarioDao extends BaseDao {
     }
 
     public void actualizarUsuario(String nombres, String apellidos,
-                                  int idDistrito, int idUsuario) {
+                                  int idDistrito, int idUsuario, UsuarioBean usuarioBean) {
 
         String sql = "UPDATE usuario SET nombreUsuario = ?, apellido = ?, idDistrito = ? WHERE idUsuario = ?";
 
@@ -153,7 +153,8 @@ public class UsuarioDao extends BaseDao {
             pstmt.setString(2, apellidos);
             pstmt.setInt(3, idDistrito);
             pstmt.setInt(4, idUsuario);
-
+            usuarioBean.setNombre(nombres);
+            usuarioBean.setApellido(apellidos);
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
