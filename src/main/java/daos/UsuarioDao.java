@@ -1,5 +1,6 @@
 package daos;
 
+import beans.BodegaBean;
 import beans.DistritoBean;
 import beans.ProductoBean;
 import beans.UsuarioBean;
@@ -35,8 +36,8 @@ public class UsuarioDao extends BaseDao {
     public void regitrarNuevoUsuario(String nombres, String apellidos,
                                      String dni, String correo,
                                      String contrasenia, int idDistrito) {
-        String sql = "INSERT INTO usuario(nombreUsuario, apellido, dni, correo, contrasenia, idDistrito)\n" +
-                "VALUES (?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO usuario(nombreUsuario, apellido, dni, correo, contrasenia, idDistrito,contraseniaHashed)\n" +
+                "VALUES (?, ?, ?, ?, ?, ?, sha2(?,256));";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -47,6 +48,8 @@ public class UsuarioDao extends BaseDao {
             pstmt.setString(4, correo);
             pstmt.setString(5, contrasenia);
             pstmt.setInt(6, idDistrito);
+            pstmt.setString(7, contrasenia);
+
 
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
@@ -138,7 +141,7 @@ public class UsuarioDao extends BaseDao {
     }
 
     public void actualizarUsuario(String nombres, String apellidos,
-                                  int idDistrito, int idUsuario) {
+                                  int idDistrito, int idUsuario, UsuarioBean usuarioBean) {
 
         String sql = "UPDATE usuario SET nombreUsuario = ?, apellido = ?, idDistrito = ? WHERE idUsuario = ?";
 
@@ -150,7 +153,8 @@ public class UsuarioDao extends BaseDao {
             pstmt.setString(2, apellidos);
             pstmt.setInt(3, idDistrito);
             pstmt.setInt(4, idUsuario);
-
+            usuarioBean.setNombre(nombres);
+            usuarioBean.setApellido(apellidos);
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -260,9 +264,66 @@ public class UsuarioDao extends BaseDao {
         return listaProductos;
     }
 
-    public void enviarCorreo(){
+    public UsuarioBean validarUsuarioPassword(String user, String password){
+        String sql = "select* from usuario where correo=? and contraseniaHashed=sha2(?,256);";
+        UsuarioBean usuarioBean = null;
+        try(Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql);){
 
+            pstmt.setString(1,user);
+            pstmt.setString(2,password);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    int usuarioId = rs.getInt(1);
+                    usuarioBean = this.obtenerUsuario(usuarioId);
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return usuarioBean;
     }
 
+    //Realizar pedido----------------------------
+    public BodegaBean obtenerBodega(int idBodega){
+        BodegaBean bodega = null;
+        String sql = "SELECT * FROM bodega WHERE idBodega=?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, idBodega);
+            try(ResultSet rs = pstmt.executeQuery()){
+                rs.next();
+                bodega = new BodegaBean();
+                bodega.setIdBodega(rs.getInt("idBodega"));
+                bodega.setNombreBodega(rs.getString("nombreBodega"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return bodega;
+    }
+
+    //ojo: ya el producto esta como existente, pues sino no se muestra en la lista
+    public ProductoBean obtenerProducto(int idProducto){
+        ProductoBean producto = null;
+        String sql = "SELECT * FROM producto WHERE idProducto=?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, idProducto);
+            try(ResultSet rs = pstmt.executeQuery()){
+                //TODO: FALTA O DE FOTOS :C
+                rs.next();
+                producto = new ProductoBean();
+                producto.setId(rs.getInt("idProducto"));
+                producto.setNombreProducto(rs.getString("nombreProducto"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return producto;
+    }
 
 }

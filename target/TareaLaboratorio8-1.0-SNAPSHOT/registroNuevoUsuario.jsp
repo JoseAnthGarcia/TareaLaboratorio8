@@ -71,7 +71,7 @@
             <a href="#" class="navbar-brand d-flex align-items-center">
                 <strong>MiMarca.com</strong>
             </a>
-            <a href="#"><img src="/imagenes/sigout.png" height="30px"/></a>
+
 
         </div>
     </div>
@@ -197,7 +197,10 @@
 
 
                 </div>
-                <button type="submit" class="btn btn-success pull-right">Registrarse</button>
+                <a href="<%=request.getContextPath()%>/LoginServlet" class="btn btn-danger mt-3" >Regresar</a>
+                <button type="submit" class="btn btn-success pull-right" style="position: relative;
+                  top: 15px;  ">Registrarse</button>
+
             </form>
         </div>
         <div class="col-sm-3">

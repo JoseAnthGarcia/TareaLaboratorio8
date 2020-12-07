@@ -65,12 +65,30 @@ public class AdminDao {
         return listaBodegas;
 
     }
-    public int buscarIdBodega(String ruc){
+    public BodegaBean buscarBodega(int idBodega){
+        BodegaBean bodega= new BodegaBean();
+        String sql = "SELECT * FROM bodega WHERE idBodega = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1,idBodega);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    bodega.setNombreBodega(rs.getString("nombreBodega"));
+                    bodega.setRucBodega(rs.getLong("ruc"));
+                    bodega.setCorreoBodega(rs.getString("correo"));
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return bodega;
+    }
+    public int buscarIdBodega(Long ruc){
         String sql = "SELECT idBodega FROM bodega WHERE ruc = ?";
         int idBodega=0;
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
-            pstmt.setString(1,ruc);
+            pstmt.setLong(1,ruc);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
                     idBodega = rs.getInt(1);
@@ -79,7 +97,6 @@ public class AdminDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
         return idBodega;
     }
 
@@ -240,7 +257,7 @@ public class AdminDao {
 
         return encontrado;
     }
-   /* public int buscarIdBodega(String ruc){
+    public int buscarIdBodega(String ruc){
         String sql = "SELECT idBodega FROM bodega WHERE ruc = ?";
         int idBodega=0;
         try (Connection conn = getConnection();
@@ -256,6 +273,6 @@ public class AdminDao {
         }
 
         return idBodega;
-    }*/
+    }
 
 }

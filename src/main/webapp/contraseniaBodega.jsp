@@ -2,8 +2,10 @@
 <%@ page import="beans.DistritoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="idBodega" scope="request" type="java.lang.Integer"/>
+<jsp:useBean id="rucBodega" scope="request" type="java.lang.Long"/>
 
 <%
+    //int idBodega= (int) request.getAttribute("idBodega");
     boolean contraseniaB = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
     boolean contrasenia2B = request.getAttribute("contrasenia2B") == null ? true : (Boolean) request.getAttribute("contrasenia2B");
     boolean contIguales = request.getAttribute("contIguales") == null ? true : (Boolean) request.getAttribute("contIguales");
@@ -65,8 +67,6 @@
                     <a href="#" class="navbar-brand d-flex align-items-center">
                         <strong>MiMarca.com</strong>
                     </a>
-                    <a href="#"><img src="/imagenes/sigout.png" height="30px"/></a>
-
                 </div>
             </div>
         </header>
@@ -96,9 +96,8 @@
                 </div>
                 <div class="col-sm-6">
                     <h1>Registro de contraseña</h1>
-                    <form method="POST" action="<%=request.getContextPath()%>/AdminServlet?accion=definirContrasenia&idBodega=<%=idBodega%>">
+                    <form method="POST" action="<%=request.getContextPath()%>/AdminServlet?accion=definirContrasenia&idBodega=<%=idBodega%>&rucBodega=<%=rucBodega%>">
                         <div class="form-group row">
-                            <% if (Integer.parseInt(idBodega)>0){ %>
                             <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña:</label>
                             <div class="col-sm-10">
                                 <input type="password" class="form-control <%=contraseniaB?"":"is-invalid"%>"
@@ -121,7 +120,6 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-success pull-right">Registrar</button>
-                        <% }  %>
                     </form>
                 </div>
                 <div class="col-sm-3">

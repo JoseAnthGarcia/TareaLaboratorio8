@@ -3,6 +3,7 @@ package servlets;
 import beans.BodegaBean;
 import beans.DistritoBean;
 import daos.AdminDao;
+import daos.BodegaDao;
 
 import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
@@ -144,8 +145,9 @@ public class AdminServlet extends HttpServlet {
 
         ArrayList<DistritoBean> listaDistritos = bodegaDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
-        int idBodega= bodegaDao.buscarIdBodega(ruc);
-        request.setAttribute("idBodega",idBodega);
+
+        int idBodega ;
+        Long rucBodega;
 
         switch (accion){
             case  "registrar":
@@ -170,21 +172,29 @@ public class AdminServlet extends HttpServlet {
 
                     if(distritoSelected && !rucExis && idDistritoInt != 0){
                         bodegaDao.guardarBodega(ruc,direccion,nombreBodega,correo,idDistritoInt);
+                        idBodega = bodegaDao.buscarIdBodega(ruc);
+                        rucBodega= Long.valueOf(ruc);
+                        request.setAttribute("idBodega",idBodega);
+                        request.setAttribute("rucBodega",rucBodega);
 
                         Emails emails = new Emails();
                         String correoAenviar = correo;
                         String asunto = "REGISTRAR CONTRASEÑA";
-                        String contenido = "Se ha iniciado el registro de su bodega, para continuar con el " +
-                                "registro ingrese al siguiente link y establezca una contraseña:" +
-                                ""+idBodega;
+                        String contenido = "Se ha iniciado el registro de su bodega "+nombreBodega+" con RUC:"+rucBodega+
+                                ", para continuar con el registro ingrese al siguiente link y establezca su contraseña:" +
+                                "http://localhost:8082/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia&idBodega="
+                                +idBodega+"&rucBodega="+rucBodega;
 
                         try {
                             emails.enviarCorreo(correoAenviar, asunto, contenido);
                         } catch (MessagingException e) {
                             System.out.println("Se capturo excepcion en envio de correo");
                         }
-
-                        response.sendRedirect(request.getContextPath()+"/AdminServlet");
+                        request.setAttribute("ruc",ruc);
+                        request.setAttribute("nombreBodega",nombreBodega);
+                        request.setAttribute("correo",correo);
+                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("BodegaExitosa.jsp");
+                        requestDispatcher.forward(request, response);
                     }else{
                         request.setAttribute("rucExis", rucExis);
                         request.setAttribute("distritoSelected", distritoSelected);
@@ -201,30 +211,48 @@ public class AdminServlet extends HttpServlet {
                 }
                 break;
             case "definirContrasenia":
+                int idBodega2= Integer.parseInt(request.getParameter("idBodega") == null ?
+                             "nada" : request.getParameter("idBodega"));
+                Long rucBodega2= Long.parseLong((request.getParameter("rucBodega") == null ?
+                        "nada" : request.getParameter("rucBodega")));
 
-                String contrasenia = request.getParameter("contrasenia");
-                String contrasenia2 = request.getParameter("contrasenia2");
+                request.setAttribute("idBodega",idBodega2);
+                request.setAttribute("rucBodega",rucBodega2);
+                if(idBodega2==bodegaDao.buscarIdBodega(rucBodega2)) {
+                    String contrasenia = request.getParameter("contrasenia");
+                    String contrasenia2 = request.getParameter("contrasenia2");
 
-                boolean contraseniaB = validarContrasenia(contrasenia);
-                boolean contrasenia2B = validarContrasenia(contrasenia2);
-                boolean contIguales = false;
-                if(contrasenia.equals(contrasenia2)) {
-                    contIguales = true;
-                }
-                if(contraseniaB && contrasenia2B ){
-                    if(contIguales){
-                        bodegaDao.registrarContrasenia(idBodega,contrasenia);
-                        response.sendRedirect(request.getContextPath()+"/AdminServlet");
-                    }else{
+                    boolean contraseniaB = validarContrasenia(contrasenia);
+                    boolean contrasenia2B = validarContrasenia(contrasenia2);
+                    boolean contIguales = false;
+                    if (contrasenia.equals(contrasenia2)) {
+                        contIguales = true;
+                    }
+                    if (contraseniaB && contrasenia2B) {
+                        if (contIguales) {
+                            bodegaDao.registrarContrasenia(idBodega2, contrasenia);
+                            BodegaBean bodega = bodegaDao.buscarBodega(idBodega2);
+                            nombreBodega = bodega.getNombreBodega();
+                            Long ruc3 = bodega.getRucBodega();
+                            request.setAttribute("ruc2", ruc3);
+                            request.setAttribute("nombreBodega", nombreBodega);
+                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("ContraseniaExitosa.jsp");
+                            requestDispatcher.forward(request, response);
+                            ;
+                        } else {
+                            request.setAttribute("contIguales", contIguales);
+                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
+                            requestDispatcher.forward(request, response);
+                        }
+                    } else {
+                        request.setAttribute("contraseniaB", contraseniaB);
+                        request.setAttribute("contrasenia2B", contrasenia2B);
                         request.setAttribute("contIguales", contIguales);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
                         requestDispatcher.forward(request, response);
                     }
                 }else{
-                    request.setAttribute("contraseniaB",contraseniaB);
-                    request.setAttribute("contrasenia2B",contrasenia2B);
-                    request.setAttribute("contIguales",contIguales);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("ErrorIdBodega.jsp");
                     requestDispatcher.forward(request, response);
                 }
                 break;
@@ -278,11 +306,23 @@ public class AdminServlet extends HttpServlet {
                 response.sendRedirect("AdminServlet");
                 break;
             case "definirContrasenia":
-                int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
-                        "nada" : request.getParameter("idBodega"));
-                request.setAttribute("idBodega",idBodega);
-                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
-                requestDispatcher2.forward(request,response);
+
+                try{
+                    int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
+                            "nada" : request.getParameter("idBodega"));
+                    request.setAttribute("idBodega",idBodega);
+                    String rucBodegaString = request.getParameter("rucBodega")==null?"nada":request.getParameter("rucBodega");
+                    Long rucBodega= Long.parseLong(request.getParameter("rucBodega") == null ?
+                            "nada" : request.getParameter("rucBodega"));
+
+                    request.setAttribute("rucBodega",rucBodega);
+                    RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
+                    requestDispatcher2.forward(request,response);
+                }catch (NumberFormatException e){
+                    e.printStackTrace();
+                    RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("ErrorIdBodega.jsp");
+                    requestDispatcher2.forward(request,response);
+                }
                 break;
         }
 
