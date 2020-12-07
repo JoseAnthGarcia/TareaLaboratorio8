@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class BodegaDao extends BaseDao{
 
-    public static void crearProducto(String nombreProducto, String descripcion, int stock, BigDecimal precioUnitario){
+    public static void crearProducto(String nombreProducto, String descripcion, int stock, BigDecimal precioUnitario, int idBodega){
         // TODO: añadir el manejo de imagenes
 
         try {
@@ -22,7 +22,7 @@ public class BodegaDao extends BaseDao{
 
         // TODO: idBodega, nombreFoto, rutaFoto se ha hardcodeado
         String sql = "insert into producto (nombreFoto,rutaFoto,nombreProducto,descripcion,stock,precioUnitario,idBodega) values (\n" +
-                "'foto random', '/fotoRandom', ?, ?, ?, ?, 1);";  // numero de paginas
+                "'foto random', '/fotoRandom', ?, ?, ?, ?, ?);";  // numero de paginas
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -32,6 +32,7 @@ public class BodegaDao extends BaseDao{
             pstmt.setString(2, descripcion);
             pstmt.setInt(3, stock);
             pstmt.setBigDecimal(4, precioUnitario);
+            pstmt.setInt(5, idBodega);
 
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
@@ -65,7 +66,7 @@ public class BodegaDao extends BaseDao{
         return cantPag;
     }
 
-    public static int calcularCantPag(String productName) {
+    public static int calcularCantPag(String productName, int idBodega) {
         /**
          *  Para barra de busqueda
          */
@@ -76,14 +77,14 @@ public class BodegaDao extends BaseDao{
             e.printStackTrace();
         }
 
-        // TODO: idBodega se ha hardcodeado
-        String sql = "select * from producto where idBodega=1 and lower(nombreProducto) like ? and estado='Existente';";  // numero de paginas
+        String sql = "select * from producto where idBodega=? and lower(nombreProducto) like ? and estado='Existente';";  // numero de paginas
 
         int cantPag = 0;
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
-            pstmt.setString(1, "%"+productName+"%");
+            pstmt.setInt(1, idBodega);
+            pstmt.setString(2, "%"+productName+"%");
 
             try (ResultSet rs = pstmt.executeQuery();) {
                 while (rs.next()) {
@@ -129,22 +130,22 @@ public class BodegaDao extends BaseDao{
         return listaProductos;
     }
 
-    public static ArrayList<ProductoBean> listarProductoBodega(int pagina, String productName){
+    public static ArrayList<ProductoBean> listarProductoBodega(int pagina, String productName, int idBodega){
         /**
          *  Para barra de busqueda
          */
 
         ArrayList<ProductoBean> listaProductos = new ArrayList<>();
 
-        // TODO: idBodega se ha hardcodeado
         int limit = (pagina-1)*5;
-        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=1 AND lower(nombreProducto) like ? AND estado='Existente' limit ?,5;";  // numero de paginas
+        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=? AND lower(nombreProducto) like ? AND estado='Existente' limit ?,5;";  // numero de paginas
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
-            pstmt.setString(1, "%"+productName+"%");
-            pstmt.setInt(2, limit);
+            pstmt.setInt(1, idBodega);
+            pstmt.setString(2, "%"+productName+"%");
+            pstmt.setInt(3, limit);
 
             try(ResultSet rs = pstmt.executeQuery();){
                 while (rs.next()) {
