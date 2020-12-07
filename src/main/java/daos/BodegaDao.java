@@ -1,7 +1,9 @@
 package daos;
 
+import beans.BodegaBean;
 import beans.PedidoBean;
 import beans.ProductoBean;
+import beans.UsuarioBean;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -75,13 +77,13 @@ public class BodegaDao extends BaseDao{
         }
 
         // TODO: idBodega se ha hardcodeado
-        String sql = "select * from producto where idBodega=30 and lower(nombreProducto) like ? and estado='Existente';";  // numero de paginas
+        String sql = "select * from producto where idBodega=1 and lower(nombreProducto) like ? and estado='Existente';";  // numero de paginas
 
         int cantPag = 0;
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
-            pstmt.setString(1, productName+"%");
+            pstmt.setString(1, "%"+productName+"%");
 
             try (ResultSet rs = pstmt.executeQuery();) {
                 while (rs.next()) {
@@ -136,12 +138,12 @@ public class BodegaDao extends BaseDao{
 
         // TODO: idBodega se ha hardcodeado
         int limit = (pagina-1)*5;
-        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=30 AND lower(nombreProducto) like ? AND estado='Existente' limit ?,5;";  // numero de paginas
+        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=1 AND lower(nombreProducto) like ? AND estado='Existente' limit ?,5;";  // numero de paginas
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
-            pstmt.setString(1, productName+"%");
+            pstmt.setString(1, "%"+productName+"%");
             pstmt.setInt(2, limit);
 
             try(ResultSet rs = pstmt.executeQuery();){
@@ -168,7 +170,7 @@ public class BodegaDao extends BaseDao{
 
         boolean exisProduct = false;
 
-        String sql = "SELECT * FROM producto WHERE idProducto = ? AND idBodega=30";
+        String sql = "SELECT * FROM producto WHERE idProducto = ? AND idBodega=1";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -259,6 +261,47 @@ public class BodegaDao extends BaseDao{
         }
     }
 
+    //-------------- Para inicio de sesion ------------------
+
+    public BodegaBean validarUsuarioPassword(String user, String password){
+        // TODO: ENCRIPTAR CONTRASENIA -> String sql = "select* from usuario where correo=? and contraseniaHashed=sha2(?,256);"
+        String sql = "select * from bodega where correo=? and contrasenia=?;";
+        BodegaBean bodegaBean = null;
+        try(Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql);){
+
+            pstmt.setString(1,user);
+            pstmt.setString(2,password);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    int idBodega = rs.getInt(1);
+                    bodegaBean = this.obtenerBodega(idBodega);
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return bodegaBean;
+    }
+
+    public BodegaBean obtenerBodega(int idBodega){
+        BodegaBean bodega = null;
+        String sql = "SELECT * FROM bodega WHERE idBodega=?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, idBodega);
+            try(ResultSet rs = pstmt.executeQuery()){
+                rs.next();
+                bodega = new BodegaBean();
+                bodega.setIdBodega(rs.getInt("idBodega"));
+                bodega.setNombreBodega(rs.getString("nombreBodega"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return bodega;
+    }
 
     //-------------------------------Flujo bodega---------------------------
 

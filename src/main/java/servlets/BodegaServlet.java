@@ -1,7 +1,9 @@
 package servlets;
 
+import beans.BodegaBean;
 import beans.PedidoBean;
 import beans.ProductoBean;
+import beans.UsuarioBean;
 import daos.BodegaDao;
 
 import javax.servlet.RequestDispatcher;
@@ -10,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -170,6 +173,8 @@ public class BodegaServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        HttpSession session = request.getSession();
+        BodegaBean bodegaActual = (BodegaBean) session.getAttribute("bodega");
 
         String accion = request.getParameter("accion") == null ?
                 "listar" : request.getParameter("accion");
