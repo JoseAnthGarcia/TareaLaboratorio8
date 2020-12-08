@@ -21,7 +21,7 @@ public class LoginBodegaServlet extends HttpServlet {
         String inputPassword = request.getParameter("inputPassword");
 
         BodegaDao bodegaDao = new BodegaDao();
-        BodegaBean bodega = bodegaDao.validarUsuarioPassword(inputEmail, inputPassword);
+        BodegaBean bodega = bodegaDao.validarUsuarioPasswordHashed(inputEmail, inputPassword);
         //UsuarioDao usuarioDao = new UsuarioDao();
         //UsuarioBean usuario = usuarioDao.validarUsuarioPassword(inputEmail,inputPassword);
 
