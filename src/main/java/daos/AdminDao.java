@@ -2,13 +2,89 @@ package daos;
 
 import beans.BodegaBean;
 import beans.DistritoBean;
+import beans.UsuarioBean;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 import static daos.BaseDao.getConnection;
 
-public class AdminDao {
+public class AdminDao extends BaseDao{
+
+    //Login
+
+    public UsuarioBean validarUsuarioPassword(String user, String pass){
+
+        String sql ="select * from usuario where correo = ? and contrasenia = ?;";
+        UsuarioBean administrador = null;
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setString(1,user);
+            pstmt.setString(2,pass);
+
+            try(ResultSet rs = pstmt.executeQuery()){
+
+                if(rs.next()){
+                    int adminId = rs.getInt("idUsuario");
+                    administrador = this.obetenerAdministrador(adminId);
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return administrador;
+    }
+
+    /*
+        public UsuarioBean validarUsuarioPassword(String user, String pass){
+
+        String sql ="select * from usuario where correo = ? and contrasenia_hashead = (?,256);";
+        UsuarioBean administrador = null;
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setString(1,user);
+            pstmt.setString(2,pass);
+
+            try(ResultSet rs = pstmt.executeQuery()){
+
+                if(rs.next()){
+                    int adminId = rs.getInt("idUsuario");
+                    administrador = this.obetenerAdministrador(adminId);
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return administrador;
+    }
+
+    *  */
+
+    public UsuarioBean obetenerAdministrador(int idUsuario){
+        UsuarioBean administrador = null;
+        String sql = "select * from usuario where idUsuario=?;";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                rs.next();
+                administrador = new UsuarioBean();
+                administrador.setIdUsuario(rs.getInt("idUsuario"));
+                administrador.setNombre(rs.getString("nombreUsuario"));
+                administrador.setApellido(rs.getString("apellido"));
+                administrador.setCorreo(rs.getString("correo"));
+                administrador.setContrasenia(rs.getString("contrasenia"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return administrador;
+    }
+
 
     public static int calcularCantPag() {
         try {

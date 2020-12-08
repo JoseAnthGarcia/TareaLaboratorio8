@@ -114,16 +114,16 @@
                 <td><%= bodega.getNombreBodega() %></td>
                 <td><%= bodega.getEstadoBodega() %></td>
                 <% if(bodega.getEstadoBodega().toLowerCase().equals("activo")){%>
-                <%if(AdminDao.pedidoPendiente(bodega.getNombreBodega())){ %>
-                <td>
-                    <a onclick="return confirm('No es posible bloquear esta bodega porque presenta al menos un pedido en estado pendiente')"
-                       class="btn btn-danger">Bloquear</a></td>
-                <% }else{%>
-                <td>
-                    <a onclick="return confirm('¿Estas seguro que deseas bloquear?')"
-                       href="<%=request.getContextPath()%>/AdminServlet?accion=bloquear&nombreB=<%=bodega.getNombreBodega()%>&state=true"
-                       class="btn btn-danger">Bloquear</a></td>
-                <% }%>
+                    <%if(AdminDao.pedidoPendiente(bodega.getNombreBodega())){ %>
+                    <td>
+                        <a onclick="return confirm('No es posible bloquear esta bodega porque presenta al menos un pedido en estado pendiente')"
+                           class="btn btn-danger">Bloquear</a></td>
+                    <% }else{%>
+                    <td>
+                        <a onclick="return confirm('¿Estas seguro que deseas bloquear?')"
+                           href="<%=request.getContextPath()%>/AdminServlet?accion=bloquear&nombreB=<%=bodega.getNombreBodega()%>&state=true"
+                           class="btn btn-danger">Bloquear</a></td>
+                    <% }%>
                 <% }else{%>
                 <td><a onclick="return confirm('¿Estas seguro que deseas activar esta bodega?')"
                        href="<%=request.getContextPath()%>/AdminServlet?accion=bloquear&&nombreB=<%=bodega.getNombreBodega()%>&state=false"
