@@ -281,6 +281,10 @@ public class UsuarioServlet extends HttpServlet {
                     usuarioDao.ingresarProductosApedido(idPedido, listaProductosSelecCant1);
 
                     //TODO: eliminar attributos de session necesarios para el pedido.
+
+                    request.setAttribute("codigo",codigo);
+                    RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("cliente/registroExitoso.jsp");
+                    requestDispatcher2.forward(request, response);
                     break;
 
             }

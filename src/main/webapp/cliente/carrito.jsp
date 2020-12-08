@@ -106,7 +106,8 @@
             <%}%>
             </tbody>
         </table>
-        <button type="submit" class="btn btn-success pull-right">Generar pedido</button>
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-success">Regresar</a>
+        <button type="submit" class="btn btn-outline-success">Generar pedido</button>
         <%}else{%>
         <div class="alert alert-secondary" role="alert">
             El carrito se encuentra vacio.
