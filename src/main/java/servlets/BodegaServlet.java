@@ -13,9 +13,25 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @WebServlet(name = "BodegaServlet", urlPatterns = {"/BodegaServlet"})
 public class BodegaServlet extends HttpServlet {
+
+    public  boolean validarContrasenia(String contrasenia) {
+        boolean resultado = true;
+        Pattern pattern2 = Pattern
+                .compile("(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}");
+        Matcher mather = pattern2.matcher(contrasenia);
+
+        if (mather.find() == false) {
+            resultado = false;
+        }
+        return  resultado;
+    }
+
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
