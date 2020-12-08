@@ -1,6 +1,7 @@
 package beans;
 
-public class BodegaBean {
+public class
+BodegaBean {
 
     private  int idBodega;
     private long rucBodega;
