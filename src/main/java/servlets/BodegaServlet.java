@@ -1,7 +1,9 @@
 package servlets;
 
+import beans.BodegaBean;
 import beans.PedidoBean;
 import beans.ProductoBean;
+import beans.UsuarioBean;
 import daos.BodegaDao;
 
 import javax.servlet.RequestDispatcher;
@@ -10,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -34,6 +37,10 @@ public class BodegaServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        BodegaBean bodegaActual = (BodegaBean) session.getAttribute("bodega");
+        int idBodegaActual =  bodegaActual.getIdBodega();
 
         RequestDispatcher view;
 
@@ -84,7 +91,7 @@ public class BodegaServlet extends HttpServlet {
 
                 // si es que los datos son correctos, se guarda el producto
                 if (validStock & validPrecioUnitario & validNombreProducto) {
-                    BodegaDao.crearProducto(nombreProducto, descripcion, stock, precioUnitario);
+                    BodegaDao.crearProducto(nombreProducto, descripcion, stock, precioUnitario, idBodegaActual);
 
                 } else {
                     request.setAttribute("validStock", validStock);
@@ -163,10 +170,10 @@ public class BodegaServlet extends HttpServlet {
                 /**
                  * NOTA: Al hacer la primera busqueda simepre se vera en la primera pagina
                  */
-
+                // TODO: extaer la bodega actual
                 String textoBuscar = request.getParameter("textoBuscar");
 
-                int cantPag = BodegaDao.calcularCantPag(textoBuscar);
+                int cantPag = BodegaDao.calcularCantPag(textoBuscar,idBodegaActual );
                 int paginaAct = 1; // primera vista en la pagina 1
 
 
@@ -174,7 +181,7 @@ public class BodegaServlet extends HttpServlet {
                 request.setAttribute("paginaAct", paginaAct);
                 request.setAttribute("productoBusqueda", textoBuscar);
 
-                request.setAttribute("listaProductoBodegas", BodegaDao.listarProductoBodega(paginaAct,textoBuscar)
+                request.setAttribute("listaProductoBodegas", BodegaDao.listarProductoBodega(paginaAct,textoBuscar, idBodegaActual)
                         );
                 view = request.getRequestDispatcher("MiBodegaProductos.jsp");
                 view.forward(request, response);
@@ -186,19 +193,26 @@ public class BodegaServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        HttpSession session = request.getSession();
+        BodegaBean bodegaActual = (BodegaBean) session.getAttribute("bodega");
 
-        String accion = request.getParameter("accion") == null ?
+        if (bodegaActual != null) {
+            int idBodegaActual =  bodegaActual.getIdBodega();
+
+
+            String accion = request.getParameter("accion") == null ?
                 "listar" : request.getParameter("accion");
 
         // Por defecto se deja en un string vacio, que mostraría todos los productos
         String productoBusqueda = "";
+
         if (request.getParameter("productoBusqueda") != null && !request.getParameter("productoBusqueda").isEmpty()) {
             productoBusqueda = request.getParameter("productoBusqueda");
         }
 
         BodegaDao bodegaDao = new BodegaDao();
 
-        int cantPag = bodegaDao.calcularCantPag(productoBusqueda);
+        int cantPag = bodegaDao.calcularCantPag(productoBusqueda, idBodegaActual); // TODO: (check)
 
         String pag = request.getParameter("pag") == null ?
                 "1" : request.getParameter("pag");
@@ -214,7 +228,7 @@ public class BodegaServlet extends HttpServlet {
         }
 
         RequestDispatcher view;
-        ArrayList<ProductoBean> listaProductos = bodegaDao.listarProductoBodega(paginaAct, productoBusqueda); // se lista los productos de la pagina actual
+        ArrayList<ProductoBean> listaProductos = bodegaDao.listarProductoBodega(paginaAct, productoBusqueda, idBodegaActual); //TODO: (CHECK) lista los productos de la pagina actual
 
         request.setAttribute("listaProductoBodegas", listaProductos);
         request.setAttribute("cantPag", cantPag);
@@ -292,6 +306,12 @@ public class BodegaServlet extends HttpServlet {
 
                 break;
         }
+
+    } else {
+            RequestDispatcher view2;
+        view2 = request.getRequestDispatcher("bodega/access_denied.jsp");
+        view2.forward(request, response);
+    }
 
     }
 }
