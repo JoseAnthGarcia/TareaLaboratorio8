@@ -81,6 +81,13 @@
                 <%}%>
                 <%session.removeAttribute("valCancelar");}%>
             </div>
+            <% if (session.getAttribute("estado") != null) {
+                String estado = (String) session.getAttribute("estado");%>
+            <div class="alert alert-success" role="alert">
+                ¡ Pedido <%=estado%> con éxito !
+            </div>
+            <% session.removeAttribute("estado");
+            }%>
         </div>
         <table class="table container-fluid">
             <tr>

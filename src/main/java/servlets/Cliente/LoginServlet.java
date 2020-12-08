@@ -25,6 +25,7 @@ public class LoginServlet extends HttpServlet {
         if(usuario!=null){
             HttpSession session =request.getSession();
             session.setAttribute("usuario",usuario);
+
             response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=Home");
         }else{
             response.sendRedirect(request.getContextPath()+"/LoginServlet?error");

@@ -59,6 +59,8 @@ public class PedidoServlet extends HttpServlet {
             case "entregar":
                 if (pedidoDao.obtenerPedidoBodega(codigo) != null) {
                     pedidoDao.entregarPedido(codigo);
+                    HttpSession session1 = request.getSession();
+                    session1.setAttribute("estado", "entregado");
                 }
                 response.sendRedirect(request.getContextPath() + "/PedidosServlet");
                 break;
@@ -67,6 +69,7 @@ public class PedidoServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     boolean valCancelar = pedidoDao.verificarCancelarPedido(codigo);
                     session.setAttribute("valCancelar", valCancelar);
+                    session.setAttribute("estado", "cancelado");
                     pedidoDao.cancelarPedido(codigo);
                 }
                 response.sendRedirect(request.getContextPath() + "/PedidosServlet");

@@ -8,6 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="usuario" scope="request" type="beans.UsuarioBean" />
+
 <jsp:useBean id="listaDistritos2" scope="request" type="java.util.ArrayList<beans.DistritoBean>"/>
 <%
     String cambiar= (String) request.getAttribute("cambiar");

@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="usuario" scope="session" type="beans.UsuarioBean" class="beans.UsuarioBean" />
+
+
 <html>
 <head>
     <jsp:include page="/bootstrapRepository.jsp"/>
