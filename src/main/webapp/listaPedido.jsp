@@ -75,12 +75,19 @@
                 if(!(boolean)session.getAttribute("valCancelar")){%>
                 <div class="alert alert-danger" role="alert">
                     Aún no es posible cancelar este pedido.
-                    Recuerde que solo es posible pasado una hora de
+                    Recuerde que solo es posible pasado un día de
                     la fecha de recojo.
                 </div>
                 <%}%>
                 <%session.removeAttribute("valCancelar");}%>
             </div>
+            <% if (session.getAttribute("estado") != null) {
+                String estado = (String) session.getAttribute("estado");%>
+            <div class="alert alert-success" role="alert">
+                ¡ Pedido <%=estado%> con éxito !
+            </div>
+            <% session.removeAttribute("estado");
+            }%>
         </div>
         <table class="table container-fluid">
             <tr>
