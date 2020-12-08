@@ -179,9 +179,12 @@ public class BodegaServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         BodegaBean bodegaActual = (BodegaBean) session.getAttribute("bodega");
-        int idBodegaActual =  bodegaActual.getIdBodega();
 
-        String accion = request.getParameter("accion") == null ?
+        if (bodegaActual != null) {
+            int idBodegaActual =  bodegaActual.getIdBodega();
+
+
+            String accion = request.getParameter("accion") == null ?
                 "listar" : request.getParameter("accion");
 
         // Por defecto se deja en un string vacio, que mostraría todos los productos
@@ -287,6 +290,12 @@ public class BodegaServlet extends HttpServlet {
 
                 break;
         }
+
+    } else {
+            RequestDispatcher view2;
+        view2 = request.getRequestDispatcher("bodega/access_denied.jsp");
+        view2.forward(request, response);
+    }
 
     }
 }
