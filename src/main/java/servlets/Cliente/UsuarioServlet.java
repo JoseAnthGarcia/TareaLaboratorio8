@@ -105,6 +105,7 @@ public class UsuarioServlet extends HttpServlet {
         String apellidos;
         String idDistrito;
 
+
         boolean nombresB;
         boolean apellidosB;
         boolean distritoBoolean;
@@ -112,15 +113,19 @@ public class UsuarioServlet extends HttpServlet {
 
         ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
-        /*Para editar*/
-        int usuarioId = usuarioBean.getIdUsuario();
+
+        /*int usuarioId = usuarioBean.getIdUsuario();
+
         UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
-        request.setAttribute("usuario", bUsuario);
+        request.setAttribute("usuario", bUsuario);*/
         ArrayList<DistritoBean> listaDistritos2 = usuarioDao.obtenerDistritos();
         request.setAttribute("listaDistritos2", listaDistritos2);
 
         if (usuarioBean != null && usuarioBean.getIdUsuario() > 0 && !(accion.equals("agregar"))) {
+            int usuarioId = usuarioBean.getIdUsuario();
 
+            UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
+            request.setAttribute("usuario", bUsuario);
 
             switch (accion) {
                 case "nada":
@@ -150,7 +155,7 @@ public class UsuarioServlet extends HttpServlet {
                         }
 
                         if (distritoSelected && idDistritoInt != 0) {
-                            usuarioDao.actualizarUsuario(nombres, apellidos, idDistritoInt, usuarioId);
+                            usuarioDao.actualizarUsuario(nombres, apellidos, idDistritoInt, usuarioId,usuarioBean);
                             response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=miPerfil");
                         } else {
 
@@ -240,6 +245,9 @@ public class UsuarioServlet extends HttpServlet {
             String correo = request.getParameter("correo");
             String contrasenia = request.getParameter("contrasenia");
             String contrasenia2 = request.getParameter("contrasenia2");
+
+
+
             boolean dniB = validarDni(dni);
             boolean correoB = validarCorreo(correo);
             boolean contraseniaB = validarString(contrasenia);
@@ -353,7 +361,7 @@ public class UsuarioServlet extends HttpServlet {
                     UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
 
                     request.setAttribute("cambiar", cambiar);
-                    request.setAttribute("usuario", bUsuario);
+                    request.setAttribute("usuario", clienteActual);
                     requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
                     requestDispatcher.forward(request, response);
 
@@ -484,7 +492,7 @@ public class UsuarioServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
                     break;
                 case "Home":
-
+                    request.setAttribute("usuario",clienteActual);
                     requestDispatcher = request.getRequestDispatcher("cliente/Home.jsp");
                     requestDispatcher.forward(request, response);
                     break;
