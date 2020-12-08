@@ -1,12 +1,11 @@
 package daos;
 
-import beans.BodegaBean;
-import beans.DistritoBean;
-import beans.ProductoBean;
-import beans.UsuarioBean;
+import beans.*;
+import dtos.ProductoCantDto;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class UsuarioDao extends BaseDao {
@@ -324,6 +323,64 @@ public class UsuarioDao extends BaseDao {
             throwables.printStackTrace();
         }
         return producto;
+    }
+
+    public String generarCodigoPedido(){
+        // Los caracteres de interés en un array de char.
+        char[] chars = "0123456789".toCharArray();
+        // Longitud del array de char.
+        int charsLength = chars.length;
+        // Instanciamos la clase Random
+        Random random = new Random();
+        // Un StringBuffer para componer la cadena aleatoria de forma eficiente
+        StringBuffer buffer = new StringBuffer();
+        // Bucle para elegir una cadena de 10 caracteres al azar
+        for (int i = 0; i < 9; i++) {
+            // Añadimos al buffer un caracter al azar del array
+            buffer.append(chars[random.nextInt(charsLength)]);
+        }
+        // Y solo nos queda hacer algo con la cadena
+        //System.out.println(buffer.toString());
+        return buffer.toString();
+    }
+
+    public int crearPedido(PedidoBean pedido){
+        int idPedido =-1;
+        String sql = "insert into pedido (codigo, fecha_registro,\n" +
+                "fecha_recojo,idUsuario,idBodega)\n" +
+                "values(?,now(),?,?,?);";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);) {
+            pstmt.setString(1, pedido.getCodigo());
+            pstmt.setString(2, pedido.getFecha_recojo());
+            pstmt.setInt(3,pedido.getUsuario().getIdUsuario());
+            pstmt.setInt(4,pedido.getBodegaBean().getIdBodega());
+            pstmt.executeUpdate();
+            try(ResultSet rsKey = pstmt.getGeneratedKeys()){
+                if(rsKey.next()){
+                    idPedido = rsKey.getInt(1);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return idPedido;
+    }
+
+    public void ingresarProductosApedido(int idPedido, ArrayList<ProductoCantDto> listaProductos){
+        for(ProductoCantDto productoPedido: listaProductos){
+            String sql = "insert into pedido_has_producto (idPedido,idProducto, Cantidad)\n" +
+                    "values(?,?, ?);";
+            try (Connection conn = getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql);) {
+                pstmt.setInt(1, idPedido);
+                pstmt.setInt(2,productoPedido.getProducto().getId());
+                pstmt.setInt(3,productoPedido.getCant());
+                pstmt.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
     }
 
 }

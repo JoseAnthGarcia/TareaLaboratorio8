@@ -1,11 +1,9 @@
 package servlets.Cliente;
 
-import beans.DistritoBean;
-import beans.PedidoBean;
-import beans.ProductoBean;
-import beans.UsuarioBean;
+import beans.*;
 import daos.PedidosUsuarioDao;
 import daos.UsuarioDao;
+import dtos.ProductoCantDto;
 import servlets.Emails;
 
 
@@ -18,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -220,15 +219,68 @@ public class UsuarioServlet extends HttpServlet {
                     break;
 
                 case "generarPedido":
-                    //TODO: VALIDAR ESPACIOS VACIOS
+                    //TODO: VALIDAR ESPACIOS VACIOS!!!
                     HttpSession session2 = request.getSession();
                     HashMap<Integer, ProductoBean> listaProductos = (HashMap<Integer, ProductoBean>) session2.getAttribute("carrito");
+                    ArrayList<ProductoCantDto> listaProductosSelecCant = new ArrayList<>();
                     for (Map.Entry<Integer, ProductoBean> entry : listaProductos.entrySet()){
                         int idProducto = entry.getKey();
                         String cant = request.getParameter(String.valueOf(idProducto));
                         System.out.println("producto"+entry.getValue().getNombreProducto()+" | cant: "+cant);
+
+                        ProductoCantDto productoCant = new ProductoCantDto();
+                        productoCant.setProducto(usuarioDao.obtenerProducto(idProducto));
+                        productoCant.setCant(Integer.parseInt(cant));
+
+                        listaProductosSelecCant.add(productoCant);
                     }
 
+                    //no es necesario guardarlo en sesion, ya que se mandara como formulario al
+                    //confirmar pedido
+                    request.setAttribute("codigoPedido", usuarioDao.generarCodigoPedido());
+
+                    //creo que se debe guardar en la sesion, pues luego se necesitara
+                    if(session.getAttribute("listaProductosSelecCant")!=null){
+                        session.removeAttribute("listaProductosSelecCant");
+                    }
+                    session.setAttribute("listaProductosSelecCant", listaProductosSelecCant);
+
+                    //calculamos el precio total:
+
+                    BigDecimal precioTotal = BigDecimal.valueOf(0);
+                    for(ProductoCantDto producto: listaProductosSelecCant){
+                        BigDecimal costo = BigDecimal.valueOf(producto.getProducto().getPrecioProducto().doubleValue()*producto.getCant());
+                        precioTotal = BigDecimal.valueOf(precioTotal.doubleValue() + costo.doubleValue());
+                    }
+                    request.setAttribute("precioTotal",precioTotal);
+
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/confirmarPedido.jsp");
+                    requestDispatcher.forward(request, response);
+
+                    break;
+                case "confirmarPedido":
+                    HttpSession session1 = request.getSession();
+                    //TODO: VALIDAR ENTRADAS
+                    String codigo = request.getParameter("codigo");
+                    String fecha = request.getParameter("fecha");
+                    String precioTotal1 = request.getParameter("precioTotal");
+
+                    //creo el pedido:
+                    PedidoBean pedido = new PedidoBean();
+                    pedido.setCodigo(codigo);
+                    pedido.setFecha_recojo(fecha);
+                    BodegaBean bodegaEscogida = (BodegaBean) session1.getAttribute("bodegaEscogida");
+                    pedido.setBodegaBean(bodegaEscogida);
+                        //TODO: falta usuaio, esta bien??
+                    UsuarioBean usuario = (UsuarioBean) session1.getAttribute("usuario");
+                    pedido.setUsuario(usuario);
+                    int idPedido = usuarioDao.crearPedido(pedido);
+
+                    //relleno el pedido:
+                    ArrayList<ProductoCantDto> listaProductosSelecCant1 = (ArrayList<ProductoCantDto>) session1.getAttribute("listaProductosSelecCant");
+                    usuarioDao.ingresarProductosApedido(idPedido, listaProductosSelecCant1);
+
+                    //TODO: eliminar attributos de session necesarios para el pedido.
                     break;
 
             }

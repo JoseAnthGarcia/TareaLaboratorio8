@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: jose_
-  Date: 5/12/2020
-  Time: 21:38
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="beans.BodegaBean" %>
