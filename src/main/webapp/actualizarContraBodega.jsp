@@ -4,7 +4,7 @@
 
 <%
     boolean contraseniaB = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
-    boolean rucExis = request.getAttribute("rucExis") == null ? true : (Boolean) request.getAttribute("rucExis");
+    boolean rucExis = request.getAttribute("rucExis") == null ? false : (Boolean) request.getAttribute("rucExis");
 %>
 <!DOCTYPE html>
 <html>
@@ -96,9 +96,9 @@
                         <div class="form-group row">
                             <label for="inputRuc" class="col-sm-2 col-form-label">RUC:</label>
                             <div class="col-sm-10">
-                                <input type="input" class="form-control <%=rucExis?"":"is-invalid"%>"
+                                <input type="input" class="form-control <%=!rucExis?"":"is-invalid"%>"
                                        aria-describedby="inputRucFeedback"
-                                       name="contrasenia" id="inputRuc" <%=request.getParameter("ruc")==null?"":"value='"+request.getParameter("ruc")+"'"%>>
+                                       name="ruc" id="inputRuc" <%=request.getParameter("ruc")==null?"":"value='"+request.getParameter("ruc")+"'"%>>
                                 <div id="inputRucFeedback" class="invalid-feedback">
                                     El ruc no esta registrado.
                                 </div>

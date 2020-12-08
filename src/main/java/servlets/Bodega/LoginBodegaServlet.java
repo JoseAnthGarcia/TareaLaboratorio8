@@ -60,6 +60,8 @@ public class LoginBodegaServlet extends HttpServlet {
                     if (contraseniaB ) {
                         bodegaD.registrarContrasenia(bodega1.getIdBodega(), contrasenia);
                         String nombreBodega= bodega1.getNombreBodega();
+                        Long ruc2= Long.valueOf(ruc);
+                        request.setAttribute("ruc2",ruc2);
                         request.setAttribute("nombreBodega", nombreBodega);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("ContraseniaExitosa.jsp");
                         requestDispatcher.forward(request, response);
