@@ -347,7 +347,7 @@ public class UsuarioServlet extends HttpServlet {
 
                     UsuarioBean usuario = usuarioDao.obtenerUsuario(usuarioId);
 
-                    request.setAttribute("usuario", usuario);
+                        request.setAttribute("usuario", usuario);
 
                     requestDispatcher = request.getRequestDispatcher("miPerfil.jsp");
                     requestDispatcher.forward(request, response);

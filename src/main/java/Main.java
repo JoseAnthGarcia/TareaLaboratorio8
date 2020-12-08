@@ -1,13 +1,13 @@
+import beans.BodegaBean;
 import beans.ProductoBean;
 import daos.BodegaDao;
 
 import java.math.BigDecimal;
 
 public class Main {
-    public static void main(String[] args){
-        System.out.println(BodegaDao.calcularCantPag(""));
-        for(ProductoBean productoBean : BodegaDao.listarProductoBodega(1, "lapa")){
-            System.out.println(productoBean.getNombreProducto());
-        }
+    public static void main(String[] args) {
+        BodegaDao bodegaDao = new BodegaDao();
+        BodegaBean bodega = bodegaDao.validarUsuarioPassword("bodeguita@gmail.com", "bodega7");
+        System.out.println(bodega.getNombreBodega());
     }
 }

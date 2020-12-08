@@ -115,7 +115,7 @@
         <form method="post" action="<%=request.getContextPath()%>/BodegaServlet?accion=buscar">
             <div class="form-group row">
                 <div class="col-10">
-                    <input class="form-control" type="text" placeholder="Buscar producto"
+                    <input class="form-control" type="text" placeholder="<%=productoBusqueda%>"
                            name="textoBuscar"/>
                 </div>
             </div>
