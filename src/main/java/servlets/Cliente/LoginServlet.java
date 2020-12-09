@@ -13,29 +13,133 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @WebServlet(name = "LoginServlet", urlPatterns ={"/LoginServlet"} )
 public class LoginServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String inputEmail = request.getParameter("inputEmail");
-        String inputPassword = request.getParameter("inputPassword");
-        UsuarioDao usuarioDao = new UsuarioDao();
-        UsuarioBean usuario = usuarioDao.validarUsuarioPassword(inputEmail,inputPassword);
 
-        if(usuario!=null){
-            HttpSession session =request.getSession();
-            session.setAttribute("usuario",usuario);
+    public boolean validarCorreo(String input){
+        boolean resultado = true;
 
-            response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=Home");
-        }else{
-            response.sendRedirect(request.getContextPath()+"/LoginServlet?error");
+        // Patrón para validar el email
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+
+        // El email a validar
+        String email = input;
+
+        Matcher mather = pattern.matcher(email);
+
+        if (mather.find() == false) {
+            resultado = false;
         }
+
+        return resultado;
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String accion = request.getParameter("accion") == null ?
+                "login" : request.getParameter("accion");
+
+        UsuarioDao usuarioDao = new UsuarioDao();
+        switch(accion){
+            case "login":
+                String inputEmail = request.getParameter("inputEmail");
+                String inputPassword = request.getParameter("inputPassword");
+
+                UsuarioBean usuario = usuarioDao.validarUsuarioPassword(inputEmail,inputPassword);
+
+                if(usuario!=null){
+                    HttpSession session =request.getSession();
+                    session.setAttribute("usuario",usuario);
+
+                    response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=Home");
+                }else{
+                    response.sendRedirect(request.getContextPath()+"/LoginServlet?error");
+                }
+                break;
+
+            case "comprobarCorreo":
+                String correoC = request.getParameter("correo");
+
+                boolean correoBoo = validarCorreo(correoC);
+
+                boolean correoNoEx = true;
+                UsuarioBean usuarioRecu = usuarioDao.obtenerUsuarioPorCorreo(correoC);
+                if(usuarioRecu.getIdUsuario()==0){
+                    correoNoEx = false;
+                }
+
+                if(correoNoEx && correoBoo){
+                    //HttpSession sessionN = request.getSession();
+
+                    usuarioDao.enviarCorreoLinkContra(usuarioRecu.getIdUsuario(),usuarioRecu.getContraseniaHashed(),usuarioRecu.getCorreo());
+                    //queda pendiente mostrar mensaje de correo exitoso
+                    //Boolean correoEnviado = usuarioDao.enviarCorreoLinkContra(usuarioRecu.getIdUsuario(),usuarioRecu.getContraseniaHashed(),usuarioRecu.getCorreo());
+                    /*
+                    if(correoEnviado){
+                        sessionN.setAttribute("estado","true");
+                    }else{
+                        sessionN.setAttribute("estado","false");
+                    }
+                    */
+                    //enviar a login mas mensaje de correo enviado exitosamente o problema al enviar correo
+                    response.sendRedirect(request.getContextPath()+"/LoginServlet?accion=login");
+                }else{
+                    request.setAttribute("correoBoo",correoBoo);
+                    request.setAttribute("correoNoEx",correoNoEx);
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/olvideContrasenia.jsp");
+                    requestDispatcher.forward(request,response);
+                }
+                break;
+            case "validarContraRecu":
+                String contraseniaR = request.getParameter("contraseniaR");
+                String contrasenia2R = request.getParameter("contrasenia2R");
+                HttpSession sessionP = request.getSession();
+                UsuarioBean usuarioP = (UsuarioBean) sessionP.getAttribute("usuarioP");
+                int idUsuarioRecu = usuarioP.getIdUsuario();
+
+                boolean contRecu=false;
+                if(contraseniaR.equals(contrasenia2R)){
+                    contRecu=true;
+                }
+
+                boolean contRecuEmpty=false;
+                if(!contraseniaR.equals("")){
+                    contRecuEmpty=true;
+                }
+
+                System.out.println(contRecu +":"+contRecuEmpty);
+                if(contRecu && contRecuEmpty){
+                    System.out.println("Soy libre");
+                    System.out.println(idUsuarioRecu);
+                    System.out.println(contrasenia2R+"malos pasos");
+                    usuarioDao.actualizarContra(idUsuarioRecu, contraseniaR); //ojo con usuarioId
+                    sessionP.invalidate();
+                    //Se termina la operacion y te manda a la pagina del Login
+                    //pendiente mandar confirmacion de nueva contraseña exitosa
+                    response.sendRedirect(request.getContextPath()+"/LoginServlet");
+                }else{
+                    //enviar otra vex id??'
+                    //enviar contRecu
+                    request.setAttribute("contRecu",contraseniaR.equals(contrasenia2R));
+                    request.setAttribute("contRecuEmpty1",!contraseniaR.equals(""));
+                    request.setAttribute("contRecuEmpty2",!contrasenia2R.equals(""));
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/recuperarContrasenia.jsp");
+                    requestDispatcher.forward(request,response);
+                }
+                break;
+        }
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession();
         RequestDispatcher view2;
+        UsuarioDao usuarioDao = new UsuarioDao();
         UsuarioBean usuarioBean = (UsuarioBean) session.getAttribute("usuario");
         String accion = request.getParameter("accion") == null ?
                 "login" : request.getParameter("accion");
@@ -43,10 +147,53 @@ public class LoginServlet extends HttpServlet {
         switch(accion) {
             case "olvideContra":
                 RequestDispatcher requestDispatcher0 = request.getRequestDispatcher("cliente/olvideContrasenia.jsp");
-                requestDispatcher0.forward(request,response);
+                requestDispatcher0.forward(request, response);
                 break;
+
+            case "recuContra":
+                session.invalidate();
+                if (request.getParameter("id") != null && request.getParameter("contraHashed") != null) {
+                    int idusuario;
+                    try {
+                        String contraHashed = request.getParameter("contraHashed");
+                        idusuario = Integer.parseInt(request.getParameter("id"));
+                        UsuarioBean usuarioP = usuarioDao.obtenerUsuario(idusuario);
+                        System.out.println(idusuario);
+                        System.out.println(contraHashed);
+                        System.out.println("------------------------");
+                        System.out.println(usuarioP.getIdUsuario());
+                        System.out.println(usuarioP.getContraseniaHashed());
+
+                        if (usuarioP.getContraseniaHashed() != null) {
+                            if (usuarioP.getIdUsuario() == idusuario && usuarioP.getContraseniaHashed().equals(contraHashed)) {
+                                HttpSession session0 = request.getSession();
+                                session0.setAttribute("usuarioP", usuarioP);
+                                //request.setAttribute("usuario",usuarioP);
+                                System.out.println("Llego al paraiso");
+                                RequestDispatcher requestDispatcher1 = request.getRequestDispatcher("cliente/recuperarContrasenia.jsp");
+                                requestDispatcher1.forward(request, response); //podria lanzar error
+                            } else {
+                                //Hasta que exista el login ---Podria enviarse un mensaje de error al login tambien
+                                //response.sendRedirect("LoginServlet");
+                                System.out.println("Cayo en el ultimo if");
+                                response.sendRedirect(request.getContextPath() + "/LoginServlet");
+                            }
+                        } else {
+                            //Hasta que exista el login ---Podria enviarse un mensaje de error al login tambien
+                            System.out.println("cayo en el penulimo if");
+                            response.sendRedirect(request.getContextPath() + "/LoginServlet");
+                        }
+                    } catch (NumberFormatException e) {
+                        //Hasta que exista el login ---Podria enviarse un mensaje de error al login tambien
+                        //response.sendRedirect("LoginServlet");
+                        System.out.println("cayo en el catch");
+                        response.sendRedirect(request.getContextPath() + "/LoginServlet");
+                    }
+                }
+                break;
+
             default:
-                if(usuarioBean==null && accion.equals("login")) {
+                if (usuarioBean == null && accion.equals("login")) {
                     UsuarioBean usuario = (UsuarioBean) session.getAttribute("usuario");
                     if (usuario != null && usuario.getIdUsuario() > 0) {
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet");
@@ -54,15 +201,17 @@ public class LoginServlet extends HttpServlet {
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/login.jsp");
                     requestDispatcher.forward(request, response);
 
-                }else if(accion.equals("logout")){
+                } else if (accion.equals("logout")) {
                     session.invalidate();
                     response.sendRedirect(request.getContextPath() + "/LoginServlet?accion=login");
-                }else{
+                } else {
                     view2 = request.getRequestDispatcher("cliente/access_denied.jsp");
                     view2.forward(request, response);
                 }
+                break;
+
+            }
         }
 
-
     }
-}
+

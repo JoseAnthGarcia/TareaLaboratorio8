@@ -27,7 +27,7 @@
         }
         .container-fluid{
             text-align: center;
-            padding: 3% 15% ;
+            padding: 3% 5% ;
         }
         .page-item .page-link {
             color: #343a40;
@@ -55,7 +55,7 @@
         <!-- a href="#"><img src="imagenes/sigout.png" height="30px"/></a-->
     </div>
 </div>
-<div class='container' style="margin-top: 30px">
+<div class='container-fluid' style="margin-top: 20px">
     <div class="row">
         <div class="col-sm-3">
         </div>
@@ -66,7 +66,7 @@
             <p class="margen"></p>
             <div></div>
             <div></div>
-            <form class="margen"  method="POST" action="<%=request.getContextPath()%>/UsuarioServlet?accion=comprobarCorreo">
+            <form class="margen"  method="POST" action="<%=request.getContextPath()%>/LoginServlet?accion=comprobarCorreo" style="margin-top: 90px">
 
                 <!-- input type="hidden" class="form-control" name="contrasenia" id="contrasenia" value="la contraseña no esta aquí"-->
 
@@ -83,9 +83,12 @@
                     </div>
                 </div>
                 <p class="margen"></p>
-                <a href="<%=request.getContextPath()%>/LoginServlet" class="btn btn-danger mt-3">Regresar</a>
-                <!--Debe regresar a Login---este aun no disponible -->
-                <button type="submit" class="btn btn-success pull-right mt-3">Confirmar</button>
+                <div align="left">
+                    <a href="<%=request.getContextPath()%>/LoginServlet" class="btn btn-danger mt-3" >Regresar</a>
+                    <!--Debe regresar a Login---este aun no disponible -->
+                    <button type="submit" class="btn btn-success pull-right mt-3">Confirmar</button>
+                </div>
+
             </form>
         </div>
         <!-- parte muerta-->
@@ -100,10 +103,11 @@
         <!-- parte muerta-->
     </div>
 </div>
-<footer class="page-footer font-small blue" style="margin-top: 20px">
+<footer class="page-footer font-small blue" style="margin-top: 180px">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
-        <a href="#">MiMarca</a>
+        <a href="<%=request.getContextPath()%>/LoginServlet">MiMarca</a>
     </div>
 </footer>
+
 </body>
 </html>

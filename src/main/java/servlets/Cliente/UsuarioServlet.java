@@ -191,8 +191,8 @@ public class UsuarioServlet extends HttpServlet {
                     if (contraseniaBB.equals(contrasenia2BB)) {
                         contIguales = true;
                     }
-
-                    if (contAntIguales && contIguales) {
+                    if(contAntIguales && contIguales && !contrasenia2BB.equals("")){
+                    //if (contAntIguales && contIguales) {
                         usuarioDao.actualizarContra(usuarioId, contraseniaBB); //ojo con usuarioId
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=miPerfil");
                     } else {

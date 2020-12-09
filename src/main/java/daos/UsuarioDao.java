@@ -106,7 +106,7 @@ public class UsuarioDao extends BaseDao {
     public UsuarioBean obtenerUsuario(int usuarioId) {
 
 
-        String sql = "select u.idUsuario, u.nombreUsuario, u.apellido, u.dni, u.correo, u.contrasenia,u.idDistrito, d.nombreDistrito\n" +
+        String sql = "select u.idUsuario, u.nombreUsuario, u.apellido, u.dni, u.correo, u.contrasenia,u.idDistrito, d.nombreDistrito, u.contraseniaHashed \n" +
                 "from usuario u\n" +
                 "inner join distrito d on u.idDistrito=d.idDistrito\n" +
                 "where idUsuario=?;";
@@ -129,6 +129,10 @@ public class UsuarioDao extends BaseDao {
                     distritoBean.setId(rs.getInt(7));
                     distritoBean.setNombre(rs.getString(8));
                     usuarioBean.setDistrito(distritoBean);
+
+                    //se agrego contraseniaHashed - ATENCIÓN!!!
+                    usuarioBean.setContraseniaHashed(rs.getString(9));
+
 
 
                 }
@@ -161,16 +165,17 @@ public class UsuarioDao extends BaseDao {
             throwables.printStackTrace();
         }
     }
-
+    // actualizarContra actualizado para incluir contraseniaHashed ATENCION!!!!
     public void actualizarContra(int usuarioID, String contraseniaNew) {
-        String sql = "UPDATE usuario SET contrasenia = ? WHERE idUsuario = ?";
+        String sql = "UPDATE usuario SET contrasenia = ? , contraseniaHashed = sha2(?,256) WHERE idUsuario = ?";
 
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
             pstmt.setString(1, contraseniaNew);
-            pstmt.setInt(2, usuarioID);
+            pstmt.setString(2,contraseniaNew);
+            pstmt.setInt(3, usuarioID);
 
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
@@ -211,7 +216,7 @@ public class UsuarioDao extends BaseDao {
         boolean envioExitoso = true;
         String subject = "Correo para restablecer Contraseña";
         String content = "El link para restablecer su contraseña es : \n" +
-                "link: http://localhost:8080/TareaLaboratorio8/UsuarioServlet?accion=recuContra&contraHashed=" +contraHashed+ "&id="+id+
+                "link: http://localhost:8080/TareaLaboratorio8/LoginServlet?accion=recuContra&contraHashed=" +contraHashed+ "&id="+id+
                 "\n" +
                 "Atentamente,\n" +
                 "                       El equipo de MiBodega.com ";
