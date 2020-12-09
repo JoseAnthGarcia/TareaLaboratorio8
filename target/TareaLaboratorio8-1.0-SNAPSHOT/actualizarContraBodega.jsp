@@ -1,14 +1,10 @@
 <%@ page import="beans.BodegaBean" %>
 <%@ page import="beans.DistritoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="idBodega" scope="request" type="java.lang.Integer"/>
-<jsp:useBean id="rucBodega" scope="request" type="java.lang.Long"/>
 
 <%
-    //int idBodega= (int) request.getAttribute("idBodega");
     boolean contraseniaB = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
-    boolean contrasenia2B = request.getAttribute("contrasenia2B") == null ? true : (Boolean) request.getAttribute("contrasenia2B");
-    boolean contIguales = request.getAttribute("contIguales") == null ? true : (Boolean) request.getAttribute("contIguales");
+    boolean rucExis = request.getAttribute("rucExis") == null ? false : (Boolean) request.getAttribute("rucExis");
 %>
 <!DOCTYPE html>
 <html>
@@ -95,10 +91,21 @@
                 <div class="col-sm-3">
                 </div>
                 <div class="col-sm-6">
-                    <h1>Registro de contraseña</h1>
-                    <form method="POST" action="<%=request.getContextPath()%>/AdminServlet?accion=definirContrasenia&idBodega=<%=idBodega%>&rucBodega=<%=rucBodega%>">
+                    <h1>Actualizar contraseña</h1>
+                    <form method="POST" action="<%=request.getContextPath()%>/LoginBodega?accion=actualizarContra">
                         <div class="form-group row">
-                            <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña:</label>
+                            <label for="inputRuc" class="col-sm-2 col-form-label">RUC:</label>
+                            <div class="col-sm-10">
+                                <input type="input" class="form-control <%=!rucExis?"":"is-invalid"%>"
+                                       aria-describedby="inputRucFeedback"
+                                       name="ruc" id="inputRuc" <%=request.getParameter("ruc")==null?"":"value='"+request.getParameter("ruc")+"'"%>>
+                                <div id="inputRucFeedback" class="invalid-feedback">
+                                    El ruc no esta registrado.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-2 col-form-label">Nueva Contraseña:</label>
                             <div class="col-sm-10">
                                 <input type="password" class="form-control <%=contraseniaB?"":"is-invalid"%>"
                                        aria-describedby="inputPasswordFeedback"
@@ -108,26 +115,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="inputPassword2" class="col-sm-2 col-form-label">Confirmar contraseña:</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control <%=contrasenia2B?"":"is-invalid"%>"
-                                       aria-describedby="inputPassword2Feedback"
-                                       name="contrasenia2" id="inputPassword2" <%=request.getParameter("contrasenia2")==null?"":"value='"+request.getParameter("contrasenia2")+"'"%>>
-                                <div id="inputPassword2Feedback" class="invalid-feedback">
-                                    Ingrese una contraseña valida, por favor.
-                                </div>
-                            </div>
-                        </div>
                         <button type="submit" class="btn btn-success pull-right">Registrar</button>
                     </form>
-                </div>
-                <div class="col-sm-3">
-                    <%if(!contIguales){%>
-                    <div class="alert alert-danger" role="alert">
-                        Las contraseñas no coinciden!
-                    </div>
-                    <%}%>
                 </div>
             </div>
         </div>
