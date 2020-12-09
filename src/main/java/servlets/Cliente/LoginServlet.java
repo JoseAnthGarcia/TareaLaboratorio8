@@ -40,21 +40,29 @@ public class LoginServlet extends HttpServlet {
         String accion = request.getParameter("accion") == null ?
                 "login" : request.getParameter("accion");
 
-        if(usuarioBean==null && accion.equals("login")) {
-            UsuarioBean usuario = (UsuarioBean) session.getAttribute("usuario");
-            if (usuario != null && usuario.getIdUsuario() > 0) {
-                response.sendRedirect(request.getContextPath() + "/UsuarioServlet");
-            }
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/login.jsp");
-            requestDispatcher.forward(request, response);
+        switch(accion) {
+            case "olvideContra":
+                RequestDispatcher requestDispatcher0 = request.getRequestDispatcher("cliente/olvideContrasenia.jsp");
+                requestDispatcher0.forward(request,response);
+                break;
+            default:
+                if(usuarioBean==null && accion.equals("login")) {
+                    UsuarioBean usuario = (UsuarioBean) session.getAttribute("usuario");
+                    if (usuario != null && usuario.getIdUsuario() > 0) {
+                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet");
+                    }
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/login.jsp");
+                    requestDispatcher.forward(request, response);
 
-        }else if(accion.equals("logout")){
-            session.invalidate();
-            response.sendRedirect(request.getContextPath() + "/LoginServlet?accion=login");
-        }else{
-            view2 = request.getRequestDispatcher("cliente/access_denied.jsp");
-            view2.forward(request, response);
+                }else if(accion.equals("logout")){
+                    session.invalidate();
+                    response.sendRedirect(request.getContextPath() + "/LoginServlet?accion=login");
+                }else{
+                    view2 = request.getRequestDispatcher("cliente/access_denied.jsp");
+                    view2.forward(request, response);
+                }
         }
+
 
     }
 }

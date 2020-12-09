@@ -2,7 +2,9 @@ package daos;
 
 import beans.*;
 import dtos.ProductoCantDto;
+import servlets.Emails;
 
+import javax.mail.MessagingException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -175,6 +177,53 @@ public class UsuarioDao extends BaseDao {
             throwables.printStackTrace();
         }
 
+    }
+
+    //Agregado por EM Usado para recuperar contrasenia
+    public UsuarioBean obtenerUsuarioPorCorreo(String correo) {
+
+
+        String sql = "select idUsuario, contraseniaHashed " +
+                "from usuario  where correo=?;";
+        UsuarioBean usuarioBean = new UsuarioBean();
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setString(1, correo);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    usuarioBean.setIdUsuario(rs.getInt(1));
+                    //depende de como lo llamen ---- posiblemente corregir
+                    usuarioBean.setContraseniaHashed(rs.getString(2));
+                    usuarioBean.setCorreo(correo);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return usuarioBean;
+    }
+
+    //correo para recuperar contraseña  //se marco de amarillo antes de tiempo ...curioso,no?
+    //link aun no planteado
+    public boolean enviarCorreoLinkContra(int id, String contraHashed, String correo){
+        boolean envioExitoso = true;
+        String subject = "Correo para restablecer Contraseña";
+        String content = "El link para restablecer su contraseña es : \n" +
+                "link: http://localhost:8080/TareaLaboratorio8/UsuarioServlet?accion=recuContra&contraHashed=" +contraHashed+ "&id="+id+
+                "\n" +
+                "Atentamente,\n" +
+                "                       El equipo de MiBodega.com ";
+        Emails email = new Emails();
+        try {
+            email.enviar(correo,subject,content);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            envioExitoso = false;
+        }
+        return envioExitoso;
     }
 
     //Parte de realizarUnPedido:

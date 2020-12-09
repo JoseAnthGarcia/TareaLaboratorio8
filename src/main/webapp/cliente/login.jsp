@@ -87,8 +87,8 @@
 
                     </div>
                     <div class="col-2 izquierda">
-                        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&cambiar=apellido"
-                        ><button class="btn">Olvidé mi contraseña</button></a>
+                        <a href="<%=request.getContextPath()%>/LoginServlet?accion=olvideContra">
+                            <button type="button" class="btn btn-primary">Olvidé mi contraseña</button></a>
                     </div>
 
                 </div>
