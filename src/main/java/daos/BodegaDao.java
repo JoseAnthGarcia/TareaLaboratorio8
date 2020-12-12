@@ -292,7 +292,7 @@ public class BodegaDao extends BaseDao{
 
         BodegaBean bodegaBean = null;
 
-        String sql = "select * from usuario where correo=? and contraseniaHashed=sha2(?,256)";
+        String sql = "select * from bodega where correo=? and contraseniaHashed=sha2(?,256)";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
