@@ -54,9 +54,12 @@ public class LoginAdminServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/login.jsp");
             requestDispatcher.forward(request, response);
 
-        }else if(accion.equals("logout")){
+        }else if(accion.equals("logout")) {
+            session = request.getSession();
             session.invalidate();
             response.sendRedirect(request.getContextPath() + "/LoginAdmin?accion=login");
+        }else if(admin!=null && accion.equals("login")) {
+            response.sendRedirect(request.getContextPath() + "/AdminServlet?accion=listar");
         }else{
             view2 = request.getRequestDispatcher("administrador/access_denied.jsp");
             view2.forward(request, response);

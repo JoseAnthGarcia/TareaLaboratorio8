@@ -12,35 +12,9 @@ import static daos.BaseDao.getConnection;
 public class AdminDao extends BaseDao{
 
     //Login
-/*
-    public UsuarioBean validarUsuarioPassword(String user, String pass){
-
-        String sql ="select * from usuario where correo = ? and contrasenia = ?;";
-        UsuarioBean administrador = null;
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)){
-
-            pstmt.setString(1,user);
-            pstmt.setString(2,pass);
-
-            try(ResultSet rs = pstmt.executeQuery()){
-
-                if(rs.next()){
-                    int adminId = rs.getInt("idUsuario");
-                    administrador = this.obetenerAdministrador(adminId);
-                }
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return administrador;
-    }
-
-  */
         public UsuarioBean validarUsuarioPassword(String user, String pass){
 
-        String sql ="select * from usuario where correo = ? and contraseniaHashed = sha2(?,256);";
+        String sql ="select * from usuario where correo = ? and contraseniaHashed = sha2(?,256) and rol='Administrador';";
         UsuarioBean administrador = null;
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)){
@@ -85,21 +59,21 @@ public class AdminDao extends BaseDao{
     }
 
 
-    public static int calcularCantPag() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    public static int calcularCantPag(int idAdmin) {
 
-        String sql = "select ceil(count(ruc)/5) from bodega where idAdministrador=5;";
+        String sql = "select ceil(count(ruc)/5) from bodega where idAdministrador=?;";
 
         int cantPag = 0;
         try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql);) {
+             PreparedStatement pstmt = conn.prepareStatement(sql);){
 
-            rs.next();
-            cantPag = rs.getInt(1);
+                 pstmt.setInt(1,idAdmin);
+                 try(ResultSet rs = pstmt.executeQuery();){
+
+
+                 rs.next();
+                 cantPag = rs.getInt(1);
+                 }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -108,19 +82,18 @@ public class AdminDao extends BaseDao{
     }
 
 
-
-
-    public ArrayList<BodegaBean> obtenerListaBodegas(int pagina){
+    public ArrayList<BodegaBean> obtenerListaBodegas(int pagina,int idAdmin){
 
         ArrayList<BodegaBean> listaBodegas = new ArrayList<>();
 
         int limit = (pagina-1)*5;
-        String sql = "select * from bodega where idAdministrador=5 limit ?,5;";
+        String sql = "select * from bodega where idAdministrador=? limit ?,5;";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
-            pstmt.setInt(1, limit);
+            pstmt.setInt(1,idAdmin);
+            pstmt.setInt(2, limit);
 
             try(ResultSet rs = pstmt.executeQuery();){
                 while(rs.next()){
