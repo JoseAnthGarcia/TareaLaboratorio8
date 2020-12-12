@@ -84,19 +84,13 @@
         <div class="col-sm-6">
             <h1 class="margen">Editar su contraseña</h1>
             <form class="margen"  method="POST" action="<%=request.getContextPath()%>/UsuarioServlet?accion=validarContra">
-                <!-- Puesto para solucionar un problema sin alterar el codigo de otro colaborador-->
-                <input type="hidden" class="form-control" name="nombres" id="nombres" value="<%=busuario.getNombre()%>">
-                <input type="hidden" class="form-control" name="apellidos" id="apellidos" value="<%=busuario.getApellido()%>">
-                <input type="hidden" class="form-control" name="idDistrito" id="idDistrito" value="<%=busuario.getDistrito()%>">
-                <!-- Fin de codigo -->
-                <input type="hidden" class="form-control" name="contrasenia" id="contrasenia" value="la contraseña no esta aquí">
-
+                <!-- corte de piezas-->
                 <div class="form-group row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña Actual:</label>
                     <div class="col-sm-10">
                         <input type="password" class="form-control <%=contrasenia2A?"":"is-invalid"%>"
                                aria-describedby="inputPasswordFeedback"
-                               name="contrasenia2A" id="inputPassword" <%=request.getParameter("contrasenia2A")==null?"":"value='"+request.getParameter("contrasenia2A")+"'"%> required>
+                               name="contrasenia2A" id="inputPassword" <%=request.getParameter("contrasenia2A")==null?"":"value='"+request.getParameter("contrasenia2A")+"'"%> >
                         <div id="inputPasswordFeedback" class="invalid-feedback">
                             Ingrese una contraseña válida
                         </div>
@@ -108,7 +102,7 @@
                     <div class="col-sm-10">
                         <input type="password" class="form-control <%=contraseniaB?"":"is-invalid"%>"
                                aria-describedby="inputPasswordBFeedback"
-                               name="contraseniaB" id="inputPassword1" <%=request.getParameter("contraseniaB")==null?"":"value='"+request.getParameter("contraseniaB")+"'"%> required>
+                               name="contraseniaB" id="inputPassword1" <%=request.getParameter("contraseniaB")==null?"":"value='"+request.getParameter("contraseniaB")+"'"%> >
                         <div id="inputPasswordBFeedback" class="invalid-feedback">
                             Ingrese una contraseña válida
                         </div>
@@ -120,7 +114,7 @@
                     <div class="col-sm-10">
                         <input type="password" class="form-control <%=contrasenia2B?"":"is-invalid"%>"
                                aria-describedby="inputPassword2BFeedback"
-                               name="contrasenia2B" id="inputPassword2" <%=request.getParameter("contrasenia2B")==null?"":"value='"+request.getParameter("contrasenia2B")+"'"%> required>
+                               name="contrasenia2B" id="inputPassword2" <%=request.getParameter("contrasenia2B")==null?"":"value='"+request.getParameter("contrasenia2B")+"'"%> >
                         <div id="inputPassword2BFeedback" class="invalid-feedback">
                             Ingrese una contraseña válida
                         </div>
@@ -148,7 +142,7 @@
 </div>
 
 </div>
-<footer class="page-footer font-small blue" style="margin-top: 20px">
+<footer class="page-footer font-small blue" style="margin-top: 100px">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="#">MiMarca</a>
     </div>
