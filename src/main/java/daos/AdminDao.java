@@ -12,7 +12,7 @@ import static daos.BaseDao.getConnection;
 public class AdminDao extends BaseDao{
 
     //Login
-
+/*
     public UsuarioBean validarUsuarioPassword(String user, String pass){
 
         String sql ="select * from usuario where correo = ? and contrasenia = ?;";
@@ -37,10 +37,10 @@ public class AdminDao extends BaseDao{
         return administrador;
     }
 
-    /*
+  */
         public UsuarioBean validarUsuarioPassword(String user, String pass){
 
-        String sql ="select * from usuario where correo = ? and contrasenia_hashead = (?,256);";
+        String sql ="select * from usuario where correo = ? and contraseniaHashed = sha2(?,256);";
         UsuarioBean administrador = null;
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)){
@@ -62,7 +62,6 @@ public class AdminDao extends BaseDao{
         return administrador;
     }
 
-    *  */
 
     public UsuarioBean obetenerAdministrador(int idUsuario){
         UsuarioBean administrador = null;
