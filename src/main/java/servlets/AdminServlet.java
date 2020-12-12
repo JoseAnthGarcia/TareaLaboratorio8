@@ -218,7 +218,7 @@ public class AdminServlet extends HttpServlet {
 
                 request.setAttribute("idBodega",idBodega2);
                 request.setAttribute("rucBodega",rucBodega2);
-                if(idBodega2==bodegaDao.buscarIdBodega(rucBodega2)) {
+                if(idBodega2==bodegaDao.buscarIdBodega(String.valueOf(rucBodega2))) {
                     String contrasenia = request.getParameter("contrasenia");
                     String contrasenia2 = request.getParameter("contrasenia2");
 

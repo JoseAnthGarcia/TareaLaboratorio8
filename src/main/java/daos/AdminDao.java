@@ -159,22 +159,28 @@ public class AdminDao extends BaseDao{
         }
         return bodega;
     }
-    public int buscarIdBodega(Long ruc){
-        String sql = "SELECT idBodega FROM bodega WHERE ruc = ?";
-        int idBodega=0;
+
+    public BodegaBean buscarBodega(String ruc){
+        BodegaBean bodega= new BodegaBean();
+        String sql = "SELECT * FROM bodega WHERE ruc = ?";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
-            pstmt.setLong(1,ruc);
+            pstmt.setString(1,ruc);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
-                    idBodega = rs.getInt(1);
+                    bodega.setIdBodega(rs.getInt("idBodega"));
+                    bodega.setNombreBodega(rs.getString("nombreBodega"));
+                    bodega.setCorreoBodega(rs.getString("correo"));
+                    bodega.setEstadoBodega(rs.getString("estado"));
                 }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return idBodega;
+        return bodega;
     }
+
+
 
     public static boolean pedidoPendiente(String nombreBodega){    //devuelve true si presenta al menos un pedido en estado pendiente
         boolean pedidoPendiente = false;
