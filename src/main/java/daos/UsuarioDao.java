@@ -2,7 +2,9 @@ package daos;
 
 import beans.*;
 import dtos.ProductoCantDto;
+import servlets.Emails;
 
+import javax.mail.MessagingException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -104,7 +106,7 @@ public class UsuarioDao extends BaseDao {
     public UsuarioBean obtenerUsuario(int usuarioId) {
 
 
-        String sql = "select u.idUsuario, u.nombreUsuario, u.apellido, u.dni, u.correo, u.contrasenia,u.idDistrito, d.nombreDistrito\n" +
+        String sql = "select u.idUsuario, u.nombreUsuario, u.apellido, u.dni, u.correo, u.contrasenia,u.idDistrito, d.nombreDistrito, u.contraseniaHashed \n" +
                 "from usuario u\n" +
                 "inner join distrito d on u.idDistrito=d.idDistrito\n" +
                 "where idUsuario=?;";
@@ -127,6 +129,10 @@ public class UsuarioDao extends BaseDao {
                     distritoBean.setId(rs.getInt(7));
                     distritoBean.setNombre(rs.getString(8));
                     usuarioBean.setDistrito(distritoBean);
+
+                    //se agrego contraseniaHashed - ATENCIÓN!!!
+                    usuarioBean.setContraseniaHashed(rs.getString(9));
+
 
 
                 }
@@ -159,22 +165,70 @@ public class UsuarioDao extends BaseDao {
             throwables.printStackTrace();
         }
     }
-
+    // actualizarContra actualizado para incluir contraseniaHashed ATENCION!!!!
     public void actualizarContra(int usuarioID, String contraseniaNew) {
-        String sql = "UPDATE usuario SET contrasenia = ? WHERE idUsuario = ?";
+        String sql = "UPDATE usuario SET contrasenia = ? , contraseniaHashed = sha2(?,256) WHERE idUsuario = ?";
 
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
             pstmt.setString(1, contraseniaNew);
-            pstmt.setInt(2, usuarioID);
+            pstmt.setString(2,contraseniaNew);
+            pstmt.setInt(3, usuarioID);
 
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
+    }
+
+    //Agregado por EM Usado para recuperar contrasenia
+    public UsuarioBean obtenerUsuarioPorCorreo(String correo) {
+
+
+        String sql = "select idUsuario, contraseniaHashed " +
+                "from usuario  where correo=?;";
+        UsuarioBean usuarioBean = new UsuarioBean();
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setString(1, correo);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    usuarioBean.setIdUsuario(rs.getInt(1));
+                    //depende de como lo llamen ---- posiblemente corregir
+                    usuarioBean.setContraseniaHashed(rs.getString(2));
+                    usuarioBean.setCorreo(correo);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return usuarioBean;
+    }
+
+    //correo para recuperar contraseña  //se marco de amarillo antes de tiempo ...curioso,no?
+    //link aun no planteado
+    public boolean enviarCorreoLinkContra(int id, String contraHashed, String correo){
+        boolean envioExitoso = true;
+        String subject = "Correo para restablecer Contraseña";
+        String content = "El link para restablecer su contraseña es : \n" +
+                "link: http://localhost:8080/TareaLaboratorio8/LoginServlet?accion=recuContra&contraHashed=" +contraHashed+ "&id="+id+
+                "\n" +
+                "Atentamente,\n" +
+                "                       El equipo de MiBodega.com ";
+        Emails email = new Emails();
+        try {
+            email.enviar(correo,subject,content);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            envioExitoso = false;
+        }
+        return envioExitoso;
     }
 
     //Parte de realizarUnPedido:
