@@ -32,7 +32,7 @@
             cursor: pointer;
         }
         .container-fluid{
-           
+
             padding: 3% 15% ;
         }
 
@@ -52,7 +52,7 @@
         <div class="col-sm-3"></div>
         <div class="col-sm-6">
             <h1>¡Pedido con codigo <%=codigo%> realizado exitosamente!</h1>
-            <h4>Fecha límite de cancelacion: ######</h4>
+            <h4>Recuerde que puede cancelar su pedido solo una hora antes de la fecha ingresada de recojo.</h4>
             <a class="btn btn-outline-success der" href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home">OK</a>
         </div>
         <div class="col-sm-3"></div>
