@@ -60,7 +60,7 @@
                     <label for="exampleInputPassword1">Contraseña</label>
                     <input type="password" class="form-control" id="exampleInputPassword1" name="inputPassword">
                     <small id="emailHelp" class="form-text text-muted">No comparta su contraseña con nadie.</small>
-                    <a href="<%=request.getContextPath()%>/LoginBodega?accion=actualizarContra">¿Se olvidó su contraseña?</a>
+                    <a href="<%=request.getContextPath()%>/LoginBodega?accion=actualizarContraCorreo">¿Se olvidó su contraseña?</a>
                 </div>
                 <% if (request.getParameter("error") != null) { %>
                 <div class="text-danger mb-2">Error en usuario o contraseña</div>

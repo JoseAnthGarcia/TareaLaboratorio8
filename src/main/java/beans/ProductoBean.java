@@ -5,13 +5,10 @@ import java.math.BigDecimal;
 public class ProductoBean {
 
     private int id;
-    private String nombreFoto;
     private String nombreProducto;
     private String descripcion;
     private int stock;
     private BigDecimal precioProducto;
-    private String rutaFoto;
-
     public int getId() {
         return id;
     }
@@ -20,13 +17,6 @@ public class ProductoBean {
         this.id = id;
     }
 
-    public String getNombreFoto() {
-        return nombreFoto;
-    }
-
-    public void setNombreFoto(String nombreFoto) {
-        this.nombreFoto = nombreFoto;
-    }
 
     public String getNombreProducto() {
         return nombreProducto;
@@ -60,12 +50,5 @@ public class ProductoBean {
     public void setPrecioProducto(BigDecimal precioProducto) {
         this.precioProducto = precioProducto;
     }
-
-    public void setRutaFoto(String rutaFoto) {
-        this.rutaFoto = rutaFoto;
-    }
-
-    public String getRutaFoto() {
-        return rutaFoto;
-    }
+    
 }

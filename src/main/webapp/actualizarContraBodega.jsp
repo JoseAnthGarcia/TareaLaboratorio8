@@ -3,7 +3,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    boolean contraseniaB = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
     boolean rucExis = request.getAttribute("rucExis") == null ? false : (Boolean) request.getAttribute("rucExis");
 %>
 <!DOCTYPE html>
@@ -92,7 +91,7 @@
                 </div>
                 <div class="col-sm-6">
                     <h1>Actualizar contraseña</h1>
-                    <form method="POST" action="<%=request.getContextPath()%>/LoginBodega?accion=actualizarContra">
+                    <form method="POST" action="<%=request.getContextPath()%>/LoginBodega?accion=actualizarContraCorreo">
                         <div class="form-group row">
                             <label for="inputRuc" class="col-sm-2 col-form-label">RUC:</label>
                             <div class="col-sm-10">
@@ -101,17 +100,6 @@
                                        name="ruc" id="inputRuc" <%=request.getParameter("ruc")==null?"":"value='"+request.getParameter("ruc")+"'"%>>
                                 <div id="inputRucFeedback" class="invalid-feedback">
                                     El ruc no esta registrado.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="inputPassword" class="col-sm-2 col-form-label">Nueva Contraseña:</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control <%=contraseniaB?"":"is-invalid"%>"
-                                       aria-describedby="inputPasswordFeedback"
-                                       name="contrasenia" id="inputPassword" <%=request.getParameter("contrasenia")==null?"":"value='"+request.getParameter("contrasenia")+"'"%>>
-                                <div id="inputPasswordFeedback" class="invalid-feedback">
-                                    Ingrese una contraseña valida, por favor.
                                 </div>
                             </div>
                         </div>
