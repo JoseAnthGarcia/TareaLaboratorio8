@@ -1,6 +1,7 @@
 package daos;
 
 import beans.PedidoBean;
+import dtos.PedidosDatosDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -60,30 +61,27 @@ public class PedidoDao extends BaseDao{
         return listaPedidos;
     }
 
-    public PedidoBean mostrarPedido(String codigo) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        String sql = "SELECT p.codigo, b.nombreBodega, p.fecha_registro, p.fecha_recojo, \n" +
-                "DATE_ADD(p.fecha_recojo, INTERVAL 1 DAY) as `fecha limite`, count(php.idProducto), t1.`costo total` \n" +
-                "FROM pedido p LEFT JOIN bodega b ON p.idBodega = b.idBodega left join pedido_has_producto php \n" +
-                "ON p.idPedido = php.idPedido LEFT JOIN (SELECT t.idPedido, sum(t.`Costo por producto`) as `costo total` \n" +
-                "FROM (SELECT php.idPedido, php.idProducto, (php.cantidad*p.precioUnitario) as `Costo por producto`FROM pedido_has_producto php \n" +
+    public PedidosDatosDTO mostrarPedido(String codigo) {
+
+        String sql = "SELECT p.codigo, b.nombreBodega, p.fecha_registro, p.fecha_recojo, DATE_ADD(p.fecha_recojo, INTERVAL 1 DAY) as `fecha limite`, count(php.idProducto) as unidades, t1.`costo total` FROM pedido p \n" +
+                "LEFT JOIN bodega b ON p.idBodega = b.idBodega left join pedido_has_producto php ON p.idPedido = php.idPedido \n" +
+                "LEFT JOIN (SELECT t.idPedido, sum(t.`Costo por producto`) as `costo total` FROM (SELECT php.idPedido, php.idProducto, (php.cantidad*p.precioUnitario) as `Costo por producto`FROM pedido_has_producto php \n" +
                 "LEFT JOIN producto p ON php.idProducto = p.idProducto) t  GROUP BY t.idPedido) t1 ON p.idPedido = t1.idPedido \n" +
                 "WHERE codigo = ? GROUP BY p.idPedido";
-        PedidoBean pedidos = null;
+        PedidosDatosDTO pedidos = null;
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatement.setString(1, codigo);
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
-                    pedidos = new PedidoBean();
-                    pedidos.setCodigo(rs.getString(2));
-                    pedidos.setFecha_registro(rs.getString(4));
-                    pedidos.setFecha_recojo(rs.getString(5));
-
+                    pedidos = new PedidosDatosDTO();
+                    pedidos.setCodigo(rs.getString("codigo"));
+                    pedidos.setNombreBodega(rs.getString("nombreBodega"));
+                    pedidos.setFecha_registro(rs.getString("fecha_registro"));
+                    pedidos.setFecha_recojo(rs.getString("fecha_recojo"));
+                    pedidos.setFecha_limite(rs.getString("fecha limite"));
+                    pedidos.setUnidades(rs.getInt("unidades"));
+                    pedidos.setCosto_total(rs.getBigDecimal("costo total"));
                 }
             }
         } catch (SQLException e) {

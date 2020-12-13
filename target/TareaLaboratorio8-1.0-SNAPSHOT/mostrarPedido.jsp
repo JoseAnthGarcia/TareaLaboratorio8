@@ -7,11 +7,14 @@
 --%>
 <%@ page import = "java.util.ArrayList" %>
 <%@ page import= "beans.PedidoBean" %>
+<%@ page import="dtos.PedidosDatosDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="listaPedidos" scope="request" type="java.util.ArrayList<beans.PedidoBean>"/>
+<%
+    PedidosDatosDTO pedido = (PedidosDatosDTO) request.getAttribute("pedido");
+%>
 <html>
 <head>
-    <title>Title</title>
+    <title>Información de Pedido</title>
     <jsp:include page="bootstrapRepository.jsp"/>
 
 </head>
@@ -42,17 +45,27 @@
 </header>
 
 
-<div class="container">
-    <h1 class='mb-3'>Informacion del Pedido</h1>
-    <%for (PedidoBean pedidos : listaPedidos) { %>
-    <tr>
-        <td><a><%=pedidos.getCodigo()%></a>
-        </td>
-        <td><%=pedidos.getEstado()%></td>
-        <td>
-        </td>
-    <%}%>
-    </tr>
+<div class="table container-fluid">
+    <h1 class='mb-3'>Informacion del Pedido <%=pedido.getCodigo()%></h1>
+    <%//TODO: Crear un DTO para mostrar la información del pedido %>
+        <div >
+            <tr class='mb-3'>Bodega : <%=pedido.getNombreBodega()%></tr>
+        </div>
+        <div>
+            <tr class='mb-3'>Fecha y hora de registro: <%=pedido.getFecha_registro()%></tr>
+        </div>
+        <div>
+            <tr class='mb-3'>Fecha y hora de recojo: <%=pedido.getFecha_recojo()%></tr>
+        </div>
+        <div>
+            <tr class='mb-3'>Fecha límite para cancelar el pedido: <%=pedido.getFecha_limite()%></tr>
+        </div>
+        <div>
+            <tr class='mb-3'>Unidades: <%=pedido.getUnidades() == 0 ? "Sin unidades" :pedido.getUnidades()%></tr>
+        </div>
+        <div>
+            <tr class='mb-3'>Costo: <%=pedido.getCosto_total() == null? "Sin costo" : pedido.getCosto_total()%></tr>
+        </div>
 
 </div>
 <footer class="page-footer font-small blue" style="margin-top: 60px">
