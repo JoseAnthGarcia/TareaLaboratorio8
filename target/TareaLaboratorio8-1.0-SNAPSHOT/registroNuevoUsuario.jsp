@@ -12,6 +12,8 @@
     boolean distritoSelected = request.getAttribute("distritoSelected") == null ? true : (Boolean) request.getAttribute("distritoSelected");
     boolean contIguales = request.getAttribute("contIguales") == null ? true : (Boolean) request.getAttribute("contIguales");
     boolean correoExis = request.getAttribute("correoExis") == null ? false : (Boolean) request.getAttribute("correoExis");
+    boolean contraTrim = request.getAttribute("contraTrim") == null ? true : (Boolean) request.getAttribute("contraTrim");
+
 %>
 
 <!DOCTYPE html>
@@ -206,12 +208,17 @@
         <div class="col-sm-3">
             <%if(!contIguales){%>
             <div class="alert alert-danger" role="alert">
-                Las contraseñas no coinciden!
+                ¡Las contraseñas no coinciden!
+            </div>
+            <%}%>
+            <%if(!contraTrim){%>
+            <div class="alert alert-danger" role="alert">
+                ¡No esta permitido los espacios/tabulaciones en la contraseña!
             </div>
             <%}%>
             <%if(correoExis){%>
             <div class="alert alert-danger" role="alert">
-                El correo ingresado existe
+                ¡El correo ingresado ya tiene una cuenta  en el sistema!
             </div>
             <%}%>
         </div>
