@@ -31,6 +31,18 @@
             position: absolute;
             right: 10% ;
         }
+        .btn {
+            background-color: #343a40;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        /* Darker background on mouse-over */
+        .btn:hover {
+            background-color: #767676;
+        }
         .primero{
             position: absolute;
             left: 15%;
@@ -122,7 +134,7 @@
         <div class="alert alert-secondary" role="alert">
             El carrito se encuentra vacio.
         </div>
-        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-success primero">Regresar</a>
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-success primero " style="margin-top: 80px;">Regresar</a>
         <%}%>
 
     </div>
