@@ -1,12 +1,13 @@
 package daos;
 
-import beans.BodegaBean;
-import beans.DistritoBean;
-import beans.ProductoBean;
-import beans.UsuarioBean;
+import beans.*;
+import dtos.ProductoCantDto;
+import servlets.Emails;
 
+import javax.mail.MessagingException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class UsuarioDao extends BaseDao {
@@ -105,7 +106,7 @@ public class UsuarioDao extends BaseDao {
     public UsuarioBean obtenerUsuario(int usuarioId) {
 
 
-        String sql = "select u.idUsuario, u.nombreUsuario, u.apellido, u.dni, u.correo, u.contrasenia,u.idDistrito, d.nombreDistrito\n" +
+        String sql = "select u.idUsuario, u.nombreUsuario, u.apellido, u.dni, u.correo, u.contrasenia,u.idDistrito, d.nombreDistrito, u.contraseniaHashed \n" +
                 "from usuario u\n" +
                 "inner join distrito d on u.idDistrito=d.idDistrito\n" +
                 "where idUsuario=?;";
@@ -128,6 +129,10 @@ public class UsuarioDao extends BaseDao {
                     distritoBean.setId(rs.getInt(7));
                     distritoBean.setNombre(rs.getString(8));
                     usuarioBean.setDistrito(distritoBean);
+
+                    //se agrego contraseniaHashed - ATENCIÓN!!!
+                    usuarioBean.setContraseniaHashed(rs.getString(9));
+
 
 
                 }
@@ -160,22 +165,70 @@ public class UsuarioDao extends BaseDao {
             throwables.printStackTrace();
         }
     }
-
+    // actualizarContra actualizado para incluir contraseniaHashed ATENCION!!!!
     public void actualizarContra(int usuarioID, String contraseniaNew) {
-        String sql = "UPDATE usuario SET contrasenia = ? WHERE idUsuario = ?";
+        String sql = "UPDATE usuario SET contrasenia = ? , contraseniaHashed = sha2(?,256) WHERE idUsuario = ?";
 
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
             pstmt.setString(1, contraseniaNew);
-            pstmt.setInt(2, usuarioID);
+            pstmt.setString(2,contraseniaNew);
+            pstmt.setInt(3, usuarioID);
 
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
+    }
+
+    //Agregado por EM Usado para recuperar contrasenia
+    public UsuarioBean obtenerUsuarioPorCorreo(String correo) {
+
+
+        String sql = "select idUsuario, contraseniaHashed " +
+                "from usuario  where correo=?;";
+        UsuarioBean usuarioBean = new UsuarioBean();
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setString(1, correo);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    usuarioBean.setIdUsuario(rs.getInt(1));
+                    //depende de como lo llamen ---- posiblemente corregir
+                    usuarioBean.setContraseniaHashed(rs.getString(2));
+                    usuarioBean.setCorreo(correo);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return usuarioBean;
+    }
+
+    //correo para recuperar contraseña  //se marco de amarillo antes de tiempo ...curioso,no?
+    //link aun no planteado
+    public boolean enviarCorreoLinkContra(int id, String contraHashed, String correo){
+        boolean envioExitoso = true;
+        String subject = "Correo para restablecer Contraseña";
+        String content = "El link para restablecer su contraseña es : \n" +
+                "link: http://localhost:8080/TareaLaboratorio8/LoginServlet?accion=recuContra&contraHashed=" +contraHashed+ "&id="+id+
+                "\n" +
+                "Atentamente,\n" +
+                "                       El equipo de MiBodega.com ";
+        Emails email = new Emails();
+        try {
+            email.enviar(correo,subject,content);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            envioExitoso = false;
+        }
+        return envioExitoso;
     }
 
     //Parte de realizarUnPedido:
@@ -217,10 +270,8 @@ public class UsuarioDao extends BaseDao {
                 while (rs.next()) {
                     ProductoBean producto = new ProductoBean();
                     producto.setId(rs.getInt(1));
-                    producto.setNombreFoto(rs.getString(2));
-                    producto.setRutaFoto(rs.getString(3));
-                    producto.setNombreProducto(rs.getString(4));
-                    producto.setPrecioProducto(rs.getBigDecimal(7));
+                    producto.setNombreProducto(rs.getString("nombreProducto"));
+                    producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
                     listaProductos.add(producto);
                 }
             }
@@ -249,8 +300,8 @@ public class UsuarioDao extends BaseDao {
                     ProductoBean productoBean = new ProductoBean();
 
                     productoBean.setId(rs.getInt(1));
-                    productoBean.setNombreFoto(rs.getString(2));
-                    productoBean.setRutaFoto(rs.getString(3));
+                    /*productoBean.setNombreFoto(rs.getString(2));
+                    productoBean.setRutaFoto(rs.getString(3));*/
                     productoBean.setNombreProducto(rs.getString(4));
                     productoBean.setPrecioProducto(rs.getBigDecimal(7));
 
@@ -286,6 +337,76 @@ public class UsuarioDao extends BaseDao {
     }
 
     //Realizar pedido----------------------------
+    public ArrayList<BodegaBean> listarBodegas(int pag){
+        ArrayList<BodegaBean> listaBodegas = new ArrayList<>();
+        int cantPag = 8;
+        String sql = "select idBodega, foto,nombreBodega,  direccion  from bodega\n" +
+                "where bodega.estado = \"Activo\"\n" +
+                "order by nombreBodega ASC limit ?,?;";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, (pag-1)*cantPag);
+            pstmt.setInt(2, cantPag);
+            try(ResultSet rs = pstmt.executeQuery()){
+                while(rs.next()){
+                    BodegaBean bodega = new BodegaBean();
+                    //TODO: JALAR FOTO
+                    bodega.setIdBodega(rs.getInt("idBodega"));
+                    bodega.setNombreBodega(rs.getString("nombreBodega"));
+                    bodega.setDireccionBodega(rs.getString("direccion"));
+                    listaBodegas.add(bodega);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return listaBodegas;
+    }
+
+    public ArrayList<BodegaBean> listarBodegasDistrito(int idUsuario){
+        ArrayList<BodegaBean> listaBodegas = new ArrayList<>();
+        String sql = "select idBodega, foto,nombreBodega,  direccion from bodega\n" +
+                "where idDistrito = (SELECT idDistrito FROM usuario WHERE idUsuario = ?) and estado = \"Activo\"\n" +
+                "order by nombreBodega;";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                while(rs.next()){
+                    BodegaBean bodega = new BodegaBean();
+                    //TODO: JALAR FOTO
+                    bodega.setIdBodega(rs.getInt("idBodega"));
+                    bodega.setNombreBodega(rs.getString("nombreBodega"));
+                    bodega.setDireccionBodega(rs.getString("direccion"));
+                    listaBodegas.add(bodega);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return listaBodegas;
+    }
+
+    public static int calcularCantPagListarBodegas(){
+
+        String sql = "select ceil(count(*)/10)\n" +
+                "from (select b.idBodega, b.foto,nombreBodega,  b.direccion  from bodega b\n" +
+                "where b.estado = \"Activo\") t;";  // numero de paginas
+
+        int cantPag = 0;
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            try(ResultSet rs = pstmt.executeQuery()){
+                rs.next();
+                cantPag = rs.getInt(1);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return cantPag;
+    }
+
     public BodegaBean obtenerBodega(int idBodega){
         BodegaBean bodega = null;
         String sql = "SELECT * FROM bodega WHERE idBodega=?";
@@ -324,6 +445,64 @@ public class UsuarioDao extends BaseDao {
             throwables.printStackTrace();
         }
         return producto;
+    }
+
+    public String generarCodigoPedido(){
+        // Los caracteres de interés en un array de char.
+        char[] chars = "0123456789".toCharArray();
+        // Longitud del array de char.
+        int charsLength = chars.length;
+        // Instanciamos la clase Random
+        Random random = new Random();
+        // Un StringBuffer para componer la cadena aleatoria de forma eficiente
+        StringBuffer buffer = new StringBuffer();
+        // Bucle para elegir una cadena de 10 caracteres al azar
+        for (int i = 0; i < 9; i++) {
+            // Añadimos al buffer un caracter al azar del array
+            buffer.append(chars[random.nextInt(charsLength)]);
+        }
+        // Y solo nos queda hacer algo con la cadena
+        //System.out.println(buffer.toString());
+        return buffer.toString();
+    }
+
+    public int crearPedido(PedidoBean pedido){
+        int idPedido =-1;
+        String sql = "insert into pedido (codigo, fecha_registro,\n" +
+                "fecha_recojo,idUsuario,idBodega)\n" +
+                "values(?,now(),?,?,?);";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);) {
+            pstmt.setString(1, pedido.getCodigo());
+            pstmt.setString(2, pedido.getFecha_recojo());
+            pstmt.setInt(3,pedido.getUsuario().getIdUsuario());
+            pstmt.setInt(4,pedido.getBodegaBean().getIdBodega());
+            pstmt.executeUpdate();
+            try(ResultSet rsKey = pstmt.getGeneratedKeys()){
+                if(rsKey.next()){
+                    idPedido = rsKey.getInt(1);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return idPedido;
+    }
+
+    public void ingresarProductosApedido(int idPedido, ArrayList<ProductoCantDto> listaProductos){
+        for(ProductoCantDto productoPedido: listaProductos){
+            String sql = "insert into pedido_has_producto (idPedido,idProducto, Cantidad)\n" +
+                    "values(?,?, ?);";
+            try (Connection conn = getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql);) {
+                pstmt.setInt(1, idPedido);
+                pstmt.setInt(2,productoPedido.getProducto().getId());
+                pstmt.setInt(3,productoPedido.getCant());
+                pstmt.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
     }
 
 }

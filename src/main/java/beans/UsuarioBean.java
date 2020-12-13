@@ -8,6 +8,8 @@ public class UsuarioBean {
     private String contrasenia;
     private DistritoBean distrito;
     private int idUsuario;
+    private String contraseniaHashed;
+
 
 
 
@@ -64,5 +66,13 @@ public class UsuarioBean {
 
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public String getContraseniaHashed() {
+        return contraseniaHashed;
+    }
+
+    public void setContraseniaHashed(String contraseniaHashed) {
+        this.contraseniaHashed = contraseniaHashed;
     }
 }

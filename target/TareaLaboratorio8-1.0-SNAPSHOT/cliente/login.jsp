@@ -66,7 +66,7 @@
             <img src="imagenes/profile.png" width="408px" height="400px" />
         </div>
         <div class="col-lg-7 col-md-12 ">
-            <form class="form-signin" method="POST" action="<%=request.getContextPath()%>/LoginServlet" style="
+            <form class="form-signin" method="POST" action="<%=request.getContextPath()%>/LoginServlet?accion=login" style="
     margin-left: 150px;text-align: center;position: relative; top:40px;">
             <div class="row">
                 <div class="col-10">
@@ -87,8 +87,8 @@
 
                     </div>
                     <div class="col-2 izquierda">
-                        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=editar&cambiar=apellido"
-                        ><button class="btn">Olvidé mi contraseña</button></a>
+                        <a href="<%=request.getContextPath()%>/LoginServlet?accion=olvideContra">
+                            <button type="button" class="btn btn-primary">Olvidé mi contraseña</button></a>
                     </div>
 
                 </div>

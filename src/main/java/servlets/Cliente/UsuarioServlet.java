@@ -1,11 +1,9 @@
 package servlets.Cliente;
 
-import beans.DistritoBean;
-import beans.PedidoBean;
-import beans.ProductoBean;
-import beans.UsuarioBean;
+import beans.*;
 import daos.PedidosUsuarioDao;
 import daos.UsuarioDao;
+import dtos.ProductoCantDto;
 import servlets.Emails;
 
 
@@ -18,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -192,8 +191,8 @@ public class UsuarioServlet extends HttpServlet {
                     if (contraseniaBB.equals(contrasenia2BB)) {
                         contIguales = true;
                     }
-
-                    if (contAntIguales && contIguales) {
+                    if(contAntIguales && contIguales && !contrasenia2BB.equals("")){
+                    //if (contAntIguales && contIguales) {
                         usuarioDao.actualizarContra(usuarioId, contraseniaBB); //ojo con usuarioId
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=miPerfil");
                     } else {
@@ -219,16 +218,84 @@ public class UsuarioServlet extends HttpServlet {
                     view.forward(request, response);
                     break;
 
+                case "escogerBodega":
+                    //TODO: VALIDAD IDBODEGA
+                    String idBodega2 = request.getParameter("idBodega");
+                    int idBodegaInt = Integer.parseInt(idBodega2);
+                    HttpSession session3 = request.getSession();
+                    if(session3.getAttribute("bodegaEscogida")!=null){
+                        session3.removeAttribute("bodegaEscogida");
+                    }
+                    session3.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodegaInt));
+                    response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=realizarPedido");
+                    break;
                 case "generarPedido":
-                    //TODO: VALIDAR ESPACIOS VACIOS
+                    //TODO: VALIDAR ESPACIOS VACIOS!!!
                     HttpSession session2 = request.getSession();
                     HashMap<Integer, ProductoBean> listaProductos = (HashMap<Integer, ProductoBean>) session2.getAttribute("carrito");
+                    ArrayList<ProductoCantDto> listaProductosSelecCant = new ArrayList<>();
                     for (Map.Entry<Integer, ProductoBean> entry : listaProductos.entrySet()){
                         int idProducto = entry.getKey();
                         String cant = request.getParameter(String.valueOf(idProducto));
                         System.out.println("producto"+entry.getValue().getNombreProducto()+" | cant: "+cant);
+
+                        ProductoCantDto productoCant = new ProductoCantDto();
+                        productoCant.setProducto(usuarioDao.obtenerProducto(idProducto));
+                        productoCant.setCant(Integer.parseInt(cant));
+
+                        listaProductosSelecCant.add(productoCant);
                     }
 
+                    //no es necesario guardarlo en sesion, ya que se mandara como formulario al
+                    //confirmar pedido
+                    request.setAttribute("codigoPedido", usuarioDao.generarCodigoPedido());
+
+                    //creo que se debe guardar en la sesion, pues luego se necesitara
+                    if(session.getAttribute("listaProductosSelecCant")!=null){
+                        session.removeAttribute("listaProductosSelecCant");
+                    }
+                    session.setAttribute("listaProductosSelecCant", listaProductosSelecCant);
+
+                    //calculamos el precio total:
+
+                    BigDecimal precioTotal = BigDecimal.valueOf(0);
+                    for(ProductoCantDto producto: listaProductosSelecCant){
+                        BigDecimal costo = BigDecimal.valueOf(producto.getProducto().getPrecioProducto().doubleValue()*producto.getCant());
+                        precioTotal = BigDecimal.valueOf(precioTotal.doubleValue() + costo.doubleValue());
+                    }
+                    request.setAttribute("precioTotal",precioTotal);
+
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/confirmarPedido.jsp");
+                    requestDispatcher.forward(request, response);
+
+                    break;
+                case "confirmarPedido":
+                    HttpSession session1 = request.getSession();
+                    //TODO: VALIDAR ENTRADAS
+                    String codigo = request.getParameter("codigo");
+                    String fecha = request.getParameter("fecha");
+                    String precioTotal1 = request.getParameter("precioTotal");
+
+                    //creo el pedido:
+                    PedidoBean pedido = new PedidoBean();
+                    pedido.setCodigo(codigo);
+                    pedido.setFecha_recojo(fecha);
+                    BodegaBean bodegaEscogida = (BodegaBean) session1.getAttribute("bodegaEscogida");
+                    pedido.setBodegaBean(bodegaEscogida);
+                        //TODO: falta usuaio, esta bien??
+                    UsuarioBean usuario = (UsuarioBean) session1.getAttribute("usuario");
+                    pedido.setUsuario(usuario);
+                    int idPedido = usuarioDao.crearPedido(pedido);
+
+                    //relleno el pedido:
+                    ArrayList<ProductoCantDto> listaProductosSelecCant1 = (ArrayList<ProductoCantDto>) session1.getAttribute("listaProductosSelecCant");
+                    usuarioDao.ingresarProductosApedido(idPedido, listaProductosSelecCant1);
+
+                    //TODO: eliminar attributos de session necesarios para el pedido.
+
+                    request.setAttribute("codigo",codigo);
+                    RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("cliente/registroExitoso.jsp");
+                    requestDispatcher2.forward(request, response);
                     break;
 
             }
@@ -377,21 +444,44 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher.forward(request, response);
                     break;
 
+                case "escogerBodega1":
+                    HttpSession session5 = request.getSession();
+                    /*int idDistrito = ((UsuarioBean)session.getAttribute("usuario")).getIdUsuario();
+                    //TODO: OJO !!!!
+                    System.out.println(((UsuarioBean)session.getAttribute("usuario")).getDistrito().getNombre());*/
+                    ArrayList<BodegaBean> listaBodegas2 = usuarioDao.listarBodegasDistrito(((UsuarioBean)session5.getAttribute("usuario")).getIdUsuario());
+                    request.setAttribute("listaBodegasDistrito", listaBodegas2);
+                    requestDispatcher = request.getRequestDispatcher("/cliente/bodegasCercanas.jsp");
+                    requestDispatcher.forward(request, response);
+                    break;
+
+                case "escogerBodega2":
+                    //TODO: VALIDAR PAGINA
+                    String pag = request.getParameter("pag")==null?"1":request.getParameter("pag");
+                    int pagInt = Integer.parseInt(pag);
+                    ArrayList<BodegaBean> listaBodegas = usuarioDao.listarBodegas(pagInt);
+                    int cantPags = usuarioDao.calcularCantPagListarBodegas();
+
+                    request.setAttribute("listaBodegas", listaBodegas);
+                    request.setAttribute("paginaAct", pagInt);
+                    request.setAttribute("cantPag", cantPags);
+                    requestDispatcher = request.getRequestDispatcher("/cliente/bodegasDisponibles.jsp");
+                    requestDispatcher.forward(request, response);
+                    break;
                 case "realizarPedido":
-                    int idBodega = 30; //Se debe jalar la bodega
                     //VERIFICAR IDBODEGA?????------------------------------
                     HttpSession session1 = request.getSession();
-                    session1.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodega));
+                    int idBodega = ((BodegaBean)session1.getAttribute("bodegaEscogida")).getIdBodega();
                     int cantPorPagina = 4;
                     //calculamos paginas:
                     String query = "SELECT * FROM producto WHERE idBodega=" + idBodega + ";";
                     int cantPag = usuarioDao.calcularCantPagQuery(query, cantPorPagina);
 
-                    String pag = request.getParameter("pag") == null ?
+                    String pag2 = request.getParameter("pag") == null ?
                             "1" : request.getParameter("pag");
                     int paginaAct;
                     try {
-                        paginaAct = Integer.parseInt(pag); //try
+                        paginaAct = Integer.parseInt(pag2); //try
                         if (paginaAct > cantPag) {
                             paginaAct = 1;
                         }
