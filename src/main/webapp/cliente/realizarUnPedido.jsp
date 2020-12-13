@@ -88,7 +88,7 @@
         </div>
         <div class="col-sm-4">
             <div class="row">
-                <button class="btn btn-secondary" href="#">Cancelar y elegir otra bodega</button>
+                <a class="btn btn-secondary" href="<%=request.getContextPath()%>/UsuarioServlet?accion=eliminarBodegaEscogida">Cancelar y elegir otra bodega</a>
             </div>
             <div class="row">
                 <%if(session.getAttribute("productoExistente")!=null){%>
