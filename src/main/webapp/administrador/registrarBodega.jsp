@@ -110,7 +110,7 @@
                                 href="<%=request.getContextPath()%>/AdminServlet" class="navbar-brand d-flex align-items-center">
                             <strong>Lista de bodegas</strong>
                         </a>
-                        <a href="<%=request.getContextPath()%>/LoginServlet?accion=logout" ><img src="imagenes/sigout.png" height="30px"/></a>
+                        <a href="<%=request.getContextPath()%>/LoginAdmin?accion=logout" ><img src="imagenes/sigout.png" height="30px"/></a>
                     </div>
 
                 </div>
