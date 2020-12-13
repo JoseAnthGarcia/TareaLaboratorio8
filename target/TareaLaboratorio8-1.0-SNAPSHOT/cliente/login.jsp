@@ -1,4 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%
+    int correoEnviado = session.getAttribute("correoEnviado") == null ? 0 : (int) session.getAttribute("correoEnviado");
+    Boolean cambioContra = session.getAttribute("cambioContra") == null ? false : (Boolean) session.getAttribute("cambioContra");
+
+    //se tiene que hacer por sesion
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -110,6 +116,24 @@
 
             </form>
         </div>
+    </div>
+    <div align="right">
+        <%if(correoEnviado==1){%>
+        <div class="alert alert-success" role="alert">
+            El correo fue enviado exitosamente. Revise su bandeja de entrada.
+
+        </div>
+        <%}else if(correoEnviado==2){%>
+        <div class="alert alert-danger" role="alert">
+            Ha ocurrido un error al enviar el correo. Intentelo de nuevo.
+        </div>
+        <%}%>
+        <%if(cambioContra){%>
+        <div class="alert alert-success" role="alert">
+            Contraseña restablecida exitosamente.
+        </div>
+        <%}%>
+        <%session.invalidate(); %>
     </div>
 
 

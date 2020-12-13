@@ -122,6 +122,7 @@
         <div class="alert alert-secondary" role="alert">
             El carrito se encuentra vacio.
         </div>
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-success primero">Regresar</a>
         <%}%>
 
     </div>

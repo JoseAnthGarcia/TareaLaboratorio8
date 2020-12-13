@@ -279,15 +279,6 @@ public class UsuarioServlet extends HttpServlet {
                     }
                     break;
 
-                case "eliminarBodegaEscogida":
-                    if (request.getSession().getAttribute("bodegaEscogida") != null) {
-                        request.getSession().removeAttribute("bodegaEscogida");
-                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=escogerBodega1");
-                    } else {
-                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=Home");
-                    }
-                    break;
-
                 case "generarPedido":
                     HttpSession session2 = request.getSession();
                     HashMap<Integer, ProductoBean> listaProductos = (HashMap<Integer, ProductoBean>) session2.getAttribute("carrito");
@@ -611,6 +602,18 @@ public class UsuarioServlet extends HttpServlet {
                     }
                     break;
 
+                case "eliminarBodegaEscogida":
+                    if (request.getSession().getAttribute("bodegaEscogida") != null) {
+                        request.getSession().removeAttribute("bodegaEscogida");
+                        if(request.getSession().getAttribute("carrito") != null){
+                            request.getSession().removeAttribute("carrito");
+                        }
+                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=escogerBodega1");
+                    } else {
+                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=Home");
+                    }
+                    break;
+
                 case "agregarCarrito":
                     if(session.getAttribute("bodegaEscogida")!=null){
                         boolean noNumber = false;
@@ -659,8 +662,7 @@ public class UsuarioServlet extends HttpServlet {
                     int idProducto1 = Integer.parseInt(request.getParameter("productSelect"));
                     HttpSession session4 = request.getSession();
                     ((HashMap<Integer, ProductoBean>) session4.getAttribute("carrito")).remove(idProducto1);
-                    requestDispatcher = request.getRequestDispatcher("/cliente/carrito.jsp");
-                    requestDispatcher.forward(request, response);
+                    response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=verCarrito");
                     break;
 
 

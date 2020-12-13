@@ -444,6 +444,7 @@ public class UsuarioDao extends BaseDao {
                 producto.setNombreProducto(rs.getString("nombreProducto"));
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
+                producto.setStock(rs.getInt("stock"));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -473,14 +474,15 @@ public class UsuarioDao extends BaseDao {
     public int crearPedido(PedidoBean pedido){
         int idPedido =-1;
         String sql = "insert into pedido (codigo, fecha_registro,\n" +
-                "fecha_recojo,idUsuario,idBodega)\n" +
-                "values(?,now(),?,?,?);";
+                "fecha_recojo,idUsuario,idBodega, totalApagar)\n" +
+                "values(?,now(),?,?,?,?);";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);) {
             pstmt.setString(1, pedido.getCodigo());
             pstmt.setString(2, pedido.getFecha_recojo());
             pstmt.setInt(3,pedido.getUsuario().getIdUsuario());
             pstmt.setInt(4,pedido.getBodegaBean().getIdBodega());
+            pstmt.setBigDecimal(5, pedido.getTotalApagar());
             pstmt.executeUpdate();
             try(ResultSet rsKey = pstmt.getGeneratedKeys()){
                 if(rsKey.next()){
@@ -507,8 +509,22 @@ public class UsuarioDao extends BaseDao {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-            //Actualizo el stock:
 
+            //TODO: validar stock maximo
+            //Actualizo el stock:
+            ProductoBean producto = obtenerProducto(productoPedido.getProducto().getId());
+            int newStock = producto.getStock() - productoPedido.getCant();
+            String sql1 = "update producto set stock = ?\n" +
+                    "where idProducto = ?;";
+
+            try (Connection conn1 = getConnection();
+                 PreparedStatement pstmt1 = conn1.prepareStatement(sql1);) {
+                pstmt1.setInt(1, newStock);
+                pstmt1.setInt(2, productoPedido.getProducto().getId());
+                pstmt1.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }
 
