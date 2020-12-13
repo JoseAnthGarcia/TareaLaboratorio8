@@ -1,5 +1,6 @@
 package beans;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 
 public class ProductoBean {
@@ -9,6 +10,8 @@ public class ProductoBean {
     private String descripcion;
     private int stock;
     private BigDecimal precioProducto;
+    private InputStream foto;
+
     public int getId() {
         return id;
     }
@@ -49,6 +52,14 @@ public class ProductoBean {
 
     public void setPrecioProducto(BigDecimal precioProducto) {
         this.precioProducto = precioProducto;
+    }
+
+    public InputStream getFoto() {
+        return foto;
+    }
+
+    public void setFoto(InputStream foto) {
+        this.foto = foto;
     }
     
 }
