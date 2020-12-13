@@ -65,9 +65,9 @@
         <div class="col-lg-5 col-md-12 centrar">
             <img src="imagenes/profile_admin.png" width="408px" height="400px" />
         </div>
-        <div class="col-lg-7 col-md-12 ">
+        <div class="col-lg-7 col-md-12">
             <form class="form-signin" method="POST" action="<%=request.getContextPath()%>/LoginAdmin" style="
-    margin-left: 150px;text-align: center;position: relative; top:40px;">
+    margin-left: 150px;text-align: center;position: relative; top:100px;">
                 <div class="row">
                     <div class="col-10">
 
@@ -102,8 +102,12 @@
 
             </form>
         </div>
-    </div>
 
+
+    </div>
+    <div class="row">
+        <a href ="<%=request.getContextPath()%>/LoginBodega" class=btn btn-lg btn-primary btn-block>Regresar</a>
+    </div>
 
 </div>
 
