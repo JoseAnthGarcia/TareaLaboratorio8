@@ -193,7 +193,13 @@ public class UsuarioServlet extends HttpServlet {
                     if (contraseniaBB.equals(contrasenia2BB)) {
                         contIguales = true;
                     }
-                    if (contAntIguales && contIguales && !contrasenia2BB.equals("")) {
+
+                    boolean contraTrim= false;
+                    if(contraseniaBB==contraseniaBB.trim() && contrasenia2BB==contrasenia2BB.trim()){
+                        contraTrim = true;
+                    }
+
+                    if (contAntIguales && contIguales && !contrasenia2BB.equals("") && contraTrim) {
                         //if (contAntIguales && contIguales) {
                         usuarioDao.actualizarContra(usuarioId, contraseniaBB); //ojo con usuarioId
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=miPerfil");
@@ -206,6 +212,8 @@ public class UsuarioServlet extends HttpServlet {
                         request.setAttribute("contrasenia2A", !contrasenia2A.equals(""));
                         request.setAttribute("contIguales", contIguales);
                         request.setAttribute("contAntIguales", contAntIguales);
+                        request.setAttribute("contraTrim",(contraTrim && contraseniaBB.equals("") && contrasenia2BB.equals("")));
+
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("cambioContrasenia.jsp");
                         requestDispatcher.forward(request, response);
                     }
