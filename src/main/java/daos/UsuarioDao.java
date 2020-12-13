@@ -1,7 +1,9 @@
 package daos;
 
 import beans.*;
+import dtos.DetallesPedidoDto;
 import dtos.ProductoCantDto;
+import dtos.ProductosClienteDTO;
 import servlets.Emails;
 
 import javax.mail.MessagingException;
@@ -561,6 +563,64 @@ public class UsuarioDao extends BaseDao {
         return listaPedidos;
     }
 
+    public DetallesPedidoDto  detallesPedido (int idPedido){
+        //obtengo pedido:
+        String sql1 = "select p. codigo, b.nombreBodega, p.fecha_registro, p.fecha_recojo, \n" +
+                "\t\tDATE_SUB(p.fecha_recojo, INTERVAL 1 HOUR) as \"fecha_limite\" \n" +
+                "from pedido p \n" +
+                "inner join bodega b on p.idBodega=b.idBodega\n" +
+                "where p.idPedido= ?;";
+
+        DetallesPedidoDto detallesPedidoDto = new DetallesPedidoDto();
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql1);) {
+            pstmt.setInt(1, idPedido);
+            try(ResultSet rs = pstmt.executeQuery()){
+                rs.next();
+                PedidoBean pedido = new PedidoBean();
+                pedido.setCodigo(rs.getString("codigo"));
+                pedido.setFecha_registro("fecha_registro");
+                pedido.setFecha_recojo("fecha_recojo");
+                BodegaBean bodega = new BodegaBean();
+                bodega.setNombreBodega(rs.getString("nombreBodega"));
+                pedido.setBodegaBean(bodega);
+                detallesPedidoDto.setPedido(pedido);
+                detallesPedidoDto.setFechaLimitCancel(rs.getNString("fecha_limite"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        String sql2 = "select pr.idProducto, pr.nombreProducto as \"Nombre de producto\", ph.cantidad as \"Cantidad\", pr.precioUnitario as \"Precio unitario\", (ph.cantidad*pr.precioUnitario) as `Total/producto`\n" +
+                "from pedido pe\n" +
+                "inner join pedido_has_producto ph on pe.idPedido=ph.idPedido\n" +
+                "inner join producto pr on ph.idProducto=pr.idProducto\n" +
+                "where pe.codigo=?;";
+
+        ArrayList<ProductoCantDto> listProdCant = new ArrayList<>();
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql1);) {
+            pstmt.setInt(1, idPedido);
+            try(ResultSet rs = pstmt.executeQuery()){
+                ProductoCantDto productoCantDto = new ProductoCantDto();
+                ProductoBean producto = new ProductoBean();
+                producto.setId(rs.getInt("idProducto"));
+                producto.setNombreProducto(rs.getString("Nombre de producto"));
+                productoCantDto.setProducto(producto);
+                productoCantDto.setCant(rs.getInt("Cantidad"));
+                listProdCant.add(productoCantDto);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        detallesPedidoDto.setListaProductCant(listProdCant);
+
+        return detallesPedidoDto;
+    }
+
     public void actualizarTotalApagar(){
         //obtengo pedidos:
         String sql1 = "SELECT * FROM pedido;";
@@ -610,6 +670,60 @@ public class UsuarioDao extends BaseDao {
         }
 
     }
+    public int calcularCantPagListarProductos(){
+
+
+        String sql = "select ceil(count(p.idProducto)/8) \n" +
+                "from producto p\n" +
+                "inner join bodega b on p.idBodega=b.idBodega;";
+
+        int cantPag = 0;
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql);) {
+
+            rs.next();
+            cantPag = rs.getInt(1);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return cantPag;
+    }
+    public ArrayList<ProductosClienteDTO> listarProductos(int pag) {
+
+        ArrayList<ProductosClienteDTO> listaProductos = new ArrayList<>();
+
+        int cantPag = 8;
+        String sql = "select p.idProducto, p.foto, p.nombreProducto, p.precioUnitario, b.nombreBodega\n" +
+                "from producto p\n" +
+                "inner join bodega b on p.idBodega =b.idBodega\n" +
+                "limit ?,?;";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setInt(1, (pag-1)*cantPag);
+            pstmt.setInt(2, cantPag);
+
+            try (ResultSet rs = pstmt.executeQuery();) {
+                while (rs.next()) {
+                    ProductosClienteDTO producto = new ProductosClienteDTO();
+                    producto.setIdProducto(rs.getInt(1));
+                    //producto.setFoto((InputStream) rs.getBlob("foto"));
+                    producto.setNombreProducto(rs.getString("nombreProducto"));
+                    producto.setPrecio(rs.getBigDecimal("precioUnitario"));
+                    producto.setBodega(rs.getString("nombreBodega"));
+
+                    listaProductos.add(producto);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return listaProductos;
+    }
+
 
 
 }

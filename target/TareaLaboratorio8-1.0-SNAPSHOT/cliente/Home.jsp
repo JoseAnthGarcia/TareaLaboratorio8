@@ -65,16 +65,16 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-8 col-md-12" >
-            <img src="https://img.freepik.com/vector-gratis/concepto-tienda-supermercado-gente-supermercado_40816-713.jpg?size=626&ext=jpg">
+            <img src="https://img.freepik.com/vector-gratis/concepto-tienda-supermercado-gente-supermercado_40816-713.jpg?size=626&ext=jpg" width="80%" >
         </div>
-        <div class="col-lg-4 col-md-12" >
+        <div class="col-lg-4 col-md-12" style=" position: relative; top:88px;">
             <div class="row">
                 <div class="col-lg-4 col-md-12" style="text-align: center">
                     <img src="imagenes/profile.png" width="100px" height=100px">
                 </div>
-                <div class="col-lg-8 col-md-12" style="text-align: center">
+                <div class="col-lg-8 col-md-12" style="text-align: center; ">
                     <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=miPerfil"
-                    ><button class="btn-perfil"><%=usuario.getNombre()+" "+usuario.getApellido()%></button></a>
+                    ><button class="btn-perfil" ><%=usuario.getNombre()+" "+usuario.getApellido()%></button></a>
                 </div>
             </div>
 
@@ -85,7 +85,7 @@
     </div>
     <div class="row mt-5">
         <div class="col-lg-4 col-md-12 opcion mt-5" >
-            <a class="opcion" href="<%=request.getContextPath()%>/UsuarioServlet?"
+            <a class="opcion" href="<%=request.getContextPath()%>/UsuarioServlet?accion=productosDisponibles"
             ><button class="btn opcion">Productos disponibles
                 <br>
             <img src="imagenes/dairy-products.png" width="50px" height="50px">

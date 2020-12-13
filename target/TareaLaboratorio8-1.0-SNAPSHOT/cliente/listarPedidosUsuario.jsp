@@ -56,7 +56,7 @@
             </tr>
             <% for (PedidoBean pedido: listaPedidos){%>
             <tr>
-                <td><a href="#" ><%=pedido.getCodigo()%></a> </td>
+                <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=verDetallesPedido&idPedido=<%=pedido.getId()%>" ><%=pedido.getCodigo()%></a> </td>
                 <td><%=pedido.getTotalApagar()%></td>
                 <td><%=pedido.getEstado()%></td>
                 <% if(pedido.getEstado().equalsIgnoreCase("Pendiente")){%>

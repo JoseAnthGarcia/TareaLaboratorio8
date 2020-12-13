@@ -37,27 +37,7 @@
 <body>
 
 <header>
-    <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-
-        </div>
-    </div>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Anacleto.com</strong>
-            </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Mi Bodega</strong>
-            </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Productos</strong>
-            </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Pedidos</strong>
-            </a>
-        </div>
-    </div>
+    <jsp:include page="/cliente/includes/headerClient.jsp"/>
 </header>
 
 <div class="container" style="margin-top: 65px; margin-left: 15%; margin-right: 15%">

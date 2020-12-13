@@ -3,7 +3,9 @@ package servlets.Cliente;
 import beans.*;
 import daos.PedidosUsuarioDao;
 import daos.UsuarioDao;
+import dtos.DetallesPedidoDto;
 import dtos.ProductoCantDto;
+import dtos.ProductosClienteDTO;
 import servlets.Emails;
 
 
@@ -631,11 +633,20 @@ public class UsuarioServlet extends HttpServlet {
                     RequestDispatcher view = request.getRequestDispatcher("/cliente/listarPedidosUsuario.jsp");
                     view.forward(request, response);
                     break;
-                case "cancelar":
+
+                case "verDetallesPedido":
                     //TODO: validar idPedido
                     String idPedido = request.getParameter("idPedido");
+                    DetallesPedidoDto detalless = usuarioDao.detallesPedido(Integer.parseInt(idPedido));
+
+
+                    break;
+
+                case "cancelar":
+                    //TODO: validar idPedido
+                    String idPedido2 = request.getParameter("idPedido");
                     PedidosUsuarioDao pedidosUsuarioDao1 = new PedidosUsuarioDao();
-                    pedidosUsuarioDao1.cancelarPedido(Integer.parseInt(idPedido));
+                    pedidosUsuarioDao1.cancelarPedido(Integer.parseInt(idPedido2));
                     response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
                     break;
                 case "Home":
@@ -643,6 +654,21 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher = request.getRequestDispatcher("cliente/Home.jsp");
                     requestDispatcher.forward(request, response);
                     break;
+                case "productosDisponibles":
+                    ProductoBean productoBean = new ProductoBean();
+                    String pag2 = request.getParameter("pag2")==null?"1":request.getParameter("pag2");
+                    int pag2Int = Integer.parseInt(pag2);
+                    ArrayList<ProductosClienteDTO> listaProductos = usuarioDao.listarProductos(pag2Int);
+                    int cantPags2 = usuarioDao.calcularCantPagListarProductos();
+
+                    request.setAttribute("listaProductos", listaProductos);
+                    request.setAttribute("paginaAct", pag2Int);
+                    request.setAttribute("cantPag", cantPags2);
+                    requestDispatcher = request.getRequestDispatcher("/cliente/listarProductos.jsp");
+                    requestDispatcher.forward(request, response);
+
+                    break;
+
             }
         } else if (clienteActual == null && accion.equals("agregar")) {
             ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();

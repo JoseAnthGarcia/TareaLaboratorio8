@@ -204,7 +204,9 @@ public class LoginServlet extends HttpServlet {
                 } else if (accion.equals("logout")) {
                     session.invalidate();
                     response.sendRedirect(request.getContextPath() + "/LoginServlet?accion=login");
-                } else {
+                } else if (usuarioBean != null && accion.equals("login")) {
+                    response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=Home");
+               }else {
                     view2 = request.getRequestDispatcher("cliente/access_denied.jsp");
                     view2.forward(request, response);
                 }

@@ -8,7 +8,7 @@
         <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="navbar-brand d-flex align-items-center">
             <strong>MiMarca.com</strong>
         </a>
-        <a href="#" class="navbar-brand d-flex align-items-center">
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=productosDisponibles" class="navbar-brand d-flex align-items-center">
             <strong>Productos disponibles</strong>
         </a>
         <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodega1" class="navbar-brand d-flex align-items-center">
