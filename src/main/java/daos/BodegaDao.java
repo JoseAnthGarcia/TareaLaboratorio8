@@ -325,7 +325,7 @@ public class BodegaDao extends BaseDao{
     }*/
 
     //ENCRIPTAR CONTRASENIA
-    public BodegaBean validarUsuarioPasswordHashed(String user, String password) {
+    public BodegaBean validarUsuarioPasswordHashed(String correo, String contrasenia) {
 
         BodegaBean bodegaBean = null;
 
@@ -333,8 +333,8 @@ public class BodegaDao extends BaseDao{
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
-            pstmt.setString(1, user);
-            pstmt.setString(2, password);
+            pstmt.setString(1, correo);
+            pstmt.setString(2, contrasenia);
 
             try (ResultSet rs = pstmt.executeQuery();) {
                 if (rs.next()) {
