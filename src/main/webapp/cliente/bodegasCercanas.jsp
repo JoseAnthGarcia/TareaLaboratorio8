@@ -34,6 +34,15 @@
             border-color: #343a40;
             background-color: #343a40;
         }
+        .primero{
+            position: absolute;
+            left: 15%;
+        }
+
+        .tercero{
+            position: absolute;
+            right: 15%;
+        }
     </style>
 
     <title>Bodegas más cercanas</title>
@@ -104,17 +113,18 @@
         <%}%>
 
         <div class="row mt-5">
-            <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger">Volver</a>
-            <%=listaBodegasDistrito.size()==0?"":"<button type='submit' class='btn btn-outline-success'>Escoger bodega</button>"%>
+            <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger primero">Volver</a>
+
+            <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodega2" class="btn btn-outline-success mx-auto">Escoger otra bodega</a>
+            <%=listaBodegasDistrito.size()==0?"":"<button type='submit' class='btn btn-outline-success tercero'>Escoger bodega</button>"%>
             <%//<button type="submit" class="btn btn-outline-success">Escoger bodega</button>%>
-            <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodega2" class="btn btn-outline-success">Escoger otra bodega</a>
         </div>
     </form>
 
 
 </div>
 
-<footer class="page-footer font-small blue" style="margin-top: 20px">
+<footer class="page-footer font-small blue mt-5" style="margin-top: 20px">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="#">MiMarca</a>
     </div>
