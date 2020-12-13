@@ -5,6 +5,8 @@ import beans.PedidoBean;
 import beans.ProductoBean;
 import beans.UsuarioBean;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
@@ -165,6 +167,41 @@ public class BodegaDao extends BaseDao{
         }
 
         return listaProductos;
+    }
+
+    //devuelve imagen por ID
+    public void listarImg(int id, HttpServletResponse response) {
+
+        String sql = "select foto from producto where idProducto=?;";
+
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        BufferedInputStream bufferedInputStream = null;
+        BufferedOutputStream bufferedOutputStream = null;
+        response.setContentType("image/*"); //que hace esto?? uu
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            outputStream = response.getOutputStream();
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    inputStream = rs.getBinaryStream("foto");
+                }
+            }
+            bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedOutputStream = new BufferedOutputStream(outputStream);
+
+            int i = 0;
+            while ((i = bufferedInputStream.read()) != -1) {
+                bufferedOutputStream.write(i);
+            }
+
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean buscarProducto(int idProducto){

@@ -133,7 +133,7 @@
             <tbody>
             <%for (ProductoBean producto : listaProductos) {%>
             <tr>
-                <td>Imagen x</td>
+                <td><img src="<%=request.getContextPath()%>/ImagenServlet?id=<%=producto.getId()%>" width="140px" height="140px"></td>
                 <td><%=producto.getNombreProducto()%>
                 </td>
                 <td><%=producto.getPrecioProducto()%>
