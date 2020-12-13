@@ -5,6 +5,7 @@ import dtos.ProductoCantDto;
 import servlets.Emails;
 
 import javax.mail.MessagingException;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -504,5 +505,111 @@ public class UsuarioDao extends BaseDao {
             }
         }
     }
+
+    //Listar pedidos: -----------------------------------
+    public int calcularCantPagPedidos(int usuarioId){
+        int cantPorPag = 5;
+        String sql = "select ceil(count(codigo)/?) from pedido where idUsuario=?;";
+
+        int cantPags = 0;
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, cantPorPag);
+            pstmt.setInt(2, usuarioId);
+            try(ResultSet rs = pstmt.executeQuery()){
+                rs.next();
+                cantPags = rs.getInt(1);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return cantPags;
+    }
+
+    public ArrayList<PedidoBean> listarPedidosCliente (int pagina , int usuarioId){
+
+        int cantPorPag = 5;
+        ArrayList<PedidoBean> listaPedidos=  new ArrayList<>();
+
+        int limit = (pagina-1)*cantPorPag;
+        String sql= "select codigo, estado, totalApagar \n" +
+                "from pedido\n" +
+                "where idUsuario=? order by estado desc\n" +
+                "limit ?,5;";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setInt(1, usuarioId);
+            pstmt.setInt(2, limit);
+
+            try(ResultSet rs = pstmt.executeQuery();){
+                while(rs.next()){
+                    PedidoBean pedidosClienteBean = new PedidoBean();
+                    pedidosClienteBean.setCodigo(rs.getString("codigo"));
+                    pedidosClienteBean.setEstado(rs.getString("estado"));
+                    pedidosClienteBean.setTotalApagar(rs.getBigDecimal("totalApagar"));
+                    listaPedidos.add(pedidosClienteBean);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return listaPedidos;
+    }
+
+    public void actualizarTotalApagar(){
+        //obtengo pedidos:
+        String sql1 = "SELECT * FROM pedido;";
+        ArrayList<PedidoBean> listaPedidos = new ArrayList<>();
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql1);
+             ResultSet rs = pstmt.executeQuery()) {
+                while(rs.next()){
+                    PedidoBean pedido = new PedidoBean();
+                    pedido.setCodigo(rs.getString("codigo"));
+                    listaPedidos.add(pedido);
+                }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        for(PedidoBean pedido : listaPedidos){
+            String sql2 = "select sum(ph.cantidad*pr.precioUnitario) as `Costo Total`\n" +
+                    "from pedido pe\n" +
+                    "inner join pedido_has_producto ph on pe.idPedido=ph.idPedido\n" +
+                    "inner join producto pr on ph.idProducto=pr.idProducto\n" +
+                    "where pe.codigo=?;";
+
+            BigDecimal costo = BigDecimal.valueOf(-1);
+            try (Connection conn1 = getConnection();
+                 PreparedStatement pstmt = conn1.prepareStatement(sql2);) {
+                pstmt.setString(1, pedido.getCodigo());
+                try(ResultSet rs = pstmt.executeQuery()){
+                    rs.next();
+                    costo=rs.getBigDecimal(1);
+                }
+            } catch (SQLException throwables1) {
+                throwables1.printStackTrace();
+            }
+
+            String sql3 = "UPDATE pedido SET totalApagar = ? WHERE codigo = ?;";
+            try (Connection conn2 = getConnection();
+                 PreparedStatement pstmt = conn2.prepareStatement(sql3);) {
+                pstmt.setBigDecimal(1, costo);
+                pstmt.setString(2, pedido.getCodigo());
+                pstmt.executeUpdate();
+            } catch (SQLException throwables2) {
+                throwables2.printStackTrace();
+            }
+
+        }
+
+    }
+
 
 }
