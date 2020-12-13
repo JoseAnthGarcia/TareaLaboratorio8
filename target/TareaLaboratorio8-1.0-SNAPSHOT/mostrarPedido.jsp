@@ -10,7 +10,7 @@
 <%@ page import="dtos.PedidosDatosDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    PedidosDatosDTO pedido = (PedidosDatosDTO) request.getAttribute("pedido");
+    PedidosDatosDTO pedido = (PedidosDatosDTO)request.getAttribute("pedido");
 %>
 <html>
 <head>
@@ -48,25 +48,26 @@
 <div class="table container-fluid">
     <h1 class='mb-3'>Informacion del Pedido <%=pedido.getCodigo()%></h1>
         <div >
-            <tr class='mb-3'>Bodega : <%=pedido.getNombreBodega()%></tr>
+            <h4>Bodega : <%=pedido.getNombreBodega()%></h4>
         </div>
         <div>
-            <tr class='mb-3'>Fecha y hora de registro: <%=pedido.getFecha_registro()%></tr>
+            <h4>Fecha y hora de registro: <%=pedido.getFecha_registro()%></h4>
         </div>
         <div>
-            <tr class='mb-3'>Fecha y hora de recojo: <%=pedido.getFecha_recojo()%></tr>
+            <h4>Fecha y hora de recojo: <%=pedido.getFecha_recojo()%></h4>
         </div>
         <div>
-            <tr class='mb-3'>Fecha límite para cancelar el pedido: <%=pedido.getFecha_limite()%></tr>
+            <h4>Fecha límite para cancelar el pedido: <%=pedido.getFecha_limite()%></h4>
         </div>
         <div>
-            <tr class='mb-3'>Unidades: <%=pedido.getUnidades() == 0 ? "Sin unidades" :pedido.getUnidades()%></tr>
+            <h4>Unidades: <%=pedido.getUnidades() == 0 ? "Sin unidades" :pedido.getUnidades()%></h4>
         </div>
         <div>
-            <tr class='mb-3'>Costo: <%=pedido.getCosto_total() == null? "Sin costo" : pedido.getCosto_total()%></tr>
+            <h4>Costo: <%=pedido.getCosto_total() == null? "Sin costo" : pedido.getCosto_total()%></h4>
         </div>
-
+        <a class="btn btn-outline-danger" href="<%=request.getContextPath()%>/PedidosServlet">Regresar</a>
 </div>
+
 <footer class="page-footer font-small blue" style="margin-top: 60px">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="#"> MiMarca.com</a>

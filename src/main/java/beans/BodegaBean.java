@@ -1,8 +1,12 @@
 package beans;
 
+import java.io.InputStream;
+
 public class
 BodegaBean {
 
+
+    private InputStream foto;
     private  int idBodega;
     private long rucBodega;
     private String nombreBodega;
@@ -85,4 +89,8 @@ BodegaBean {
     public void setIdBodega(int idBodega) {
         this.idBodega = idBodega;
     }
+
+    public InputStream getFoto() { return foto; }
+
+    public void setFoto(InputStream foto) { this.foto = foto; }
 }
