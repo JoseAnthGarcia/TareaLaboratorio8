@@ -432,12 +432,17 @@ public class UsuarioServlet extends HttpServlet {
                     contIguales = true;
                 }
 
+                boolean contraTrim= false;
+                if(contrasenia == contrasenia.trim() && contrasenia2==contrasenia2.trim()){
+                    contraTrim = true;
+                }
+
                 boolean correoExis = false;
                 if (usuarioDao.buscarCorreo(correo)) {
                     correoExis = true;
                 }
 
-                if (distritoSelected && contIguales && !correoExis && idDistritoInt != 0) {
+                if (distritoSelected && contIguales && !correoExis && idDistritoInt != 0 && contraTrim) {
                     usuarioDao.regitrarNuevoUsuario(nombres, apellidos, dni, correo, contrasenia, idDistritoInt);
                     //FALTA ENVIAR CORREO
                     //TODO: ENVIO DE CORREO FUCIONAL !!!
@@ -461,6 +466,7 @@ public class UsuarioServlet extends HttpServlet {
                     //response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
                 } else {
                     request.setAttribute("contIguales", contIguales);
+                    request.setAttribute("contraTrim",(contraTrim && contrasenia.equals("") && contrasenia2.equals("")));
                     request.setAttribute("correoExis", correoExis);
                     request.setAttribute("distritoSelected", distritoSelected);
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("registroNuevoUsuario.jsp");
