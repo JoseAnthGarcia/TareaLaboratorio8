@@ -142,7 +142,7 @@
                 </div>
                 <div class="col-sm-6">
                     <h1>Registro de bodega</h1>
-                    <form method="POST" action="<%=request.getContextPath()%>/AdminServlet?accion=registrar">
+                    <form method="POST" action="<%=request.getContextPath()%>/AdminServlet?accion=registrar" enctype="multipart/form-data">
                         <div class="form-group row">
                             <label for="nombreBodega" class="col-sm-2 col-form-label">Nombre:</label>
                             <div class="col-sm-10">
@@ -213,8 +213,12 @@
                                         Seleccione una opcion válida, por favor.
                                     </div>
                             </div>
-
-
+                        </div>
+                        <div class="form-group row">
+                            <label  class="col-sm-2 col-form-label">Imagen:</label>
+                            <div class="col-sm-10">
+                                <input type="file" name="foto">
+                            </div>
                         </div>
                         <a  onclick="return confirm('¿Estas seguro que deseas salir del registro de la bodega? ' +
                          '')"
