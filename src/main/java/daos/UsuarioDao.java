@@ -536,7 +536,7 @@ public class UsuarioDao extends BaseDao {
         ArrayList<PedidoBean> listaPedidos=  new ArrayList<>();
 
         int limit = (pagina-1)*cantPorPag;
-        String sql= "select codigo, estado, totalApagar \n" +
+        String sql= "select idPedido, codigo, estado, totalApagar \n" +
                 "from pedido\n" +
                 "where idUsuario=? order by estado desc\n" +
                 "limit ?,5;";
@@ -550,6 +550,7 @@ public class UsuarioDao extends BaseDao {
             try(ResultSet rs = pstmt.executeQuery();){
                 while(rs.next()){
                     PedidoBean pedidosClienteBean = new PedidoBean();
+                    pedidosClienteBean.setId(rs.getInt("idPedido"));
                     pedidosClienteBean.setCodigo(rs.getString("codigo"));
                     pedidosClienteBean.setEstado(rs.getString("estado"));
                     pedidosClienteBean.setTotalApagar(rs.getBigDecimal("totalApagar"));
@@ -580,37 +581,40 @@ public class UsuarioDao extends BaseDao {
                 rs.next();
                 PedidoBean pedido = new PedidoBean();
                 pedido.setCodigo(rs.getString("codigo"));
-                pedido.setFecha_registro("fecha_registro");
-                pedido.setFecha_recojo("fecha_recojo");
+                pedido.setFecha_registro(rs.getString("fecha_registro"));
+                pedido.setFecha_recojo(rs.getString("fecha_recojo"));
                 BodegaBean bodega = new BodegaBean();
                 bodega.setNombreBodega(rs.getString("nombreBodega"));
                 pedido.setBodegaBean(bodega);
                 detallesPedidoDto.setPedido(pedido);
-                detallesPedidoDto.setFechaLimitCancel(rs.getNString("fecha_limite"));
+                detallesPedidoDto.setFechaLimitCancel(rs.getString("fecha_limite"));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        String sql2 = "select pr.idProducto, pr.nombreProducto as \"Nombre de producto\", ph.cantidad as \"Cantidad\", pr.precioUnitario as \"Precio unitario\", (ph.cantidad*pr.precioUnitario) as `Total/producto`\n" +
+        String sql2 = "select pr.idProducto, pr.nombreProducto , ph.cantidad, pr.precioUnitario, (ph.cantidad*pr.precioUnitario)\n" +
                 "from pedido pe\n" +
                 "inner join pedido_has_producto ph on pe.idPedido=ph.idPedido\n" +
                 "inner join producto pr on ph.idProducto=pr.idProducto\n" +
-                "where pe.codigo=?;";
+                "where pe.idPedido=?;";
 
         ArrayList<ProductoCantDto> listProdCant = new ArrayList<>();
 
         try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql1);) {
+             PreparedStatement pstmt = conn.prepareStatement(sql2);) {
             pstmt.setInt(1, idPedido);
-            try(ResultSet rs = pstmt.executeQuery()){
-                ProductoCantDto productoCantDto = new ProductoCantDto();
-                ProductoBean producto = new ProductoBean();
-                producto.setId(rs.getInt("idProducto"));
-                producto.setNombreProducto(rs.getString("Nombre de producto"));
-                productoCantDto.setProducto(producto);
-                productoCantDto.setCant(rs.getInt("Cantidad"));
-                listProdCant.add(productoCantDto);
+            try(ResultSet rs1 = pstmt.executeQuery()){
+                while(rs1.next()){
+                    ProductoCantDto productoCantDto = new ProductoCantDto();
+                    ProductoBean producto = new ProductoBean();
+                    producto.setId(rs1.getInt("pr.idProducto"));
+                    producto.setNombreProducto(rs1.getString("pr.nombreProducto"));
+                    producto.setPrecioProducto(rs1.getBigDecimal("pr.precioUnitario"));
+                    productoCantDto.setProducto(producto);
+                    productoCantDto.setCant(rs1.getInt("ph.cantidad"));
+                    listProdCant.add(productoCantDto);
+                }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -670,6 +674,7 @@ public class UsuarioDao extends BaseDao {
         }
 
     }
+
     public int calcularCantPagListarProductos(){
 
 
@@ -689,6 +694,7 @@ public class UsuarioDao extends BaseDao {
         }
         return cantPag;
     }
+
     public ArrayList<ProductosClienteDTO> listarProductos(int pag) {
 
         ArrayList<ProductosClienteDTO> listaProductos = new ArrayList<>();

@@ -637,9 +637,10 @@ public class UsuarioServlet extends HttpServlet {
                 case "verDetallesPedido":
                     //TODO: validar idPedido
                     String idPedido = request.getParameter("idPedido");
-                    DetallesPedidoDto detalless = usuarioDao.detallesPedido(Integer.parseInt(idPedido));
-
-
+                    DetallesPedidoDto detalles = usuarioDao.detallesPedido(Integer.parseInt(idPedido));
+                    request.setAttribute("detalles", detalles);
+                    requestDispatcher = request.getRequestDispatcher("cliente/detallesPedido.jsp");
+                    requestDispatcher.forward(request, response);
                     break;
 
                 case "cancelar":
