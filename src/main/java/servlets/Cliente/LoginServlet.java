@@ -73,20 +73,16 @@ public class LoginServlet extends HttpServlet {
                 }
 
                 if(correoNoEx && correoBoo){
-                    //HttpSession sessionN = request.getSession();
-
-                    usuarioDao.enviarCorreoLinkContra(usuarioRecu.getIdUsuario(),usuarioRecu.getContraseniaHashed(),usuarioRecu.getCorreo());
+                    HttpSession sessionN = request.getSession();
+                    int correoEnviado = usuarioDao.enviarCorreoLinkContra(usuarioRecu.getIdUsuario(),usuarioRecu.getContraseniaHashed(),usuarioRecu.getCorreo());
                     //queda pendiente mostrar mensaje de correo exitoso
-                    //Boolean correoEnviado = usuarioDao.enviarCorreoLinkContra(usuarioRecu.getIdUsuario(),usuarioRecu.getContraseniaHashed(),usuarioRecu.getCorreo());
-                    /*
-                    if(correoEnviado){
-                        sessionN.setAttribute("estado","true");
-                    }else{
-                        sessionN.setAttribute("estado","false");
-                    }
-                    */
+                    sessionN.setAttribute("correoEnviado",correoEnviado);
+
                     //enviar a login mas mensaje de correo enviado exitosamente o problema al enviar correo
                     response.sendRedirect(request.getContextPath()+"/LoginServlet?accion=login");
+
+                    //RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/login.jsp");
+                    //requestDispatcher.forward(request,response);
                 }else{
                     request.setAttribute("correoBoo",correoBoo);
                     request.setAttribute("correoNoEx",correoNoEx);
@@ -107,12 +103,17 @@ public class LoginServlet extends HttpServlet {
                 }
 
                 boolean contRecuEmpty=false;
-                if(!contraseniaR.equals("")){
-                    contRecuEmpty=true;
+                if(!contraseniaR.equals("")) {
+                    contRecuEmpty = true;
+                }
+
+                boolean contraTrim= false;
+                if(contraseniaR==contraseniaR.trim() && contrasenia2R==contrasenia2R.trim()){
+                    contraTrim = true;
                 }
 
                 System.out.println(contRecu +":"+contRecuEmpty);
-                if(contRecu && contRecuEmpty){
+                if(contRecu && contRecuEmpty && contraTrim){
                     System.out.println("Soy libre");
                     System.out.println(idUsuarioRecu);
                     System.out.println(contrasenia2R+"malos pasos");
@@ -127,6 +128,7 @@ public class LoginServlet extends HttpServlet {
                     request.setAttribute("contRecu",contraseniaR.equals(contrasenia2R));
                     request.setAttribute("contRecuEmpty1",!contraseniaR.equals(""));
                     request.setAttribute("contRecuEmpty2",!contrasenia2R.equals(""));
+                    request.setAttribute("contraTrim",(contraTrim && contraseniaR.equals("") && contrasenia2R.equals("")));
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/recuperarContrasenia.jsp");
                     requestDispatcher.forward(request,response);
                 }

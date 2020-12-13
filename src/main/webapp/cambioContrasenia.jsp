@@ -17,6 +17,8 @@
     boolean contrasenia2B = request.getAttribute("contrasenia2B") == null ? true : (Boolean) request.getAttribute("contrasenia2B");
     boolean contAntIguales = request.getAttribute("contAntIguales") == null ? true : (Boolean) request.getAttribute("contAntIguales");
     boolean contIguales = request.getAttribute("contIguales") == null ? true : (Boolean) request.getAttribute("contIguales");
+    boolean contraTrim = request.getAttribute("contraTrim") == null ? true : (Boolean) request.getAttribute("contraTrim");
+
 %>
 <!DOCTYPE html>
 
@@ -134,6 +136,11 @@
             <%if(!contIguales){%>
             <div class="alert alert-danger" role="alert">
                 Los campos de la  nueva contraseña no coinciden!
+            </div>
+            <%}%>
+            <%if(!contraTrim){%>
+            <div class="alert alert-danger" role="alert">
+                No esta permitido los espacios/tabulaciones en la contraseña
             </div>
             <%}%>
         </div>
