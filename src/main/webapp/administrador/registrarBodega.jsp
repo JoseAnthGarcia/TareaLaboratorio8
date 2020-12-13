@@ -15,7 +15,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <jsp:include page="bootstrapRepository.jsp"/>
+        <jsp:include page="../bootstrapRepository.jsp"/>
         <!-- para los iconos como botones -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
@@ -110,7 +110,7 @@
                                 href="<%=request.getContextPath()%>/AdminServlet" class="navbar-brand d-flex align-items-center">
                             <strong>Lista de bodegas</strong>
                         </a>
-                        <a href="#" ><img src="imagenes/sigout.png" height="30px"/></a>
+                        <a href="<%=request.getContextPath()%>/LoginServlet?accion=logout" ><img src="imagenes/sigout.png" height="30px"/></a>
                     </div>
 
                 </div>

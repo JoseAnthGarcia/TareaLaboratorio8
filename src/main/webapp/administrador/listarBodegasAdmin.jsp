@@ -13,7 +13,7 @@
 
 <html>
 <head>
-    <jsp:include page="bootstrapRepository.jsp"/>
+    <jsp:include page="../bootstrapRepository.jsp"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .btn{
@@ -72,6 +72,7 @@
     <title>Lista de bodegas</title>
 </head>
 <body>
+
 <header>
     <div class="collapse bg-dark" id="navbarHeader">
         <div class="container">
@@ -92,7 +93,7 @@
             <a href="#" class="navbar-brand d-flex align-items-center">
                 <strong>Lista de bodegas</strong>
             </a>
-            <a href="#" ><img src="imagenes/sigout.png" height="30px"/></a>
+            <a href="<%=request.getContextPath()%>/LoginAdmin?accion=logout" ><img src="imagenes/sigout.png" height="30px"/></a>
         </div>
     </div>
 </header>
@@ -137,7 +138,6 @@
     </div>
     <div class="row">
 
-        <a href="#" class="btn btn-boton2">Volver</a>
 
         <nav aria-label="Page navigation example" class = "mx-auto"> <!-- Recordar centro !! -->
             <ul class="pagination justify-content-center">

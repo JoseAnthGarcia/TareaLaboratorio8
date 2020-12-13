@@ -1,9 +1,11 @@
-package servlets;
+package servlets.Administrador;
 
 import beans.BodegaBean;
 import beans.DistritoBean;
+import beans.UsuarioBean;
 import daos.AdminDao;
 import daos.BodegaDao;
+import servlets.Emails;
 
 import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
@@ -12,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -198,7 +201,7 @@ public class AdminServlet extends HttpServlet {
                     }else{
                         request.setAttribute("rucExis", rucExis);
                         request.setAttribute("distritoSelected", distritoSelected);
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("registrarBodega.jsp");
+                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/registrarBodega.jsp");
                         requestDispatcher.forward(request, response);
                     }
                 }else{
@@ -262,70 +265,81 @@ public class AdminServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String accion = (String) request.getParameter("accion") == null ? "listar":
-                (String) request.getParameter("accion");
+        HttpSession session = request.getSession();
+        UsuarioBean adminActual = (UsuarioBean) session.getAttribute("admin");
 
-        AdminDao bodegaDao = new AdminDao();
+        if(adminActual!= null){
+            int idAdminActual = adminActual.getIdUsuario();
+            String accion = (String) request.getParameter("accion") == null ? "listar":
+                    (String) request.getParameter("accion");
+
+            AdminDao bodegaDao = new AdminDao();
 
 
-        switch (accion){
-            case "listar":
-                String pag = request.getParameter("pag") == null ? "1" : request.getParameter("pag");
+            switch (accion){
+                case "listar":
+                    String pag = request.getParameter("pag") == null ? "1" : request.getParameter("pag");
 
-                int cantPag = AdminDao.calcularCantPag();
-                int paginaAct;
-                try{
-                    paginaAct = Integer.parseInt(pag); //try
-                    if(paginaAct>cantPag){
+                    int cantPag = AdminDao.calcularCantPag(idAdminActual);
+                    int paginaAct;
+                    try{
+                        paginaAct = Integer.parseInt(pag); //try
+                        if(paginaAct>cantPag){
+                            paginaAct = 1;
+                        }
+                    }catch(NumberFormatException e){
                         paginaAct = 1;
                     }
-                }catch(NumberFormatException e){
-                    paginaAct = 1;
-                }
 
-                ArrayList<BodegaBean> listaBodegas = bodegaDao.obtenerListaBodegas(paginaAct);
+                    ArrayList<BodegaBean> listaBodegas = bodegaDao.obtenerListaBodegas(paginaAct,idAdminActual);
 
-                request.setAttribute("lista", listaBodegas);
-                request.setAttribute("cantPag", cantPag);
-                request.setAttribute("paginaAct",paginaAct);
+                    request.setAttribute("lista", listaBodegas);
+                    request.setAttribute("cantPag", cantPag);
+                    request.setAttribute("paginaAct",paginaAct);
 
 
-                RequestDispatcher view = request.getRequestDispatcher("listarBodegasAdmin.jsp");
-                view.forward(request,response);
-                break;
-            case "registrar":
-                ArrayList<DistritoBean> listaDistritos = bodegaDao.obtenerDistritos();
-                request.setAttribute("listaDistritos", listaDistritos);
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("registrarBodega.jsp");
-                requestDispatcher.forward(request,response);
-                break;
-            case "bloquear":
-                String nombreBodega = request.getParameter("nombreB");
-                boolean estado = Boolean.parseBoolean(request.getParameter("state"));
-                AdminDao.actualizarEstadoBodega(nombreBodega,estado);
-                response.sendRedirect("AdminServlet");
-                break;
-            case "definirContrasenia":
+                    RequestDispatcher view = request.getRequestDispatcher("administrador/listarBodegasAdmin.jsp");
+                    view.forward(request,response);
+                    break;
+                case "registrar":
+                    ArrayList<DistritoBean> listaDistritos = bodegaDao.obtenerDistritos();
+                    request.setAttribute("listaDistritos", listaDistritos);
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/registrarBodega.jsp");
+                    requestDispatcher.forward(request,response);
+                    break;
+                case "bloquear":
+                    String nombreBodega = request.getParameter("nombreB");
+                    boolean estado = Boolean.parseBoolean(request.getParameter("state"));
+                    AdminDao.actualizarEstadoBodega(nombreBodega,estado);
+                    response.sendRedirect("AdminServlet");
+                    break;
+                case "definirContrasenia":
 
-                try{
-                    int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
-                            "nada" : request.getParameter("idBodega"));
-                    request.setAttribute("idBodega",idBodega);
-                    String rucBodegaString = request.getParameter("rucBodega")==null?"nada":request.getParameter("rucBodega");
-                    Long rucBodega= Long.parseLong(request.getParameter("rucBodega") == null ?
-                            "nada" : request.getParameter("rucBodega"));
+                    try{
+                        int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
+                                "nada" : request.getParameter("idBodega"));
+                        request.setAttribute("idBodega",idBodega);
+                        String rucBodegaString = request.getParameter("rucBodega")==null?"nada":request.getParameter("rucBodega");
+                        Long rucBodega= Long.parseLong(request.getParameter("rucBodega") == null ?
+                                "nada" : request.getParameter("rucBodega"));
 
-                    request.setAttribute("rucBodega",rucBodega);
-                    RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
-                    requestDispatcher2.forward(request,response);
-                }catch (NumberFormatException e){
-                    e.printStackTrace();
-                    RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("ErrorIdBodega.jsp");
-                    requestDispatcher2.forward(request,response);
-                }
-                break;
+                        request.setAttribute("rucBodega",rucBodega);
+                        RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
+                        requestDispatcher2.forward(request,response);
+                    }catch (NumberFormatException e){
+                        e.printStackTrace();
+                        RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("ErrorIdBodega.jsp");
+                        requestDispatcher2.forward(request,response);
+                    }
+                    break;
+            }
+
+
+        }else{
+            RequestDispatcher view2;
+            view2 = request.getRequestDispatcher("administrador/access_denied.jsp");
+            view2.forward(request, response);
         }
-
 
     }
 }

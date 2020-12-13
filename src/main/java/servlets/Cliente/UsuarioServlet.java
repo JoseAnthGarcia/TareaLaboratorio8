@@ -218,6 +218,17 @@ public class UsuarioServlet extends HttpServlet {
                     view.forward(request, response);
                     break;
 
+                case "escogerBodega":
+                    //TODO: VALIDAD IDBODEGA
+                    String idBodega2 = request.getParameter("idBodega");
+                    int idBodegaInt = Integer.parseInt(idBodega2);
+                    HttpSession session3 = request.getSession();
+                    if(session3.getAttribute("bodegaEscogida")!=null){
+                        session3.removeAttribute("bodegaEscogida");
+                    }
+                    session3.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodegaInt));
+                    response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=realizarPedido");
+                    break;
                 case "generarPedido":
                     //TODO: VALIDAR ESPACIOS VACIOS!!!
                     HttpSession session2 = request.getSession();
@@ -433,21 +444,44 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher.forward(request, response);
                     break;
 
+                case "escogerBodega1":
+                    HttpSession session5 = request.getSession();
+                    /*int idDistrito = ((UsuarioBean)session.getAttribute("usuario")).getIdUsuario();
+                    //TODO: OJO !!!!
+                    System.out.println(((UsuarioBean)session.getAttribute("usuario")).getDistrito().getNombre());*/
+                    ArrayList<BodegaBean> listaBodegas2 = usuarioDao.listarBodegasDistrito(((UsuarioBean)session5.getAttribute("usuario")).getIdUsuario());
+                    request.setAttribute("listaBodegasDistrito", listaBodegas2);
+                    requestDispatcher = request.getRequestDispatcher("/cliente/bodegasCercanas.jsp");
+                    requestDispatcher.forward(request, response);
+                    break;
+
+                case "escogerBodega2":
+                    //TODO: VALIDAR PAGINA
+                    String pag = request.getParameter("pag")==null?"1":request.getParameter("pag");
+                    int pagInt = Integer.parseInt(pag);
+                    ArrayList<BodegaBean> listaBodegas = usuarioDao.listarBodegas(pagInt);
+                    int cantPags = usuarioDao.calcularCantPagListarBodegas();
+
+                    request.setAttribute("listaBodegas", listaBodegas);
+                    request.setAttribute("paginaAct", pagInt);
+                    request.setAttribute("cantPag", cantPags);
+                    requestDispatcher = request.getRequestDispatcher("/cliente/bodegasDisponibles.jsp");
+                    requestDispatcher.forward(request, response);
+                    break;
                 case "realizarPedido":
-                    int idBodega = 30; //Se debe jalar la bodega
                     //VERIFICAR IDBODEGA?????------------------------------
                     HttpSession session1 = request.getSession();
-                    session1.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodega));
+                    int idBodega = ((BodegaBean)session1.getAttribute("bodegaEscogida")).getIdBodega();
                     int cantPorPagina = 4;
                     //calculamos paginas:
                     String query = "SELECT * FROM producto WHERE idBodega=" + idBodega + ";";
                     int cantPag = usuarioDao.calcularCantPagQuery(query, cantPorPagina);
 
-                    String pag = request.getParameter("pag") == null ?
+                    String pag2 = request.getParameter("pag") == null ?
                             "1" : request.getParameter("pag");
                     int paginaAct;
                     try {
-                        paginaAct = Integer.parseInt(pag); //try
+                        paginaAct = Integer.parseInt(pag2); //try
                         if (paginaAct > cantPag) {
                             paginaAct = 1;
                         }

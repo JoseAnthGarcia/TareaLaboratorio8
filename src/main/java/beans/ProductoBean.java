@@ -1,16 +1,16 @@
 package beans;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 
 public class ProductoBean {
 
     private int id;
-    private String nombreFoto;
     private String nombreProducto;
     private String descripcion;
     private int stock;
     private BigDecimal precioProducto;
-    private String rutaFoto;
+    private InputStream foto;
 
     public int getId() {
         return id;
@@ -20,13 +20,6 @@ public class ProductoBean {
         this.id = id;
     }
 
-    public String getNombreFoto() {
-        return nombreFoto;
-    }
-
-    public void setNombreFoto(String nombreFoto) {
-        this.nombreFoto = nombreFoto;
-    }
 
     public String getNombreProducto() {
         return nombreProducto;
@@ -61,11 +54,12 @@ public class ProductoBean {
         this.precioProducto = precioProducto;
     }
 
-    public void setRutaFoto(String rutaFoto) {
-        this.rutaFoto = rutaFoto;
+    public InputStream getFoto() {
+        return foto;
     }
 
-    public String getRutaFoto() {
-        return rutaFoto;
+    public void setFoto(InputStream foto) {
+        this.foto = foto;
     }
+    
 }
