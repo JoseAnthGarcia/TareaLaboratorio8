@@ -47,7 +47,6 @@
 
 <div class="table container-fluid">
     <h1 class='mb-3'>Informacion del Pedido <%=pedido.getCodigo()%></h1>
-    <%//TODO: Crear un DTO para mostrar la información del pedido %>
         <div >
             <tr class='mb-3'>Bodega : <%=pedido.getNombreBodega()%></tr>
         </div>

@@ -4,6 +4,7 @@ import beans.*;
 import daos.PedidosUsuarioDao;
 import daos.UsuarioDao;
 import dtos.ProductoCantDto;
+import dtos.ProductosClienteDTO;
 import servlets.Emails;
 
 
@@ -644,6 +645,21 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher = request.getRequestDispatcher("cliente/Home.jsp");
                     requestDispatcher.forward(request, response);
                     break;
+                case "productosDisponibles":
+                    ProductoBean productoBean = new ProductoBean();
+                    String pag2 = request.getParameter("pag2")==null?"1":request.getParameter("pag2");
+                    int pag2Int = Integer.parseInt(pag2);
+                    ArrayList<ProductosClienteDTO> listaProductos = usuarioDao.listarProductos(pag2Int);
+                    int cantPags2 = usuarioDao.calcularCantPagListarProductos();
+
+                    request.setAttribute("listaProductos", listaProductos);
+                    request.setAttribute("paginaAct", pag2Int);
+                    request.setAttribute("cantPag", cantPags2);
+                    requestDispatcher = request.getRequestDispatcher("/cliente/listarProductos.jsp");
+                    requestDispatcher.forward(request, response);
+
+                    break;
+
             }
         } else if (clienteActual == null && accion.equals("agregar")) {
             ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();

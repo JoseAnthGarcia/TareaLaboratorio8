@@ -85,7 +85,7 @@
     </div>
     <div class="row mt-5">
         <div class="col-lg-4 col-md-12 opcion mt-5" >
-            <a class="opcion" href="<%=request.getContextPath()%>/UsuarioServlet?"
+            <a class="opcion" href="<%=request.getContextPath()%>/UsuarioServlet?accion=productosDisponibles"
             ><button class="btn opcion">Productos disponibles
                 <br>
             <img src="imagenes/dairy-products.png" width="50px" height="50px">

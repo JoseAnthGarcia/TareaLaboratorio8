@@ -2,9 +2,11 @@ package daos;
 
 import beans.*;
 import dtos.ProductoCantDto;
+import dtos.ProductosClienteDTO;
 import servlets.Emails;
 
 import javax.mail.MessagingException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -505,5 +507,60 @@ public class UsuarioDao extends BaseDao {
             }
         }
     }
+
+    public int calcularCantPagListarProductos(){
+
+
+        String sql = "select ceil(count(p.idProducto)/8) \n" +
+                "from producto p\n" +
+                "inner join bodega b on p.idBodega=b.idBodega;";
+
+        int cantPag = 0;
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql);) {
+
+            rs.next();
+            cantPag = rs.getInt(1);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return cantPag;
+    }
+    public ArrayList<ProductosClienteDTO> listarProductos(int pag) {
+
+        ArrayList<ProductosClienteDTO> listaProductos = new ArrayList<>();
+
+        int cantPag = 8;
+        String sql = "select p.idProducto, p.foto, p.nombreProducto, p.precioUnitario, b.nombreBodega\n" +
+                "from producto p\n" +
+                "inner join bodega b on p.idBodega =b.idBodega\n" +
+                "limit ?,?;";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setInt(1, (pag-1)*cantPag);
+            pstmt.setInt(2, cantPag);
+
+            try (ResultSet rs = pstmt.executeQuery();) {
+                while (rs.next()) {
+                    ProductosClienteDTO producto = new ProductosClienteDTO();
+                    producto.setIdProducto(rs.getInt(1));
+                    //producto.setFoto((InputStream) rs.getBlob("foto"));
+                    producto.setNombreProducto(rs.getString("nombreProducto"));
+                    producto.setPrecio(rs.getBigDecimal("precioUnitario"));
+                    producto.setBodega(rs.getString("nombreBodega"));
+
+                    listaProductos.add(producto);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return listaProductos;
+    }
+
 
 }
