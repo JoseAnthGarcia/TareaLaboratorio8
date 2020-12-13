@@ -32,7 +32,11 @@ public class PedidoDao extends BaseDao{
     public ArrayList<PedidoBean> obtenerListaPedidos(int pagina) {
         int limit = (pagina-1)*5;
         ArrayList<PedidoBean> listaPedidos = new ArrayList<>();
-        String sql = "select idPedido, codigo, estado from pedido where idBodega = 30 limit ?, 5";
+        String sql = "SELECT p.idPedido, p.codigo, p.estado, t1.`costo total` FROM pedido p \n" +
+                "LEFT JOIN bodega b ON p.idBodega = b.idBodega left join pedido_has_producto php ON p.idPedido = php.idPedido \n" +
+                "LEFT JOIN (SELECT t.idPedido, sum(t.`Costo por producto`) as `costo total` FROM (SELECT php.idPedido, php.idProducto, (php.cantidad*p.precioUnitario) as `Costo por producto`FROM pedido_has_producto php \n" +
+                "LEFT JOIN producto p ON php.idProducto = p.idProducto) t  GROUP BY t.idPedido) t1 ON p.idPedido = t1.idPedido " +
+                "where p.idBodega = 30 limit ?, 5";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -51,6 +55,7 @@ public class PedidoDao extends BaseDao{
                     pedidos.setId(rs.getInt(1));
                     pedidos.setCodigo(rs.getString(2));
                     pedidos.setEstado(rs.getString(3));
+                    //pedidos.setTotalApagar(rs.getBigDecimal("costo total"));
                     listaPedidos.add(pedidos);
                 }
             }
