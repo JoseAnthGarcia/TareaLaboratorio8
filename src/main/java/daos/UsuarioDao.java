@@ -494,6 +494,7 @@ public class UsuarioDao extends BaseDao {
 
     public void ingresarProductosApedido(int idPedido, ArrayList<ProductoCantDto> listaProductos){
         for(ProductoCantDto productoPedido: listaProductos){
+            //Ingreso los productos:
             String sql = "insert into pedido_has_producto (idPedido,idProducto, Cantidad)\n" +
                     "values(?,?, ?);";
             try (Connection conn = getConnection();
@@ -505,6 +506,8 @@ public class UsuarioDao extends BaseDao {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
+            //Actualizo el stock:
+
         }
     }
 

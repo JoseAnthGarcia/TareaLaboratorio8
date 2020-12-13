@@ -15,7 +15,7 @@
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <title>Bienvenido Bodega!</title>
+    <title>Carrito</title>
     <style>
         .izquierda1{
             left: 20px;
@@ -51,9 +51,14 @@
 
 <div class="container" style="margin-top: 65px; margin-left: 15%; margin-right: 15%">
     <div class="row col-12">
-        <div class="col-sm-8">
+        <div class="col-sm-4">
             <h1>Mi carrito</h1>
         </div>
+
+        <div class="col-sm-4">
+        </div>
+
+
         <div class="col-sm-4">
             <img src="https://image.flaticon.com/icons/png/512/116/116356.png" height="50px"/>
         </div>
@@ -61,8 +66,6 @@
     <form method="POST" action="<%=request.getContextPath()%>/UsuarioServlet?accion=generarPedido">
     <div class="row mt-5">
         <%HttpSession session1 = request.getSession();
-            //ArrayList<ProductoBean> listaProductos = (ArrayList<ProductoBean>) session1.getAttribute("carrito");
-            //if(listaProductos.size()!=0){
             HashMap<Integer, ProductoBean> listaProductos = (HashMap<Integer, ProductoBean>) session1.getAttribute("carrito");
         if(!listaProductos.isEmpty()){%>
         <div class="row mt-5 mx-auto">
@@ -78,7 +81,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <%//for (ProductoBean producto : listaProductos) {
+                <%
                     for (Map.Entry<Integer, ProductoBean> entry : listaProductos.entrySet()){%>
                 <tr>
                     <td>Imagen x</td>
@@ -87,7 +90,19 @@
                     <td><%=entry.getValue().getPrecioProducto()%>
                     </td>
                     <td>
-                        <input name="<%=entry.getValue().getId()%>" type="number" min="0" id="Stock" class="form-control" >
+                        <%if(request.getParameter(String.valueOf(entry.getValue().getId()))==null){%>
+                        <input name="<%=entry.getValue().getId()%>" type="number" min="1" id="Stock" class="form-control" >
+                        <%}else{
+                        String textValid = request.getParameter(String.valueOf(entry.getValue().getId())).equals("")
+                                || Integer.parseInt(request.getParameter(String.valueOf(entry.getValue().getId())))<1
+                                ?"is-invalid":"";
+                        String textvalue = request.getParameter(String.valueOf(entry.getValue().getId())).equals("")?"":"value='"+request.getParameter(String.valueOf(entry.getValue().getId()))+"'";%>
+                        <input name="<%=entry.getValue().getId()%>" type="number" min="1" id="Stock" class="form-control <%=textValid%>"
+                        <%=textvalue%>>
+                        <div class="invalid-feedback">
+                            Ingrese una cantidad valida, por favor.
+                        </div>
+                        <%}%>
                     </td>
                     <td>
                         <a class="btn btn-secondary" href="<%=request.getContextPath()%>/UsuarioServlet?accion=eliminarProductCarrito&productSelect=<%=entry.getValue().getId()%>">Eliminar</a>
