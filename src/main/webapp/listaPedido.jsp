@@ -54,7 +54,7 @@
             <a href="../MiBodega.html" class="navbar-brand d-flex align-items-center">
                 <strong>Mi Bodega</strong>
             </a>
-            <a href="<%=request.getContextPath()%>/ClientServlet" class="navbar-brand d-flex align-items-center">
+            <a href="#" class="navbar-brand d-flex align-items-center">
                 <strong>Productos</strong>
             </a>
             <a href="<%=request.getContextPath()%>/PedidosServlet" class="navbar-brand d-flex align-items-center">

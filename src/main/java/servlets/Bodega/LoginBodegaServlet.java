@@ -176,7 +176,11 @@ public class LoginBodegaServlet extends HttpServlet {
                     requestDispatcher4.forward(request,response);
                 }
                 break;
-
+            case "logout":
+                HttpSession session1 = request.getSession();
+                session1.invalidate();
+                response.sendRedirect(request.getContextPath());
+                break;
         }
 
 
