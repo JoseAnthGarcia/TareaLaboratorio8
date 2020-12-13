@@ -160,6 +160,7 @@ public class UsuarioDao extends BaseDao {
             pstmt.setInt(4, idUsuario);
             usuarioBean.setNombre(nombres);
             usuarioBean.setApellido(apellidos);
+            usuarioBean.getDistrito().setId(idDistrito);
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
