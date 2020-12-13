@@ -12,6 +12,22 @@ import static daos.BaseDao.getConnection;
 public class AdminDao extends BaseDao{
 
     //Login
+
+    public void agregarFoto(BodegaBean p){
+        String sql = "insert into bodega(foto) values(?)";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);){
+
+            //pstmt.setString(1, p.getNombreBodega());
+            pstmt.setBlob(1,p.getFoto());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
         public UsuarioBean validarUsuarioPassword(String user, String pass){
 
         String sql ="select * from usuario where correo = ? and contraseniaHashed = sha2(?,256) and rol='Administrador';";

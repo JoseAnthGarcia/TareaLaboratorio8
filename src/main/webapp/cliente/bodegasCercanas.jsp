@@ -103,7 +103,7 @@
         </div>
         <%}%>
 
-        <div class="row">
+        <div class="row mt-5">
             <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger">Volver</a>
             <%=listaBodegasDistrito.size()==0?"":"<button type='submit' class='btn btn-outline-success'>Escoger bodega</button>"%>
             <%//<button type="submit" class="btn btn-outline-success">Escoger bodega</button>%>

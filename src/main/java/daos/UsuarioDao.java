@@ -2,11 +2,10 @@ package daos;
 
 import beans.*;
 import dtos.ProductoCantDto;
-import dtos.ProductosClienteDTO;
 import servlets.Emails;
 
 import javax.mail.MessagingException;
-import java.io.InputStream;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -162,7 +161,6 @@ public class UsuarioDao extends BaseDao {
             pstmt.setInt(4, idUsuario);
             usuarioBean.setNombre(nombres);
             usuarioBean.setApellido(apellidos);
-            usuarioBean.getDistrito().setId(idDistrito);
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -508,58 +506,109 @@ public class UsuarioDao extends BaseDao {
         }
     }
 
-    public int calcularCantPagListarProductos(){
+    //Listar pedidos: -----------------------------------
+    public int calcularCantPagPedidos(int usuarioId){
+        int cantPorPag = 5;
+        String sql = "select ceil(count(codigo)/?) from pedido where idUsuario=?;";
 
+        int cantPags = 0;
 
-        String sql = "select ceil(count(p.idProducto)/8) \n" +
-                "from producto p\n" +
-                "inner join bodega b on p.idBodega=b.idBodega;";
-
-        int cantPag = 0;
         try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql);) {
-
-            rs.next();
-            cantPag = rs.getInt(1);
-
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, cantPorPag);
+            pstmt.setInt(2, usuarioId);
+            try(ResultSet rs = pstmt.executeQuery()){
+                rs.next();
+                cantPags = rs.getInt(1);
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return cantPag;
+
+        return cantPags;
     }
-    public ArrayList<ProductosClienteDTO> listarProductos(int pag) {
 
-        ArrayList<ProductosClienteDTO> listaProductos = new ArrayList<>();
+    public ArrayList<PedidoBean> listarPedidosCliente (int pagina , int usuarioId){
 
-        int cantPag = 8;
-        String sql = "select p.idProducto, p.foto, p.nombreProducto, p.precioUnitario, b.nombreBodega\n" +
-                "from producto p\n" +
-                "inner join bodega b on p.idBodega =b.idBodega\n" +
-                "limit ?,?;";
+        int cantPorPag = 5;
+        ArrayList<PedidoBean> listaPedidos=  new ArrayList<>();
+
+        int limit = (pagina-1)*cantPorPag;
+        String sql= "select codigo, estado, totalApagar \n" +
+                "from pedido\n" +
+                "where idUsuario=? order by estado desc\n" +
+                "limit ?,5;";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
-            pstmt.setInt(1, (pag-1)*cantPag);
-            pstmt.setInt(2, cantPag);
+            pstmt.setInt(1, usuarioId);
+            pstmt.setInt(2, limit);
 
-            try (ResultSet rs = pstmt.executeQuery();) {
-                while (rs.next()) {
-                    ProductosClienteDTO producto = new ProductosClienteDTO();
-                    producto.setIdProducto(rs.getInt(1));
-                    //producto.setFoto((InputStream) rs.getBlob("foto"));
-                    producto.setNombreProducto(rs.getString("nombreProducto"));
-                    producto.setPrecio(rs.getBigDecimal("precioUnitario"));
-                    producto.setBodega(rs.getString("nombreBodega"));
-
-                    listaProductos.add(producto);
+            try(ResultSet rs = pstmt.executeQuery();){
+                while(rs.next()){
+                    PedidoBean pedidosClienteBean = new PedidoBean();
+                    pedidosClienteBean.setCodigo(rs.getString("codigo"));
+                    pedidosClienteBean.setEstado(rs.getString("estado"));
+                    pedidosClienteBean.setTotalApagar(rs.getBigDecimal("totalApagar"));
+                    listaPedidos.add(pedidosClienteBean);
                 }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        return listaProductos;
+        return listaPedidos;
+    }
+
+    public void actualizarTotalApagar(){
+        //obtengo pedidos:
+        String sql1 = "SELECT * FROM pedido;";
+        ArrayList<PedidoBean> listaPedidos = new ArrayList<>();
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql1);
+             ResultSet rs = pstmt.executeQuery()) {
+                while(rs.next()){
+                    PedidoBean pedido = new PedidoBean();
+                    pedido.setCodigo(rs.getString("codigo"));
+                    listaPedidos.add(pedido);
+                }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        for(PedidoBean pedido : listaPedidos){
+            String sql2 = "select sum(ph.cantidad*pr.precioUnitario) as `Costo Total`\n" +
+                    "from pedido pe\n" +
+                    "inner join pedido_has_producto ph on pe.idPedido=ph.idPedido\n" +
+                    "inner join producto pr on ph.idProducto=pr.idProducto\n" +
+                    "where pe.codigo=?;";
+
+            BigDecimal costo = BigDecimal.valueOf(-1);
+            try (Connection conn1 = getConnection();
+                 PreparedStatement pstmt = conn1.prepareStatement(sql2);) {
+                pstmt.setString(1, pedido.getCodigo());
+                try(ResultSet rs = pstmt.executeQuery()){
+                    rs.next();
+                    costo=rs.getBigDecimal(1);
+                }
+            } catch (SQLException throwables1) {
+                throwables1.printStackTrace();
+            }
+
+            String sql3 = "UPDATE pedido SET totalApagar = ? WHERE codigo = ?;";
+            try (Connection conn2 = getConnection();
+                 PreparedStatement pstmt = conn2.prepareStatement(sql3);) {
+                pstmt.setBigDecimal(1, costo);
+                pstmt.setString(2, pedido.getCodigo());
+                pstmt.executeUpdate();
+            } catch (SQLException throwables2) {
+                throwables2.printStackTrace();
+            }
+
+        }
+
     }
 
 
