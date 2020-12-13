@@ -11,7 +11,6 @@ import static daos.BaseDao.getConnection;
 
 public class AdminDao extends BaseDao{
 
-    //Login
 
     public void agregarFoto(BodegaBean p){
         String sql = "insert into bodega(foto) values(?)";
@@ -28,7 +27,7 @@ public class AdminDao extends BaseDao{
             throwables.printStackTrace();
         }
     }
-        public UsuarioBean validarUsuarioPassword(String user, String pass){
+    public UsuarioBean validarUsuarioPassword(String user, String pass){
 
         String sql ="select * from usuario where correo = ? and contraseniaHashed = sha2(?,256) and rol='Administrador';";
         UsuarioBean administrador = null;
@@ -210,7 +209,7 @@ public class AdminDao extends BaseDao{
         }
     }
 
-    public void guardarBodega(String ruc, String direccion, String nombreBodega, String correo,int idDistrito){
+    public void guardarBodega(String ruc, String direccion, String nombreBodega, String correo,int idDistrito, int idAdmin){
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -229,7 +228,7 @@ public class AdminDao extends BaseDao{
             pstmt.setInt(3,idDistrito);
             pstmt.setString(4,nombreBodega);
             pstmt.setString(5,correo);
-            pstmt.setInt(6,5);
+            pstmt.setInt(6,idAdmin);
 
             pstmt.executeUpdate();
 
@@ -239,12 +238,6 @@ public class AdminDao extends BaseDao{
     }
 
     public void registrarContrasenia(int idBodega,String contrasenia){
-
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
         String sql = "UPDATE bodega SET contrasenia = ? WHERE idBodega = ?";
 

@@ -10,6 +10,7 @@ import servlets.Emails;
 import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -17,7 +18,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+@MultipartConfig
 @WebServlet(name = "AdminServlet",urlPatterns = {"/AdminServlet"} )
 public class AdminServlet extends HttpServlet {
 
@@ -134,17 +135,25 @@ public class AdminServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
+        HttpSession session = request.getSession();
+        UsuarioBean adminActual = (UsuarioBean) session.getAttribute("admin");
+
+
         String accion = (String) request.getParameter("accion") == null ? "listar":
                 (String) request.getParameter("accion");
         AdminDao bodegaDao = new AdminDao();
+        Part part = request.getPart("foto");
+        System.out.println(part);
+        InputStream inputStream = part.getInputStream();
 
         String ruc = request.getParameter("ruc");
         String direccion = request.getParameter("direccion");
         String nombreBodega = request.getParameter("nombreBodega");
         String correo = request.getParameter("correo");
         String idDistrito = request.getParameter("idDistrito");
-        Part part = request.getPart("foto");
-        InputStream inputStream = part.getInputStream();
+//        Part part = request.getPart("foto");
+  //      InputStream inputStream = part.getInputStream();
 
         ArrayList<DistritoBean> listaDistritos = bodegaDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
@@ -177,7 +186,7 @@ public class AdminServlet extends HttpServlet {
                     }
 
                     if(distritoSelected && !rucExis && idDistritoInt != 0){
-                        bodegaDao.guardarBodega(ruc,direccion,nombreBodega,correo,idDistritoInt);
+                        bodegaDao.guardarBodega(ruc,direccion,nombreBodega,correo,idDistritoInt,adminActual.getIdUsuario());
 
                         idBodega = bodegaDao.buscarIdBodega(ruc);
                         rucBodega= Long.valueOf(ruc);
