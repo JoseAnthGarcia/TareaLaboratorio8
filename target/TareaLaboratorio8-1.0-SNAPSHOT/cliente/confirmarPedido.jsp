@@ -1,8 +1,13 @@
+<%@ page import="java.math.BigDecimal" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 
 <jsp:useBean id="codigoPedido" type="java.lang.String" scope="request"/>
 <jsp:useBean id="precioTotal" type="java.math.BigDecimal" scope="request"/>
+<%
+    boolean errorFecha = request.getAttribute("errorFecha") == null ? false : (Boolean) request.getAttribute("errorFecha");
+
+%>
 
 <html>
 <head>
@@ -71,7 +76,14 @@
                 <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=verCarrito" class="btn btn-outline-danger izq>">Regresar</a>
             </form>
         </div>
-        <div class="col-sm-3"></div>
+        <div class="col-sm-3">
+            <%if(errorFecha){%>
+            <div class="alert alert-danger" role="alert">
+                Escoja una fecha válida, por favor.
+            </div>
+            <%}%>
+
+        </div>
     </div>
 </div>
 
