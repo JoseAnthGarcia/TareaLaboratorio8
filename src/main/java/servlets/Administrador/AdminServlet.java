@@ -11,11 +11,9 @@ import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -145,6 +143,7 @@ public class AdminServlet extends HttpServlet {
         String nombreBodega = request.getParameter("nombreBodega");
         String correo = request.getParameter("correo");
         String idDistrito = request.getParameter("idDistrito");
+        Part part = request.getPart("foto");
 
         ArrayList<DistritoBean> listaDistritos = bodegaDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
@@ -159,6 +158,11 @@ public class AdminServlet extends HttpServlet {
                 boolean nombreBodegaB = validarString(nombreBodega);
                 boolean distritoB = validarNumero(String.valueOf(idDistrito));
                 boolean correoB = validarCorreo(correo);
+
+                InputStream inputStream = part.getInputStream();
+                BodegaBean b = new BodegaBean();
+                b.setFoto(inputStream);
+
 
                 if(rucB && direccionB && nombreBodegaB && correoB && distritoB){
 
@@ -175,6 +179,7 @@ public class AdminServlet extends HttpServlet {
 
                     if(distritoSelected && !rucExis && idDistritoInt != 0){
                         bodegaDao.guardarBodega(ruc,direccion,nombreBodega,correo,idDistritoInt);
+
                         idBodega = bodegaDao.buscarIdBodega(ruc);
                         rucBodega= Long.valueOf(ruc);
                         request.setAttribute("idBodega",idBodega);
@@ -196,6 +201,7 @@ public class AdminServlet extends HttpServlet {
                         request.setAttribute("ruc",ruc);
                         request.setAttribute("nombreBodega",nombreBodega);
                         request.setAttribute("correo",correo);
+                        bodegaDao.agregarFoto(b);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("BodegaExitosa.jsp");
                         requestDispatcher.forward(request, response);
                     }else{

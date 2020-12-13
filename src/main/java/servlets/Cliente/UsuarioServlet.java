@@ -154,7 +154,7 @@ public class UsuarioServlet extends HttpServlet {
                         }
 
                         if (distritoSelected && idDistritoInt != 0) {
-                            usuarioDao.actualizarUsuario(nombres, apellidos, idDistritoInt, usuarioId,usuarioBean);
+                            usuarioDao.actualizarUsuario(nombres, apellidos, idDistritoInt, usuarioId, usuarioBean);
                             response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=miPerfil");
                         } else {
 
@@ -191,8 +191,8 @@ public class UsuarioServlet extends HttpServlet {
                     if (contraseniaBB.equals(contrasenia2BB)) {
                         contIguales = true;
                     }
-                    if(contAntIguales && contIguales && !contrasenia2BB.equals("")){
-                    //if (contAntIguales && contIguales) {
+                    if (contAntIguales && contIguales && !contrasenia2BB.equals("")) {
+                        //if (contAntIguales && contIguales) {
                         usuarioDao.actualizarContra(usuarioId, contraseniaBB); //ojo con usuarioId
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=miPerfil");
                     } else {
@@ -220,62 +220,62 @@ public class UsuarioServlet extends HttpServlet {
                 case "escogerBodegaCercana":
                     //TODO: VALIDAD IDBODEGA
                     HttpSession session6 = request.getSession();
-                    if(request.getParameter("idBodega")!=null){
+                    if (request.getParameter("idBodega") != null) {
                         String idBodega3 = request.getParameter("idBodega");
                         int idBodegaInt2;
-                        try{
+                        try {
                             idBodegaInt2 = Integer.parseInt(idBodega3);
-                        }catch (NumberFormatException e){
+                        } catch (NumberFormatException e) {
                             idBodegaInt2 = -1;
                         }
 
-                        if(idBodegaInt2 != -1){
-                            if(session6.getAttribute("bodegaEscogida")!=null){
+                        if (idBodegaInt2 != -1) {
+                            if (session6.getAttribute("bodegaEscogida") != null) {
                                 session6.removeAttribute("bodegaEscogida");
                             }
                             session6.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodegaInt2));
-                            response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=realizarPedido");
-                        }else{
-                            response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=manipulacionUsuario");
+                            response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=realizarPedido");
+                        } else {
+                            response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=manipulacionUsuario");
                         }
-                    }else{
+                    } else {
                         session6.setAttribute("noBodegaCercanaEscogida", true);
-                        response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=escogerBodega1");
+                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=escogerBodega1");
                     }
 
                     break;
                 case "escogerBodega":
                     HttpSession session3 = request.getSession();
-                    if(request.getParameter("idBodega")!=null){
+                    if (request.getParameter("idBodega") != null) {
                         String idBodega2 = request.getParameter("idBodega");
                         int idBodegaInt;
-                        try{
+                        try {
                             idBodegaInt = Integer.parseInt(idBodega2);
-                        }catch (NumberFormatException e){
+                        } catch (NumberFormatException e) {
                             idBodegaInt = -1;
                         }
 
-                        if(idBodegaInt != -1){
-                            if(session3.getAttribute("bodegaEscogida")!=null){
+                        if (idBodegaInt != -1) {
+                            if (session3.getAttribute("bodegaEscogida") != null) {
                                 session3.removeAttribute("bodegaEscogida");
                             }
                             session3.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodegaInt));
-                            response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=realizarPedido");
-                        }else{
-                            response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=manipulacionUsuario");
+                            response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=realizarPedido");
+                        } else {
+                            response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=manipulacionUsuario");
                         }
-                    }else{
+                    } else {
                         session3.setAttribute("noBodegaEscogida", true);
-                        response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=escogerBodega2");
+                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=escogerBodega2");
                     }
                     break;
 
                 case "eliminarBodegaEscogida":
-                    if(request.getSession().getAttribute("bodegaEscogida")!=null){
+                    if (request.getSession().getAttribute("bodegaEscogida") != null) {
                         request.getSession().removeAttribute("bodegaEscogida");
-                        response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=escogerBodega1");
-                    }else{
-                        response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=Home");
+                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=escogerBodega1");
+                    } else {
+                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=Home");
                     }
                     break;
 
@@ -284,10 +284,10 @@ public class UsuarioServlet extends HttpServlet {
                     HttpSession session2 = request.getSession();
                     HashMap<Integer, ProductoBean> listaProductos = (HashMap<Integer, ProductoBean>) session2.getAttribute("carrito");
                     ArrayList<ProductoCantDto> listaProductosSelecCant = new ArrayList<>();
-                    for (Map.Entry<Integer, ProductoBean> entry : listaProductos.entrySet()){
+                    for (Map.Entry<Integer, ProductoBean> entry : listaProductos.entrySet()) {
                         int idProducto = entry.getKey();
                         String cant = request.getParameter(String.valueOf(idProducto));
-                        System.out.println("producto"+entry.getValue().getNombreProducto()+" | cant: "+cant);
+                        System.out.println("producto" + entry.getValue().getNombreProducto() + " | cant: " + cant);
 
                         ProductoCantDto productoCant = new ProductoCantDto();
                         productoCant.setProducto(usuarioDao.obtenerProducto(idProducto));
@@ -301,7 +301,7 @@ public class UsuarioServlet extends HttpServlet {
                     request.setAttribute("codigoPedido", usuarioDao.generarCodigoPedido());
 
                     //creo que se debe guardar en la sesion, pues luego se necesitara
-                    if(session.getAttribute("listaProductosSelecCant")!=null){
+                    if (session.getAttribute("listaProductosSelecCant") != null) {
                         session.removeAttribute("listaProductosSelecCant");
                     }
                     session.setAttribute("listaProductosSelecCant", listaProductosSelecCant);
@@ -309,11 +309,11 @@ public class UsuarioServlet extends HttpServlet {
                     //calculamos el precio total:
 
                     BigDecimal precioTotal = BigDecimal.valueOf(0);
-                    for(ProductoCantDto producto: listaProductosSelecCant){
-                        BigDecimal costo = BigDecimal.valueOf(producto.getProducto().getPrecioProducto().doubleValue()*producto.getCant());
+                    for (ProductoCantDto producto : listaProductosSelecCant) {
+                        BigDecimal costo = BigDecimal.valueOf(producto.getProducto().getPrecioProducto().doubleValue() * producto.getCant());
                         precioTotal = BigDecimal.valueOf(precioTotal.doubleValue() + costo.doubleValue());
                     }
-                    request.setAttribute("precioTotal",precioTotal);
+                    request.setAttribute("precioTotal", precioTotal);
 
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/confirmarPedido.jsp");
                     requestDispatcher.forward(request, response);
@@ -332,7 +332,7 @@ public class UsuarioServlet extends HttpServlet {
                     pedido.setFecha_recojo(fecha);
                     BodegaBean bodegaEscogida = (BodegaBean) session1.getAttribute("bodegaEscogida");
                     pedido.setBodegaBean(bodegaEscogida);
-                        //TODO: falta usuaio, esta bien??
+                    //TODO: falta usuaio, esta bien??
                     UsuarioBean usuario = (UsuarioBean) session1.getAttribute("usuario");
                     pedido.setUsuario(usuario);
                     int idPedido = usuarioDao.crearPedido(pedido);
@@ -343,7 +343,7 @@ public class UsuarioServlet extends HttpServlet {
 
                     //TODO: eliminar attributos de session necesarios para el pedido.
 
-                    request.setAttribute("codigo",codigo);
+                    request.setAttribute("codigo", codigo);
                     RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("cliente/registroExitoso.jsp");
                     requestDispatcher2.forward(request, response);
                     break;
@@ -362,7 +362,6 @@ public class UsuarioServlet extends HttpServlet {
             String correo = request.getParameter("correo");
             String contrasenia = request.getParameter("contrasenia");
             String contrasenia2 = request.getParameter("contrasenia2");
-
 
 
             boolean dniB = validarDni(dni);
@@ -451,7 +450,7 @@ public class UsuarioServlet extends HttpServlet {
         if (clienteActual != null && clienteActual.getIdUsuario() > 0 && !(accion.equals("agregar"))) {
             RequestDispatcher requestDispatcher;
 
-            int usuarioId = clienteActual.getIdUsuario();
+            int usuarioActualId = clienteActual.getIdUsuario();
 
             switch (accion) {
                 case "nada":
@@ -462,9 +461,9 @@ public class UsuarioServlet extends HttpServlet {
                 case "miPerfil":
 
 
-                    UsuarioBean usuario = usuarioDao.obtenerUsuario(usuarioId);
+                    UsuarioBean usuario = usuarioDao.obtenerUsuario(usuarioActualId);
 
-                        request.setAttribute("usuario", usuario);
+                    request.setAttribute("usuario", usuario);
 
                     requestDispatcher = request.getRequestDispatcher("miPerfil.jsp");
                     requestDispatcher.forward(request, response);
@@ -475,7 +474,7 @@ public class UsuarioServlet extends HttpServlet {
                     ArrayList<DistritoBean> listaDistritos2 = usuarioDao.obtenerDistritos();
                     request.setAttribute("listaDistritos2", listaDistritos2);
 
-                    UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioId);
+                    UsuarioBean bUsuario = usuarioDao.obtenerUsuario(usuarioActualId);
 
                     request.setAttribute("cambiar", cambiar);
                     request.setAttribute("usuario", clienteActual);
@@ -486,7 +485,7 @@ public class UsuarioServlet extends HttpServlet {
 
                 case "cambioContra":
                     //int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-                    UsuarioBean busuario = usuarioDao.obtenerUsuario(usuarioId);
+                    UsuarioBean busuario = usuarioDao.obtenerUsuario(usuarioActualId);
 
                     //request.setAttribute("contrasenia",busuario.getContrasenia()); //puede reducirse mas adelante
                     request.setAttribute("busuario", busuario);
@@ -499,7 +498,7 @@ public class UsuarioServlet extends HttpServlet {
                     /*int idDistrito = ((UsuarioBean)session.getAttribute("usuario")).getIdUsuario();
                     //TODO: OJO !!!!
                     System.out.println(((UsuarioBean)session.getAttribute("usuario")).getDistrito().getNombre());*/
-                    ArrayList<BodegaBean> listaBodegas2 = usuarioDao.listarBodegasDistrito(((UsuarioBean)session5.getAttribute("usuario")).getIdUsuario());
+                    ArrayList<BodegaBean> listaBodegas2 = usuarioDao.listarBodegasDistrito(((UsuarioBean) session5.getAttribute("usuario")).getIdUsuario());
                     request.setAttribute("listaBodegasDistrito", listaBodegas2);
                     requestDispatcher = request.getRequestDispatcher("/cliente/bodegasCercanas.jsp");
                     requestDispatcher.forward(request, response);
@@ -507,7 +506,7 @@ public class UsuarioServlet extends HttpServlet {
 
                 case "escogerBodega2":
                     //TODO: VALIDAR PAGINA
-                    String pag = request.getParameter("pag")==null?"1":request.getParameter("pag");
+                    String pag = request.getParameter("pag") == null ? "1" : request.getParameter("pag");
                     int pagInt = Integer.parseInt(pag);
                     ArrayList<BodegaBean> listaBodegas = usuarioDao.listarBodegas(pagInt);
                     int cantPags = usuarioDao.calcularCantPagListarBodegas();
@@ -521,11 +520,11 @@ public class UsuarioServlet extends HttpServlet {
                 case "realizarPedido":
                     //VERIFICAR IDBODEGA?????------------------------------
                     HttpSession session1 = request.getSession();
-                    if(session1.getAttribute("bodegaEscogida")!=null){
-                        if(session1.getAttribute("bodegaEscogida")!=null){
+                    if (session1.getAttribute("bodegaEscogida") != null) {
+                        if (session1.getAttribute("bodegaEscogida") != null) {
 
                         }
-                        int idBodega = ((BodegaBean)session1.getAttribute("bodegaEscogida")).getIdBodega();
+                        int idBodega = ((BodegaBean) session1.getAttribute("bodegaEscogida")).getIdBodega();
                         int cantPorPagina = 4;
                         //calculamos paginas:
                         String query = "SELECT * FROM producto WHERE idBodega=" + idBodega + ";";
@@ -551,7 +550,7 @@ public class UsuarioServlet extends HttpServlet {
 
                         requestDispatcher = request.getRequestDispatcher("/cliente/realizarUnPedido.jsp");
                         requestDispatcher.forward(request, response);
-                    }else{
+                    } else {
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=escogerBodega1");
                     }
                     break;
@@ -607,13 +606,12 @@ public class UsuarioServlet extends HttpServlet {
 
                 case "listar":
 
-                    PedidosUsuarioDao pedidosUsuarioDao = new PedidosUsuarioDao();
 
                     String pag1 = request.getParameter("pag") == null ?
                             "1" : request.getParameter("pag");
 
 
-                    int cantPag1 = pedidosUsuarioDao.calcularCantPag();
+                    int cantPag1 = usuarioDao.calcularCantPagPedidos(usuarioActualId);
                     int paginaAct1 = -1;
                     try {
 
@@ -625,22 +623,23 @@ public class UsuarioServlet extends HttpServlet {
                         paginaAct1 = 1;
                     }
 
-                    ArrayList<PedidoBean> listaPedidos = pedidosUsuarioDao.listarPedidosCliente(paginaAct1);
+                    ArrayList<PedidoBean> listaPedidos = usuarioDao.listarPedidosCliente(paginaAct1, usuarioActualId);
                     request.setAttribute("listaPedidos", listaPedidos);
                     request.setAttribute("cantPag", cantPag1);
                     request.setAttribute("paginaAct", paginaAct1);
-
+                    //usuarioDao.actualizarTotalApagar();
                     RequestDispatcher view = request.getRequestDispatcher("/cliente/listarPedidosUsuario.jsp");
                     view.forward(request, response);
                     break;
                 case "cancelar":
+                    //TODO: validar idPedido
                     String idPedido = request.getParameter("idPedido");
                     PedidosUsuarioDao pedidosUsuarioDao1 = new PedidosUsuarioDao();
                     pedidosUsuarioDao1.cancelarPedido(Integer.parseInt(idPedido));
                     response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
                     break;
                 case "Home":
-                    request.setAttribute("usuario",clienteActual);
+                    request.setAttribute("usuario", clienteActual);
                     requestDispatcher = request.getRequestDispatcher("cliente/Home.jsp");
                     requestDispatcher.forward(request, response);
                     break;

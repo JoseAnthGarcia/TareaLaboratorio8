@@ -1,5 +1,7 @@
 package beans;
 
+import java.math.BigDecimal;
+
 public class PedidoBean {
 
     private int id;
@@ -7,6 +9,7 @@ public class PedidoBean {
     private String estado;
     private String fecha_registro;
     private String fecha_recojo;
+    private BigDecimal totalApagar;
     private BodegaBean bodegaBean;
     private UsuarioBean usuario;
 
@@ -24,6 +27,14 @@ public class PedidoBean {
 
     public void setFecha_recojo(String fecha_recojo) {
         this.fecha_recojo = fecha_recojo;
+    }
+
+    public BigDecimal getTotalApagar() {
+        return totalApagar;
+    }
+
+    public void setTotalApagar(BigDecimal totalApagar) {
+        this.totalApagar = totalApagar;
     }
 
     public BodegaBean getBodegaBean() {
