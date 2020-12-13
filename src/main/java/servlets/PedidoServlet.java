@@ -2,6 +2,7 @@ package servlets;
 
 import beans.PedidoBean;
 import daos.PedidoDao;
+import dtos.PedidosDatosDTO;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -49,9 +50,7 @@ public class PedidoServlet extends HttpServlet {
                 view.forward(request,response);
                 break;
             case "mostrar":
-                listaPedidos = new ArrayList<>();
-                PedidoBean pedido = pedidoDao.mostrarPedido(codigo);
-                request.setAttribute("listaPedidos", listaPedidos);
+                PedidosDatosDTO pedido = pedidoDao.mostrarPedido(codigo);
                 request.setAttribute("pedido", pedido);
                 view = request.getRequestDispatcher("mostrarPedido.jsp");
                 view.forward(request,response);
