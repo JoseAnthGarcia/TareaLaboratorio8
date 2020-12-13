@@ -31,6 +31,15 @@
             position: absolute;
             right: 10% ;
         }
+        .primero{
+            position: absolute;
+            left: 15%;
+        }
+
+        .tercero{
+            position: absolute;
+            right: 15%;
+        }
     </style>
 
 </head>
@@ -41,7 +50,7 @@
 </header>
 
 <div class="container" style="margin-top: 65px; margin-left: 15%; margin-right: 15%">
-    <div class="row">
+    <div class="row col-12">
         <div class="col-sm-8">
             <h1>Mi carrito</h1>
         </div>
@@ -50,44 +59,50 @@
         </div>
     </div>
     <form method="POST" action="<%=request.getContextPath()%>/UsuarioServlet?accion=generarPedido">
-    <div class="row">
+    <div class="row mt-5">
         <%HttpSession session1 = request.getSession();
             //ArrayList<ProductoBean> listaProductos = (ArrayList<ProductoBean>) session1.getAttribute("carrito");
             //if(listaProductos.size()!=0){
             HashMap<Integer, ProductoBean> listaProductos = (HashMap<Integer, ProductoBean>) session1.getAttribute("carrito");
         if(!listaProductos.isEmpty()){%>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col"></th>
-                <th scope="col">Producto</th>
-                <th scope="col">Precio Unitario</th>
-                <th scope="col">Stock</th>
-                <th scope="col">
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <%//for (ProductoBean producto : listaProductos) {
-                for (Map.Entry<Integer, ProductoBean> entry : listaProductos.entrySet()){%>
-            <tr>
-                <td>Imagen x</td>
-                <td><%=entry.getValue().getNombreProducto()%>
-                </td>
-                <td><%=entry.getValue().getPrecioProducto()%>
-                </td>
-                <td>
-                    <input name="<%=entry.getValue().getId()%>" type="number" min="0" id="Stock" class="form-control" >
-                </td>
-                <td>
-                    <a class="btn btn-secondary" href="<%=request.getContextPath()%>/UsuarioServlet?accion=eliminarProductCarrito&productSelect=<%=entry.getValue().getId()%>">Eliminar</a>
-                </td>
-            </tr>
-            <%}%>
-            </tbody>
-        </table>
-        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-success">Regresar</a>
-        <button type="submit" class="btn btn-outline-success">Generar pedido</button>
+        <div class="row mt-5 mx-auto">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Precio Unitario</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <%//for (ProductoBean producto : listaProductos) {
+                    for (Map.Entry<Integer, ProductoBean> entry : listaProductos.entrySet()){%>
+                <tr>
+                    <td>Imagen x</td>
+                    <td><%=entry.getValue().getNombreProducto()%>
+                    </td>
+                    <td><%=entry.getValue().getPrecioProducto()%>
+                    </td>
+                    <td>
+                        <input name="<%=entry.getValue().getId()%>" type="number" min="0" id="Stock" class="form-control" >
+                    </td>
+                    <td>
+                        <a class="btn btn-secondary" href="<%=request.getContextPath()%>/UsuarioServlet?accion=eliminarProductCarrito&productSelect=<%=entry.getValue().getId()%>">Eliminar</a>
+                    </td>
+                </tr>
+                <%}%>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="row col-12 mt-5">
+            <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-success primero">Regresar</a>
+            <button type="submit" class="btn btn-outline-success tercero">Generar pedido</button>
+        </div>
         <%}else{%>
         <div class="alert alert-secondary" role="alert">
             El carrito se encuentra vacio.
