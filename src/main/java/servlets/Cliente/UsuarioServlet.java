@@ -217,18 +217,68 @@ public class UsuarioServlet extends HttpServlet {
                     RequestDispatcher view = request.getRequestDispatcher("cliente/realizarUnPedido.jsp");
                     view.forward(request, response);
                     break;
-
-                case "escogerBodega":
+                case "escogerBodegaCercana":
                     //TODO: VALIDAD IDBODEGA
-                    String idBodega2 = request.getParameter("idBodega");
-                    int idBodegaInt = Integer.parseInt(idBodega2);
-                    HttpSession session3 = request.getSession();
-                    if(session3.getAttribute("bodegaEscogida")!=null){
-                        session3.removeAttribute("bodegaEscogida");
+                    HttpSession session6 = request.getSession();
+                    if(request.getParameter("idBodega")!=null){
+                        String idBodega3 = request.getParameter("idBodega");
+                        int idBodegaInt2;
+                        try{
+                            idBodegaInt2 = Integer.parseInt(idBodega3);
+                        }catch (NumberFormatException e){
+                            idBodegaInt2 = -1;
+                        }
+
+                        if(idBodegaInt2 != -1){
+                            if(session6.getAttribute("bodegaEscogida")!=null){
+                                session6.removeAttribute("bodegaEscogida");
+                            }
+                            session6.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodegaInt2));
+                            response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=realizarPedido");
+                        }else{
+                            response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=manipulacionUsuario");
+                        }
+                    }else{
+                        session6.setAttribute("noBodegaCercanaEscogida", true);
+                        response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=escogerBodega1");
                     }
-                    session3.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodegaInt));
-                    response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=realizarPedido");
+
                     break;
+                case "escogerBodega":
+                    HttpSession session3 = request.getSession();
+                    if(request.getParameter("idBodega")!=null){
+                        String idBodega2 = request.getParameter("idBodega");
+                        int idBodegaInt;
+                        try{
+                            idBodegaInt = Integer.parseInt(idBodega2);
+                        }catch (NumberFormatException e){
+                            idBodegaInt = -1;
+                        }
+
+                        if(idBodegaInt != -1){
+                            if(session3.getAttribute("bodegaEscogida")!=null){
+                                session3.removeAttribute("bodegaEscogida");
+                            }
+                            session3.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodegaInt));
+                            response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=realizarPedido");
+                        }else{
+                            response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=manipulacionUsuario");
+                        }
+                    }else{
+                        session3.setAttribute("noBodegaEscogida", true);
+                        response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=escogerBodega2");
+                    }
+                    break;
+
+                case "eliminarBodegaEscogida":
+                    if(request.getSession().getAttribute("bodegaEscogida")!=null){
+                        request.getSession().removeAttribute("bodegaEscogida");
+                        response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=escogerBodega1");
+                    }else{
+                        response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=Home");
+                    }
+                    break;
+
                 case "generarPedido":
                     //TODO: VALIDAR ESPACIOS VACIOS!!!
                     HttpSession session2 = request.getSession();
@@ -471,32 +521,39 @@ public class UsuarioServlet extends HttpServlet {
                 case "realizarPedido":
                     //VERIFICAR IDBODEGA?????------------------------------
                     HttpSession session1 = request.getSession();
-                    int idBodega = ((BodegaBean)session1.getAttribute("bodegaEscogida")).getIdBodega();
-                    int cantPorPagina = 4;
-                    //calculamos paginas:
-                    String query = "SELECT * FROM producto WHERE idBodega=" + idBodega + ";";
-                    int cantPag = usuarioDao.calcularCantPagQuery(query, cantPorPagina);
+                    if(session1.getAttribute("bodegaEscogida")!=null){
+                        if(session1.getAttribute("bodegaEscogida")!=null){
 
-                    String pag2 = request.getParameter("pag") == null ?
-                            "1" : request.getParameter("pag");
-                    int paginaAct;
-                    try {
-                        paginaAct = Integer.parseInt(pag2); //try
-                        if (paginaAct > cantPag) {
+                        }
+                        int idBodega = ((BodegaBean)session1.getAttribute("bodegaEscogida")).getIdBodega();
+                        int cantPorPagina = 4;
+                        //calculamos paginas:
+                        String query = "SELECT * FROM producto WHERE idBodega=" + idBodega + ";";
+                        int cantPag = usuarioDao.calcularCantPagQuery(query, cantPorPagina);
+
+                        String pag2 = request.getParameter("pag") == null ?
+                                "1" : request.getParameter("pag");
+                        int paginaAct;
+                        try {
+                            paginaAct = Integer.parseInt(pag2); //try
+                            if (paginaAct > cantPag) {
+                                paginaAct = 1;
+                            }
+                        } catch (NumberFormatException e) {
                             paginaAct = 1;
                         }
-                    } catch (NumberFormatException e) {
-                        paginaAct = 1;
+
+                        ArrayList<ProductoBean> listaProductos = usuarioDao.listarProductosBodega(idBodega, paginaAct, cantPorPagina);
+
+                        request.setAttribute("listaProductos", listaProductos);
+                        request.setAttribute("cantPag", cantPag);
+                        request.setAttribute("paginaAct", paginaAct);
+
+                        requestDispatcher = request.getRequestDispatcher("/cliente/realizarUnPedido.jsp");
+                        requestDispatcher.forward(request, response);
+                    }else{
+                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=escogerBodega1");
                     }
-
-                    ArrayList<ProductoBean> listaProductos = usuarioDao.listarProductosBodega(idBodega, paginaAct, cantPorPagina);
-
-                    request.setAttribute("listaProductos", listaProductos);
-                    request.setAttribute("cantPag", cantPag);
-                    request.setAttribute("paginaAct", paginaAct);
-
-                    requestDispatcher = request.getRequestDispatcher("/cliente/realizarUnPedido.jsp");
-                    requestDispatcher.forward(request, response);
                     break;
 
                 case "agregarCarrito":
@@ -552,25 +609,26 @@ public class UsuarioServlet extends HttpServlet {
 
                     PedidosUsuarioDao pedidosUsuarioDao = new PedidosUsuarioDao();
 
-                    pag = request.getParameter("pag") == null ?
+                    String pag1 = request.getParameter("pag") == null ?
                             "1" : request.getParameter("pag");
 
 
-                    cantPag = pedidosUsuarioDao.calcularCantPag();
+                    int cantPag1 = pedidosUsuarioDao.calcularCantPag();
+                    int paginaAct1 = -1;
                     try {
 
-                        paginaAct = Integer.parseInt(pag); //try
-                        if (paginaAct > cantPag) {
-                            paginaAct = 1;
+                        paginaAct1 = Integer.parseInt(pag1); //try
+                        if (paginaAct1 > cantPag1) {
+                            paginaAct1 = 1;
                         }
                     } catch (NumberFormatException e) {
-                        paginaAct = 1;
+                        paginaAct1 = 1;
                     }
 
-                    ArrayList<PedidoBean> listaPedidos = pedidosUsuarioDao.listarPedidosCliente(paginaAct);
+                    ArrayList<PedidoBean> listaPedidos = pedidosUsuarioDao.listarPedidosCliente(paginaAct1);
                     request.setAttribute("listaPedidos", listaPedidos);
-                    request.setAttribute("cantPag", cantPag);
-                    request.setAttribute("paginaAct", paginaAct);
+                    request.setAttribute("cantPag", cantPag1);
+                    request.setAttribute("paginaAct", paginaAct1);
 
                     RequestDispatcher view = request.getRequestDispatcher("/cliente/listarPedidosUsuario.jsp");
                     view.forward(request, response);

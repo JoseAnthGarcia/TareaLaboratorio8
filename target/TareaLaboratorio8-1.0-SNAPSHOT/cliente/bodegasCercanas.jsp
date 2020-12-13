@@ -45,13 +45,25 @@
     <jsp:include page="/cliente/includes/headerClient.jsp"/>
 </header>
 <div class="container" style="margin-top: 20px">
-    <h1>Estas son tus bodegas más cercanas:</h1>
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Estas son tus bodegas más cercanas:</h1>
+        </div>
+        <%if(request.getSession().getAttribute("noBodegaCercanaEscogida")!=null){%>
+        <div class="col-sm-6">
+            <div class="alert alert-danger" role="alert">
+                Seleccione alguna bodega.
+            </div>
+        </div>
+        <%request.getSession().removeAttribute("noBodegaCercanaEscogida");
+        }%>
+    </div>
 </div>
 
 
 <div class="container" style="margin-top: 30px">
     <!-- Presentacion de productos -->
-    <form method="post" action="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodega">
+    <form method="post" action="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodegaCercana">
         <%if(listaBodegasDistrito.size()!=0){%>
         <%
             int cant = 0;

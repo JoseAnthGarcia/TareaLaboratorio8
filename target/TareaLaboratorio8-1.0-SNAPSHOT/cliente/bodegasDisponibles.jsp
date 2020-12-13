@@ -47,7 +47,19 @@
     <jsp:include page="/cliente/includes/headerClient.jsp"/>
 </header>
 <div class="container" style="margin-top: 20px">
-    <h1>Todas las bodegas disponibles</h1>
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Estas todas las bodegas disponibles:</h1>
+        </div>
+        <%if(request.getSession().getAttribute("noBodegaEscogida")!=null){%>
+        <div class="col-sm-6">
+            <div class="alert alert-danger" role="alert">
+                Seleccione alguna bodega.
+            </div>
+        </div>
+        <%request.getSession().removeAttribute("noBodegaEscogida");
+        }%>
+    </div>
 </div>
 
 
