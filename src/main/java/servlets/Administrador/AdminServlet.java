@@ -144,6 +144,7 @@ public class AdminServlet extends HttpServlet {
         String correo = request.getParameter("correo");
         String idDistrito = request.getParameter("idDistrito");
         Part part = request.getPart("foto");
+        InputStream inputStream = part.getInputStream();
 
         ArrayList<DistritoBean> listaDistritos = bodegaDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
@@ -159,10 +160,8 @@ public class AdminServlet extends HttpServlet {
                 boolean distritoB = validarNumero(String.valueOf(idDistrito));
                 boolean correoB = validarCorreo(correo);
 
-                InputStream inputStream = part.getInputStream();
                 BodegaBean b = new BodegaBean();
                 b.setFoto(inputStream);
-
 
                 if(rucB && direccionB && nombreBodegaB && correoB && distritoB){
 
