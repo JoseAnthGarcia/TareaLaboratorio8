@@ -118,7 +118,8 @@ public class LoginServlet extends HttpServlet {
                     System.out.println(idUsuarioRecu);
                     System.out.println(contrasenia2R+"malos pasos");
                     usuarioDao.actualizarContra(idUsuarioRecu, contraseniaR); //ojo con usuarioId
-                    sessionP.invalidate();
+                    sessionP.setAttribute("cambioContra",true);
+                    //sessionP.invalidate();
                     //Se termina la operacion y te manda a la pagina del Login
                     //pendiente mandar confirmacion de nueva contraseña exitosa
                     response.sendRedirect(request.getContextPath()+"/LoginServlet");
