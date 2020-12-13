@@ -7,6 +7,7 @@ import dtos.ProductosClienteDTO;
 import servlets.Emails;
 
 import javax.mail.MessagingException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
@@ -670,6 +671,7 @@ public class UsuarioDao extends BaseDao {
         }
 
     }
+
     public int calcularCantPagListarProductos(){
 
 
@@ -689,6 +691,7 @@ public class UsuarioDao extends BaseDao {
         }
         return cantPag;
     }
+
     public ArrayList<ProductosClienteDTO> listarProductos(int pag) {
 
         ArrayList<ProductosClienteDTO> listaProductos = new ArrayList<>();
