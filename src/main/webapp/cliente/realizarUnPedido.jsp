@@ -149,7 +149,7 @@
 
     <div class="row mt-5">
 
-        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger <%=listaProductos.size()!=0?"izq":""%>">Regresar</a>
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger <%=listaProductos.size()!=0?"izq":""%>">Volver a inicio</a>
         <%if (cantPag != -1) {%>
         <!-- paginacion -->
         <nav aria-label="Page navigation example" class="mx-auto"> <!-- Recordar centro !! -->

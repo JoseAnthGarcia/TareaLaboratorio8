@@ -270,10 +270,8 @@ public class UsuarioDao extends BaseDao {
                 while (rs.next()) {
                     ProductoBean producto = new ProductoBean();
                     producto.setId(rs.getInt(1));
-                    producto.setNombreFoto(rs.getString(2));
-                    producto.setRutaFoto(rs.getString(3));
-                    producto.setNombreProducto(rs.getString(4));
-                    producto.setPrecioProducto(rs.getBigDecimal(7));
+                    producto.setNombreProducto(rs.getString("nombreProducto"));
+                    producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
                     listaProductos.add(producto);
                 }
             }
@@ -302,8 +300,8 @@ public class UsuarioDao extends BaseDao {
                     ProductoBean productoBean = new ProductoBean();
 
                     productoBean.setId(rs.getInt(1));
-                    productoBean.setNombreFoto(rs.getString(2));
-                    productoBean.setRutaFoto(rs.getString(3));
+                    /*productoBean.setNombreFoto(rs.getString(2));
+                    productoBean.setRutaFoto(rs.getString(3));*/
                     productoBean.setNombreProducto(rs.getString(4));
                     productoBean.setPrecioProducto(rs.getBigDecimal(7));
 
@@ -339,6 +337,76 @@ public class UsuarioDao extends BaseDao {
     }
 
     //Realizar pedido----------------------------
+    public ArrayList<BodegaBean> listarBodegas(int pag){
+        ArrayList<BodegaBean> listaBodegas = new ArrayList<>();
+        int cantPag = 8;
+        String sql = "select idBodega, foto,nombreBodega,  direccion  from bodega\n" +
+                "where bodega.estado = \"Activo\"\n" +
+                "order by nombreBodega ASC limit ?,?;";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, (pag-1)*cantPag);
+            pstmt.setInt(2, cantPag);
+            try(ResultSet rs = pstmt.executeQuery()){
+                while(rs.next()){
+                    BodegaBean bodega = new BodegaBean();
+                    //TODO: JALAR FOTO
+                    bodega.setIdBodega(rs.getInt("idBodega"));
+                    bodega.setNombreBodega(rs.getString("nombreBodega"));
+                    bodega.setDireccionBodega(rs.getString("direccion"));
+                    listaBodegas.add(bodega);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return listaBodegas;
+    }
+
+    public ArrayList<BodegaBean> listarBodegasDistrito(int idUsuario){
+        ArrayList<BodegaBean> listaBodegas = new ArrayList<>();
+        String sql = "select idBodega, foto,nombreBodega,  direccion from bodega\n" +
+                "where idDistrito = (SELECT idDistrito FROM usuario WHERE idUsuario = ?) and estado = \"Activo\"\n" +
+                "order by nombreBodega;";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, idUsuario);
+            try(ResultSet rs = pstmt.executeQuery()){
+                while(rs.next()){
+                    BodegaBean bodega = new BodegaBean();
+                    //TODO: JALAR FOTO
+                    bodega.setIdBodega(rs.getInt("idBodega"));
+                    bodega.setNombreBodega(rs.getString("nombreBodega"));
+                    bodega.setDireccionBodega(rs.getString("direccion"));
+                    listaBodegas.add(bodega);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return listaBodegas;
+    }
+
+    public static int calcularCantPagListarBodegas(){
+
+        String sql = "select ceil(count(*)/10)\n" +
+                "from (select b.idBodega, b.foto,nombreBodega,  b.direccion  from bodega b\n" +
+                "where b.estado = \"Activo\") t;";  // numero de paginas
+
+        int cantPag = 0;
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            try(ResultSet rs = pstmt.executeQuery()){
+                rs.next();
+                cantPag = rs.getInt(1);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return cantPag;
+    }
+
     public BodegaBean obtenerBodega(int idBodega){
         BodegaBean bodega = null;
         String sql = "SELECT * FROM bodega WHERE idBodega=?";

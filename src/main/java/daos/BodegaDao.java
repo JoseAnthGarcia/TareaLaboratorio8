@@ -114,8 +114,8 @@ public class BodegaDao extends BaseDao{
                 while (rs.next()) {
                     ProductoBean producto = new ProductoBean();
                     producto.setId(rs.getInt(1));
-                    producto.setNombreFoto(rs.getString(2));
-                    producto.setRutaFoto(rs.getString(3));
+                    /*producto.setNombreFoto(rs.getString(2));
+                    producto.setRutaFoto(rs.getString(3));*/
                     producto.setNombreProducto(rs.getString(4));
                     producto.setDescripcion(rs.getString(5));
                     producto.setStock(rs.getInt(6));
@@ -151,8 +151,8 @@ public class BodegaDao extends BaseDao{
                 while (rs.next()) {
                     ProductoBean producto = new ProductoBean();
                     producto.setId(rs.getInt(1));
-                    producto.setNombreFoto(rs.getString(2));
-                    producto.setRutaFoto(rs.getString(3));
+                    /*producto.setNombreFoto(rs.getString(2));
+                    producto.setRutaFoto(rs.getString(3));*/
                     producto.setNombreProducto(rs.getString(4));
                     producto.setDescripcion(rs.getString(5));
                     producto.setStock(rs.getInt(6));
