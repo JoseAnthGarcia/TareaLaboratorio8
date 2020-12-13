@@ -12,14 +12,21 @@ import static daos.BaseDao.getConnection;
 public class AdminDao extends BaseDao{
 
 
-    public void agregarFoto(BodegaBean p){
-        String sql = "insert into bodega(foto) values(?)";
+    public void guardarBodega(BodegaBean b){
+
+        String sql = "INSERT INTO  bodega(ruc,direccion,idDistrito,nombreBodega,correo,idAdministrador,foto) " +
+                "VALUES (?,?,?,?,?,?,?)";
 
         try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);){
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
-            //pstmt.setString(1, p.getNombreBodega());
-            pstmt.setBlob(1,p.getFoto());
+            pstmt.setLong(1,b.getRucBodega());
+            pstmt.setString(2,b.getDireccionBodega());
+            pstmt.setInt(3,b.getIdDistrito());
+            pstmt.setString(4,b.getNombreBodega());
+            pstmt.setString(5,b.getCorreoBodega());
+            pstmt.setInt(6,b.getIdAdministrador());
+            pstmt.setBlob(7,b.getFoto());
 
             pstmt.executeUpdate();
 
@@ -27,6 +34,7 @@ public class AdminDao extends BaseDao{
             throwables.printStackTrace();
         }
     }
+
     public UsuarioBean validarUsuarioPassword(String user, String pass){
 
         String sql ="select * from usuario where correo = ? and contraseniaHashed = sha2(?,256) and rol='Administrador';";
@@ -206,34 +214,6 @@ public class AdminDao extends BaseDao{
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void guardarBodega(String ruc, String direccion, String nombreBodega, String correo,int idDistrito, int idAdmin){
-
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        String sql = "INSERT INTO  bodega(ruc,direccion,idDistrito,nombreBodega,correo,idAdministrador) " +
-                "VALUES (?,?,?,?,?,?)";
-
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);) {
-
-            pstmt.setString(1,ruc);
-            pstmt.setString(2,direccion);
-            pstmt.setInt(3,idDistrito);
-            pstmt.setString(4,nombreBodega);
-            pstmt.setString(5,correo);
-            pstmt.setInt(6,idAdmin);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 

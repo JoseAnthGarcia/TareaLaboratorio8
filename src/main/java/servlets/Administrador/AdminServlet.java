@@ -144,7 +144,7 @@ public class AdminServlet extends HttpServlet {
                 (String) request.getParameter("accion");
         AdminDao bodegaDao = new AdminDao();
         Part part = request.getPart("foto");
-        System.out.println(part);
+
         InputStream inputStream = part.getInputStream();
 
         String ruc = request.getParameter("ruc");
@@ -152,8 +152,6 @@ public class AdminServlet extends HttpServlet {
         String nombreBodega = request.getParameter("nombreBodega");
         String correo = request.getParameter("correo");
         String idDistrito = request.getParameter("idDistrito");
-//        Part part = request.getPart("foto");
-  //      InputStream inputStream = part.getInputStream();
 
         ArrayList<DistritoBean> listaDistritos = bodegaDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
@@ -170,7 +168,8 @@ public class AdminServlet extends HttpServlet {
                 boolean correoB = validarCorreo(correo);
 
                 BodegaBean b = new BodegaBean();
-                b.setFoto(inputStream);
+                //b.setFoto(inputStream);
+                //b.setNombreBodega(nombreBodega);
 
                 if(rucB && direccionB && nombreBodegaB && correoB && distritoB){
 
@@ -186,10 +185,22 @@ public class AdminServlet extends HttpServlet {
                     }
 
                     if(distritoSelected && !rucExis && idDistritoInt != 0){
-                        bodegaDao.guardarBodega(ruc,direccion,nombreBodega,correo,idDistritoInt,adminActual.getIdUsuario());
+
+                        System.out.println("entra");
+
+                        b.setFoto(inputStream);
+                        b.setNombreBodega(nombreBodega);
+                        b.setCorreoBodega(correo);
+                        b.setDireccionBodega(direccion);
+                        b.setIdDistrito(idDistritoInt);
+                        b.setIdAdministrador(adminActual.getIdUsuario());
+                        rucBodega= Long.valueOf(ruc);
+                        b.setRucBodega(rucBodega);
+
+                        bodegaDao.guardarBodega(b);
 
                         idBodega = bodegaDao.buscarIdBodega(ruc);
-                        rucBodega= Long.valueOf(ruc);
+
                         request.setAttribute("idBodega",idBodega);
                         request.setAttribute("rucBodega",rucBodega);
 
@@ -209,7 +220,6 @@ public class AdminServlet extends HttpServlet {
                         request.setAttribute("ruc",ruc);
                         request.setAttribute("nombreBodega",nombreBodega);
                         request.setAttribute("correo",correo);
-                        bodegaDao.agregarFoto(b);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("BodegaExitosa.jsp");
                         requestDispatcher.forward(request, response);
                     }else{
@@ -223,7 +233,7 @@ public class AdminServlet extends HttpServlet {
                     request.setAttribute("direccionB",direccionB);
                     request.setAttribute("nombreBodegaB",nombreBodegaB);
                     request.setAttribute("correoB",correoB);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("registrarBodega.jsp");
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/registrarBodega.jsp");
                     requestDispatcher.forward(request, response);
                 }
                 break;
