@@ -12,6 +12,8 @@ public class ProductoBean {
     private BigDecimal precioProducto;
     private InputStream foto;
 
+
+
     public int getId() {
         return id;
     }

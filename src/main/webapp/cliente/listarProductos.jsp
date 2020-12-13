@@ -1,5 +1,6 @@
+<%@ page import="beans.ProductoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="listaBodegas" type="java.util.ArrayList<beans.BodegaBean>" scope="request"/>
+<jsp:useBean id="listaProductos" type="java.util.ArrayList<dtos.ProductosClienteDTO>" scope="request"/>
 <jsp:useBean id="paginaAct" type="java.lang.Integer" scope="request"/>
 <jsp:useBean id="cantPag" type="java.lang.Integer" scope="request"/>
 <!DOCTYPE html>
@@ -36,18 +37,9 @@
             border-color: #343a40;
             background-color: #343a40;
         }
-        .primero{
-            position: absolute;
-            left: 15%;
-        }
-
-        .tercero{
-            position: absolute;
-            right: 15%;
-        }
     </style>
 
-    <title>Bodegas disponibles</title>
+    <title>Productos disponibles</title>
 </head>
 <body>
 
@@ -56,69 +48,50 @@
     <jsp:include page="/cliente/includes/headerClient.jsp"/>
 </header>
 <div class="container" style="margin-top: 20px">
-    <div class="row">
-        <div class="col-sm-6">
-            <h1>Estas todas las bodegas disponibles:</h1>
-        </div>
-        <%if(request.getSession().getAttribute("noBodegaEscogida")!=null){%>
-        <div class="col-sm-6">
-            <div class="alert alert-danger" role="alert">
-                Seleccione alguna bodega.
-            </div>
-        </div>
-        <%request.getSession().removeAttribute("noBodegaEscogida");
-        }%>
-    </div>
+    <h1>Productos disponibles</h1>
 </div>
 
 
 <div class="container" style="margin-top: 30px">
     <!-- Presentacion de productos -->
-    <form method="post" action="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodega">
     <% int cant = 0;
-        for(int i=0; i<2; i++){
+    for(int i=0; i<2; i++){
     %>
     <div class="row">
         <% int min = i*4;
             int max = (i+1)*4;
-            for(int j=min; j<max; j++){
-                if(cant < listaBodegas.size()){
+        for(int j=min; j<max; j++){
+            if(cant < listaProductos.size()){
         %>
-        <div class="col-sm-3"> <!-- Probar medidas "sm-3"? -->
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="idBodega" id="exampleRadios1" value="<%=listaBodegas.get(j).getIdBodega()%>">
-                <label class="form-check-label" for="exampleRadios1">
-                    Seleccionar
-                </label>
-            </div>
-            <img src="https://lh3.googleusercontent.com/proxy/p0p83ybh7bHr451_Eb8-kibqGOZXzq7ZUYI94U9qhCTxSxn1dG5SO6KvJZ2CwLDjcKBw36sX4EZ0X8b9NgWPQyHOfIu6O4-E" width="150" class="img-thumbnail">
-            <p class="mb-1"><b>Bodega: </b> <%=listaBodegas.get(j).getNombreBodega()%> </p>
-            <p class="mb-0"><b>direccion: </b> <%=listaBodegas.get(j).getDireccionBodega()%> </p>
-        </div>
-        <% } else{ %>
-        <div class="col-sm-3"> <!-- Probar medidas "sm-3"? -->
-        </div>
-        <%}%>
+                <div class="col-sm-3"> <!-- Probar medidas "sm-3"? -->
+                    <img src="https://wongfood.vteximg.com.br/arquivos/ids/354637-1000-1000/348487-01-2904.jpg?v=637236288141670000" width="100" class="img-thumbnail">
+                    <p class="mb-1"><b>Producto: </b> <%=listaProductos.get(j).getNombreProducto()%> </p>
+                    <p class="mb-0"><b>Precio: </b>S/. <%=listaProductos.get(j).getPrecio()%> </p>
+                    <p class="mb-3"><b>Bodega: </b> <%=listaProductos.get(j).getBodega()%> </p>
+                </div>
+            <% } else{ %>
+                <div class="col-sm-3"> <!-- Probar medidas "sm-3"? -->
+                </div>
+            <%}%>
         <% cant++;
-        } %>
+            } %>
     </div>
     <% } %>
-
 
     <!-- paginacion -->
     <div class="row mt-5">
 
-
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger">Volver</a>
 
         <nav aria-label="Page navigation example" class = "mx-auto"> <!-- Recordar centro !! -->
-            <ul class="pagination justify-content-center mx-auto">
+            <ul class="pagination justify-content-center">
                 <%if(paginaAct==1){%>
                 <li class="page-item disabled">
                     <span class="page-link">Anterior</span>
                 </li>
                 <%}else{%>
                 <li class="page-item">
-                    <a class="page-link" href="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodega2&pag=<%=paginaAct-1%>">Anterior</a>
+                    <a class="page-link" href="<%=request.getContextPath()%>/UsuarioServlet?accion=productosDisponibles&pag2=<%=paginaAct-1%>">Anterior</a>
                 </li>
                 <%}%>
 
@@ -129,7 +102,7 @@
                           </span>
                 </li>
                 <%      }else{%>
-                <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodega2&pag=<%=k%>"><%=k%></a></li>
+                <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/UsuarioServlet?accion=productosDisponibles&pag2=<%=k%>"><%=k%></a></li>
                 <%      }
                 } %>
 
@@ -140,27 +113,21 @@
                 </li>
                 <%}else{%>
                 <li class="page-item">
-                    <a class="page-link" href="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodega2&pag=<%=paginaAct+1%>">Siguiente</a>
+                    <a class="page-link" href="<%=request.getContextPath()%>/UsuarioServlet?accion=productosDisponibles&pag2=<%=paginaAct+1%>">Siguiente</a>
                 </li>
                 <%}%>
 
             </ul>
         </nav>
 
-
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodega1" class="btn btn-outline-success">Realizar un pedido</a>
 
     </div>
-    <div class="row mt-5">
-        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger primero">Volver a inicio</a>
-        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodega1" class="btn btn-outline-danger mx-auto">Escoger bodega cercana</a>
-        <button type="submit" class="btn btn-outline-success tercero">Escoger bodega</button>
-    </div>
-    </form>
 
 
 </div>
 
-<footer class="page-footer font-small blue mt-5" style="margin-top: 20px">
+<footer class="page-footer font-small blue" style="margin-top: 20px">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="#">MiMarca</a>
     </div>

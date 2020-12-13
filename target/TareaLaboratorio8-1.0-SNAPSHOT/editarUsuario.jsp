@@ -67,22 +67,8 @@
 
     <title>Editar mi perfil</title>
 </head>
-<body>
 <header>
-    <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-
-        </div>
-    </div>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>MiMarca.com</strong>
-            </a>
-            <a href="#"><img src="imagenes/sigout.png" height="30px"/></a>
-
-        </div>
-    </div>
+    <jsp:include page="/cliente/includes/headerClient.jsp"/>
 </header>
 <div class="container">
 
