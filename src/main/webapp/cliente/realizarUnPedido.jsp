@@ -197,7 +197,7 @@
         <%}else{%>
         <div class="row">
             <div class="izquierda1 col-12 alert alert-danger ml-2" role="alert">
-                No se ha encontrado ningún producto con ese nombre.
+                No se ha encontrado ningún producto.
             </div>
             <div class="izquierda2 col-2" >
                 <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger">Regresar</a>

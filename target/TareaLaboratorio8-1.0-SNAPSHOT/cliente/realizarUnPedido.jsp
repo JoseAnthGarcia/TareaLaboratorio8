@@ -133,7 +133,7 @@
             <tbody>
             <%for (ProductoBean producto : listaProductos) {%>
             <tr>
-                <td>Imagen x</td>
+                <td><img src="<%=request.getContextPath()%>/ImagenServlet?id=<%=producto.getId()%>" width="140px" height="140px"></td>
                 <td><%=producto.getNombreProducto()%>
                 </td>
                 <td><%=producto.getPrecioProducto()%>
@@ -149,7 +149,7 @@
 
     <div class="row mt-5">
 
-        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger <%=listaProductos.size()!=0?"izq":""%>">Regresar</a>
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger <%=listaProductos.size()!=0?"izq":""%>">Volver a inicio</a>
         <%if (cantPag != -1) {%>
         <!-- paginacion -->
         <nav aria-label="Page navigation example" class="mx-auto"> <!-- Recordar centro !! -->
@@ -197,7 +197,7 @@
         <%}else{%>
         <div class="row">
             <div class="izquierda1 col-12 alert alert-danger ml-2" role="alert">
-                No se ha encontrado ningún producto con ese nombre.
+                No se ha encontrado ningún producto.
             </div>
             <div class="izquierda2 col-2" >
                 <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger">Regresar</a>
