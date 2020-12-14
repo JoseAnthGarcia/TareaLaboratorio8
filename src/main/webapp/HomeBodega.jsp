@@ -70,36 +70,46 @@
         </div>
     </div>
 </header>
-<div class="jumbotron text-right">
-    <div class="container">
-        <h1 class="display-3"><%=bodega.getNombreBodega()%> </h1>
-    </div>
-</div>
-<div class=" Container">
 
+<div class=" Container" style="margin-top: 30px">
     <div class="row">
-
-        <div class="col-lg-6 col-md-6 centrar">
-            <img src="<%=request.getContextPath()%>/ImagenServlet?idBodega=<%=bodega.getIdBodega()%>" width="480px" height="480px" />
+        <div class="col-lg-6 col-md-12">
+            <div class="row">
+                <div class="col-lg-2 col-md-12">
+                </div>
+                <div class="col-lg-8 col-md-12">
+                    <img src="<%=request.getContextPath()%>/ImagenServlet?idBodega=<%=bodega.getIdBodega()%>" width="400px"/>
+                </div>
+                <div class="col-lg-2 col-md-12">
+                </div>
+            </div>
         </div>
-        <div class="col-lg-6 col-md-12 centrar">
-            <table class="table">
-                <tr>
-                    <h4>RUC: <%=bodega.getRucBodega()%></h4>
-                </tr>
-                <tr>
-                    <h4>Dirección: <%=bodega.getDireccionBodega()%> </h4>
-                </tr>
-                <tr>
-                    <h4>Distrito: <%=bodega.getDistrito().getNombre()%> </h4>
-                </tr>
-                <tr>
-                    <h4>Correo: <%=bodega.getCorreoBodega()%> </h4>
-                </tr>
-            </table>
+        <div class="col-lg-6 col-md-12">
+
+            <div class="jumbotron">
+                <div class="container">
+                    <h1 class="display-3"><%=bodega.getNombreBodega()%> </h1>
+                </div>
+            </div>
+
+
+                <table class="table">
+                    <tr>
+                        <h4>RUC: <%=bodega.getRucBodega()%></h4>
+                    </tr>
+                    <tr>
+                        <h4>Dirección: <%=bodega.getDireccionBodega()%> </h4>
+                    </tr>
+                    <tr>
+                        <h4>Distrito: <%=bodega.getDistrito().getNombre()%> </h4>
+                    </tr>
+                    <tr>
+                        <h4>Correo: <%=bodega.getCorreoBodega()%> </h4>
+                    </tr>
+                </table>
+
         </div>
     </div>
-
 
 </div>
 
