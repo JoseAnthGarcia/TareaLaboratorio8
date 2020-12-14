@@ -135,7 +135,7 @@
         <%if (cantPag != -1) {%>
         <!-- paginacion -->
         <nav aria-label="Page navigation example" class="mx-auto"> <!-- Recordar centro !! -->
-            <ul class="pagination justify-content-center">
+            <ul class="pagination justify-content-center mx-auto">
                 <%if (paginaAct == 1) {%>
                 <li class="page-item disabled">
                     <span class="page-link">Anterior</span>
