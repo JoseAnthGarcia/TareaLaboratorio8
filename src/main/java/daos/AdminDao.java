@@ -11,6 +11,30 @@ import static daos.BaseDao.getConnection;
 
 public class AdminDao extends BaseDao{
 
+    public UsuarioBean obtenerUsuario(int usuarioId) {
+
+
+        String sql = "select  nombreUsuario, apellido \n" +
+                "from usuario \n" +
+                "where idUsuario=?;";
+        UsuarioBean usuarioBean = new UsuarioBean();
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, usuarioId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    usuarioBean.setNombre(rs.getString("nombreUsuario"));
+                    usuarioBean.setApellido(rs.getString("apellido"));
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return usuarioBean;
+    }
+
 
     public void guardarBodega(BodegaBean b){
 
@@ -27,12 +51,27 @@ public class AdminDao extends BaseDao{
             pstmt.setString(5,b.getCorreoBodega());
             pstmt.setInt(6,b.getIdAdministrador());
             pstmt.setBlob(7,b.getFoto());
-
             pstmt.executeUpdate();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+    public void contraHasheada(int usuarioID, String contraseniaNew) {
+        String sql = "UPDATE usuario SET contrasenia = ? , contraseniaHashed = sha2(?,256) WHERE idUsuario = ?";
+
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setString(1, contraseniaNew);
+            pstmt.setString(2,contraseniaNew);
+            pstmt.setInt(3, usuarioID);
+
+            pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
     }
 
     public UsuarioBean validarUsuarioPassword(String user, String pass){
