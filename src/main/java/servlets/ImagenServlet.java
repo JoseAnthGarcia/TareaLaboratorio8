@@ -18,11 +18,18 @@ public class ImagenServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getParameter("id")!=null){
+            //Se debe recibir el id del usuario del que se mostrara la imagen
+            int id=Integer.parseInt(request.getParameter("id"));
+            //una vez obtenido, se ejecuta el metodo listarImg de la personaDao
+            BodegaDao bodegaDao = new BodegaDao();
+            bodegaDao.listarImg(id, response);
+        }
+        if(request.getParameter("idBodega")!=null){
+            int id=Integer.parseInt(request.getParameter("idBodega"));
+            BodegaDao bodegaDao = new BodegaDao();
+            bodegaDao.listarImgBodega(id, response);
+        }
 
-        //Se debe recibir el id del usuario del que se mostrara la imagen
-        int id=Integer.parseInt(request.getParameter("id"));
-        //una vez obtenido, se ejecuta el metodo listarImg de la personaDao
-        BodegaDao bodegaDao = new BodegaDao();
-        bodegaDao.listarImg(id, response);
     }
 }

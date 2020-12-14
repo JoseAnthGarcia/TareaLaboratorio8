@@ -177,6 +177,7 @@ public class AdminServlet extends HttpServlet {
                 if (contraseniaB && contrasenia2B) {
                     if (contIguales) {
                         bodegaDao.registrarContrasenia(idBodega2, contrasenia);
+                        bodegaDao.contraHasheada(idBodega2,contrasenia);
                         BodegaBean bodega = bodegaDao.buscarBodega(idBodega2);
                         nombreBodega = bodega.getNombreBodega();
                         Long ruc3 = bodega.getRucBodega();
@@ -245,13 +246,12 @@ public class AdminServlet extends HttpServlet {
 
                         bodegaDao.guardarBodega(b);
 
+
                         idBodega = bodegaDao.buscarIdBodega(ruc);
 
                         request.setAttribute("idBodega",idBodega);
                         request.setAttribute("rucBodega",rucBodega);
 
-
-                        String ip = request.getLocalAddr();
                         int puerto= request.getLocalPort();
 
                         Emails emails = new Emails();
@@ -259,7 +259,7 @@ public class AdminServlet extends HttpServlet {
                         String asunto = "REGISTRAR CONTRASEÑA";
                         String contenido = "Se ha iniciado el registro de su bodega "+nombreBodega+" con RUC:"+rucBodega+
                                 ", para continuar con el registro ingrese al siguiente link y establezca su contraseña:" +
-                                "http://"+ip+":"+puerto+"/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia&idBodega="
+                                "http://localhost"+":"+puerto+"/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia&idBodega="
                                 +idBodega+"&rucBodega="+rucBodega;
 
                         try {
