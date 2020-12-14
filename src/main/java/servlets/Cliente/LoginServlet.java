@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebServlet(name = "LoginServlet", urlPatterns ={"/LoginServlet", ""} )
+@WebServlet(name = "LoginServlet", urlPatterns ={"/LoginServlet", "/"} )
 public class LoginServlet extends HttpServlet {
 
     public boolean validarCorreo(String input){
@@ -135,7 +135,7 @@ public class LoginServlet extends HttpServlet {
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/recuperarContrasenia.jsp");
                     requestDispatcher.forward(request,response);
                 }
-                break;
+
         }
 
     }
@@ -195,6 +195,10 @@ public class LoginServlet extends HttpServlet {
                         response.sendRedirect(request.getContextPath() + "/LoginServlet");
                     }
                 }
+                break;
+            case "parteEmpresa":
+                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("cliente/parteEmpresa.jsp");
+                requestDispatcher2.forward(request,response);
                 break;
 
             default:
