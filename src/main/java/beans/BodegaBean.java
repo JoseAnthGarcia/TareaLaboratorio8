@@ -14,8 +14,17 @@ BodegaBean {
     private String direccionBodega;
     private String correoBodega;
     private int idDistrito;
+    private DistritoBean distrito;
     private int idAdministrador;
     private String contraseniaBodega;
+
+    public DistritoBean getDistrito() {
+        return distrito;
+    }
+
+    public void setDistrito(DistritoBean distrito) {
+        this.distrito = distrito;
+    }
 
     public long getRucBodega() {
         return rucBodega;

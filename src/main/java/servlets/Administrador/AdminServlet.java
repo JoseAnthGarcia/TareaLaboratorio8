@@ -220,7 +220,7 @@ public class AdminServlet extends HttpServlet {
                         request.setAttribute("ruc",ruc);
                         request.setAttribute("nombreBodega",nombreBodega);
                         request.setAttribute("correo",correo);
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("BodegaExitosa.jsp");
+                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/BodegaExitosa.jsp");
                         requestDispatcher.forward(request, response);
                     }else{
                         request.setAttribute("rucExis", rucExis);

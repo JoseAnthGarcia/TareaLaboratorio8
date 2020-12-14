@@ -97,9 +97,6 @@
                 <div class="container d-flex justify-content-between">
                     <div class="container d-flex justify-content-between">
                         <a href="#" class="navbar-brand d-flex align-items-center">
-                            <strong>MiMarca.com</strong>
-                        </a>
-                        <a href="#" class="navbar-brand d-flex align-items-center">
                             <strong>Administración</strong>
                         </a>
                         <a href="<%=request.getContextPath()%>/AdminServlet?accion=registrar" class="navbar-brand d-flex align-items-center">

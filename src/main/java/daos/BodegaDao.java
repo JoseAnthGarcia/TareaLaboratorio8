@@ -1,9 +1,6 @@
 package daos;
 
-import beans.BodegaBean;
-import beans.PedidoBean;
-import beans.ProductoBean;
-import beans.UsuarioBean;
+import beans.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -23,8 +20,8 @@ public class BodegaDao extends BaseDao{
         }
 
         // TODO: idBodega, nombreFoto, rutaFoto se ha hardcodeado
-        String sql = "insert into producto (nombreFoto,rutaFoto,nombreProducto,descripcion,stock,precioUnitario,idBodega) values (\n" +
-                "'foto random', '/fotoRandom', ?, ?, ?, ?, ?);";  // numero de paginas
+        String sql = "insert into producto (nombreProducto,descripcion,stock,precioUnitario,idBodega) values (\n" +
+                " ?, ?, ?, ?, ?);";  // numero de paginas
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -140,7 +137,8 @@ public class BodegaDao extends BaseDao{
         ArrayList<ProductoBean> listaProductos = new ArrayList<>();
 
         int limit = (pagina-1)*5;
-        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=? AND lower(nombreProducto) like ? AND estado='Existente' limit ?,5;";  // numero de paginas
+
+        String sql = "select idProducto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=? AND lower(nombreProducto) like ? AND estado='Existente' limit ?,5;";  // numero de paginas
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -155,10 +153,10 @@ public class BodegaDao extends BaseDao{
                     producto.setId(rs.getInt(1));
                     /*producto.setNombreFoto(rs.getString(2));
                     producto.setRutaFoto(rs.getString(3));*/
-                    producto.setNombreProducto(rs.getString(4));
-                    producto.setDescripcion(rs.getString(5));
-                    producto.setStock(rs.getInt(6));
-                    producto.setPrecioProducto(rs.getBigDecimal(7));
+                    producto.setNombreProducto(rs.getString(2));
+                    producto.setDescripcion(rs.getString(3));
+                    producto.setStock(rs.getInt(4));
+                    producto.setPrecioProducto(rs.getBigDecimal(5));
                     listaProductos.add(producto);
                 }
             }
@@ -208,7 +206,7 @@ public class BodegaDao extends BaseDao{
 
         boolean exisProduct = false;
 
-        String sql = "SELECT * FROM producto WHERE idProducto = ? AND idBodega=1";
+        String sql = "SELECT * FROM producto WHERE idProducto = ? AND idBodega=30";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -352,7 +350,7 @@ public class BodegaDao extends BaseDao{
 
     public BodegaBean obtenerBodega(int idBodega){
         BodegaBean bodega = null;
-        String sql = "SELECT * FROM bodega WHERE idBodega=?";
+        String sql = "SELECT * FROM mydb.bodega b inner join mydb.distrito d on d.idDistrito = b.idDistrito where b.idBodega = ?";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setInt(1, idBodega);
@@ -361,6 +359,14 @@ public class BodegaDao extends BaseDao{
                 bodega = new BodegaBean();
                 bodega.setIdBodega(rs.getInt("idBodega"));
                 bodega.setNombreBodega(rs.getString("nombreBodega"));
+                bodega.setRucBodega(rs.getLong("ruc"));
+                DistritoBean distrito = new DistritoBean();
+                distrito.setId(rs.getInt("idDistrito"));
+                distrito.setNombre(rs.getString("nombreDistrito"));
+                bodega.setDistrito(distrito);
+                bodega.setDireccionBodega(rs.getString("direccion"));
+                bodega.setCorreoBodega(rs.getString("correo"));
+
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

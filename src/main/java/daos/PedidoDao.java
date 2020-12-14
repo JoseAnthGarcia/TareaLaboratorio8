@@ -29,11 +29,11 @@ public class PedidoDao extends BaseDao{
         return cantPag;
     }
 
-    public ArrayList<PedidoBean> obtenerListaPedidos(int pagina) {
+    public ArrayList<PedidoBean> obtenerListaPedidos(int pagina, int idBodega) {
         int limit = (pagina-1)*5;
         ArrayList<PedidoBean> listaPedidos = new ArrayList<>();
         String sql = "SELECT p.idPedido, p.codigo, p.estado FROM pedido p \n" +
-                "where p.idBodega = 30 limit ?, 5";
+                "where p.idBodega = ? limit ?, 5";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -44,7 +44,8 @@ public class PedidoDao extends BaseDao{
 
             Connection connection = getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, limit);
+            statement.setInt(1, idBodega);
+            statement.setInt(2, limit);
 
             try (ResultSet rs = statement.executeQuery();) {
                 while (rs.next()) {
