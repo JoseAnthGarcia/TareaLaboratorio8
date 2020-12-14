@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="usuario" scope="session" type="beans.UsuarioBean" class="beans.UsuarioBean" />
+<jsp:useBean id="usuario" scope="request" type="beans.UsuarioBean"  />
 
 <html>
     <head>
@@ -66,9 +66,11 @@
                 </div>
                 <div class="col-lg-4 col-md-12" style=" position: relative; top:88px;">
                     <div class="row">
+                        <div class="col-lg-8 col-md-12" style="text-align: center">
+                            <img src="imagenes/profile_admin.png" width="150px" height=150px">
+                        </div>
                         <div class="col-lg-4 col-md-12" style="text-align: center">
                             <button class="btn-perfil" ><%=usuario.getNombre()+" "+usuario.getApellido()%></button>
-                            <img src="imagenes/profile_admin.png" width="150px" height=150px">
                         </div>
                     </div>
                 </div>
