@@ -276,6 +276,7 @@ public class UsuarioDao extends BaseDao {
                     producto.setId(rs.getInt(1));
                     producto.setNombreProducto(rs.getString("nombreProducto"));
                     producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
+                    producto.setStock(rs.getInt("stock"));
                     listaProductos.add(producto);
                 }
             }
