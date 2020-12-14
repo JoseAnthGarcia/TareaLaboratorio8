@@ -292,6 +292,11 @@ public class AdminServlet extends HttpServlet {
         HttpSession session = request.getSession();
         UsuarioBean adminActual = (UsuarioBean) session.getAttribute("admin");
 
+        response.addHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.addHeader("Cache-Control", "pre-check=0, post-check=0");
+        response.setDateHeader("Expires", 0);
+
         if(adminActual!= null){
             int idAdminActual = adminActual.getIdUsuario();
             String accion = (String) request.getParameter("accion") == null ? "listar":
