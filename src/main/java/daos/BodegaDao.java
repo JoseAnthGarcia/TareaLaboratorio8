@@ -150,13 +150,11 @@ public class BodegaDao extends BaseDao{
             try(ResultSet rs = pstmt.executeQuery();){
                 while (rs.next()) {
                     ProductoBean producto = new ProductoBean();
-                    producto.setId(rs.getInt(1));
-                    /*producto.setNombreFoto(rs.getString(2));
-                    producto.setRutaFoto(rs.getString(3));*/
-                    producto.setNombreProducto(rs.getString(2));
-                    producto.setDescripcion(rs.getString(3));
-                    producto.setStock(rs.getInt(4));
-                    producto.setPrecioProducto(rs.getBigDecimal(5));
+                    producto.setId(rs.getInt("idProducto"));
+                    producto.setNombreProducto(rs.getString("nombreProducto"));
+                    producto.setDescripcion(rs.getString("descripcion"));
+                    producto.setStock(rs.getInt("stock"));
+                    producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
                     listaProductos.add(producto);
                 }
             }

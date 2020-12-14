@@ -70,50 +70,45 @@
         </div>
     </div>
 </header>
-
-<main role="main">
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron text-right">
-        <div class="container">
-            <h1 class="display-3"><%=bodega.getNombreBodega()%> </h1>
-        </div>
-    </div>
-
+<div class="jumbotron text-right">
     <div class="container">
-        <!-- Example row of columns -->
-
-        <div class="row">
-
-            <div class="col-md-6">
-
-                <div class="form-group row">
-                    <h4>RUC: <%=bodega.getRucBodega()%></h4>
-                </div>
-
-                <div class="form-group row">
-                    <h4>Dirección: <%=bodega.getDireccionBodega()%> </h4>
-                </div>
-
-                <div class="form-group row">
-                    <h4>Distrito: <%=bodega.getDistrito().getNombre()%></h4>
-                </div>
-
-                <div class="form-group row">
-                    <h4>Correo: <%=bodega.getCorreoBodega()%> </h4>
-                </div>
-
-            </div>
-        </div>
-
-
+        <h1 class="display-3"><%=bodega.getNombreBodega()%> </h1>
     </div>
+</div>
+<div class=" Container">
+
+    <div class="row">
+
+        <div class="col-lg-6 col-md-6 centrar">
+            <img src="<%=request.getContextPath()%>/ImagenServlet?idBodega=<%=bodega.getIdBodega()%>" width="480px" height="480px" />
+        </div>
+        <div class="col-lg-6 col-md-12 centrar">
+            <table class="table">
+                <tr>
+                    <h4>RUC: <%=bodega.getRucBodega()%></h4>
+                </tr>
+                <tr>
+                    <h4>Dirección: <%=bodega.getDireccionBodega()%> </h4>
+                </tr>
+                <tr>
+                    <h4>Distrito: <%=bodega.getDistrito().getNombre()%> </h4>
+                </tr>
+                <tr>
+                    <h4>Correo: <%=bodega.getCorreoBodega()%> </h4>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
     <footer class="page-footer font-small blue" style="margin-top: 60px">
         <div class="footer-copyright text-center py-3">© 2020 Copyright:
             <a href="#"> MiMarca.com</a>
         </div>
     </footer>
-</main>
+
 
 </body>
 </html>
