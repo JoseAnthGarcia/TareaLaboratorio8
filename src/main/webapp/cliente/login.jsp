@@ -109,9 +109,16 @@
                     </div>
                     <div class="col-6 " style="text-align: center; position: relative; top: 10px">
                         <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=agregar"
-                        >Registrarse</a>
+                        ><u>Registrarse</u></a>
                     </div>
 
+                </div>
+                <div class="row mt-5">
+                    <div class="col">
+                        <a href="<%=request.getContextPath()%>/LoginServlet?accion=parteEmpresa">
+                            <button type="button" class="btn btn-primary" style="position: relative; top: 80px;left: 160px ">Soy parte de la empresa</button></a>
+
+                    </div>
                 </div>
 
             </form>

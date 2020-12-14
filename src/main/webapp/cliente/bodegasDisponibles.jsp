@@ -91,7 +91,7 @@
                     Seleccionar
                 </label>
             </div>
-            <img src="https://lh3.googleusercontent.com/proxy/p0p83ybh7bHr451_Eb8-kibqGOZXzq7ZUYI94U9qhCTxSxn1dG5SO6KvJZ2CwLDjcKBw36sX4EZ0X8b9NgWPQyHOfIu6O4-E" width="150" class="img-thumbnail">
+            <img src="<%=request.getContextPath()%>/ImagenServlet?idBodega=<%=listaBodegas.get(j).getIdBodega()%>" width="150" class="img-thumbnail">
             <p class="mb-1"><b>Bodega: </b> <%=listaBodegas.get(j).getNombreBodega()%> </p>
             <p class="mb-0"><b>direccion: </b> <%=listaBodegas.get(j).getDireccionBodega()%> </p>
         </div>
