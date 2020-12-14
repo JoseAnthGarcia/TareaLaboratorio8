@@ -196,6 +196,7 @@ public class BodegaDao extends BaseDao{
             while ((i = bufferedInputStream.read()) != -1) {
                 bufferedOutputStream.write(i);
             }
+            bufferedOutputStream.flush();
 
         } catch (SQLException | IOException e) {
             e.printStackTrace();
