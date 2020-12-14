@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.text.ParseException;
 
-@WebServlet(name = "UsuarioServlet", urlPatterns = {"/UsuarioServlet"})
+@WebServlet(name = "UsuarioServlet", urlPatterns = {"/UsuarioServlet", ""})
 public class UsuarioServlet extends HttpServlet {
 
     public boolean validarDni(String dni) {
@@ -244,6 +244,7 @@ public class UsuarioServlet extends HttpServlet {
 
                         if (idBodegaInt2 != -1 && usuarioDao.obtenerBodega(idBodegaInt2)!=null) {
                             if (session6.getAttribute("bodegaEscogida") != null) {
+                                session6.removeAttribute("carrito");
                                 session6.removeAttribute("bodegaEscogida");
                             }
                             session6.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodegaInt2));
@@ -270,6 +271,7 @@ public class UsuarioServlet extends HttpServlet {
 
                         if (idBodegaInt != -1 && usuarioDao.obtenerBodega(idBodegaInt)!=null) {
                             if (session3.getAttribute("bodegaEscogida") != null) {
+                                session3.removeAttribute("carrito");
                                 session3.removeAttribute("bodegaEscogida");
                             }
                             session3.setAttribute("bodegaEscogida", usuarioDao.obtenerBodega(idBodegaInt));
@@ -292,11 +294,13 @@ public class UsuarioServlet extends HttpServlet {
                     boolean errorGeneral = false;
                     for (Map.Entry<Integer, ProductoBean> entry : listaProductos.entrySet()) {
                         int idProducto = entry.getKey();
+                        //Obtengo el producto:
+                        ProductoBean producto = usuarioDao.obtenerProducto(idProducto);
                         String cant = request.getParameter(String.valueOf(idProducto));
 
                         try{
                             int cantInt = Integer.parseInt(cant);
-                            if(cantInt < 1){
+                            if(cantInt < 1 || cantInt > producto.getStock()){
                                 errorNumber = true;
                                 break;
                             }
