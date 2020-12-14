@@ -76,7 +76,7 @@
             </a>
             <a>
                 <div class="card">
-                    <a href="<%=request.getContextPath()%>Bodega/LoginBodegaServlet?accion=logout" ><img src="imagenes/sigout.png" height="30px"/></a>
+                    <a href="<%=request.getContextPath()%>/LoginBodega?accion=logout" ><img src="imagenes/sigout.png" height="30px"/></a>
                 </div>
             </a>
 

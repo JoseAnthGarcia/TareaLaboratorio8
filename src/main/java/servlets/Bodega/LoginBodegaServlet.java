@@ -153,38 +153,33 @@ public class LoginBodegaServlet extends HttpServlet {
         String accion = request.getParameter("accion") == null ?
                 "login" : request.getParameter("accion");
 
-        switch (accion){
+        switch (accion) {
             case "actualizarContraCorreo":
                 RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("actualizarContraBodega.jsp");
-                requestDispatcher2.forward(request,response);
+                requestDispatcher2.forward(request, response);
                 break;
             case "actualizarContra":
-                try{
-                    int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
+                try {
+                    int idBodega = Integer.parseInt(request.getParameter("idBodega") == null ?
                             "nada" : request.getParameter("idBodega"));
-                    request.setAttribute("idBodega",idBodega);
-                    String rucBodegaString = request.getParameter("rucBodega")==null?"nada":request.getParameter("rucBodega");
-                    Long rucBodega= Long.parseLong(request.getParameter("rucBodega") == null ?
+                    request.setAttribute("idBodega", idBodega);
+                    String rucBodegaString = request.getParameter("rucBodega") == null ? "nada" : request.getParameter("rucBodega");
+                    Long rucBodega = Long.parseLong(request.getParameter("rucBodega") == null ?
                             "nada" : request.getParameter("rucBodega"));
 
-                    request.setAttribute("rucBodega",rucBodega);
+                    request.setAttribute("rucBodega", rucBodega);
                     RequestDispatcher requestDispatcher3 = request.getRequestDispatcher("contraseniaBodega.jsp");
-                    requestDispatcher3.forward(request,response);
-                }catch (NumberFormatException e){
+                    requestDispatcher3.forward(request, response);
+                } catch (NumberFormatException e) {
                     e.printStackTrace();
                     RequestDispatcher requestDispatcher4 = request.getRequestDispatcher("ErrorIdBodega.jsp");
-                    requestDispatcher4.forward(request,response);
+                    requestDispatcher4.forward(request, response);
                 }
-                break;
-            case "logout":
-                HttpSession session1 = request.getSession();
-                session1.invalidate();
-                response.sendRedirect(request.getContextPath());
                 break;
         }
 
 
-        if(bodegaBean==null && accion.equals("login")) {
+        if (bodegaBean == null && accion.equals("login")) {
             // TODO: por que se valida dos veces la misma vain en bodegaBean?
 
             BodegaBean bodega = (BodegaBean) session.getAttribute("bodega");
@@ -195,15 +190,14 @@ public class LoginBodegaServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("bodega/login.jsp");
             requestDispatcher.forward(request, response);
 
-        }else if(accion.equals("logout")){
+        } else if (accion.equals("logout")) {
+
             session.invalidate();
             response.sendRedirect(request.getContextPath() + "/LoginBodega?accion=login");
-        }else{
+        } else {
             view2 = request.getRequestDispatcher("bodega/access_denied.jsp");
             view2.forward(request, response);
         }
-
-
 
     }
 }
