@@ -11,6 +11,30 @@ import static daos.BaseDao.getConnection;
 
 public class AdminDao extends BaseDao{
 
+    public UsuarioBean obtenerUsuario(int usuarioId) {
+
+
+        String sql = "select  nombreUsuario, apellido \n" +
+                "from usuario \n" +
+                "where idUsuario=?;";
+        UsuarioBean usuarioBean = new UsuarioBean();
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, usuarioId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    usuarioBean.setNombre(rs.getString("nombreUsuario"));
+                    usuarioBean.setApellido(rs.getString("apellido"));
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return usuarioBean;
+    }
+
 
     public void guardarBodega(BodegaBean b){
 
