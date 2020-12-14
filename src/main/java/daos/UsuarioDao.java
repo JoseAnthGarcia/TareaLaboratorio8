@@ -216,11 +216,11 @@ public class UsuarioDao extends BaseDao {
 
     //correo para recuperar contraseña  //se marco de amarillo antes de tiempo ...curioso,no?
     //link aun no planteado
-    public int enviarCorreoLinkContra(int id, String contraHashed, String correo){
+    public int enviarCorreoLinkContra(int id, String contraHashed, String correo, String ip, int puerto){
         int envioExitoso = 1;
         String subject = "Correo para restablecer Contraseña";
         String content = "El link para restablecer su contraseña es : \n" +
-                "link: http://localhost:8080/TareaLaboratorio8/LoginServlet?accion=recuContra&contraHashed=" +contraHashed+ "&id="+id+
+                "link: http://"+ip+":"+puerto+"/TareaLaboratorio8_war_exploded/LoginServlet?accion=recuContra&contraHashed=" +contraHashed+ "&id="+id+
                 "\n" +
                 "Atentamente,\n" +
                 "                       El equipo de MiBodega.com ";
@@ -276,6 +276,7 @@ public class UsuarioDao extends BaseDao {
                     producto.setId(rs.getInt(1));
                     producto.setNombreProducto(rs.getString("nombreProducto"));
                     producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
+                    producto.setStock(rs.getInt("stock"));
                     listaProductos.add(producto);
                 }
             }
@@ -296,18 +297,18 @@ public class UsuarioDao extends BaseDao {
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
             pstmt.setInt(1, idBodega);
-            pstmt.setString(2, textoBuscar + "%");
+            pstmt.setString(2, "%"+ textoBuscar + "%");
 
             try (ResultSet rs = pstmt.executeQuery();) {
 
                 while (rs.next()) {
                     ProductoBean productoBean = new ProductoBean();
 
-                    productoBean.setId(rs.getInt(1));
+                    productoBean.setId(rs.getInt("idProducto"));
                     /*productoBean.setNombreFoto(rs.getString(2));
                     productoBean.setRutaFoto(rs.getString(3));*/
-                    productoBean.setNombreProducto(rs.getString(4));
-                    productoBean.setPrecioProducto(rs.getBigDecimal(7));
+                    productoBean.setNombreProducto(rs.getString("nombreProducto"));
+                    productoBean.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
 
                     listaProductos.add(productoBean);
                 }

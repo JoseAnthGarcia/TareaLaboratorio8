@@ -5,7 +5,7 @@
 
 <% int cantPag = request.getAttribute("cantPag") == null ? -1 : (int) request.getAttribute("cantPag");%>
 <% int paginaAct = request.getAttribute("paginaAct") == null ? -1 : (int) request.getAttribute("paginaAct");%>
-
+<% String busqueda= request.getAttribute("busqueda")==null? "": (String) request.getAttribute("busqueda");%>
 <!DOCTYPE html>
 
 <html>
@@ -89,7 +89,7 @@
         <div class="form-group row">
             <div class="col-10">
                 <input class="form-control" type="text" placeholder="Buscar producto"
-                       name="textoBuscar"/>
+                       name="textoBuscar" value= "<%=busqueda%>" />
             </div>
             <div class="col-2">
                 <a class="btn btn-danger"

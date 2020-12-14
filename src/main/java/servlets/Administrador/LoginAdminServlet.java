@@ -28,7 +28,7 @@ public class LoginAdminServlet extends HttpServlet {
         if(admin!=null){
             HttpSession session = request.getSession();
             session.setAttribute("admin",admin);
-            response.sendRedirect(request.getContextPath()+"/AdminServlet?accion=listar");
+            response.sendRedirect(request.getContextPath()+"/AdminServlet?accion=miPerfil");
         }else{
             response.sendRedirect(request.getContextPath()+"/LoginAdmin?error");  // TODO: manejo de error
         }
@@ -60,7 +60,7 @@ public class LoginAdminServlet extends HttpServlet {
             session.invalidate();
             response.sendRedirect(request.getContextPath() + "/LoginAdmin?accion=login");
         }else if(admin!=null && accion.equals("login")) {
-            response.sendRedirect(request.getContextPath() + "/AdminServlet?accion=listar");
+            response.sendRedirect(request.getContextPath() + "/AdminServlet?accion=miPerfil");
         }else{
             view2 = request.getRequestDispatcher("administrador/access_denied.jsp");
             view2.forward(request, response);

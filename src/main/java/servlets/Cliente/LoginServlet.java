@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebServlet(name = "LoginServlet", urlPatterns ={"/LoginServlet"} )
+@WebServlet(name = "LoginServlet", urlPatterns ={"/LoginServlet", ""} )
 public class LoginServlet extends HttpServlet {
 
     public boolean validarCorreo(String input){
@@ -74,7 +74,9 @@ public class LoginServlet extends HttpServlet {
 
                 if(correoNoEx && correoBoo){
                     HttpSession sessionN = request.getSession();
-                    int correoEnviado = usuarioDao.enviarCorreoLinkContra(usuarioRecu.getIdUsuario(),usuarioRecu.getContraseniaHashed(),usuarioRecu.getCorreo());
+                    String ip = request.getLocalAddr();
+                    int puerto = request.getLocalPort();
+                    int correoEnviado = usuarioDao.enviarCorreoLinkContra(usuarioRecu.getIdUsuario(),usuarioRecu.getContraseniaHashed(),usuarioRecu.getCorreo(),ip,puerto);
                     //queda pendiente mostrar mensaje de correo exitoso
                     sessionN.setAttribute("correoEnviado",correoEnviado);
 
