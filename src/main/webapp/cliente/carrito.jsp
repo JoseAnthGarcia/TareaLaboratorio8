@@ -63,11 +63,12 @@
 
 <div class="container" style="margin-top: 65px; margin-left: 15%; margin-right: 15%">
     <div class="row col-12">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <h1>Mi carrito</h1>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-5">
+            Obs: Los valores maximos son de acuerdo al stock del producto.
         </div>
 
 
@@ -84,7 +85,6 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col"></th>
                     <th scope="col">Producto</th>
                     <th scope="col">Precio Unitario</th>
                     <th scope="col">Stock</th>
@@ -96,20 +96,20 @@
                 <%
                     for (Map.Entry<Integer, ProductoBean> entry : listaProductos.entrySet()){%>
                 <tr>
-                    <td>Imagen x</td>
                     <td><%=entry.getValue().getNombreProducto()%>
                     </td>
                     <td><%=entry.getValue().getPrecioProducto()%>
                     </td>
                     <td>
                         <%if(request.getParameter(String.valueOf(entry.getValue().getId()))==null){%>
-                        <input name="<%=entry.getValue().getId()%>" type="number" min="1" id="Stock" class="form-control" >
+                        <input name="<%=entry.getValue().getId()%>" type="number" min="1" max="<%=entry.getValue().getStock()%>" id="Stock" class="form-control" >
                         <%}else{
                         String textValid = request.getParameter(String.valueOf(entry.getValue().getId())).equals("")
                                 || Integer.parseInt(request.getParameter(String.valueOf(entry.getValue().getId())))<1
+                                || Integer.parseInt(request.getParameter(String.valueOf(entry.getValue().getId())))> entry.getValue().getStock()
                                 ?"is-invalid":"";
                         String textvalue = request.getParameter(String.valueOf(entry.getValue().getId())).equals("")?"":"value='"+request.getParameter(String.valueOf(entry.getValue().getId()))+"'";%>
-                        <input name="<%=entry.getValue().getId()%>" type="number" min="1" id="Stock" class="form-control <%=textValid%>"
+                        <input name="<%=entry.getValue().getId()%>" type="number" min="1" max="<%=entry.getValue().getStock()%>" id="Stock" class="form-control <%=textValid%>"
                         <%=textvalue%>>
                         <div class="invalid-feedback">
                             Ingrese una cantidad valida, por favor.
