@@ -26,7 +26,7 @@
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1 class="display-4">Página no encontrada</h1>
-        <p class="lead">Usted no tiene permisos para acceder a esta página sin haberse registrado.</p>
+        <p class="lead">Inicie sesión para poder acceder al recurso.</p>
     </div>
 </div>
 <footer class="page-footer font-small blue" style="margin-top: 20%">
