@@ -297,18 +297,18 @@ public class UsuarioDao extends BaseDao {
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
             pstmt.setInt(1, idBodega);
-            pstmt.setString(2, textoBuscar + "%");
+            pstmt.setString(2, "%"+ textoBuscar + "%");
 
             try (ResultSet rs = pstmt.executeQuery();) {
 
                 while (rs.next()) {
                     ProductoBean productoBean = new ProductoBean();
 
-                    productoBean.setId(rs.getInt(1));
+                    productoBean.setId(rs.getInt("idProducto"));
                     /*productoBean.setNombreFoto(rs.getString(2));
                     productoBean.setRutaFoto(rs.getString(3));*/
-                    productoBean.setNombreProducto(rs.getString(4));
-                    productoBean.setPrecioProducto(rs.getBigDecimal(7));
+                    productoBean.setNombreProducto(rs.getString("nombreProducto"));
+                    productoBean.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
 
                     listaProductos.add(productoBean);
                 }

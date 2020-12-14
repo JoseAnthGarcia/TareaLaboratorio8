@@ -23,12 +23,13 @@
     <title>Página no encontrada</title>
 </head>
 <body>
-<div class="container-fluid">
-    <h1>Página no encontrada</h1>
-    <h3>Usted no tiene permisos para acceder a esta página sin haberse registrado.</h3>
-
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Página no encontrada</h1>
+        <p class="lead">Usted no tiene permisos para acceder a esta página sin haberse registrado.</p>
+    </div>
 </div>
-<footer class="page-footer font-small blue" style="margin-top: 20px">
+<footer class="page-footer font-small blue" style="margin-top: 20%">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="#">MiMarca</a>
     </div>
