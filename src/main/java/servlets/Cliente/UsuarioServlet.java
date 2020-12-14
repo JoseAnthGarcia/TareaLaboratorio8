@@ -228,6 +228,7 @@ public class UsuarioServlet extends HttpServlet {
                     String textoBuscar = request.getParameter("textoBuscar");
 
                     request.setAttribute("listaProductos", usuarioDao.buscarProducto(idBodega, textoBuscar));
+                    request.setAttribute("busqueda",textoBuscar);
                     RequestDispatcher view = request.getRequestDispatcher("cliente/realizarUnPedido.jsp");
                     view.forward(request, response);
                     break;
