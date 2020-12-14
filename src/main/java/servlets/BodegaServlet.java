@@ -5,6 +5,7 @@ import beans.PedidoBean;
 import beans.ProductoBean;
 import beans.UsuarioBean;
 import daos.BodegaDao;
+import dtos.PedidosDatosDTO;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -201,46 +202,53 @@ public class BodegaServlet extends HttpServlet {
 
 
             String accion = request.getParameter("accion") == null ?
-                "listar" : request.getParameter("accion");
+                "home" : request.getParameter("accion");
 
-        // Por defecto se deja en un string vacio, que mostraría todos los productos
-        String productoBusqueda = "";
-
-        if (request.getParameter("productoBusqueda") != null && !request.getParameter("productoBusqueda").isEmpty()) {
-            productoBusqueda = request.getParameter("productoBusqueda");
-        }
 
         BodegaDao bodegaDao = new BodegaDao();
 
-        int cantPag = bodegaDao.calcularCantPag(productoBusqueda, idBodegaActual); // TODO: (check)
-
-        String pag = request.getParameter("pag") == null ?
-                "1" : request.getParameter("pag");
-
-        int paginaAct;
-        try {
-            paginaAct = Integer.parseInt(pag); //try
-            if (paginaAct > cantPag) {
-                paginaAct = 1;
-            }
-        } catch (NumberFormatException e) {
-            paginaAct = 1;
-        }
-
         RequestDispatcher view;
-        ArrayList<ProductoBean> listaProductos = bodegaDao.listarProductoBodega(paginaAct, productoBusqueda, idBodegaActual); //TODO: (CHECK) lista los productos de la pagina actual
-
-        request.setAttribute("listaProductoBodegas", listaProductos);
-        request.setAttribute("cantPag", cantPag);
-        request.setAttribute("paginaAct", paginaAct);
-        request.setAttribute("productoBusqueda", productoBusqueda);
 
         switch (accion) {
             case "listar":
+                // Por defecto se deja en un string vacio, que mostraría todos los productos
+                String productoBusqueda = "";
+
+                if (request.getParameter("productoBusqueda") != null && !request.getParameter("productoBusqueda").isEmpty()) {
+                    productoBusqueda = request.getParameter("productoBusqueda");
+                }
+
+                request.setAttribute("productoBusqueda", productoBusqueda);
+                int cantPag = bodegaDao.calcularCantPag(productoBusqueda, idBodegaActual); // TODO: (check)
+
+                String pag = request.getParameter("pag") == null ?
+                        "1" : request.getParameter("pag");
+
+                int paginaAct;
+                try {
+                    paginaAct = Integer.parseInt(pag); //try
+                    if (paginaAct > cantPag) {
+                        paginaAct = 1;
+                    }
+                } catch (NumberFormatException e) {
+                    paginaAct = 1;
+                }
+
+
+                ArrayList<ProductoBean> listaProductos = bodegaDao.listarProductoBodega(paginaAct, productoBusqueda, idBodegaActual); //TODO: (CHECK) lista los productos de la pagina actual
+
+                request.setAttribute("listaProductoBodegas", listaProductos);
+                request.setAttribute("cantPag", cantPag);
+                request.setAttribute("paginaAct", paginaAct);
                 view = request.getRequestDispatcher("MiBodegaProductos.jsp");
                 view.forward(request, response);
                 break;
-
+            case "home":
+                BodegaBean bodega = bodegaDao.obtenerBodega(idBodegaActual);
+                request.setAttribute("bodega", bodega);
+                view = request.getRequestDispatcher("HomeBodega.jsp");
+                view.forward(request,response);
+                break;
             case "agregar":
                 view = request.getRequestDispatcher("anadirProducto.jsp");
                 view.forward(request, response);

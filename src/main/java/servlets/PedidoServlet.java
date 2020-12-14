@@ -1,5 +1,6 @@
 package servlets;
 
+import beans.BodegaBean;
 import beans.PedidoBean;
 import daos.PedidoDao;
 import dtos.PedidosDatosDTO;
@@ -21,6 +22,11 @@ public class PedidoServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session2 = request.getSession();
+        BodegaBean bodegaActual = (BodegaBean) session2.getAttribute("bodega");
+
+        if (bodegaActual != null) {
+            int idBodegaActual =  bodegaActual.getIdBodega();
         String action = request.getParameter("accion") == null?
                 "listar":
                 request.getParameter("accion");
@@ -42,7 +48,7 @@ public class PedidoServlet extends HttpServlet {
                     paginaAct = 1;
                 }
 
-                ArrayList<PedidoBean> listaPedidos = pedidoDao.obtenerListaPedidos(paginaAct);
+                ArrayList<PedidoBean> listaPedidos = pedidoDao.obtenerListaPedidos(paginaAct,idBodegaActual);
                 request.setAttribute("listaPedidos", listaPedidos);
                 request.setAttribute("cantPag", cantPag);
                 request.setAttribute("paginaAct",paginaAct);
@@ -73,6 +79,11 @@ public class PedidoServlet extends HttpServlet {
                 }
                 response.sendRedirect(request.getContextPath() + "/PedidosServlet");
                 break;
+            }
+        }else {
+            RequestDispatcher view2;
+            view2 = request.getRequestDispatcher("bodega/access_denied.jsp");
+            view2.forward(request, response);
         }
     }
 }

@@ -65,13 +65,13 @@
             <a href="#" class="navbar-brand d-flex align-items-center">
                 <strong>MiMarca.com</strong>
             </a>
-            <a href="../MiBodega.html" class="navbar-brand d-flex align-items-center">
+            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=home" class="navbar-brand d-flex align-items-center">
                 <strong>Mi Bodega</strong>
             </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
+            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=listar" class="navbar-brand d-flex align-items-center">
                 <strong>Productos</strong>
             </a>
-            <a href="../Pedidos/Pedidos.html" class="navbar-brand d-flex align-items-center">
+            <a href="<%=request.getContextPath()%>/PedidosServlet" class="navbar-brand d-flex align-items-center">
                 <strong>Pedidos</strong>
             </a>
             <a>

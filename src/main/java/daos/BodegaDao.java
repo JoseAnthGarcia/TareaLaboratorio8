@@ -1,9 +1,6 @@
 package daos;
 
-import beans.BodegaBean;
-import beans.PedidoBean;
-import beans.ProductoBean;
-import beans.UsuarioBean;
+import beans.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -208,7 +205,7 @@ public class BodegaDao extends BaseDao{
 
         boolean exisProduct = false;
 
-        String sql = "SELECT * FROM producto WHERE idProducto = ? AND idBodega=1";
+        String sql = "SELECT * FROM producto WHERE idProducto = ? AND idBodega=30";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -352,7 +349,7 @@ public class BodegaDao extends BaseDao{
 
     public BodegaBean obtenerBodega(int idBodega){
         BodegaBean bodega = null;
-        String sql = "SELECT * FROM bodega WHERE idBodega=?";
+        String sql = "SELECT * FROM mydb.bodega b inner join mydb.distrito d on d.idDistrito = b.idDistrito where b.idBodega = ?";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setInt(1, idBodega);
@@ -361,6 +358,14 @@ public class BodegaDao extends BaseDao{
                 bodega = new BodegaBean();
                 bodega.setIdBodega(rs.getInt("idBodega"));
                 bodega.setNombreBodega(rs.getString("nombreBodega"));
+                bodega.setRucBodega(rs.getLong("ruc"));
+                DistritoBean distrito = new DistritoBean();
+                distrito.setId(rs.getInt("idDistrito"));
+                distrito.setNombre(rs.getString("nombreDistrito"));
+                bodega.setDistrito(distrito);
+                bodega.setDireccionBodega(rs.getString("direccion"));
+                bodega.setCorreoBodega(rs.getString("correo"));
+
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
