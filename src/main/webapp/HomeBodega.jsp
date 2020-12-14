@@ -80,7 +80,7 @@
     <div class="row">
 
         <div class="col-lg-6 col-md-6 centrar">
-            <img src="imagenes/tienda.png" width="480px" height="480px" />
+            <img src="<%=bodega.getFoto()%>" width="480px" height="480px" />
         </div>
         <div class="col-lg-6 col-md-12 centrar">
             <table class="table">
