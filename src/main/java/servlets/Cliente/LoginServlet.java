@@ -74,7 +74,9 @@ public class LoginServlet extends HttpServlet {
 
                 if(correoNoEx && correoBoo){
                     HttpSession sessionN = request.getSession();
-                    int correoEnviado = usuarioDao.enviarCorreoLinkContra(usuarioRecu.getIdUsuario(),usuarioRecu.getContraseniaHashed(),usuarioRecu.getCorreo());
+                    //String ip = request.getLocalAddr();
+                    int puerto = request.getLocalPort();
+                    int correoEnviado = usuarioDao.enviarCorreoLinkContra(usuarioRecu.getIdUsuario(),usuarioRecu.getContraseniaHashed(),usuarioRecu.getCorreo(),puerto);
                     //queda pendiente mostrar mensaje de correo exitoso
                     sessionN.setAttribute("correoEnviado",correoEnviado);
 

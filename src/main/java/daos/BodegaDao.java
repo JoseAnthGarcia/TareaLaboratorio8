@@ -196,11 +196,48 @@ public class BodegaDao extends BaseDao{
             while ((i = bufferedInputStream.read()) != -1) {
                 bufferedOutputStream.write(i);
             }
+            bufferedOutputStream.flush();
 
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }
+
+    public void listarImgBodega(int id, HttpServletResponse response) {
+
+        String sql = "select foto from bodega where idBodega=?;";
+
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        BufferedInputStream bufferedInputStream = null;
+        BufferedOutputStream bufferedOutputStream = null;
+        response.setContentType("image/*"); //que hace esto?? uu
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            outputStream = response.getOutputStream();
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    inputStream = rs.getBinaryStream("foto");
+                }
+            }
+            bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedOutputStream = new BufferedOutputStream(outputStream);
+
+            int i = 0;
+            while ((i = bufferedInputStream.read()) != -1) {
+                bufferedOutputStream.write(i);
+            }
+            bufferedOutputStream.flush();
+
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public boolean buscarProducto(int idProducto){
 
