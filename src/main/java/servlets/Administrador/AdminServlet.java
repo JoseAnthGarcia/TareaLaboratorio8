@@ -307,6 +307,12 @@ public class AdminServlet extends HttpServlet {
 
 
             switch (accion){
+                case "miPerfil":
+                    UsuarioBean usuario = bodegaDao.obtenerUsuario(idAdminActual);
+                    request.setAttribute("usuario", usuario);
+                    RequestDispatcher rd = request.getRequestDispatcher("/administrador/principalAdmin.jsp");
+                    rd.forward(request, response);
+                    break;
                 case "listar":
                     String pag = request.getParameter("pag") == null ? "1" : request.getParameter("pag");
 
