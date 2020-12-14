@@ -393,6 +393,7 @@ public class BodegaDao extends BaseDao{
                 rs.next();
                 bodega = new BodegaBean();
                 bodega.setIdBodega(rs.getInt("idBodega"));
+                bodega.setFoto(rs.getAsciiStream("foto"));
                 bodega.setNombreBodega(rs.getString("nombreBodega"));
                 bodega.setRucBodega(rs.getLong("ruc"));
                 DistritoBean distrito = new DistritoBean();
