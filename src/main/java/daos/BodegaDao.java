@@ -23,8 +23,8 @@ public class BodegaDao extends BaseDao{
         }
 
         // TODO: idBodega, nombreFoto, rutaFoto se ha hardcodeado
-        String sql = "insert into producto (nombreFoto,rutaFoto,nombreProducto,descripcion,stock,precioUnitario,idBodega) values (\n" +
-                "'foto random', '/fotoRandom', ?, ?, ?, ?, ?);";  // numero de paginas
+        String sql = "insert into producto (nombreProducto,descripcion,stock,precioUnitario,idBodega) values (\n" +
+                " ?, ?, ?, ?, ?);";  // numero de paginas
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -140,7 +140,8 @@ public class BodegaDao extends BaseDao{
         ArrayList<ProductoBean> listaProductos = new ArrayList<>();
 
         int limit = (pagina-1)*5;
-        String sql = "select idProducto, nombreFoto, rutaFoto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=? AND lower(nombreProducto) like ? AND estado='Existente' limit ?,5;";  // numero de paginas
+
+        String sql = "select idProducto, nombreProducto,descripcion,stock,precioUnitario from producto WHERE idBodega=? AND lower(nombreProducto) like ? AND estado='Existente' limit ?,5;";  // numero de paginas
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -155,10 +156,10 @@ public class BodegaDao extends BaseDao{
                     producto.setId(rs.getInt(1));
                     /*producto.setNombreFoto(rs.getString(2));
                     producto.setRutaFoto(rs.getString(3));*/
-                    producto.setNombreProducto(rs.getString(4));
-                    producto.setDescripcion(rs.getString(5));
-                    producto.setStock(rs.getInt(6));
-                    producto.setPrecioProducto(rs.getBigDecimal(7));
+                    producto.setNombreProducto(rs.getString(2));
+                    producto.setDescripcion(rs.getString(3));
+                    producto.setStock(rs.getInt(4));
+                    producto.setPrecioProducto(rs.getBigDecimal(5));
                     listaProductos.add(producto);
                 }
             }

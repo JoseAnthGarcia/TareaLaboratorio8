@@ -32,7 +32,7 @@
             cursor: pointer;
         }
         .container-fluid{
-           
+
             padding: 3% 15% ;
         }
 
