@@ -20,20 +20,9 @@
 
         </style>
     </head>
-    <header>
-        <div class="collapse bg-dark" id="navbarHeader">
-            <div class="container">
 
-            </div>
-        </div>
-        <div class="navbar navbar-dark bg-dark box-shadow">
-            <div class="container d-flex justify-content-between">
-                <a href="#" class="navbar-brand d-flex align-items-center">
-                    <strong>Mi Marca.com</strong>
-                </a>
-            </div>
-        </div>
-    </header>
+    <jsp:include page="/administrador/headerAdmin.jsp"/>
+
     <body>
         <div class="container-fluid">
             <h1>Registro exitoso</h1>

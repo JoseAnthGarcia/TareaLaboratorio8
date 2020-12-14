@@ -73,30 +73,11 @@
 </head>
 <body>
 
-<header>
-    <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
 
-        </div>
-    </div>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>MiMarca.com</strong>
-            </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Administración</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/AdminServlet?accion=registrar" class="navbar-brand d-flex align-items-center">
-                <strong>Registrar bodega</strong>
-            </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Lista de bodegas</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/LoginAdmin?accion=logout" ><img src="imagenes/sigout.png" height="30px"/></a>
-        </div>
-    </div>
-</header>
+
+    <jsp:include page="/administrador/headerAdmin.jsp"/>
+
+
 <div class ='container'>
     <h1 class="margen">Mis Bodegas</h1>
     <div class="container-fluid">
