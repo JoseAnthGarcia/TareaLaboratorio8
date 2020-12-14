@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.text.ParseException;
 
-@WebServlet(name = "UsuarioServlet", urlPatterns = {"/UsuarioServlet", ""})
+@WebServlet(name = "UsuarioServlet", urlPatterns = {"/UsuarioServlet"})
 public class UsuarioServlet extends HttpServlet {
 
     public boolean validarDni(String dni) {
@@ -223,7 +223,7 @@ public class UsuarioServlet extends HttpServlet {
                     }
                     break;
                 case "buscar":
-                    int idBodega = 30;
+                    int idBodega = ((BodegaBean) request.getSession().getAttribute("bodegaEscogida")).getIdBodega();
 
                     String textoBuscar = request.getParameter("textoBuscar");
 
