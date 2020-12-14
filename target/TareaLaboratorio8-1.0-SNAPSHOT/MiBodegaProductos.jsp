@@ -65,19 +65,18 @@
             <a href="#" class="navbar-brand d-flex align-items-center">
                 <strong>MiMarca.com</strong>
             </a>
-            <a href="../MiBodega.html" class="navbar-brand d-flex align-items-center">
+            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=home" class="navbar-brand d-flex align-items-center">
                 <strong>Mi Bodega</strong>
             </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
+            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=listar" class="navbar-brand d-flex align-items-center">
                 <strong>Productos</strong>
             </a>
-            <a href="../Pedidos/Pedidos.html" class="navbar-brand d-flex align-items-center">
+            <a href="<%=request.getContextPath()%>/PedidosServlet" class="navbar-brand d-flex align-items-center">
                 <strong>Pedidos</strong>
             </a>
             <a>
-                <div class="card"><a href="../login.html" >
-                    <a href="#" ><img src="imagenes/sigout.png" height="30px"/></a>
-                </a>
+                <div class="card">
+                    <a href="<%=request.getContextPath()%>/LoginBodega?accion=logout" ><img src="imagenes/sigout.png" height="30px"/></a>
                 </div>
             </a>
 
@@ -146,8 +145,6 @@
                 <tr>
                     <td>
                         <img src="https://mui.today/__export/1589466590626/sites/mui/img/2020/05/14/coca-cola-sabor-botella-vidrio.jpg_879108255.jpg" height="35">
-                        <!-- todo: reemplazar por la ruta de la foto ingresar
-                    <img src="<%=producto.getRutaFoto()%>" height="35"> -->
                     </td>
                     <td><%=producto.getNombreProducto()%></td>
                     <td><%=producto.getDescripcion()%></td>

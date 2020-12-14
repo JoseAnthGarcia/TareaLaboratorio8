@@ -7,6 +7,7 @@ import dtos.ProductosClienteDTO;
 import servlets.Emails;
 
 import javax.mail.MessagingException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
@@ -215,8 +216,8 @@ public class UsuarioDao extends BaseDao {
 
     //correo para recuperar contraseña  //se marco de amarillo antes de tiempo ...curioso,no?
     //link aun no planteado
-    public boolean enviarCorreoLinkContra(int id, String contraHashed, String correo){
-        boolean envioExitoso = true;
+    public int enviarCorreoLinkContra(int id, String contraHashed, String correo){
+        int envioExitoso = 1;
         String subject = "Correo para restablecer Contraseña";
         String content = "El link para restablecer su contraseña es : \n" +
                 "link: http://localhost:8080/TareaLaboratorio8/LoginServlet?accion=recuContra&contraHashed=" +contraHashed+ "&id="+id+
@@ -229,7 +230,7 @@ public class UsuarioDao extends BaseDao {
 
         } catch (MessagingException e) {
             e.printStackTrace();
-            envioExitoso = false;
+            envioExitoso = 2;
         }
         return envioExitoso;
     }
@@ -443,6 +444,7 @@ public class UsuarioDao extends BaseDao {
                 producto.setNombreProducto(rs.getString("nombreProducto"));
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
+                producto.setStock(rs.getInt("stock"));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -472,14 +474,15 @@ public class UsuarioDao extends BaseDao {
     public int crearPedido(PedidoBean pedido){
         int idPedido =-1;
         String sql = "insert into pedido (codigo, fecha_registro,\n" +
-                "fecha_recojo,idUsuario,idBodega)\n" +
-                "values(?,now(),?,?,?);";
+                "fecha_recojo,idUsuario,idBodega, totalApagar)\n" +
+                "values(?,now(),?,?,?,?);";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);) {
             pstmt.setString(1, pedido.getCodigo());
             pstmt.setString(2, pedido.getFecha_recojo());
             pstmt.setInt(3,pedido.getUsuario().getIdUsuario());
             pstmt.setInt(4,pedido.getBodegaBean().getIdBodega());
+            pstmt.setBigDecimal(5, pedido.getTotalApagar());
             pstmt.executeUpdate();
             try(ResultSet rsKey = pstmt.getGeneratedKeys()){
                 if(rsKey.next()){
@@ -494,6 +497,7 @@ public class UsuarioDao extends BaseDao {
 
     public void ingresarProductosApedido(int idPedido, ArrayList<ProductoCantDto> listaProductos){
         for(ProductoCantDto productoPedido: listaProductos){
+            //Ingreso los productos:
             String sql = "insert into pedido_has_producto (idPedido,idProducto, Cantidad)\n" +
                     "values(?,?, ?);";
             try (Connection conn = getConnection();
@@ -502,6 +506,22 @@ public class UsuarioDao extends BaseDao {
                 pstmt.setInt(2,productoPedido.getProducto().getId());
                 pstmt.setInt(3,productoPedido.getCant());
                 pstmt.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            //TODO: validar stock maximo
+            //Actualizo el stock:
+            ProductoBean producto = obtenerProducto(productoPedido.getProducto().getId());
+            int newStock = producto.getStock() - productoPedido.getCant();
+            String sql1 = "update producto set stock = ?\n" +
+                    "where idProducto = ?;";
+
+            try (Connection conn1 = getConnection();
+                 PreparedStatement pstmt1 = conn1.prepareStatement(sql1);) {
+                pstmt1.setInt(1, newStock);
+                pstmt1.setInt(2, productoPedido.getProducto().getId());
+                pstmt1.executeUpdate();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
@@ -536,7 +556,7 @@ public class UsuarioDao extends BaseDao {
         ArrayList<PedidoBean> listaPedidos=  new ArrayList<>();
 
         int limit = (pagina-1)*cantPorPag;
-        String sql= "select codigo, estado, totalApagar \n" +
+        String sql= "select idPedido, codigo, estado, totalApagar \n" +
                 "from pedido\n" +
                 "where idUsuario=? order by estado desc\n" +
                 "limit ?,5;";
@@ -550,6 +570,7 @@ public class UsuarioDao extends BaseDao {
             try(ResultSet rs = pstmt.executeQuery();){
                 while(rs.next()){
                     PedidoBean pedidosClienteBean = new PedidoBean();
+                    pedidosClienteBean.setId(rs.getInt("idPedido"));
                     pedidosClienteBean.setCodigo(rs.getString("codigo"));
                     pedidosClienteBean.setEstado(rs.getString("estado"));
                     pedidosClienteBean.setTotalApagar(rs.getBigDecimal("totalApagar"));
@@ -580,37 +601,40 @@ public class UsuarioDao extends BaseDao {
                 rs.next();
                 PedidoBean pedido = new PedidoBean();
                 pedido.setCodigo(rs.getString("codigo"));
-                pedido.setFecha_registro("fecha_registro");
-                pedido.setFecha_recojo("fecha_recojo");
+                pedido.setFecha_registro(rs.getString("fecha_registro"));
+                pedido.setFecha_recojo(rs.getString("fecha_recojo"));
                 BodegaBean bodega = new BodegaBean();
                 bodega.setNombreBodega(rs.getString("nombreBodega"));
                 pedido.setBodegaBean(bodega);
                 detallesPedidoDto.setPedido(pedido);
-                detallesPedidoDto.setFechaLimitCancel(rs.getNString("fecha_limite"));
+                detallesPedidoDto.setFechaLimitCancel(rs.getString("fecha_limite"));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        String sql2 = "select pr.idProducto, pr.nombreProducto as \"Nombre de producto\", ph.cantidad as \"Cantidad\", pr.precioUnitario as \"Precio unitario\", (ph.cantidad*pr.precioUnitario) as `Total/producto`\n" +
+        String sql2 = "select pr.idProducto, pr.nombreProducto , ph.cantidad, pr.precioUnitario, (ph.cantidad*pr.precioUnitario)\n" +
                 "from pedido pe\n" +
                 "inner join pedido_has_producto ph on pe.idPedido=ph.idPedido\n" +
                 "inner join producto pr on ph.idProducto=pr.idProducto\n" +
-                "where pe.codigo=?;";
+                "where pe.idPedido=?;";
 
         ArrayList<ProductoCantDto> listProdCant = new ArrayList<>();
 
         try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql1);) {
+             PreparedStatement pstmt = conn.prepareStatement(sql2);) {
             pstmt.setInt(1, idPedido);
-            try(ResultSet rs = pstmt.executeQuery()){
-                ProductoCantDto productoCantDto = new ProductoCantDto();
-                ProductoBean producto = new ProductoBean();
-                producto.setId(rs.getInt("idProducto"));
-                producto.setNombreProducto(rs.getString("Nombre de producto"));
-                productoCantDto.setProducto(producto);
-                productoCantDto.setCant(rs.getInt("Cantidad"));
-                listProdCant.add(productoCantDto);
+            try(ResultSet rs1 = pstmt.executeQuery()){
+                while(rs1.next()){
+                    ProductoCantDto productoCantDto = new ProductoCantDto();
+                    ProductoBean producto = new ProductoBean();
+                    producto.setId(rs1.getInt("pr.idProducto"));
+                    producto.setNombreProducto(rs1.getString("pr.nombreProducto"));
+                    producto.setPrecioProducto(rs1.getBigDecimal("pr.precioUnitario"));
+                    productoCantDto.setProducto(producto);
+                    productoCantDto.setCant(rs1.getInt("ph.cantidad"));
+                    listProdCant.add(productoCantDto);
+                }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -670,6 +694,7 @@ public class UsuarioDao extends BaseDao {
         }
 
     }
+
     public int calcularCantPagListarProductos(){
 
 
@@ -689,6 +714,7 @@ public class UsuarioDao extends BaseDao {
         }
         return cantPag;
     }
+
     public ArrayList<ProductosClienteDTO> listarProductos(int pag) {
 
         ArrayList<ProductosClienteDTO> listaProductos = new ArrayList<>();

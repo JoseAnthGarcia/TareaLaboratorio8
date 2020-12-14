@@ -50,8 +50,8 @@
         <table class="table container-fluid">
             <tr>
                 <th>Código </th>
-                <th>Estado</th>
                 <th>Costo total</th>
+                <th>Estado</th>
                 <th>Cancelar pedido</th>
             </tr>
             <% for (PedidoBean pedido: listaPedidos){%>
