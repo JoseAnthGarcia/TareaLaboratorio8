@@ -30,7 +30,6 @@ public class AdminServlet extends HttpServlet {
         if (ruc == null) {
             return false;
         }
-
         final int[] multipliers = {5,4,3,2,7,6,5,4,3,2};
         final String[] prefixes = getRucPrefixes();
         final int length = multipliers.length + 1;
@@ -143,9 +142,7 @@ public class AdminServlet extends HttpServlet {
         String accion = (String) request.getParameter("accion") == null ? "listar":
                 (String) request.getParameter("accion");
         AdminDao bodegaDao = new AdminDao();
-        Part part = request.getPart("foto");
 
-        InputStream inputStream = part.getInputStream();
 
         String ruc = request.getParameter("ruc");
         String direccion = request.getParameter("direccion");
@@ -161,6 +158,8 @@ public class AdminServlet extends HttpServlet {
 
         switch (accion){
             case  "registrar":
+                Part part = request.getPart("foto");
+                InputStream inputStream = part.getInputStream();
                 boolean rucB = isRUCValid(ruc);
                 boolean direccionB = validarString(direccion);
                 boolean nombreBodegaB = validarString(nombreBodega);
@@ -204,12 +203,16 @@ public class AdminServlet extends HttpServlet {
                         request.setAttribute("idBodega",idBodega);
                         request.setAttribute("rucBodega",rucBodega);
 
+
+                        String ip = request.getLocalAddr();
+                        int puerto= request.getLocalPort();
+
                         Emails emails = new Emails();
                         String correoAenviar = correo;
                         String asunto = "REGISTRAR CONTRASEÑA";
                         String contenido = "Se ha iniciado el registro de su bodega "+nombreBodega+" con RUC:"+rucBodega+
                                 ", para continuar con el registro ingrese al siguiente link y establezca su contraseña:" +
-                                "http://localhost:8082/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia&idBodega="
+                                "http://"+ip+":"+puerto+"/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia&idBodega="
                                 +idBodega+"&rucBodega="+rucBodega;
 
                         try {
@@ -294,13 +297,19 @@ public class AdminServlet extends HttpServlet {
 
         if(adminActual!= null){
             int idAdminActual = adminActual.getIdUsuario();
-            String accion = (String) request.getParameter("accion") == null ? "listar":
+            String accion = (String) request.getParameter("accion") == null ? "miPerfil":
                     (String) request.getParameter("accion");
 
             AdminDao bodegaDao = new AdminDao();
-
+            int usuarioActualId = adminActual.getIdUsuario();
 
             switch (accion){
+                case "miPerfil":
+                    UsuarioBean usuario = bodegaDao.obtenerUsuario(usuarioActualId);
+                    request.setAttribute("usuario", usuario);
+                    RequestDispatcher rd = request.getRequestDispatcher("/administrador/principalAdmin.jsp");
+                    rd.forward(request, response);
+                    break;
                 case "listar":
                     String pag = request.getParameter("pag") == null ? "1" : request.getParameter("pag");
 
@@ -338,7 +347,6 @@ public class AdminServlet extends HttpServlet {
                     response.sendRedirect("AdminServlet");
                     break;
                 case "definirContrasenia":
-
                     try{
                         int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
                                 "nada" : request.getParameter("idBodega"));
@@ -357,8 +365,6 @@ public class AdminServlet extends HttpServlet {
                     }
                     break;
             }
-
-
         }else{
             RequestDispatcher view2;
             view2 = request.getRequestDispatcher("administrador/access_denied.jsp");
