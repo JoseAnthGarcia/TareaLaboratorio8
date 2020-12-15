@@ -104,6 +104,7 @@ public class LoginBodegaServlet extends HttpServlet {
                     if (contraseniaB && contrasenia2B) {
                         if (contIguales) {
                             bodegaD.registrarContrasenia(idBodega2, contrasenia);
+                            bodegaD.contraHasheada(idBodega2,contrasenia);
                             bodega = bodegaD.buscarBodega(idBodega2);
                             String nombreBodega = bodega.getNombreBodega();
                             Long ruc3 = bodega.getRucBodega();

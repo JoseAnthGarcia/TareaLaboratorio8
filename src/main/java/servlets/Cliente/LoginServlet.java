@@ -76,7 +76,8 @@ public class LoginServlet extends HttpServlet {
                     HttpSession sessionN = request.getSession();
                     //String ip = request.getLocalAddr();
                     int puerto = request.getLocalPort();
-                    int correoEnviado = usuarioDao.enviarCorreoLinkContra(usuarioRecu.getIdUsuario(),usuarioRecu.getContraseniaHashed(),usuarioRecu.getCorreo(),puerto);
+                    String proyecto = request.getContextPath();
+                    int correoEnviado = usuarioDao.enviarCorreoLinkContra(usuarioRecu.getIdUsuario(),usuarioRecu.getContraseniaHashed(),usuarioRecu.getCorreo(),puerto,proyecto);
                     //queda pendiente mostrar mensaje de correo exitoso
                     sessionN.setAttribute("correoEnviado",correoEnviado);
 
@@ -179,9 +180,7 @@ public class LoginServlet extends HttpServlet {
                                 requestDispatcher1.forward(request, response); //podria lanzar error
                             } else {
                                 //Hasta que exista el login ---Podria enviarse un mensaje de error al login tambien
-                                //response.sendRedirect("LoginServlet");
-                                //System.out.println("Cayo en el ultimo if");
-                                //response.sendRedirect(request.getContextPath() + "/LoginServlet");
+
                                 RequestDispatcher requestDispatcher1 = request.getRequestDispatcher("cliente/access_denied.jsp");
                                 requestDispatcher1.forward(request, response);
                             }
@@ -201,6 +200,9 @@ public class LoginServlet extends HttpServlet {
                         RequestDispatcher requestDispatcher1 = request.getRequestDispatcher("cliente/access_denied.jsp");
                         requestDispatcher1.forward(request, response);
                     }
+                }else{
+                    RequestDispatcher requestDispatcher1 = request.getRequestDispatcher("cliente/access_denied.jsp");
+                    requestDispatcher1.forward(request, response);
                 }
                 break;
             case "parteEmpresa":
