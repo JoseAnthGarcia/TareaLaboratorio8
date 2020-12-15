@@ -76,8 +76,12 @@ public class AdminServlet extends HttpServlet {
     public boolean validarString(String input){
         boolean resultado = true;
         boolean resultado2= true;
+        boolean resultado3=true;
         if(input.equalsIgnoreCase("")){
             resultado = false;
+        }
+        if(input!=input.trim()){
+            resultado3=false;
         }
         try{
             int numero= Integer.parseInt(input);
@@ -85,7 +89,7 @@ public class AdminServlet extends HttpServlet {
         }catch (NumberFormatException e){
             resultado2=true;
         }
-        boolean resultadoFinal= resultado&&resultado2;
+        boolean resultadoFinal= resultado&&resultado2&&resultado3;
 
 
         return resultadoFinal;
