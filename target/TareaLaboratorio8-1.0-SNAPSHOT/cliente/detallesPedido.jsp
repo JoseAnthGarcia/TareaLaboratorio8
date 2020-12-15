@@ -6,10 +6,35 @@
 <head>
     <jsp:include page="/bootstrapRepository.jsp"/>
     <title>Ver pedido</title>
+    <style>
+        .btn {
+            background-color: #343a40;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        /* Darker background on mouse-over */
+        .btn:hover {
+            background-color: #767676;
+        }
+        .container-fluid {
+            text-align:left;
+            padding: 15px 15%;
+        }
+
+
+
+    </style>
 </head>
 <body>
-<div class="container" style="margin-top: 30px">
-    <div class="row">
+<header>
+    <jsp:include page="/cliente/includes/headerClient.jsp"/>
+</header>
+<div class="container-fluid " style="margin-top: 30px">
+    <div class="row mt-3">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
             <h1>Codigo del pedido: <%=detalles.getPedido().getCodigo()%></h1>
@@ -17,7 +42,7 @@
             <h4>Fecha y hora del registro: <%=detalles.getPedido().getFecha_registro()%></h4>
             <h4>Fecha y hora de entrega: <%=detalles.getPedido().getFecha_recojo()%></h4>
             <h4>Fecha limite para cancelar el pedido: <%=detalles.getFechaLimitCancel()%></h4>
-            <table class="table">
+            <table class="table mt-5" style="text-align: center;">
                 <tr>
                     <th>Nombre producto</th>
                     <th>Precio unitario</th>
@@ -28,19 +53,20 @@
                     for (ProductoCantDto productoDto: detalles.getListaProductCant()){%>
                 <tr>
                     <td><%=productoDto.getProducto().getNombreProducto()%></td>
-                    <td><%=productoDto.getProducto().getPrecioProducto()%></td>
+                    <td>S/. <%=productoDto.getProducto().getPrecioProducto()%></td>
                     <td><%=productoDto.getCant()%></td>
                     <% double precio = productoDto.getProducto().getPrecioProducto().doubleValue()*productoDto.getCant();%>
-                    <td><%=String.format("%.2f", precio)%></td>
+                    <td>S/. <%=String.format("%.2f", precio)%></td>
                 </tr>
                 <% totalPagar = totalPagar + precio;
                     } %>
             </table>
-            <h1>Total a pagar: <%=String.format("%.2f", totalPagar)%></h1>
+            <h1>Total a pagar: S/. <%=String.format("%.2f", totalPagar)%></h1>
         </div>
         <div class="col-sm-2"></div>
     </div>
+    <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=listar" class="button btn btn-primary mt-5">Regresar</a>
 </div>
-<a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home">Inicio</a>
+
 </body>
 </html>

@@ -57,7 +57,7 @@
             <% for (PedidoBean pedido: listaPedidos){%>
             <tr>
                 <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=verDetallesPedido&idPedido=<%=pedido.getId()%>" ><%=pedido.getCodigo()%></a> </td>
-                <td><%=pedido.getTotalApagar()%></td>
+                <td>S/. <%=pedido.getTotalApagar()%></td>
                 <td><%=pedido.getEstado()%></td>
                 <% if(pedido.getEstado().equalsIgnoreCase("Pendiente")){%>
                     <%if(PedidosUsuarioDao.verificarHoraPedido(Integer.parseInt(pedido.getCodigo()))){ %>

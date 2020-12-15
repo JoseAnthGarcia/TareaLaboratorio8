@@ -65,13 +65,13 @@
     <h1 class="mb-5">Soy parte de la empresa</h1>
     <div class="row">
         <div class="col-lg-6 col-md-12">
-            <img src="/imagenes/accounting.png" width="300px" height="300px">
+            <img src="https://www.flaticon.com/svg/static/icons/svg/2082/2082875.svg" width="250px" height="250px">
             <br>
 
             <a href="<%=request.getContextPath()%>/LoginAdmin" class="mx-auto button btn btn-primary mt-5">Área Administración</a>
         </div>
         <div class="col-lg-6 col-md-12">
-            <img src="/imagenes/shops.png" width="300px" height="300px">
+            <img src="https://www.flaticon.com/svg/static/icons/svg/869/869636.svg" width="250px" height="250px">
             <br>
             <a href="<%=request.getContextPath()%>/LoginBodega" class="mx-auto button btn btn-primary mt-5">Área Bodega</a>
         </div>
