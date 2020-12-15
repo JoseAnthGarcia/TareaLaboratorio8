@@ -42,12 +42,14 @@
     </div>
 </header>
 <body>
-<div class="container-fluid">
-    <h1>Registro exitoso</h1>
-    <h3><%=nombres%>, se ha enviado un mensaje de confirmación al correo '<%=correo%>'. Por favor, verifica tu cuenta.</h3>
 
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Registro exitoso</h1>
+        <h3 class="lead"><%=nombres%>, se ha enviado un mensaje de confirmación al correo '<%=correo%>'. Por favor, verifica tu cuenta.</h3>
+    </div>
 </div>
-<footer class="page-footer font-small blue" style="margin-top: 20px">
+<footer class="page-footer font-small blue" style="margin-top: 100px">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="#">MiMarca</a>
     </div>
