@@ -66,7 +66,7 @@
             </a>
             <a>
                 <div class="card"><a href="login.html" >
-                    <img src="imagenes/sigout.png" height="30px"/>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR9XQYb7eVu1VyTTjGNd69RWqaIge0precdjw&usqp=CAU.png" height="30px"/>
                 </a>
                 </div>
             </a>
