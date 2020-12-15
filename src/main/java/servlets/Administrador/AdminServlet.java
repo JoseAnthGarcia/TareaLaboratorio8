@@ -144,11 +144,7 @@ public class AdminServlet extends HttpServlet {
         AdminDao bodegaDao = new AdminDao();
 
 
-        String ruc = request.getParameter("ruc");
-        String direccion = request.getParameter("direccion");
-        String nombreBodega = request.getParameter("nombreBodega");
-        String correo = request.getParameter("correo");
-        String idDistrito = request.getParameter("idDistrito");
+
 
         ArrayList<DistritoBean> listaDistritos = bodegaDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
@@ -179,7 +175,7 @@ public class AdminServlet extends HttpServlet {
                         bodegaDao.registrarContrasenia(idBodega2, contrasenia);
                         bodegaDao.contraHasheada(idBodega2,contrasenia);
                         BodegaBean bodega = bodegaDao.buscarBodega(idBodega2);
-                        nombreBodega = bodega.getNombreBodega();
+                        String nombreBodega = bodega.getNombreBodega();
                         Long ruc3 = bodega.getRucBodega();
                         request.setAttribute("ruc2", ruc3);
                         request.setAttribute("nombreBodega", nombreBodega);
@@ -206,6 +202,12 @@ public class AdminServlet extends HttpServlet {
 
         switch (accion){
             case  "registrar":
+                String ruc = request.getParameter("ruc");
+                String direccion = request.getParameter("direccion");
+                String nombreBodega = request.getParameter("nombreBodega");
+                String correo = request.getParameter("correo");
+                String idDistrito = request.getParameter("idDistrito");
+
                 Part part = request.getPart("foto");
                 InputStream inputStream = part.getInputStream();
                 boolean rucB = isRUCValid(ruc);
@@ -215,8 +217,6 @@ public class AdminServlet extends HttpServlet {
                 boolean correoB = validarCorreo(correo);
 
                 BodegaBean b = new BodegaBean();
-                //b.setFoto(inputStream);
-                //b.setNombreBodega(nombreBodega);
 
                 if(rucB && direccionB && nombreBodegaB && correoB && distritoB){
 
@@ -232,8 +232,6 @@ public class AdminServlet extends HttpServlet {
                     }
 
                     if(distritoSelected && !rucExis && idDistritoInt != 0){
-
-                        System.out.println("entra");
 
                         b.setFoto(inputStream);
                         b.setNombreBodega(nombreBodega);
@@ -297,6 +295,11 @@ public class AdminServlet extends HttpServlet {
         String accion = (String) request.getParameter("accion") == null ? "miPerfil":
                 (String) request.getParameter("accion");
 
+        response.addHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.addHeader("Cache-Control", "pre-check=0, post-check=0");
+        response.setDateHeader("Expires", 0);
+
         if (accion=="definirContrasenia"){
             try{
                 int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
@@ -318,16 +321,15 @@ public class AdminServlet extends HttpServlet {
         if(adminActual!= null){
             int idAdminActual = adminActual.getIdUsuario();
 
-
             AdminDao bodegaDao = new AdminDao();
-            int usuarioActualId = adminActual.getIdUsuario();
 
             switch (accion){
                 case "miPerfil":
-                    UsuarioBean usuario = bodegaDao.obtenerUsuario(usuarioActualId);
+
+                    UsuarioBean usuario = bodegaDao.obtenerUsuario(idAdminActual);
                     request.setAttribute("usuario", usuario);
-                    RequestDispatcher rd = request.getRequestDispatcher("/administrador/principalAdmin.jsp");
-                    rd.forward(request, response);
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/homeAdmin.jsp");
+                    requestDispatcher.forward(request,response);
                     break;
                 case "listar":
                     String pag = request.getParameter("pag") == null ? "1" : request.getParameter("pag");
@@ -356,14 +358,14 @@ public class AdminServlet extends HttpServlet {
                 case "registrar":
                     ArrayList<DistritoBean> listaDistritos = bodegaDao.obtenerDistritos();
                     request.setAttribute("listaDistritos", listaDistritos);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/registrarBodega.jsp");
+                    requestDispatcher = request.getRequestDispatcher("administrador/registrarBodega.jsp");
                     requestDispatcher.forward(request,response);
                     break;
                 case "bloquear":
                     String nombreBodega = request.getParameter("nombreB");
                     boolean estado = Boolean.parseBoolean(request.getParameter("state"));
                     AdminDao.actualizarEstadoBodega(nombreBodega,estado);
-                    response.sendRedirect("AdminServlet");
+                    response.sendRedirect("AdminServlet?accion=listar");
                     break;
 
             }
@@ -372,8 +374,6 @@ public class AdminServlet extends HttpServlet {
             view2 = request.getRequestDispatcher("administrador/access_denied.jsp");
             view2.forward(request, response);
         }
-
-
 
     }
 }
