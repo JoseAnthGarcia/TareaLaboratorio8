@@ -79,6 +79,12 @@
                 </div>
                 <%session.removeAttribute("productoExistente");
                 }%>
+                <%if(session.getAttribute("productoAgregado")!=null){%>
+                <div class="alert alert-success" role="alert">
+                   Producto agregado satisfactoriamente
+                </div>
+                <%session.removeAttribute("productoAgregado");
+                }%>
             </div>
 
         </div>
