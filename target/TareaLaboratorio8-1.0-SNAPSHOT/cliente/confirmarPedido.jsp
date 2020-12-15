@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <jsp:useBean id="codigoPedido" type="java.lang.String" scope="request"/>
-<jsp:useBean id="precioTotal" type="java.math.BigDecimal" scope="request"/>
+<jsp:useBean id="precioTotal" type="java.lang.Double" scope="request"/>
 <%
     boolean errorFecha = request.getAttribute("errorFecha") == null ? false : (Boolean) request.getAttribute("errorFecha");
 
