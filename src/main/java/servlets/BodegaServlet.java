@@ -1,5 +1,6 @@
 package servlets;
 
+
 import beans.BodegaBean;
 import beans.PedidoBean;
 import beans.ProductoBean;
@@ -9,17 +10,17 @@ import dtos.PedidosDatosDTO;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@MultipartConfig
 @WebServlet(name = "BodegaServlet", urlPatterns = {"/BodegaServlet"})
 public class BodegaServlet extends HttpServlet {
 
@@ -59,6 +60,9 @@ public class BodegaServlet extends HttpServlet {
                 int stock = 0;
                 BigDecimal precioUnitario = BigDecimal.valueOf(0);
 
+                Part part = request.getPart("foto");
+                InputStream inputStream = part.getInputStream();
+
                 // se valida ue el nombre no esté vacio o lleno de espacios
                 if (nombreProducto.trim().isEmpty()){
                     validNombreProducto = false;
@@ -92,7 +96,7 @@ public class BodegaServlet extends HttpServlet {
 
                 // si es que los datos son correctos, se guarda el producto
                 if (validStock & validPrecioUnitario & validNombreProducto) {
-                    BodegaDao.crearProducto(nombreProducto, descripcion, stock, precioUnitario, idBodegaActual);
+                    BodegaDao.crearProducto(nombreProducto, descripcion, stock, precioUnitario, idBodegaActual, inputStream);
 
                 } else {
                     request.setAttribute("validStock", validStock);

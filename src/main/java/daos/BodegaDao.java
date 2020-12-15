@@ -10,8 +10,7 @@ import java.util.ArrayList;
 
 public class BodegaDao extends BaseDao{
 
-    public static void crearProducto(String nombreProducto, String descripcion, int stock, BigDecimal precioUnitario, int idBodega){
-        // TODO: añadir el manejo de imagenes
+    public static void crearProducto(String nombreProducto, String descripcion, int stock, BigDecimal precioUnitario, int idBodega, InputStream inputStream){
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -19,19 +18,18 @@ public class BodegaDao extends BaseDao{
             e.printStackTrace();
         }
 
-        // TODO: idBodega, nombreFoto, rutaFoto se ha hardcodeado
-        String sql = "insert into producto (nombreProducto,descripcion,stock,precioUnitario,idBodega) values (\n" +
-                " ?, ?, ?, ?, ?);";  // numero de paginas
+        String sql = "insert into producto (nombreProducto,descripcion,stock,precioUnitario,idBodega, foto) values (\n" +
+                " ?, ?, ?, ?, ?, ?);";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
-            // todo: cuando se añada rutaFoto y nombreFoto esto tmb cambiará
             pstmt.setString(1, nombreProducto);
             pstmt.setString(2, descripcion);
             pstmt.setInt(3, stock);
             pstmt.setBigDecimal(4, precioUnitario);
             pstmt.setInt(5, idBodega);
+            pstmt.setBlob(6, inputStream);
 
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
