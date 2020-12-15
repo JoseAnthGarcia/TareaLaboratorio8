@@ -150,13 +150,11 @@ public class BodegaDao extends BaseDao{
             try(ResultSet rs = pstmt.executeQuery();){
                 while (rs.next()) {
                     ProductoBean producto = new ProductoBean();
-                    producto.setId(rs.getInt(1));
-                    /*producto.setNombreFoto(rs.getString(2));
-                    producto.setRutaFoto(rs.getString(3));*/
-                    producto.setNombreProducto(rs.getString(2));
-                    producto.setDescripcion(rs.getString(3));
-                    producto.setStock(rs.getInt(4));
-                    producto.setPrecioProducto(rs.getBigDecimal(5));
+                    producto.setId(rs.getInt("idProducto"));
+                    producto.setNombreProducto(rs.getString("nombreProducto"));
+                    producto.setDescripcion(rs.getString("descripcion"));
+                    producto.setStock(rs.getInt("stock"));
+                    producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
                     listaProductos.add(producto);
                 }
             }
@@ -202,6 +200,42 @@ public class BodegaDao extends BaseDao{
             e.printStackTrace();
         }
     }
+
+    public void listarImgBodega(int id, HttpServletResponse response) {
+
+        String sql = "select foto from bodega where idBodega=?;";
+
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        BufferedInputStream bufferedInputStream = null;
+        BufferedOutputStream bufferedOutputStream = null;
+        response.setContentType("image/*"); //que hace esto?? uu
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            outputStream = response.getOutputStream();
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    inputStream = rs.getBinaryStream("foto");
+                }
+            }
+            bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedOutputStream = new BufferedOutputStream(outputStream);
+
+            int i = 0;
+            while ((i = bufferedInputStream.read()) != -1) {
+                bufferedOutputStream.write(i);
+            }
+            bufferedOutputStream.flush();
+
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public boolean buscarProducto(int idProducto){
 
@@ -359,6 +393,7 @@ public class BodegaDao extends BaseDao{
                 rs.next();
                 bodega = new BodegaBean();
                 bodega.setIdBodega(rs.getInt("idBodega"));
+                bodega.setFoto(rs.getAsciiStream("foto"));
                 bodega.setNombreBodega(rs.getString("nombreBodega"));
                 bodega.setRucBodega(rs.getLong("ruc"));
                 DistritoBean distrito = new DistritoBean();

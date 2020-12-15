@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebServlet(name = "LoginServlet", urlPatterns ={"/LoginServlet", ""} )
+@WebServlet(name = "LoginServlet", urlPatterns ={"/LoginServlet", "/"} )
 public class LoginServlet extends HttpServlet {
 
     public boolean validarCorreo(String input){
@@ -74,9 +74,9 @@ public class LoginServlet extends HttpServlet {
 
                 if(correoNoEx && correoBoo){
                     HttpSession sessionN = request.getSession();
-                    String ip = request.getLocalAddr();
+                    //String ip = request.getLocalAddr();
                     int puerto = request.getLocalPort();
-                    int correoEnviado = usuarioDao.enviarCorreoLinkContra(usuarioRecu.getIdUsuario(),usuarioRecu.getContraseniaHashed(),usuarioRecu.getCorreo(),ip,puerto);
+                    int correoEnviado = usuarioDao.enviarCorreoLinkContra(usuarioRecu.getIdUsuario(),usuarioRecu.getContraseniaHashed(),usuarioRecu.getCorreo(),puerto);
                     //queda pendiente mostrar mensaje de correo exitoso
                     sessionN.setAttribute("correoEnviado",correoEnviado);
 
@@ -135,7 +135,7 @@ public class LoginServlet extends HttpServlet {
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/recuperarContrasenia.jsp");
                     requestDispatcher.forward(request,response);
                 }
-                break;
+
         }
 
     }
@@ -180,21 +180,32 @@ public class LoginServlet extends HttpServlet {
                             } else {
                                 //Hasta que exista el login ---Podria enviarse un mensaje de error al login tambien
                                 //response.sendRedirect("LoginServlet");
-                                System.out.println("Cayo en el ultimo if");
-                                response.sendRedirect(request.getContextPath() + "/LoginServlet");
+                                //System.out.println("Cayo en el ultimo if");
+                                //response.sendRedirect(request.getContextPath() + "/LoginServlet");
+                                RequestDispatcher requestDispatcher1 = request.getRequestDispatcher("cliente/access_denied.jsp");
+                                requestDispatcher1.forward(request, response);
                             }
                         } else {
                             //Hasta que exista el login ---Podria enviarse un mensaje de error al login tambien
-                            System.out.println("cayo en el penulimo if");
-                            response.sendRedirect(request.getContextPath() + "/LoginServlet");
+
+                            //response.sendRedirect(request.getContextPath() + "/LoginServlet");
+                            RequestDispatcher requestDispatcher1 = request.getRequestDispatcher("cliente/access_denied.jsp");
+                            requestDispatcher1.forward(request, response);
+
                         }
                     } catch (NumberFormatException e) {
                         //Hasta que exista el login ---Podria enviarse un mensaje de error al login tambien
                         //response.sendRedirect("LoginServlet");
-                        System.out.println("cayo en el catch");
-                        response.sendRedirect(request.getContextPath() + "/LoginServlet");
+                        //System.out.println("cayo en el catch");
+                        //response.sendRedirect(request.getContextPath() + "/LoginServlet");
+                        RequestDispatcher requestDispatcher1 = request.getRequestDispatcher("cliente/access_denied.jsp");
+                        requestDispatcher1.forward(request, response);
                     }
                 }
+                break;
+            case "parteEmpresa":
+                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("cliente/parteEmpresa.jsp");
+                requestDispatcher2.forward(request,response);
                 break;
 
             default:

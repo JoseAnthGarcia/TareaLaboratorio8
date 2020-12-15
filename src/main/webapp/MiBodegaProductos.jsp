@@ -127,7 +127,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">Imagen</th>
+                    <th scope="col"></th>
                     <th scope="col">NOMBRE</th>
                     <th scope="col">DESCRIPCIÓN</th>
                     <th scope="col">STOCK</th>
@@ -144,7 +144,7 @@
                 %>
                 <tr>
                     <td>
-                        <img src="https://mui.today/__export/1589466590626/sites/mui/img/2020/05/14/coca-cola-sabor-botella-vidrio.jpg_879108255.jpg" height="35">
+                        <img src="<%=request.getContextPath()%>/ImagenServlet?idProducto=<%=producto.getId()%>" height="50px">
                     </td>
                     <td><%=producto.getNombreProducto()%></td>
                     <td><%=producto.getDescripcion()%></td>

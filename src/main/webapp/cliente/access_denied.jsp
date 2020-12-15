@@ -26,12 +26,12 @@
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1 class="display-4">Página no encontrada</h1>
-        <p class="lead">Usted no tiene permisos para acceder a esta página sin haberse registrado.</p>
+        <p class="lead">Inicie sesión para poder acceder al recurso.</p>
     </div>
 </div>
 <footer class="page-footer font-small blue" style="margin-top: 20%">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
-        <a href="#">MiMarca</a>
+        <a href="<%=request.getContextPath()%>/LoginServlet">MiMarca</a>
     </div>
 </footer>
 

@@ -64,7 +64,7 @@
             if(cant < listaProductos.size()){
         %>
                 <div class="col-sm-3"> <!-- Probar medidas "sm-3"? -->
-                    <img src="<%=request.getContextPath()%>/ImagenServlet?id=<%=listaProductos.get(j).getIdProducto()%>" width="105px" height="105px"  class="img-thumbnail">
+                    <img src="<%=request.getContextPath()%>/ImagenServlet?idProducto=<%=listaProductos.get(j).getIdProducto()%>" width="105px" height="105px"  class="img-thumbnail">
                     <p class="mb-1"><b>Producto: </b> <%=listaProductos.get(j).getNombreProducto()%> </p>
                     <p class="mb-0"><b>Precio: </b>S/. <%=listaProductos.get(j).getPrecio()%> </p>
                     <p class="mb-3"><b>Bodega: </b> <%=listaProductos.get(j).getBodega()%> </p>
