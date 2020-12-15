@@ -106,7 +106,7 @@
 
     </div>
     <div class="row">
-        <a href ="<%=request.getContextPath()%>/LoginBodega" class=btn btn-lg btn-primary btn-block>Regresar</a>
+        <a href ="<%=request.getContextPath()%>/LoginServlet?accion=parteEmpresa" class=btn btn-lg btn-primary btn-block>Regresar</a>
     </div>
 
 </div>
