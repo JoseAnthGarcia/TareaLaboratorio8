@@ -347,19 +347,20 @@ public class UsuarioServlet extends HttpServlet {
                         session.setAttribute("listaProductosSelecCant", listaProductosSelecCant);
 
                         //calculamos el precio total:
-                        /*
+
                         BigDecimal precioTotal = BigDecimal.valueOf(0);
                         for (ProductoCantDto producto : listaProductosSelecCant) {
                             BigDecimal costo = BigDecimal.valueOf(producto.getProducto().getPrecioProducto().doubleValue() * producto.getCant());
                             precioTotal = BigDecimal.valueOf(precioTotal.doubleValue() + costo.doubleValue());
-                        }*/
+                        }
+                        /*
                         double precioTotal1 = 0;
                         for (ProductoCantDto producto : listaProductosSelecCant) {
                             double costo1 = producto.getProducto().getPrecioProducto().doubleValue() * producto.getCant();
                             precioTotal1 = precioTotal1 + costo1;
-                            request.setAttribute("precioTotal", precioTotal1);
-                        }
 
+                        }*/
+                        request.setAttribute("precioTotal", precioTotal);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/confirmarPedido.jsp");
                         requestDispatcher.forward(request, response);
                     }
