@@ -30,7 +30,6 @@ public class AdminServlet extends HttpServlet {
         if (ruc == null) {
             return false;
         }
-
         final int[] multipliers = {5,4,3,2,7,6,5,4,3,2};
         final String[] prefixes = getRucPrefixes();
         final int length = multipliers.length + 1;
@@ -77,8 +76,12 @@ public class AdminServlet extends HttpServlet {
     public boolean validarString(String input){
         boolean resultado = true;
         boolean resultado2= true;
+        boolean resultado3=true;
         if(input.equalsIgnoreCase("")){
             resultado = false;
+        }
+        if(input!=input.trim()){
+            resultado3=false;
         }
         try{
             int numero= Integer.parseInt(input);
@@ -86,7 +89,7 @@ public class AdminServlet extends HttpServlet {
         }catch (NumberFormatException e){
             resultado2=true;
         }
-        boolean resultadoFinal= resultado&&resultado2;
+        boolean resultadoFinal= resultado&&resultado2&&resultado3;
 
 
         return resultadoFinal;
@@ -143,15 +146,9 @@ public class AdminServlet extends HttpServlet {
         String accion = (String) request.getParameter("accion") == null ? "listar":
                 (String) request.getParameter("accion");
         AdminDao bodegaDao = new AdminDao();
-        Part part = request.getPart("foto");
 
-        InputStream inputStream = part.getInputStream();
 
-        String ruc = request.getParameter("ruc");
-        String direccion = request.getParameter("direccion");
-        String nombreBodega = request.getParameter("nombreBodega");
-        String correo = request.getParameter("correo");
-        String idDistrito = request.getParameter("idDistrito");
+
 
         ArrayList<DistritoBean> listaDistritos = bodegaDao.obtenerDistritos();
         request.setAttribute("listaDistritos", listaDistritos);
@@ -159,8 +156,64 @@ public class AdminServlet extends HttpServlet {
         int idBodega ;
         Long rucBodega;
 
+        if (accion=="definirContrasenia"){
+            int idBodega2= Integer.parseInt(request.getParameter("idBodega") == null ?
+                    "nada" : request.getParameter("idBodega"));
+            Long rucBodega2= Long.parseLong((request.getParameter("rucBodega") == null ?
+                    "nada" : request.getParameter("rucBodega")));
+
+            request.setAttribute("idBodega",idBodega2);
+            request.setAttribute("rucBodega",rucBodega2);
+            if(idBodega2==bodegaDao.buscarIdBodega(String.valueOf(rucBodega2))) {
+                String contrasenia = request.getParameter("contrasenia");
+                String contrasenia2 = request.getParameter("contrasenia2");
+
+                boolean contraseniaB = validarContrasenia(contrasenia);
+                boolean contrasenia2B = validarContrasenia(contrasenia2);
+                boolean contIguales = false;
+                if (contrasenia.equals(contrasenia2)) {
+                    contIguales = true;
+                }
+                if (contraseniaB && contrasenia2B) {
+                    if (contIguales) {
+                        bodegaDao.registrarContrasenia(idBodega2, contrasenia);
+                        bodegaDao.contraHasheada(idBodega2,contrasenia);
+                        BodegaBean bodega = bodegaDao.buscarBodega(idBodega2);
+                        String nombreBodega = bodega.getNombreBodega();
+                        Long ruc3 = bodega.getRucBodega();
+                        request.setAttribute("ruc2", ruc3);
+                        request.setAttribute("nombreBodega", nombreBodega);
+                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("ContraseniaExitosa.jsp");
+                        requestDispatcher.forward(request, response);
+                        ;
+                    } else {
+                        request.setAttribute("contIguales", contIguales);
+                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
+                        requestDispatcher.forward(request, response);
+                    }
+                } else {
+                    request.setAttribute("contraseniaB", contraseniaB);
+                    request.setAttribute("contrasenia2B", contrasenia2B);
+                    request.setAttribute("contIguales", contIguales);
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
+                    requestDispatcher.forward(request, response);
+                }
+            }else{
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("ErrorIdBodega.jsp");
+                requestDispatcher.forward(request, response);
+            }
+        }
+
         switch (accion){
             case  "registrar":
+                String ruc = request.getParameter("ruc");
+                String direccion = request.getParameter("direccion");
+                String nombreBodega = request.getParameter("nombreBodega");
+                String correo = request.getParameter("correo");
+                String idDistrito = request.getParameter("idDistrito");
+
+                Part part = request.getPart("foto");
+                InputStream inputStream = part.getInputStream();
                 boolean rucB = isRUCValid(ruc);
                 boolean direccionB = validarString(direccion);
                 boolean nombreBodegaB = validarString(nombreBodega);
@@ -168,8 +221,6 @@ public class AdminServlet extends HttpServlet {
                 boolean correoB = validarCorreo(correo);
 
                 BodegaBean b = new BodegaBean();
-                //b.setFoto(inputStream);
-                //b.setNombreBodega(nombreBodega);
 
                 if(rucB && direccionB && nombreBodegaB && correoB && distritoB){
 
@@ -186,8 +237,6 @@ public class AdminServlet extends HttpServlet {
 
                     if(distritoSelected && !rucExis && idDistritoInt != 0){
 
-                        System.out.println("entra");
-
                         b.setFoto(inputStream);
                         b.setNombreBodega(nombreBodega);
                         b.setCorreoBodega(correo);
@@ -199,17 +248,20 @@ public class AdminServlet extends HttpServlet {
 
                         bodegaDao.guardarBodega(b);
 
+
                         idBodega = bodegaDao.buscarIdBodega(ruc);
 
                         request.setAttribute("idBodega",idBodega);
                         request.setAttribute("rucBodega",rucBodega);
+
+                        int puerto= request.getLocalPort();
 
                         Emails emails = new Emails();
                         String correoAenviar = correo;
                         String asunto = "REGISTRAR CONTRASEÑA";
                         String contenido = "Se ha iniciado el registro de su bodega "+nombreBodega+" con RUC:"+rucBodega+
                                 ", para continuar con el registro ingrese al siguiente link y establezca su contraseña:" +
-                                "http://localhost:8082/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia&idBodega="
+                                "http://localhost"+":"+puerto+"/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia&idBodega="
                                 +idBodega+"&rucBodega="+rucBodega;
 
                         try {
@@ -237,53 +289,6 @@ public class AdminServlet extends HttpServlet {
                     requestDispatcher.forward(request, response);
                 }
                 break;
-            case "definirContrasenia":
-                int idBodega2= Integer.parseInt(request.getParameter("idBodega") == null ?
-                             "nada" : request.getParameter("idBodega"));
-                Long rucBodega2= Long.parseLong((request.getParameter("rucBodega") == null ?
-                        "nada" : request.getParameter("rucBodega")));
-
-                request.setAttribute("idBodega",idBodega2);
-                request.setAttribute("rucBodega",rucBodega2);
-                if(idBodega2==bodegaDao.buscarIdBodega(String.valueOf(rucBodega2))) {
-                    String contrasenia = request.getParameter("contrasenia");
-                    String contrasenia2 = request.getParameter("contrasenia2");
-
-                    boolean contraseniaB = validarContrasenia(contrasenia);
-                    boolean contrasenia2B = validarContrasenia(contrasenia2);
-                    boolean contIguales = false;
-                    if (contrasenia.equals(contrasenia2)) {
-                        contIguales = true;
-                    }
-                    if (contraseniaB && contrasenia2B) {
-                        if (contIguales) {
-                            bodegaDao.registrarContrasenia(idBodega2, contrasenia);
-                            BodegaBean bodega = bodegaDao.buscarBodega(idBodega2);
-                            nombreBodega = bodega.getNombreBodega();
-                            Long ruc3 = bodega.getRucBodega();
-                            request.setAttribute("ruc2", ruc3);
-                            request.setAttribute("nombreBodega", nombreBodega);
-                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("ContraseniaExitosa.jsp");
-                            requestDispatcher.forward(request, response);
-                            ;
-                        } else {
-                            request.setAttribute("contIguales", contIguales);
-                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
-                            requestDispatcher.forward(request, response);
-                        }
-                    } else {
-                        request.setAttribute("contraseniaB", contraseniaB);
-                        request.setAttribute("contrasenia2B", contrasenia2B);
-                        request.setAttribute("contIguales", contIguales);
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
-                        requestDispatcher.forward(request, response);
-                    }
-                }else{
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("ErrorIdBodega.jsp");
-                    requestDispatcher.forward(request, response);
-                }
-                break;
-
         }
     }
 
@@ -291,27 +296,44 @@ public class AdminServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         UsuarioBean adminActual = (UsuarioBean) session.getAttribute("admin");
+        String accion = (String) request.getParameter("accion") == null ? "miPerfil":
+                (String) request.getParameter("accion");
 
         response.addHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         response.addHeader("Cache-Control", "pre-check=0, post-check=0");
-        response.setDateHeader("Expires", 0L);
+        response.setDateHeader("Expires", 0);
 
+        if (accion=="definirContrasenia"){
+            try{
+                int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
+                        "nada" : request.getParameter("idBodega"));
+                request.setAttribute("idBodega",idBodega);
+                String rucBodegaString = request.getParameter("rucBodega")==null?"nada":request.getParameter("rucBodega");
+                Long rucBodega= Long.parseLong(request.getParameter("rucBodega") == null ?
+                        "nada" : request.getParameter("rucBodega"));
 
+                request.setAttribute("rucBodega",rucBodega);
+                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
+                requestDispatcher2.forward(request,response);
+            }catch (NumberFormatException e){
+                e.printStackTrace();
+                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("ErrorIdBodega.jsp");
+                requestDispatcher2.forward(request,response);
+            }
+        }
         if(adminActual!= null){
             int idAdminActual = adminActual.getIdUsuario();
-            String accion = (String) request.getParameter("accion") == null ? "listar":
-                    (String) request.getParameter("accion");
 
             AdminDao bodegaDao = new AdminDao();
 
-
             switch (accion){
                 case "miPerfil":
+
                     UsuarioBean usuario = bodegaDao.obtenerUsuario(idAdminActual);
                     request.setAttribute("usuario", usuario);
-                    RequestDispatcher rd = request.getRequestDispatcher("/administrador/principalAdmin.jsp");
-                    rd.forward(request, response);
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/homeAdmin.jsp");
+                    requestDispatcher.forward(request,response);
                     break;
                 case "listar":
                     String pag = request.getParameter("pag") == null ? "1" : request.getParameter("pag");
@@ -340,37 +362,17 @@ public class AdminServlet extends HttpServlet {
                 case "registrar":
                     ArrayList<DistritoBean> listaDistritos = bodegaDao.obtenerDistritos();
                     request.setAttribute("listaDistritos", listaDistritos);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/registrarBodega.jsp");
+                    requestDispatcher = request.getRequestDispatcher("administrador/registrarBodega.jsp");
                     requestDispatcher.forward(request,response);
                     break;
                 case "bloquear":
                     String nombreBodega = request.getParameter("nombreB");
                     boolean estado = Boolean.parseBoolean(request.getParameter("state"));
                     AdminDao.actualizarEstadoBodega(nombreBodega,estado);
-                    response.sendRedirect("AdminServlet");
+                    response.sendRedirect("AdminServlet?accion=listar");
                     break;
-                case "definirContrasenia":
 
-                    try{
-                        int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
-                                "nada" : request.getParameter("idBodega"));
-                        request.setAttribute("idBodega",idBodega);
-                        String rucBodegaString = request.getParameter("rucBodega")==null?"nada":request.getParameter("rucBodega");
-                        Long rucBodega= Long.parseLong(request.getParameter("rucBodega") == null ?
-                                "nada" : request.getParameter("rucBodega"));
-
-                        request.setAttribute("rucBodega",rucBodega);
-                        RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
-                        requestDispatcher2.forward(request,response);
-                    }catch (NumberFormatException e){
-                        e.printStackTrace();
-                        RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("ErrorIdBodega.jsp");
-                        requestDispatcher2.forward(request,response);
-                    }
-                    break;
             }
-
-
         }else{
             RequestDispatcher view2;
             view2 = request.getRequestDispatcher("administrador/access_denied.jsp");

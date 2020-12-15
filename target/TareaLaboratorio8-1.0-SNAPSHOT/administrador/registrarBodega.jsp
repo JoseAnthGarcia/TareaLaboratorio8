@@ -226,7 +226,7 @@
                 <div class="col-sm-3">
                     <%if(rucExis){%>
                     <div class="alert alert-danger" role="alert">
-                        El ruc ingresado existe
+                        El ruc ingresado ya está registrado
                     </div>
                     <%}%>
                 </div>

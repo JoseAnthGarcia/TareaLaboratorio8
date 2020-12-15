@@ -76,7 +76,7 @@
             </a>
             <a>
                 <div class="card">
-                    <a href="<%=request.getContextPath()%>/LoginBodega?accion=logout" ><img src="imagenes/sigout.png" height="30px"/></a>
+                    <a href="<%=request.getContextPath()%>/LoginBodega?accion=logout" ><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR9XQYb7eVu1VyTTjGNd69RWqaIge0precdjw&usqp=CAU.png" height="30px"/></a>
                 </div>
             </a>
 
@@ -182,7 +182,7 @@
                 </li>
                 <%}else{%>
                 <li class="page-item">
-                    <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=paginaAct-1%>&productoBusqueda=<%=productoBusqueda%>">Anterior</a>
+                    <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?accion=listar&pag=<%=paginaAct-1%>&productoBusqueda=<%=productoBusqueda%>">Anterior</a>
                 </li>
                 <%}%>
 
@@ -193,7 +193,7 @@
                           </span>
                 </li>
                 <%      }else{%>
-                <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=k%>&productoBusqueda=<%=productoBusqueda%>"><%=k%></a></li>
+                <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?accion=listar&pag=<%=k%>&productoBusqueda=<%=productoBusqueda%>"><%=k%></a></li>
                 <%      }
                 } %>
 
@@ -204,7 +204,7 @@
                 </li>
                 <%}else{%>
                 <li class="page-item">
-                    <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=paginaAct+1%>&productoBusqueda=<%=productoBusqueda%>">Siguiente</a>
+                    <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?accion=listar&pag=<%=paginaAct+1%>&productoBusqueda=<%=productoBusqueda%>">Siguiente</a>
                 </li>
                 <%}%>
 

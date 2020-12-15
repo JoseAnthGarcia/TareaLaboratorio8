@@ -128,7 +128,7 @@
                 </li>
                 <%}else{%>
                 <li class="page-item">
-                    <a class="page-link" href="<%=request.getContextPath()%>/AdminServlet?pag=<%=paginaAct-1%>">Anterior</a>
+                    <a class="page-link" href="<%=request.getContextPath()%>/AdminServlet?accion=listar&&pag=<%=paginaAct-1%>">Anterior</a>
                 </li>
                 <%}%>
 
@@ -139,7 +139,7 @@
                           </span>
                 </li>
                 <%      }else{%>
-                <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/AdminServlet?pag=<%=k%>"><%=k%></a></li>
+                <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/AdminServlet?accion=listar&&pag=<%=k%>"><%=k%></a></li>
                 <%      }
                 } %>
 
@@ -150,7 +150,7 @@
                 </li>
                 <%}else{%>
                 <li class="page-item">
-                    <a class="page-link" href="<%=request.getContextPath()%>/AdminServlet?pag=<%=paginaAct+1%>">Siguiente</a>
+                    <a class="page-link" href="<%=request.getContextPath()%>/AdminServlet?accion=listar&&pag=<%=paginaAct+1%>">Siguiente</a>
                 </li>
                 <%}%>
 

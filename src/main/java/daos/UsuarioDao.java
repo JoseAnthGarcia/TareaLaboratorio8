@@ -164,10 +164,27 @@ public class UsuarioDao extends BaseDao {
             pstmt.setInt(4, idUsuario);
             usuarioBean.setNombre(nombres);
             usuarioBean.setApellido(apellidos);
+            usuarioBean.getDistrito().setId(idDistrito);
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        String sql2 = "SELECT nombreDistrito FROM distrito where idDistrito = ?;";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql2);) {
+            pstmt.setInt(1, idDistrito);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+
+                    usuarioBean.getDistrito().setNombre(rs.getString(1));
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
     }
     // actualizarContra actualizado para incluir contraseniaHashed ATENCION!!!!
     public void actualizarContra(int usuarioID, String contraseniaNew) {
