@@ -180,19 +180,26 @@ public class LoginServlet extends HttpServlet {
                             } else {
                                 //Hasta que exista el login ---Podria enviarse un mensaje de error al login tambien
                                 //response.sendRedirect("LoginServlet");
-                                System.out.println("Cayo en el ultimo if");
-                                response.sendRedirect(request.getContextPath() + "/LoginServlet");
+                                //System.out.println("Cayo en el ultimo if");
+                                //response.sendRedirect(request.getContextPath() + "/LoginServlet");
+                                RequestDispatcher requestDispatcher1 = request.getRequestDispatcher("cliente/access_denied.jsp");
+                                requestDispatcher1.forward(request, response);
                             }
                         } else {
                             //Hasta que exista el login ---Podria enviarse un mensaje de error al login tambien
-                            System.out.println("cayo en el penulimo if");
-                            response.sendRedirect(request.getContextPath() + "/LoginServlet");
+
+                            //response.sendRedirect(request.getContextPath() + "/LoginServlet");
+                            RequestDispatcher requestDispatcher1 = request.getRequestDispatcher("cliente/access_denied.jsp");
+                            requestDispatcher1.forward(request, response);
+
                         }
                     } catch (NumberFormatException e) {
                         //Hasta que exista el login ---Podria enviarse un mensaje de error al login tambien
                         //response.sendRedirect("LoginServlet");
-                        System.out.println("cayo en el catch");
-                        response.sendRedirect(request.getContextPath() + "/LoginServlet");
+                        //System.out.println("cayo en el catch");
+                        //response.sendRedirect(request.getContextPath() + "/LoginServlet");
+                        RequestDispatcher requestDispatcher1 = request.getRequestDispatcher("cliente/access_denied.jsp");
+                        requestDispatcher1.forward(request, response);
                     }
                 }
                 break;

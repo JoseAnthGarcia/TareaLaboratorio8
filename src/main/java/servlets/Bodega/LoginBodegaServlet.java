@@ -135,7 +135,7 @@ public class LoginBodegaServlet extends HttpServlet {
         if(bodega!=null){
             HttpSession session = request.getSession();
             session.setAttribute("bodega",bodega);
-            response.sendRedirect(request.getContextPath()+"/BodegaServlet?accion=listar"); // TODO: mostrar la pagina HOME
+            response.sendRedirect(request.getContextPath()+"/BodegaServlet?accion=home"); // TODO: mostrar la pagina HOME
         }else{
             response.sendRedirect(request.getContextPath()+"/LoginBodega?error");  // TODO: manejo de error
         }

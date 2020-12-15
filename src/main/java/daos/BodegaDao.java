@@ -10,8 +10,7 @@ import java.util.ArrayList;
 
 public class BodegaDao extends BaseDao{
 
-    public static void crearProducto(String nombreProducto, String descripcion, int stock, BigDecimal precioUnitario, int idBodega){
-        // TODO: añadir el manejo de imagenes
+    public static void crearProducto(String nombreProducto, String descripcion, int stock, BigDecimal precioUnitario, int idBodega, InputStream inputStream){
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -19,19 +18,18 @@ public class BodegaDao extends BaseDao{
             e.printStackTrace();
         }
 
-        // TODO: idBodega, nombreFoto, rutaFoto se ha hardcodeado
-        String sql = "insert into producto (nombreProducto,descripcion,stock,precioUnitario,idBodega) values (\n" +
-                " ?, ?, ?, ?, ?);";  // numero de paginas
+        String sql = "insert into producto (nombreProducto,descripcion,stock,precioUnitario,idBodega, foto) values (\n" +
+                " ?, ?, ?, ?, ?, ?);";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
-            // todo: cuando se añada rutaFoto y nombreFoto esto tmb cambiará
             pstmt.setString(1, nombreProducto);
             pstmt.setString(2, descripcion);
             pstmt.setInt(3, stock);
             pstmt.setBigDecimal(4, precioUnitario);
             pstmt.setInt(5, idBodega);
+            pstmt.setBlob(6, inputStream);
 
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
@@ -150,13 +148,11 @@ public class BodegaDao extends BaseDao{
             try(ResultSet rs = pstmt.executeQuery();){
                 while (rs.next()) {
                     ProductoBean producto = new ProductoBean();
-                    producto.setId(rs.getInt(1));
-                    /*producto.setNombreFoto(rs.getString(2));
-                    producto.setRutaFoto(rs.getString(3));*/
-                    producto.setNombreProducto(rs.getString(2));
-                    producto.setDescripcion(rs.getString(3));
-                    producto.setStock(rs.getInt(4));
-                    producto.setPrecioProducto(rs.getBigDecimal(5));
+                    producto.setId(rs.getInt("idProducto"));
+                    producto.setNombreProducto(rs.getString("nombreProducto"));
+                    producto.setDescripcion(rs.getString("descripcion"));
+                    producto.setStock(rs.getInt("stock"));
+                    producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
                     listaProductos.add(producto);
                 }
             }
@@ -395,6 +391,7 @@ public class BodegaDao extends BaseDao{
                 rs.next();
                 bodega = new BodegaBean();
                 bodega.setIdBodega(rs.getInt("idBodega"));
+                bodega.setFoto(rs.getAsciiStream("foto"));
                 bodega.setNombreBodega(rs.getString("nombreBodega"));
                 bodega.setRucBodega(rs.getLong("ruc"));
                 DistritoBean distrito = new DistritoBean();

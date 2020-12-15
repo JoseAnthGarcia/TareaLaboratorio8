@@ -66,7 +66,7 @@
             </a>
             <a>
                 <div class="card"><a href="login.html" >
-                    <img src="imagenes/sigout.png" height="30px"/>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR9XQYb7eVu1VyTTjGNd69RWqaIge0precdjw&usqp=CAU.png" height="30px"/>
                 </a>
                 </div>
             </a>
@@ -84,7 +84,8 @@
 
                         <!-- FORMULARIO -->
                         <% System.out.println(request.getContextPath()); %>
-                        <form method="POST" action="<%=request.getContextPath()%>/BodegaServlet?accion=guardar">
+                        <form method="POST" action="<%=request.getContextPath()%>/BodegaServlet?accion=guardar" enctype="multipart/form-data"
+                        >
 
                             <!-- NOMBRE -->
                             <div class="form-group row">
@@ -135,17 +136,13 @@
 
                             </div>
 
-                            <!--TODO: como se maneja el subir imagenes
+                            <!--imagenes -->
                             <div class="form-group row">
-
-                                <label for="Imagen de la bodega" class="col-md-4 col-form-label text-md-right">Imagen del Producto</label>
+                                <label  class="col-md-4 col-form-label text-md-right">Imagen:</label>
                                 <div class="col-md-6">
-                                    <form enctype="multipart/form-data" action="uploader.php" method="POST">
-                                        <input name="uploadedfile" type="file" />
-                                    </form>
-                                    <img src="frutas.svg" height="60px"/>
+                                    <input type="file" name="foto">
                                 </div>
-                            </div> -->
+                            </div>
 
                             <!-- BOTONES CONFIRMAR Y CANCELAR <-->
                             <div class="col-md-6 offset-md-4">
