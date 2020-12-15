@@ -66,7 +66,7 @@
 </header>
 <div class=" Container">
 
-    <h1 class="mb-3 mt-3">Mi perfil</h1>
+    <h1 class="mb-3 mt-3">Mi  perfil </h1>
     <div class="row">
 
         <div class="col-lg-6 col-md-12 centrar">
