@@ -14,7 +14,7 @@
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <title>Bienvenido Bodega!</title>
+    <title>Realizar pedido</title>
     <style>
         .izquierda1{
             left: 20px;
@@ -121,7 +121,7 @@
             <tbody>
             <%for (ProductoBean producto : listaProductos) {%>
             <tr>
-                <td><img src="<%=request.getContextPath()%>/ImagenServlet?idProducto=<%=producto.getId()%>" width="140px" height="140px"></td>
+                <td><img src="<%=request.getContextPath()%>/ImagenServlet?idProducto=<%=producto.getId()%>" height="50px"></td>
                 <td><%=producto.getNombreProducto()%>
                 </td>
                 <td><%=producto.getPrecioProducto()%>
