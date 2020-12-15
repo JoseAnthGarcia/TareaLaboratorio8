@@ -41,14 +41,14 @@
                     <input type="password" placeholder="Contraseña" class="form-control" id="exampleInputPassword1" name="inputPassword">
                     <small id="emailHelp" class="form-text text-muted">No comparta su contraseña con nadie.</small>
                     <a href="<%=request.getContextPath()%>/LoginBodega?accion=actualizarContraCorreo">¿Se olvidó su contraseña?</a> <br>
-                    <a href="<%=request.getContextPath()%>/LoginAdmin">Soy Administrador</a>
 
                 </div>
                 <% if (request.getParameter("error") != null) { %>
                 <div class="text-danger mb-2">Error en usuario o contraseña</div>
                 <% } %>
                 <button type="submit" class="btn btn-primary my-2">Ingresar</button>
-                <a href="<%=request.getContextPath()%>/LoginServlet" class="btn btn-secondary my-2">Salir</a>
+                <a href="<%=request.getContextPath()%>/LoginServlet?accion=parteEmpresa
+" class="btn btn-secondary my-2">Anterior</a>
             </form>
         </div>
     </div>
