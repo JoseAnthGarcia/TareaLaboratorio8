@@ -63,7 +63,8 @@
     <div class="row mb-3">
 
         <div class="col-lg-5 col-md-12 centrar">
-            <img src="imagenes/profile_admin.png" width="408px" height="400px" />
+            <%//<img src="/imagenes/profile_admin.png" width="408px" height="400px" />%>
+            <img src="https://image.flaticon.com/icons/png/512/417/417769.png" width="408px" height="400px" />
         </div>
         <div class="col-lg-7 col-md-12">
             <form class="form-signin" method="POST" action="<%=request.getContextPath()%>/LoginAdmin" style="
@@ -82,7 +83,7 @@
                 <div class="row mt-3">
                     <div class="col-10">
 
-                        <input type="password" name="inputPassword" class="form-control ingresa" placeholder="Password">
+                        <input type="password" name="inputPassword" class="form-control ingresa" placeholder="Contraseña">
 
                     </div>
 
@@ -106,7 +107,7 @@
 
     </div>
     <div class="row">
-        <a href ="<%=request.getContextPath()%>/LoginBodega" class=btn btn-lg btn-primary btn-block>Regresar</a>
+        <a href ="<%=request.getContextPath()%>/LoginServlet?accion=parteEmpresa" class=btn btn-lg btn-primary btn-block>Regresar</a>
     </div>
 
 </div>

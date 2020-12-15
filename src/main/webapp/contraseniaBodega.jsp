@@ -96,7 +96,7 @@
                 </div>
                 <div class="col-sm-6">
                     <h1>Registro de contraseña</h1>
-                    <form method="POST" action="<%=request.getContextPath()%>/AdminServlet?accion=definirContrasenia&idBodega=<%=idBodega%>&rucBodega=<%=rucBodega%>">
+                    <form method="POST" action="<%=request.getContextPath()%>/LoginBodega?accion=actualizarContra&idBodega=<%=idBodega%>&rucBodega=<%=rucBodega%>">
                         <div class="form-group row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña:</label>
                             <div class="col-sm-10">

@@ -16,16 +16,57 @@
         body{
             background: #F5F5F5;
         }
+        .btn {
+            background-color: #343a40;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        /* Darker background on mouse-over */
+        .btn:hover {
+            background-color: #767676;
+        }
+
+        .margen {
+            margin-top: 2%;
+        }
+
+        .container-fluid {
+            text-align: center;
+            padding: 15px 15%;
+        }
+
+        .centrar{
+            align-items: center;
+            justify-content: center;
+        }
+        tr{
+            height: 70px;
+        }
+        th{
+            height: 70px;
+        }
+        .ingresa{
+            width: 323px;
+        }
+        .izquierda{
+            position: relative;
+            left: 70px;
+        }
     </style>
 
     <title>Bienvenido Bodega!</title>
 </head>
-<body>x
+<body>
 
-<div class="container" style="margin-top: 80px;">
+<div class="container" style="margin-top: 40px;">
     <div class="row">
         <div class="col-lg-6">
             <img style="border-radius: 50%" src="https://us.123rf.com/450wm/yupiramos/yupiramos1702/yupiramos170217136/72457937-bodega-de-almacenamiento-de-color-con-m%C3%BAltiples-cajas-y-la-ilustraci%C3%B3n-de-vector-de-carretilla-elevadora.jpg?ver=6" height="450px"/>
+            <a href="<%=request.getContextPath()%>/LoginServlet?accion=parteEmpresa" class="btn btn-secondary my-2">Regresar</a>
         </div>
         <div class="col-lg-6">
 
@@ -46,19 +87,21 @@
                 <% if (request.getParameter("error") != null) { %>
                 <div class="text-danger mb-2">Error en usuario o contraseña</div>
                 <% } %>
-                <button type="submit" class="btn btn-primary my-2">Ingresar</button>
-                <a href="<%=request.getContextPath()%>/LoginServlet?accion=parteEmpresa
-" class="btn btn-secondary my-2">Anterior</a>
+                <button type="submit" class="btn btn-secondary my-2">Ingresar</button>
+                <a href="<%=request.getContextPath()%>/LoginServlet?accion=parteEmpresa" class="btn btn-secondary my-2">Regresar</a>
             </form>
         </div>
     </div>
 
-    <footer class="page-footer font-small blue" style="margin-top: 60px">
+    <%/*
+    <footer class="page-footer font-small blue">
         <div class="footer-copyright text-center py-3">© 2020 Copyright:
             <a href="#"> MiMarca.com.pe</a>
         </div>
     </footer>
 
+    */
+    %>
 </div>
 
 </body>

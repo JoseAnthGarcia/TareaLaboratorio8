@@ -233,11 +233,11 @@ public class UsuarioDao extends BaseDao {
 
     //correo para recuperar contraseña  //se marco de amarillo antes de tiempo ...curioso,no?
     //link aun no planteado
-    public int enviarCorreoLinkContra(int id, String contraHashed, String correo, int puerto){
+    public int enviarCorreoLinkContra(int id, String contraHashed, String correo, int puerto,String proyecto){
         int envioExitoso = 1;
         String subject = "Correo para restablecer Contraseña";
         String content = "El link para restablecer su contraseña es : \n" +
-                "link: http://localhost:"+puerto+"/TareaLaboratorio8_war_exploded/LoginServlet?accion=recuContra&contraHashed=" +contraHashed+ "&id="+id+
+                "link: http://localhost:"+puerto+proyecto+"/LoginServlet?accion=recuContra&contraHashed=" +contraHashed+ "&id="+id+
                 "\n" +
                 "Atentamente,\n" +
                 "                       El equipo de MiBodega.com ";
@@ -455,19 +455,37 @@ public class UsuarioDao extends BaseDao {
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setInt(1, idProducto);
             try(ResultSet rs = pstmt.executeQuery()){
-                //TODO: FALTA O DE FOTOS :C
-                rs.next();
-                producto = new ProductoBean();
-                producto.setId(rs.getInt("idProducto"));
-                producto.setNombreProducto(rs.getString("nombreProducto"));
-                producto.setDescripcion(rs.getString("descripcion"));
-                producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
-                producto.setStock(rs.getInt("stock"));
+                if(rs.next()){
+                    producto = new ProductoBean();
+                    producto.setId(rs.getInt("idProducto"));
+                    producto.setNombreProducto(rs.getString("nombreProducto"));
+                    producto.setDescripcion(rs.getString("descripcion"));
+                    producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
+                    producto.setStock(rs.getInt("stock"));
+                }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return producto;
+    }
+
+    public boolean verificarProductoBodega(int idProducto, int idBodega){
+        boolean existe = false;
+        String sql = "SELECT * FROM producto WHERE idProducto=? and idBodega=?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, idProducto);
+            pstmt.setInt(2, idBodega);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    existe = true;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return existe;
     }
 
     public String generarCodigoPedido(){

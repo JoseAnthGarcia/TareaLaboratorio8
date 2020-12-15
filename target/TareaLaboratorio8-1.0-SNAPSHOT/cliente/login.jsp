@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Ingreso al sistema</title>
+    <title>Bienvenido!</title>
     <jsp:include page="/bootstrapRepository.jsp"/>
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -65,7 +65,7 @@
 
 <div class="container-fluid">
 
-    <h1 class="mb-5 mt-3 ">Ingreso al sistema 'Mi Marca'</h1>
+    <h1 class="mb-5 mt-3 ">Bienvenido a 'Mi Marca' !</h1>
     <div class="row mb-3">
 
         <div class="col-lg-5 col-md-12 centrar">
@@ -89,7 +89,7 @@
                 <div class="row mt-3">
                     <div class="col-10">
 
-                        <input type="password" name="inputPassword" class="form-control ingresa" placeholder="Password">
+                        <input type="password" name="inputPassword" class="form-control ingresa" placeholder="Contraseña">
 
                     </div>
                     <div class="col-2 izquierda">

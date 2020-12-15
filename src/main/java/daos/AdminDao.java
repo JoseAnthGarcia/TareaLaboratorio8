@@ -58,14 +58,13 @@ public class AdminDao extends BaseDao{
         }
     }
     public void contraHasheada(int usuarioID, String contraseniaNew) {
-        String sql = "UPDATE usuario SET contrasenia = ? , contraseniaHashed = sha2(?,256) WHERE idUsuario = ?";
+        String sql = "UPDATE bodega SET contraseniaHashed = sha2(?,256) WHERE idBodega = ?";
 
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setString(1, contraseniaNew);
-            pstmt.setString(2,contraseniaNew);
-            pstmt.setInt(3, usuarioID);
+            pstmt.setInt(2, usuarioID);
 
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
