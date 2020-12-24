@@ -97,6 +97,18 @@ public class UsuarioServlet extends HttpServlet {
         return resultado;
     }
 
+    public  boolean validarContrasenia(String contrasenia) {
+        boolean resultado = true;
+        Pattern pattern2 = Pattern
+                .compile("(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}");
+        Matcher mather = pattern2.matcher(contrasenia);
+
+        if (mather.find() == false) {
+            resultado = false;
+        }
+        return  resultado;
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -202,6 +214,11 @@ public class UsuarioServlet extends HttpServlet {
                     boolean contraTrim = false;
                     if (contraseniaBB == contraseniaBB.trim() && contrasenia2BB == contrasenia2BB.trim()) {
                         contraTrim = true;
+                    }
+
+                    boolean contraSegura = false;
+                    if(validarContrasenia(contraseniaBB) && validarContrasenia(contrasenia2BB)){
+                        contraSegura = true;
                     }
 
                     if (contAntIguales && contIguales && !contrasenia2BB.equals("") && contraTrim) {
