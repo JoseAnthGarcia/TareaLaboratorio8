@@ -575,7 +575,7 @@ public class UsuarioServlet extends HttpServlet {
         RequestDispatcher view2;
         UsuarioBean clienteActual = (UsuarioBean) session.getAttribute("usuario");
         String accion = request.getParameter("accion") == null ?
-                "nada" : request.getParameter("accion");
+                "Home" : request.getParameter("accion");
         response.addHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         response.addHeader("Cache-Control", "pre-check=0, post-check=0");
@@ -587,9 +587,7 @@ public class UsuarioServlet extends HttpServlet {
             int usuarioActualId = clienteActual.getIdUsuario();
 
             switch (accion) {
-                case "nada":
-                    //manda indice
-                    break;
+
 
 
                 case "miPerfil":
@@ -813,6 +811,10 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher.forward(request, response);
 
                     break;
+                default:
+                    requestDispatcher = request.getRequestDispatcher("/cliente/default.jsp");
+                    requestDispatcher.forward(request, response);
+
 
             }
         } else if (clienteActual == null && accion.equals("agregar")) {

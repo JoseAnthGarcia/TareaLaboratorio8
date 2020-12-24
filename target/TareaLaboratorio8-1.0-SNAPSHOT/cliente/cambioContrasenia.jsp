@@ -16,8 +16,8 @@
     boolean contAntIguales = request.getAttribute("contAntIguales") == null ? true : (Boolean) request.getAttribute("contAntIguales");
     boolean contIguales = request.getAttribute("contIguales") == null ? true : (Boolean) request.getAttribute("contIguales");
     boolean contraTrim = request.getAttribute("contraTrim") == null ? true : (Boolean) request.getAttribute("contraTrim");
-    boolean contraSecu2 = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
-    boolean contraSecu1 = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
+    boolean contraSecu1 = request.getAttribute("contraSecu1") == null ? true : (Boolean) request.getAttribute("contraSecu1");
+    boolean contraSecu2 = request.getAttribute("contraSecu2") == null ? true : (Boolean) request.getAttribute("contraSecu2");
 
 %>
 <!DOCTYPE html>
