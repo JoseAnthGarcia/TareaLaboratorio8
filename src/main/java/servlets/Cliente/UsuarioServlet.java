@@ -1,7 +1,6 @@
 package servlets.Cliente;
 
 import beans.*;
-import daos.PedidosUsuarioDao;
 import daos.UsuarioDao;
 import dtos.DetallesPedidoDto;
 import dtos.ProductoCantDto;

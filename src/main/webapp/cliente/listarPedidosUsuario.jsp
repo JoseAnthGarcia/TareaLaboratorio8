@@ -46,10 +46,10 @@
 <div class ='container'>
     <h1 class="margen">Mis pedidos</h1>
     <%if(request.getSession().getAttribute("errorCancelarPedido")!=null){%>
-    <div class="alert alert-danger" role="alert">
-        No se puede cancelar el pedido.
+    <div align="center" class="alert alert-danger" role="alert">
+        No es posible cancelar este pedido porque el tiempo límite de cancelación se ha cumplido.
     </div>
-    <%}%>
+    <%request.getSession().removeAttribute("errorCancelarPedido");}%>
     <div class="container-fluid">
         <table class="table container-fluid">
             <tr>
