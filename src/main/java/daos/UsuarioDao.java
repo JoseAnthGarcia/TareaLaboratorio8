@@ -634,7 +634,7 @@ public class UsuarioDao extends BaseDao {
         int limit = (pagina-1)*cantPorPag;
         String sql= "select idPedido, codigo, estado, totalApagar \n" +
                 "from pedido\n" +
-                "where idUsuario=? order by estado desc\n" +
+                "where idUsuario=? order by estado desc, fecha_registro desc\n" +
                 "limit ?,5;";
 
         try (Connection conn = getConnection();
