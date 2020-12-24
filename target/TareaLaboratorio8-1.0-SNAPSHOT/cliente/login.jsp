@@ -14,8 +14,8 @@
     <jsp:include page="/bootstrapRepository.jsp"/>
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="resources/css/signin.css" rel="stylesheet">
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/resources/css/signin.css" rel="stylesheet">
     <style>
         .btn {
             background-color: #343a40;
@@ -124,7 +124,7 @@
             </form>
         </div>
     </div>
-    <div align="right">
+    <div align="center">
         <%if(correoEnviado==1){%>
         <div class="alert alert-success" role="alert">
             El correo fue enviado exitosamente. Revise su bandeja de entrada.

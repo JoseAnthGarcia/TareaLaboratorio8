@@ -252,16 +252,16 @@ public class UsuarioDao extends BaseDao {
         return usuarioBean;
     }
 
-    //correo para recuperar contraseña  //se marco de amarillo antes de tiempo ...curioso,no?
+    //correo para recuperar contraseña
     //link aun no planteado
     public int enviarCorreoLinkContra(int id, String contraHashed, String correo, int puerto,String proyecto){
         int envioExitoso = 1;
-        String subject = "Correo para restablecer Contraseña";
+        String subject = "Reestablecimiento de contraseña -MiMarca-";
         String content = "El link para restablecer su contraseña es : \n" +
-                "link: http://localhost:"+puerto+proyecto+"/LoginServlet?accion=recuContra&contraHashed=" +contraHashed+ "&id="+id+
+                "http://localhost:"+puerto+proyecto+"/LoginServlet?accion=recuContra&contraHashed=" +contraHashed+ "&id="+id+
                 "\n" +
                 "Atentamente,\n" +
-                "                       El equipo de MiBodega.com ";
+                "El equipo de MiMarca.com ";
         Emails email = new Emails();
         try {
             email.enviar(correo,subject,content);

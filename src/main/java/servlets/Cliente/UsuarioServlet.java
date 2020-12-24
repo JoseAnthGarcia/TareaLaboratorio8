@@ -525,7 +525,11 @@ public class UsuarioServlet extends HttpServlet {
                     String correoAenviar = correo;
                     String asunto = "BIENVENIDO A *MI MARCA* !!!!";
                     String contenido = "Hola " + nombres + ", te has registrado exitosamente en 'MI MARCA'.Para " +
-                            "poder empezar a realizar pedidos, ingresa al link : http://localhost:"+puerto+request.getContextPath()+"/LoginServlet";
+                            "poder empezar a realizar pedidos, ingresa al link :\n" +
+                            "http://localhost:"+puerto+request.getContextPath()+"/LoginServlet"+
+                    "\n" +
+                            "Atentamente,\n" +
+                            "El equipo de MiMarca.com ";
                     try {
                         emails.enviarCorreo(correoAenviar, asunto, contenido);
                     } catch (MessagingException e) {

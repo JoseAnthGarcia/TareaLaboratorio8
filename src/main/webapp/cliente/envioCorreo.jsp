@@ -60,7 +60,7 @@
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1 class="display-4">Registro exitoso</h1>
-        <h3 class="lead"><%=nombres%>, se ha enviado un mensaje de confirmación al correo '<%=correo%>'. Por favor, verifica tu cuenta.</h3>
+        <h3 class="lead"><%=nombres%>, su cuenta con el correo '<%=correo%>' fue exitosamente creada. Muchas gracias por la confianza.</h3>
     </div>
 </div>
 <a href="<%=request.getContextPath()%>/LoginServlet">
