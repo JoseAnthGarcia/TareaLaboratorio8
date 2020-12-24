@@ -220,7 +220,7 @@ public class UsuarioServlet extends HttpServlet {
                         contraSegura = true;
                     }
 
-                    if (contAntIguales && contIguales && !contrasenia2BB.equals("") && contraTrim) {
+                    if (contAntIguales && contIguales && !contrasenia2BB.equals("") && contraTrim && contraSegura) {
                         //if (contAntIguales && contIguales) {
                         usuarioDao.actualizarContra(usuarioId, contraseniaBB); //ojo con usuarioId
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=miPerfil");
@@ -230,7 +230,7 @@ public class UsuarioServlet extends HttpServlet {
                         request.setAttribute("contrasenia2A", !contrasenia2A.equals(""));
                         request.setAttribute("contIguales", contIguales);
                         request.setAttribute("contAntIguales", contAntIguales);
-                        request.setAttribute("contraTrim", (contraTrim && contraseniaBB.equals("") && contrasenia2BB.equals("")));
+                        request.setAttribute("contraTrim", (contraTrim && !contraseniaBB.equals("") && !contrasenia2BB.equals("")));
                         request.setAttribute("contraSecu1",validarContrasenia(contraseniaBB));
                         request.setAttribute("contraSecu2", validarContrasenia(contrasenia2BB));
 
