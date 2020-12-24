@@ -16,8 +16,9 @@
     boolean contAntIguales = request.getAttribute("contAntIguales") == null ? true : (Boolean) request.getAttribute("contAntIguales");
     boolean contIguales = request.getAttribute("contIguales") == null ? true : (Boolean) request.getAttribute("contIguales");
     boolean contraTrim = request.getAttribute("contraTrim") == null ? true : (Boolean) request.getAttribute("contraTrim");
-    boolean contraSecu2 = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
-    boolean contraSecu1 = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
+    boolean contraSecu1 = request.getAttribute("contraSecu1") == null ? true : (Boolean) request.getAttribute("contraSecu1");
+    boolean contraSecu2 = request.getAttribute("contraSecu2") == null ? true : (Boolean) request.getAttribute("contraSecu2");
+    boolean contraRedu = request.getAttribute("contraRedu") == null ? false : (Boolean) request.getAttribute("contraRedu");
 
 %>
 <!DOCTYPE html>
@@ -77,11 +78,11 @@
                 <div class="form-group row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña Actual:</label>
                     <div class="col-sm-10">
-                        <input type="password" class="form-control <%=contrasenia2A?"":"is-invalid"%>"
+                        <input type="password" class="form-control <%=(contrasenia2A && contAntIguales)?"":"is-invalid"%>"
                                aria-describedby="inputPasswordFeedback"
                                name="contrasenia2A" id="inputPassword" <%=request.getParameter("contrasenia2A")==null?"":"value='"+request.getParameter("contrasenia2A")+"'"%> >
                         <div id="inputPasswordFeedback" class="invalid-feedback">
-                            Ingrese una contraseña válida
+                            La contraseña actual es incorrecta
                         </div>
                     </div>
                 </div>
@@ -119,21 +120,17 @@
             </form>
         </div>
         <div class="col-sm-3">
-            <%if(!contAntIguales){%>
-            <div class="alert alert-danger" role="alert">
-                Las contraseña actual es incorrecta!
-            </div>
-            <%}%>
             <%if(!contIguales){%>
             <div class="alert alert-danger" role="alert">
-                Los campos de la  nueva contraseña no coinciden!
+                ¡Los campos de la  nueva contraseña no coinciden!
             </div>
             <%}%>
-            <%if(!contraTrim){%>
+            <%if(contraRedu){%>
             <div class="alert alert-danger" role="alert">
-                No esta permitido los espacios en la contraseña
+                ¡La contraseña nueva no puede ser igual a la contraseña actual!
             </div>
             <%}%>
+
         </div>
 
     </div>
