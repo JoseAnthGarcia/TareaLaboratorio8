@@ -6,8 +6,8 @@
     boolean contRecuEmpty1 = request.getAttribute("contRecuEmpty1") == null ? true : (Boolean) request.getAttribute("contRecuEmpty1");
     boolean contRecuEmpty2 = request.getAttribute("contRecuEmpty2") == null ? true : (Boolean) request.getAttribute("contRecuEmpty2");
     boolean contraTrim = request.getAttribute("contraTrim") == null ? true : (Boolean) request.getAttribute("contraTrim");
-    boolean contrasecu2 = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
-    boolean contraSecu1 = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
+    boolean contraSecu1 = request.getAttribute("contraSecu1") == null ? true : (Boolean) request.getAttribute("contraSecu1");
+    boolean contraSecu2 = request.getAttribute("contraSecu2") == null ? true : (Boolean) request.getAttribute("contraSecu2");
 
 
 %>
@@ -75,7 +75,7 @@
                 <div class="form-group row">
                     <label for="inputPassword1" class="col-sm-2 col-form-label">Nueva Contraseña:</label>
                     <div class="col-sm-10">
-                        <input type="password" class="form-control <%=contRecuEmpty1?"":"is-invalid"%>"
+                        <input type="password" class="form-control <%=(contRecuEmpty1 && contraSecu1)?"":"is-invalid"%>"
                                aria-describedby="inputPasswordFeedback"
                                name="contraseniaR" id="inputPassword1" <%=request.getParameter("contRecuEmpty1")==null?"":"value='"+request.getParameter("contRecuEmpty1")+"'"%> >
                         <div id="inputPasswordFeedback" class="invalid-feedback">
@@ -87,7 +87,7 @@
                 <div class="form-group row">
                     <label for="inputPassword2" class="col-sm-2 col-form-label">Confirmar Contraseña:</label>
                     <div class="col-sm-10">
-                        <input type="password" class="form-control <%=contRecuEmpty2?"":"is-invalid"%>"
+                        <input type="password" class="form-control <%=(contRecuEmpty2 && contraSecu2)?"":"is-invalid"%>"
                                aria-describedby="inputPasswordBFeedback"
                                name="contrasenia2R" id="inputPassword2" <%=request.getParameter("contRecuEmpty2")==null?"":"value='"+request.getParameter("contRecuEmpty2")+"'"%> >
                         <div id="inputPasswordBFeedback" class="invalid-feedback">
