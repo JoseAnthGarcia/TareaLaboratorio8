@@ -51,7 +51,7 @@ public class UsuarioServlet extends HttpServlet {
     public boolean validarString(String input) {
         boolean resultado = true;
         boolean resultado2 = true;
-        if (input.equalsIgnoreCase("") && input.trim().equalsIgnoreCase("")) {
+        if (input.equalsIgnoreCase("") && !input.trim().equalsIgnoreCase("")) {
             resultado = false;
 
         }
