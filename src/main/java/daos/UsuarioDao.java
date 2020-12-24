@@ -42,7 +42,7 @@ public class UsuarioDao extends BaseDao {
                                      String dni, String correo,
                                      String contrasenia, int idDistrito) {
         String sql = "INSERT INTO usuario(nombreUsuario, apellido, dni, correo, idDistrito,contraseniaHashed)\n" +
-                "VALUES (?, ?, ?, ?, ?, ?, sha2(?,256));";
+                "VALUES (?, ?, ?, ?, ?, sha2(?,256));";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -612,7 +612,7 @@ public class UsuarioDao extends BaseDao {
         int limit = (pagina-1)*cantPorPag;
         String sql= "select idPedido, codigo, estado, totalApagar \n" +
                 "from pedido\n" +
-                "where idUsuario=? order by estado desc\n" +
+                "where idUsuario=? order by estado desc, fecha_registro desc\n" +
                 "limit ?,5;";
 
         try (Connection conn = getConnection();
