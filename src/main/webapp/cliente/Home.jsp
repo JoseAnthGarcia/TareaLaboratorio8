@@ -70,7 +70,7 @@
         <div class="col-lg-4 col-md-12" style=" position: relative; top:88px;">
             <div class="row">
                 <div class="col-lg-4 col-md-12" style="text-align: center">
-                    <img src="imagenes/profile.png" width="100px" height=100px">
+                    <img src="https://www.flaticon.com/svg/static/icons/svg/3135/3135715.svg" width="100px" height=100px">
                 </div>
                 <div class="col-lg-8 col-md-12" style="text-align: center; ">
                     <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=miPerfil"

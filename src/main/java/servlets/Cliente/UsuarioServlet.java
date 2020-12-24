@@ -51,7 +51,7 @@ public class UsuarioServlet extends HttpServlet {
     public boolean validarString(String input) {
         boolean resultado = true;
         boolean resultado2 = true;
-        if (input.equalsIgnoreCase("") && input.trim().equalsIgnoreCase("")) {
+        if (input.equalsIgnoreCase("") || input.trim().equalsIgnoreCase("")) {
             resultado = false;
 
         }
@@ -517,19 +517,17 @@ public class UsuarioServlet extends HttpServlet {
 
                 if (distritoSelected && contIguales && !correoExis && !dniExis && idDistritoInt != 0 && contraTrim) {
                     usuarioDao.regitrarNuevoUsuario(nombres, apellidos, dni, correo, contrasenia, idDistritoInt);
-                    //FALTA ENVIAR CORREO
-                    //TODO: ENVIO DE CORREO FUCIONAL !!!
-                    //TODO: cambien los valores de correoAenviar, asunto,contenido !!!
+                    //ENVIAR CORREO
                     Emails emails = new Emails();
+                    int puerto = request.getLocalPort();
                     String correoAenviar = correo;
                     String asunto = "BIENVENIDO A *MI MARCA* !!!!";
                     String contenido = "Hola " + nombres + ", te has registrado exitosamente en 'MI MARCA'.Para " +
-                            "poder empezar a realizar pedidos, ingresa al link : http://localhost:8050/TareaLaboratorio8_war_exploded/LoginServlet";
-                    //generalizar link incrustado en video
+                            "poder empezar a realizar pedidos, ingresa al link : http://localhost:"+puerto+request.getContextPath()+"/LoginServlet";
                     try {
                         emails.enviarCorreo(correoAenviar, asunto, contenido);
                     } catch (MessagingException e) {
-                        System.out.println("Se capturo excepcion en envio de correo");
+                        System.out.println("Se capturo excepcion en envio de correo Usuario");
                     }
 
                     request.setAttribute("correo", correo);

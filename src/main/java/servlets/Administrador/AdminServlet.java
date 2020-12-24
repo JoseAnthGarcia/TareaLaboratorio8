@@ -261,7 +261,7 @@ public class AdminServlet extends HttpServlet {
                         String asunto = "REGISTRAR CONTRASEÑA";
                         String contenido = "Se ha iniciado el registro de su bodega "+nombreBodega+" con RUC:"+rucBodega+
                                 ", para continuar con el registro ingrese al siguiente link y establezca su contraseña:" +
-                                "http://localhost"+":"+puerto+"/TareaLaboratorio8_war_exploded/AdminServlet?accion=definirContrasenia&idBodega="
+                                "http://localhost:"+puerto+request.getContextPath()+"/AdminServlet?accion=definirContrasenia&idBodega="
                                 +idBodega+"&rucBodega="+rucBodega;
 
                         try {

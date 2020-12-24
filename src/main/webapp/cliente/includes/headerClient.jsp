@@ -19,7 +19,7 @@
         </a>
         <a>
             <div class="card">
-                <a href="<%=request.getContextPath()%>/LoginServlet?accion=logout"><img src="imagenes/sigout.png" height="30px"/></a>
+                <a href="<%=request.getContextPath()%>/LoginServlet?accion=logout"><img src="https://www.flaticon.com/svg/static/icons/svg/1828/1828479.svg" height="30px"/></a>
             </div>
         </a>
 

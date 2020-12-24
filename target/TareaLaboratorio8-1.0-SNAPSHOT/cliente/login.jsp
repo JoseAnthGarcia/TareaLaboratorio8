@@ -69,7 +69,7 @@
     <div class="row mb-3">
 
         <div class="col-lg-5 col-md-12 centrar">
-            <img src="imagenes/profile.png" width="408px" height="400px" />
+            <img src="https://www.flaticon.com/svg/static/icons/svg/3135/3135715.svg" width="408px" height="400px" />
         </div>
         <div class="col-lg-7 col-md-12 ">
             <form class="form-signin" method="POST" action="<%=request.getContextPath()%>/LoginServlet?accion=login" style="

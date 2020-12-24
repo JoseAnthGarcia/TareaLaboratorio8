@@ -109,12 +109,15 @@
                 <div class="form-group row">
                     <label for="inputName" class="col-sm-2 col-form-label">Nombres:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control <%=(request.getParameter("nombres") !=null && request.getParameter("nombres").equals(""))?"is-invalid":""%>"
+                        <%
+                            //(request.getParameter("nombres") !=null && request.getParameter("nombres").equals(""))?"is-invalid":""
+                        %>
+                        <input type="text" class="form-control <%=nombresB?"":"is-invalid"%>"
                                aria-describedby="inputNameFeedback"
                                name="nombres"
                                id="inputName" <%=request.getParameter("nombres")==null?"":"value='"+request.getParameter("nombres")+"'"%>>
                         <div id="inputNameFeedback" class="invalid-feedback">
-                            Ingrese datos, por favor.
+                            Ingrese datos validos, por favor.
                         </div>
                     </div>
                 </div>
@@ -126,7 +129,7 @@
                                name="apellidos"
                                id="inputLastName" <%=request.getParameter("apellidos")==null?"":"value='"+request.getParameter("apellidos")+"'"%>>
                         <div id="inputLastNameFeedback" class="invalid-feedback">
-                            Ingrese datos, por favor.
+                            Ingrese datos validos, por favor.
                         </div>
                     </div>
                 </div>
