@@ -70,7 +70,7 @@
     <div class="row">
 
         <div class="col-lg-6 col-md-12 centrar">
-            <img src="imagenes/profile.png" width="408px" height="400px" />
+            <img src="https://www.flaticon.com/svg/static/icons/svg/3135/3135715.svg" width="408px" height="400px" />
         </div>
         <div class="col-lg-6 col-md-12 centrar">
             <table class="table">
@@ -95,7 +95,7 @@
                 <tr>
                     <th>Correo</th>
                     <td><%=usuario.getCorreo()%></td>
-                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=cambioContra&idUsuario=<%=usuario.getIdUsuario()%>"
+                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=cambioContra"
                            class="btn btn-success">Cambiar Contraseña</a></td>
                 </tr>
                 <tr>

@@ -7,8 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--@ page import="beans.DistritoBean" --%>
-<jsp:useBean id="busuario" scope="request" type="beans.UsuarioBean"/>
-
 
 <%
     //boolean contrasenia = request.getAttribute("contrasenia") == null ? true : (Boolean) request.getAttribute("contrasenia");
@@ -24,7 +22,7 @@
 
 <html>
 <head>
-    <jsp:include page="bootstrapRepository.jsp"/>
+    <jsp:include page="../bootstrapRepository.jsp"/>
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
@@ -62,20 +60,7 @@
 
 <body>
 <header>
-    <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-
-        </div>
-    </div>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>MiMarca.com</strong>
-            </a>
-            <a href="#"><img src="imagenes/sigout.png" height="30px"/></a>
-
-        </div>
-    </div>
+    <jsp:include page="/cliente/includes/headerClient.jsp"/>
 </header>
 <!-- Uso de modal?-->
 <!-- Uso de modal?-->

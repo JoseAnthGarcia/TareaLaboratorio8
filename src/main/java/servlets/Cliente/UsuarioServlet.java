@@ -195,14 +195,13 @@ public class UsuarioServlet extends HttpServlet {
                 case "validarContra":
                     //obtener usuarioID , o antes ya lo tengo para usar
                     //String contraseniaA = request.getParameter("contrasenia");
-                    String contraseniaA = bUsuario.getContrasenia();
                     String contrasenia2A = request.getParameter("contrasenia2A");
                     String contraseniaBB = request.getParameter("contraseniaB");
                     String contrasenia2BB = request.getParameter("contrasenia2B");
 
 
                     boolean contAntIguales = false;
-                    if (contraseniaA.equals(contrasenia2A)) {
+                    if (usuarioDao.compararContrasenia(bUsuario.getIdUsuario(), contrasenia2A)) {
                         contAntIguales = true;
                     }
 
@@ -226,9 +225,6 @@ public class UsuarioServlet extends HttpServlet {
                         usuarioDao.actualizarContra(usuarioId, contraseniaBB); //ojo con usuarioId
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=miPerfil");
                     } else {
-                        UsuarioBean usuarioDopel = usuarioDao.obtenerUsuario(usuarioId);
-                        //los hiddens no funcionan sin un busuario nuevo.....u.u
-                        request.setAttribute("busuario", usuarioDopel);
                         request.setAttribute("contraseniaB", !contraseniaBB.equals(""));
                         request.setAttribute("contrasenia2B", !contrasenia2BB.equals(""));
                         request.setAttribute("contrasenia2A", !contrasenia2A.equals(""));
@@ -238,7 +234,8 @@ public class UsuarioServlet extends HttpServlet {
                         request.setAttribute("contraSecu1",validarContrasenia(contraseniaBB));
                         request.setAttribute("contraSecu2", validarContrasenia(contrasenia2BB));
 
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("cambioContrasenia.jsp");
+                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/clien" +
+                                "te/cambioContrasenia.jsp");
                         requestDispatcher.forward(request, response);
                     }
                     break;
@@ -621,12 +618,7 @@ public class UsuarioServlet extends HttpServlet {
                     break;
 
                 case "cambioContra":
-                    //int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-                    UsuarioBean busuario = usuarioDao.obtenerUsuario(usuarioActualId);
-
-                    //request.setAttribute("contrasenia",busuario.getContrasenia()); //puede reducirse mas adelante
-                    request.setAttribute("busuario", busuario);
-                    requestDispatcher = request.getRequestDispatcher("cambioContrasenia.jsp");
+                    requestDispatcher = request.getRequestDispatcher("/cliente/cambioContrasenia.jsp");
                     requestDispatcher.forward(request, response);
                     break;
 
