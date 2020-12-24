@@ -39,6 +39,18 @@ public class LoginServlet extends HttpServlet {
         return resultado;
     }
 
+    public  boolean validarContrasenia(String contrasenia) {
+        boolean resultado = true;
+        Pattern pattern2 = Pattern
+                .compile("(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}");
+        Matcher mather = pattern2.matcher(contrasenia);
+
+        if (mather.find() == false) {
+            resultado = false;
+        }
+        return  resultado;
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion") == null ?
                 "login" : request.getParameter("accion");
@@ -115,8 +127,13 @@ public class LoginServlet extends HttpServlet {
                     contraTrim = true;
                 }
 
+                boolean contraSegura = false;
+                if(validarContrasenia(contraseniaR) && validarContrasenia(contrasenia2R)){
+                    contraSegura = true;
+                }
+
                 System.out.println(contRecu +":"+contRecuEmpty);
-                if(contRecu && contRecuEmpty && contraTrim){
+                if(contRecu && contRecuEmpty && contraTrim && contraSegura){
                     System.out.println("Soy libre");
                     System.out.println(idUsuarioRecu);
                     System.out.println(contrasenia2R+"malos pasos");
@@ -133,6 +150,8 @@ public class LoginServlet extends HttpServlet {
                     request.setAttribute("contRecuEmpty1",!contraseniaR.equals(""));
                     request.setAttribute("contRecuEmpty2",!contrasenia2R.equals(""));
                     request.setAttribute("contraTrim",(contraTrim && !contraseniaR.equals("") && !contrasenia2R.equals("")));
+                    request.setAttribute("contraSecu1",validarContrasenia(contraseniaR));
+                    request.setAttribute("contraSecu2",validarContrasenia(contrasenia2R));
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/recuperarContrasenia.jsp");
                     requestDispatcher.forward(request,response);
                 }
