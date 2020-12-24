@@ -75,11 +75,11 @@
                 <div class="form-group row">
                     <label for="inputPassword1" class="col-sm-2 col-form-label">Nueva Contraseña:</label>
                     <div class="col-sm-10">
-                        <input type="password" class="form-control <%=(contRecuEmpty1 && contraSecu1)?"":"is-invalid"%>"
+                        <input type="password" class="form-control <%=(contRecuEmpty1 && contraSecu1 && contraTrim)?"":"is-invalid"%>"
                                aria-describedby="inputPasswordFeedback"
                                name="contraseniaR" id="inputPassword1" <%=request.getParameter("contRecuEmpty1")==null?"":"value='"+request.getParameter("contRecuEmpty1")+"'"%> >
                         <div id="inputPasswordFeedback" class="invalid-feedback">
-                            Ingrese una contraseña válida
+                            La contraseña debe tener longitud mínima de 8 caracteres, no incluir espacios vacios e incluir letras y números
                         </div>
                     </div>
                 </div>
@@ -106,11 +106,6 @@
             <%if(!contRecu){%>
             <div class="alert alert-danger" role="alert">
                 Los campos de la  nueva contraseña no coinciden!
-            </div>
-            <%}%>
-            <%if(!contraTrim){%>
-            <div class="alert alert-danger" role="alert">
-                No esta permitido los espacios en la contraseña
             </div>
             <%}%>
         </div>
