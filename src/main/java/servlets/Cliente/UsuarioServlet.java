@@ -508,7 +508,7 @@ public class UsuarioServlet extends HttpServlet {
                     String asunto = "BIENVENIDO A *MI MARCA* !!!!";
                     String contenido = "Hola " + nombres + ", te has registrado exitosamente en 'MI MARCA'.Para " +
                             "poder empezar a realizar pedidos, ingresa al link : http://localhost:8050/TareaLaboratorio8_war_exploded/LoginServlet";
-
+                    //generalizar link incrustado en video
                     try {
                         emails.enviarCorreo(correoAenviar, asunto, contenido);
                     } catch (MessagingException e) {
@@ -522,7 +522,8 @@ public class UsuarioServlet extends HttpServlet {
                     //response.sendRedirect(request.getContextPath()+"/UsuarioServlet");
                 } else {
                     request.setAttribute("contIguales", contIguales);
-                    request.setAttribute("contraTrim", (contraTrim && contrasenia.equals("") && contrasenia2.equals("")));
+                    //agragar mas validaciones?
+                    request.setAttribute("contraTrim", (contraTrim && !contrasenia.equals("") && !contrasenia2.equals("")));
                     request.setAttribute("correoExis", correoExis);
                     request.setAttribute("dniExis", dniExis);
                     request.setAttribute("distritoSelected", distritoSelected);
