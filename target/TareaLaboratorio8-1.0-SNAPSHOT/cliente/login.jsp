@@ -14,8 +14,8 @@
     <jsp:include page="/bootstrapRepository.jsp"/>
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="resources/css/signin.css" rel="stylesheet">
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/resources/css/signin.css" rel="stylesheet">
     <style>
         .btn {
             background-color: #343a40;
