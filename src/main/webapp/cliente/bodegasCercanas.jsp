@@ -92,7 +92,7 @@
                         Seleccionar
                     </label>
                 </div>
-                <img src="<%=request.getContextPath()%>/ImagenServlet?idBodega=<%=listaBodegasDistrito.get(j).getIdBodega()%>" width="150" class="img-thumbnail">
+                <img src="<%=request.getContextPath()%>/ImagenServlet?idBodega=<%=listaBodegasDistrito.get(j).getIdBodega()%>" width="150px" height="150px"  class="img-thumbnail">
                 <p class="mb-1"><b>Bodega: </b> <%=listaBodegasDistrito.get(j).getNombreBodega()%> </p>
                 <p class="mb-0"><b>direccion: </b> <%=listaBodegasDistrito.get(j).getDireccionBodega()%> </p>
             </div>

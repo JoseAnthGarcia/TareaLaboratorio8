@@ -318,7 +318,7 @@ public class UsuarioDao extends BaseDao {
         int limit = (pagina - 1) * cantPorPag;
 
         String sql = "SELECT * FROM producto WHERE idBodega=?\n" +
-                "limit ?,?;";
+                " order by nombreProducto limit ?,?;";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {

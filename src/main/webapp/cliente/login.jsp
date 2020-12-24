@@ -126,6 +126,24 @@
     margin-left: 150px;text-align: center;position: relative; top:40px;">
             <div class="row">
                 <div class="col-10">
+                    <div align="center">
+                        <%if(correoEnviado==1){%>
+                        <div class="alert alert-success" role="alert">
+                            Solicitud enviada correctamente, revise su bandeja de entrada.
+
+                        </div>
+                        <%}else if(correoEnviado==2){%>
+                        <div class="alert alert-danger" role="alert">
+                            Ha ocurrido un error al enviar el correo. Intentelo de nuevo.
+                        </div>
+                        <%}%>
+                        <%if(cambioContra){%>
+                        <div class="alert alert-success" role="alert">
+                            Contraseña restablecida exitosamente.
+                        </div>
+                        <%}%>
+                        <%session.invalidate(); %>
+                    </div>
 
                     <input type="text" name="inputEmail" class="form-control ingresa" placeholder="Correo" autofocus="">
 
@@ -173,24 +191,6 @@
 
             </form>
         </div>
-    </div>
-    <div align="center">
-        <%if(correoEnviado==1){%>
-        <div class="alert alert-success" role="alert">
-            El correo fue enviado exitosamente. Revise su bandeja de entrada.
-
-        </div>
-        <%}else if(correoEnviado==2){%>
-        <div class="alert alert-danger" role="alert">
-            Ha ocurrido un error al enviar el correo. Intentelo de nuevo.
-        </div>
-        <%}%>
-        <%if(cambioContra){%>
-        <div class="alert alert-success" role="alert">
-            Contraseña restablecida exitosamente.
-        </div>
-        <%}%>
-        <%session.invalidate(); %>
     </div>
 
 
