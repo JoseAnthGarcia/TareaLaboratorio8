@@ -132,7 +132,7 @@ public class LoginServlet extends HttpServlet {
                     request.setAttribute("contRecu",contraseniaR.equals(contrasenia2R));
                     request.setAttribute("contRecuEmpty1",!contraseniaR.equals(""));
                     request.setAttribute("contRecuEmpty2",!contrasenia2R.equals(""));
-                    request.setAttribute("contraTrim",(contraTrim && contraseniaR.equals("") && contrasenia2R.equals("")));
+                    request.setAttribute("contraTrim",(contraTrim && !contraseniaR.equals("") && !contrasenia2R.equals("")));
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/recuperarContrasenia.jsp");
                     requestDispatcher.forward(request,response);
                 }

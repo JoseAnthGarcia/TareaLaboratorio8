@@ -124,7 +124,7 @@
             </form>
         </div>
     </div>
-    <div align="right">
+    <div align="center">
         <%if(correoEnviado==1){%>
         <div class="alert alert-success" role="alert">
             El correo fue enviado exitosamente. Revise su bandeja de entrada.
