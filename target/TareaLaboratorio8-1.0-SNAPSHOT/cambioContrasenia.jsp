@@ -140,7 +140,7 @@
             <%}%>
             <%if(!contraTrim){%>
             <div class="alert alert-danger" role="alert">
-                No esta permitido los espacios/tabulaciones en la contraseña
+                No esta permitido los espacios en la contraseña
             </div>
             <%}%>
         </div>
