@@ -51,8 +51,9 @@ public class UsuarioServlet extends HttpServlet {
     public boolean validarString(String input) {
         boolean resultado = true;
         boolean resultado2 = true;
-        if (input.equalsIgnoreCase("")) {
+        if (input.equalsIgnoreCase("") && input.trim().equalsIgnoreCase("")) {
             resultado = false;
+
         }
         try {
             int numero = Integer.parseInt(input);
@@ -347,19 +348,12 @@ public class UsuarioServlet extends HttpServlet {
                         session.setAttribute("listaProductosSelecCant", listaProductosSelecCant);
 
                         //calculamos el precio total:
-
-                        BigDecimal precioTotal = BigDecimal.valueOf(0);
+                        BigDecimal precioTotal = new BigDecimal("0");
                         for (ProductoCantDto producto : listaProductosSelecCant) {
-                            BigDecimal costo = BigDecimal.valueOf(producto.getProducto().getPrecioProducto().doubleValue() * producto.getCant());
-                            precioTotal = BigDecimal.valueOf(precioTotal.doubleValue() + costo.doubleValue());
+                            BigDecimal cantProducto = new BigDecimal(producto.getCant());
+                            BigDecimal costo = producto.getProducto().getPrecioProducto().multiply(cantProducto);
+                            precioTotal = precioTotal.add(costo);
                         }
-                        /*
-                        double precioTotal1 = 0;
-                        for (ProductoCantDto producto : listaProductosSelecCant) {
-                            double costo1 = producto.getProducto().getPrecioProducto().doubleValue() * producto.getCant();
-                            precioTotal1 = precioTotal1 + costo1;
-
-                        }*/
                         request.setAttribute("precioTotal", precioTotal);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/confirmarPedido.jsp");
                         requestDispatcher.forward(request, response);
@@ -371,17 +365,13 @@ public class UsuarioServlet extends HttpServlet {
                     if (codigo.equals(session1.getAttribute("codigoPedido"))) {
                         ArrayList<ProductoCantDto> listaProductosSelecCant1 = (ArrayList<ProductoCantDto>) session.getAttribute("listaProductosSelecCant");
                         //calculamos el precio total:
-                        /*double precioTotal = 0;
+                        BigDecimal precioTotal = new BigDecimal("0");
                         for (ProductoCantDto producto : listaProductosSelecCant1) {
-                            double costo = producto.getProducto().getPrecioProducto().doubleValue() * producto.getCant();
-                            precioTotal = precioTotal + costo;
-                        }*/
-
-                        BigDecimal precioTotal = BigDecimal.valueOf(0);
-                        for (ProductoCantDto producto : listaProductosSelecCant1) {
-                            BigDecimal costo = BigDecimal.valueOf(producto.getProducto().getPrecioProducto().doubleValue() * producto.getCant());
-                            precioTotal = BigDecimal.valueOf(precioTotal.doubleValue() + costo.doubleValue());
+                            BigDecimal cantProducto = new BigDecimal(producto.getCant());
+                            BigDecimal costo = producto.getProducto().getPrecioProducto().multiply(cantProducto);
+                            precioTotal = precioTotal.add(costo);
                         }
+
                         //validamos fecha
                         String fecha = request.getParameter("fecha");
                         if (!fecha.equals("")) {
@@ -503,7 +493,12 @@ public class UsuarioServlet extends HttpServlet {
                     correoExis = true;
                 }
 
-                if (distritoSelected && contIguales && !correoExis && idDistritoInt != 0 && contraTrim) {
+                boolean dniExis = false;
+                if (usuarioDao.buscarDni(dni)) {
+                    dniExis = true;
+                }
+
+                if (distritoSelected && contIguales && !correoExis && !dniExis && idDistritoInt != 0 && contraTrim) {
                     usuarioDao.regitrarNuevoUsuario(nombres, apellidos, dni, correo, contrasenia, idDistritoInt);
                     //FALTA ENVIAR CORREO
                     //TODO: ENVIO DE CORREO FUCIONAL !!!
@@ -529,8 +524,9 @@ public class UsuarioServlet extends HttpServlet {
                     request.setAttribute("contIguales", contIguales);
                     request.setAttribute("contraTrim", (contraTrim && contrasenia.equals("") && contrasenia2.equals("")));
                     request.setAttribute("correoExis", correoExis);
+                    request.setAttribute("dniExis", dniExis);
                     request.setAttribute("distritoSelected", distritoSelected);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("registroNuevoUsuario.jsp");
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/registroNuevoUsuario.jsp");
                     requestDispatcher.forward(request, response);
 
                 }
@@ -543,7 +539,7 @@ public class UsuarioServlet extends HttpServlet {
                 request.setAttribute("correoB", correoB);
                 request.setAttribute("contraseniaB", contraseniaB);
                 request.setAttribute("contrasenia2B", contrasenia2B);
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("registroNuevoUsuario.jsp");
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/registroNuevoUsuario.jsp");
                 requestDispatcher.forward(request, response);
             }
 
@@ -778,11 +774,10 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher.forward(request, response);
                     break;
 
-                case "cancelar":
-                    //TODO: validar idPedido
-                    String idPedido2 = request.getParameter("idPedido");
-                    PedidosUsuarioDao pedidosUsuarioDao1 = new PedidosUsuarioDao();
-                    pedidosUsuarioDao1.cancelarPedido(Integer.parseInt(idPedido2));
+                case "cancelarPedido": //cancelarPedido
+                    //TODO: validar codigoPedido
+                    String codigoPedido = request.getParameter("codigoPedido");
+                    usuarioDao.cancelarPedido(codigoPedido);
                     response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
                     break;
                 case "Home":
@@ -809,7 +804,7 @@ public class UsuarioServlet extends HttpServlet {
         } else if (clienteActual == null && accion.equals("agregar")) {
             ArrayList<DistritoBean> listaDistritos = usuarioDao.obtenerDistritos();
             request.setAttribute("listaDistritos", listaDistritos);
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("registroNuevoUsuario.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/registroNuevoUsuario.jsp");
             requestDispatcher.forward(request, response);
         } else {
             view2 = request.getRequestDispatcher("cliente/access_denied.jsp");

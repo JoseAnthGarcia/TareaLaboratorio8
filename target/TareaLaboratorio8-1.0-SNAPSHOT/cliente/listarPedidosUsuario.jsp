@@ -63,7 +63,7 @@
                     <%if(PedidosUsuarioDao.verificarHoraPedido(Integer.parseInt(pedido.getCodigo()))){ %>
                     <td>
                         <a onclick="return confirm('¿Estas seguro que deseas cancelar tu pedido?')"
-                        href="<%=request.getContextPath()%>/UsuarioServlet?accion=cancelar&idPedido=<%=Integer.parseInt(pedido.getCodigo())%>"
+                        href="<%=request.getContextPath()%>/UsuarioServlet?accion=cancelarPedido&codigoPedido=<%=Integer.parseInt(pedido.getCodigo())%>"
                         class="btn btn-danger">Cancelar</a></td>
                     <%}else{ %>
                      <td>
