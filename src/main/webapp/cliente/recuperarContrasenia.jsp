@@ -6,6 +6,9 @@
     boolean contRecuEmpty1 = request.getAttribute("contRecuEmpty1") == null ? true : (Boolean) request.getAttribute("contRecuEmpty1");
     boolean contRecuEmpty2 = request.getAttribute("contRecuEmpty2") == null ? true : (Boolean) request.getAttribute("contRecuEmpty2");
     boolean contraTrim = request.getAttribute("contraTrim") == null ? true : (Boolean) request.getAttribute("contraTrim");
+    boolean contrasecu2 = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
+    boolean contraSecu1 = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
+
 
 %>
 <html>

@@ -235,6 +235,8 @@ public class UsuarioServlet extends HttpServlet {
                         request.setAttribute("contIguales", contIguales);
                         request.setAttribute("contAntIguales", contAntIguales);
                         request.setAttribute("contraTrim", (contraTrim && contraseniaBB.equals("") && contrasenia2BB.equals("")));
+                        request.setAttribute("contraSecu1",validarContrasenia(contraseniaBB));
+                        request.setAttribute("contraSecu2", validarContrasenia(contrasenia2BB));
 
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("cambioContrasenia.jsp");
                         requestDispatcher.forward(request, response);

@@ -41,7 +41,7 @@ public class UsuarioDao extends BaseDao {
     public void regitrarNuevoUsuario(String nombres, String apellidos,
                                      String dni, String correo,
                                      String contrasenia, int idDistrito) {
-        String sql = "INSERT INTO usuario(nombreUsuario, apellido, dni, correo, contrasenia, idDistrito,contraseniaHashed)\n" +
+        String sql = "INSERT INTO usuario(nombreUsuario, apellido, dni, correo, idDistrito,contraseniaHashed)\n" +
                 "VALUES (?, ?, ?, ?, ?, ?, sha2(?,256));";
 
         try (Connection conn = getConnection();
@@ -51,9 +51,8 @@ public class UsuarioDao extends BaseDao {
             pstmt.setString(2, apellidos);
             pstmt.setString(3, dni);
             pstmt.setString(4, correo);
-            pstmt.setString(5, contrasenia);
-            pstmt.setInt(6, idDistrito);
-            pstmt.setString(7, contrasenia);
+            pstmt.setInt(5, idDistrito);
+            pstmt.setString(6, contrasenia);
 
 
             pstmt.executeUpdate();
@@ -130,7 +129,7 @@ public class UsuarioDao extends BaseDao {
     public UsuarioBean obtenerUsuario(int usuarioId) {
 
 
-        String sql = "select u.idUsuario, u.nombreUsuario, u.apellido, u.dni, u.correo, u.contrasenia,u.idDistrito, d.nombreDistrito, u.contraseniaHashed \n" +
+        String sql = "select u.idUsuario, u.nombreUsuario, u.apellido, u.dni, u.correo,u.idDistrito, d.nombreDistrito, u.contraseniaHashed \n" +
                 "from usuario u\n" +
                 "inner join distrito d on u.idDistrito=d.idDistrito\n" +
                 "where idUsuario=?;";
@@ -149,13 +148,12 @@ public class UsuarioDao extends BaseDao {
                     usuarioBean.setApellido(rs.getString(3));
                     usuarioBean.setDni(rs.getString(4));
                     usuarioBean.setCorreo(rs.getString(5));
-                    usuarioBean.setContrasenia(rs.getString(6));
-                    distritoBean.setId(rs.getInt(7));
-                    distritoBean.setNombre(rs.getString(8));
+                    distritoBean.setId(rs.getInt(6));
+                    distritoBean.setNombre(rs.getString(7));
                     usuarioBean.setDistrito(distritoBean);
 
                     //se agrego contraseniaHashed - ATENCIÓN!!!
-                    usuarioBean.setContraseniaHashed(rs.getString(9));
+                    usuarioBean.setContraseniaHashed(rs.getString(8));
 
 
 
@@ -209,15 +207,14 @@ public class UsuarioDao extends BaseDao {
 
     // actualizarContra actualizado para incluir contraseniaHashed ATENCION!!!!
     public void actualizarContra(int usuarioID, String contraseniaNew) {
-        String sql = "UPDATE usuario SET contrasenia = ? , contraseniaHashed = sha2(?,256) WHERE idUsuario = ?";
+        String sql = "UPDATE usuario SET contraseniaHashed = sha2(?,256) WHERE idUsuario = ?";
 
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
             pstmt.setString(1, contraseniaNew);
-            pstmt.setString(2,contraseniaNew);
-            pstmt.setInt(3, usuarioID);
+            pstmt.setInt(2, usuarioID);
 
             pstmt.executeUpdate();
         } catch (SQLException throwables) {
