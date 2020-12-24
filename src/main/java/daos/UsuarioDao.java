@@ -205,6 +205,28 @@ public class UsuarioDao extends BaseDao {
 
     }
 
+    public boolean compararContrasenia(int idUsuario, String inputContra){
+        boolean iguales = false;
+        String sql = "select * from usuario where idUsuario=? and contraseniaHashed=sha2(?, 256);";
+        UsuarioBean usuarioBean = new UsuarioBean();
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, idUsuario);
+            pstmt.setString(2, inputContra);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    iguales = true;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return iguales;
+    }
+
     // actualizarContra actualizado para incluir contraseniaHashed ATENCION!!!!
     public void actualizarContra(int usuarioID, String contraseniaNew) {
         String sql = "UPDATE usuario SET contraseniaHashed = sha2(?,256) WHERE idUsuario = ?";

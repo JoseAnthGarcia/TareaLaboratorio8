@@ -7,8 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--@ page import="beans.DistritoBean" --%>
-<jsp:useBean id="busuario" scope="request" type="beans.UsuarioBean"/>
-
 
 <%
     //boolean contrasenia = request.getAttribute("contrasenia") == null ? true : (Boolean) request.getAttribute("contrasenia");
@@ -18,13 +16,15 @@
     boolean contAntIguales = request.getAttribute("contAntIguales") == null ? true : (Boolean) request.getAttribute("contAntIguales");
     boolean contIguales = request.getAttribute("contIguales") == null ? true : (Boolean) request.getAttribute("contIguales");
     boolean contraTrim = request.getAttribute("contraTrim") == null ? true : (Boolean) request.getAttribute("contraTrim");
+    boolean contraSecu2 = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
+    boolean contraSecu1 = request.getAttribute("contraseniaB") == null ? true : (Boolean) request.getAttribute("contraseniaB");
 
 %>
 <!DOCTYPE html>
 
 <html>
 <head>
-    <jsp:include page="bootstrapRepository.jsp"/>
+    <jsp:include page="../bootstrapRepository.jsp"/>
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
@@ -62,20 +62,7 @@
 
 <body>
 <header>
-    <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-
-        </div>
-    </div>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>MiMarca.com</strong>
-            </a>
-            <a href="#"><img src="imagenes/sigout.png" height="30px"/></a>
-
-        </div>
-    </div>
+    <jsp:include page="/cliente/includes/headerClient.jsp"/>
 </header>
 <!-- Uso de modal?-->
 <!-- Uso de modal?-->
@@ -102,11 +89,15 @@
                 <div class="form-group row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Nueva Contraseña:</label>
                     <div class="col-sm-10">
-                        <input type="password" class="form-control <%=contraseniaB?"":"is-invalid"%>"
+                        <input type="password" class="form-control <%=(contraSecu1 && contraseniaB)?"":"is-invalid"%>"
                                aria-describedby="inputPasswordBFeedback"
                                name="contraseniaB" id="inputPassword1" <%=request.getParameter("contraseniaB")==null?"":"value='"+request.getParameter("contraseniaB")+"'"%> >
                         <div id="inputPasswordBFeedback" class="invalid-feedback">
+                            <%if(!contraSecu1){%>
+                            La contraseña debe tener longitud mínima de 8 caracteres e incluir letras y números
+                            <%}else{%>
                             Ingrese una contraseña válida
+                            <%}%>
                         </div>
                     </div>
                 </div>
@@ -114,7 +105,7 @@
                 <div class="form-group row">
                     <label for="inputPassword2" class="col-sm-2 col-form-label">Confirmar contraseña:</label>
                     <div class="col-sm-10">
-                        <input type="password" class="form-control <%=contrasenia2B?"":"is-invalid"%>"
+                        <input type="password" class="form-control <%=(contraSecu2 && contrasenia2B)?"":"is-invalid"%>"
                                aria-describedby="inputPassword2BFeedback"
                                name="contrasenia2B" id="inputPassword2" <%=request.getParameter("contrasenia2B")==null?"":"value='"+request.getParameter("contrasenia2B")+"'"%> >
                         <div id="inputPassword2BFeedback" class="invalid-feedback">

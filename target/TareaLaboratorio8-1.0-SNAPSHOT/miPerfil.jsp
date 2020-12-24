@@ -95,7 +95,7 @@
                 <tr>
                     <th>Correo</th>
                     <td><%=usuario.getCorreo()%></td>
-                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=cambioContra&idUsuario=<%=usuario.getIdUsuario()%>"
+                    <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=cambioContra"
                            class="btn btn-success">Cambiar Contraseña</a></td>
                 </tr>
                 <tr>
