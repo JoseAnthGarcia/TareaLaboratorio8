@@ -24,6 +24,20 @@
             font-size: 4rem;
         }
 
+        .btn {
+            background-color: #343a40;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .tercero{
+            position: absolute;
+            right: 15%;
+        }
+
     </style>
 </head>
 <header>
@@ -49,6 +63,8 @@
         <h3 class="lead"><%=nombres%>, se ha enviado un mensaje de confirmación al correo '<%=correo%>'. Por favor, verifica tu cuenta.</h3>
     </div>
 </div>
+<a href="<%=request.getContextPath()%>/LoginServlet">
+    <button type="button" class="btn btn-success tercero">Entendido</button></a>
 <footer class="page-footer font-small blue" style="margin-top: 100px">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="#">MiMarca</a>

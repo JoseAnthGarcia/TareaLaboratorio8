@@ -106,6 +106,26 @@ public class UsuarioDao extends BaseDao {
         return encontrado;
     }
 
+    public boolean buscarDni(String dni) {
+        boolean encontrado = false;
+
+        String sql = "SELECT * FROM usuario WHERE dni = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setString(1, dni);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    encontrado = true;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return encontrado;
+    }
+
     /*Para la parte de editar*/
     public UsuarioBean obtenerUsuario(int usuarioId) {
 
@@ -186,6 +206,7 @@ public class UsuarioDao extends BaseDao {
         }
 
     }
+
     // actualizarContra actualizado para incluir contraseniaHashed ATENCION!!!!
     public void actualizarContra(int usuarioID, String contraseniaNew) {
         String sql = "UPDATE usuario SET contrasenia = ? , contraseniaHashed = sha2(?,256) WHERE idUsuario = ?";
@@ -784,6 +805,55 @@ public class UsuarioDao extends BaseDao {
         }
 
         return listaProductos;
+    }
+
+    public void cancelarPedido(String codigo){
+
+        String sql = "update pedido set estado= \"Cancelado\" where codigo=?;";
+
+        //cancelamos pedido
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, codigo);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        //actualizamos el stock
+        String sql2 = "select idPedido from pedido where codigo=?;";
+        int idPedido = -1;
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql2)) {
+            pstmt.setString(1, codigo);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            idPedido = rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        DetallesPedidoDto detalles = detallesPedido(idPedido);
+
+        for(ProductoCantDto productoPedido: detalles.getListaProductCant()){
+
+            //TODO: validar stock maximo
+            //Actualizo el stock:
+            ProductoBean producto = obtenerProducto(productoPedido.getProducto().getId());
+            int newStock = producto.getStock() + productoPedido.getCant();
+            String sql1 = "update producto set stock = ?\n" +
+                    "where idProducto = ?;";
+
+            try (Connection conn1 = getConnection();
+                 PreparedStatement pstmt1 = conn1.prepareStatement(sql1);) {
+                pstmt1.setInt(1, newStock);
+                pstmt1.setInt(2, productoPedido.getProducto().getId());
+                pstmt1.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
     }
 
 

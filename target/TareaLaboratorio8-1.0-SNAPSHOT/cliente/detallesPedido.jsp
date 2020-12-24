@@ -47,21 +47,22 @@
                     <th>Nombre producto</th>
                     <th>Precio unitario</th>
                     <th>Unidades</th>
-                    <th>Costo por producto</th>
+                    <th>Costo parcial por producto</th>
                 </tr>
-                <% Double totalPagar = 0.0;
+                <%BigDecimal totalPagar = new BigDecimal("0");
                     for (ProductoCantDto productoDto: detalles.getListaProductCant()){%>
                 <tr>
                     <td><%=productoDto.getProducto().getNombreProducto()%></td>
                     <td>S/. <%=productoDto.getProducto().getPrecioProducto()%></td>
                     <td><%=productoDto.getCant()%></td>
-                    <% double precio = productoDto.getProducto().getPrecioProducto().doubleValue()*productoDto.getCant();%>
-                    <td>S/. <%=String.format("%.2f", precio)%></td>
+                    <%  BigDecimal cant = new BigDecimal(productoDto.getCant());
+                        BigDecimal precioParc = productoDto.getProducto().getPrecioProducto().multiply(cant);%>
+                    <td>S/. <%=precioParc%></td>
                 </tr>
-                <% totalPagar = totalPagar + precio;
+                <% totalPagar = totalPagar.add(precioParc);
                     } %>
             </table>
-            <h1>Total a pagar: S/. <%=String.format("%.2f", totalPagar)%></h1>
+            <h1>Total a pagar: S/. <%=totalPagar%></h1>
         </div>
         <div class="col-sm-2"></div>
     </div>

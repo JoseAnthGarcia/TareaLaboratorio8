@@ -12,6 +12,7 @@
     boolean distritoSelected = request.getAttribute("distritoSelected") == null ? true : (Boolean) request.getAttribute("distritoSelected");
     boolean contIguales = request.getAttribute("contIguales") == null ? true : (Boolean) request.getAttribute("contIguales");
     boolean correoExis = request.getAttribute("correoExis") == null ? false : (Boolean) request.getAttribute("correoExis");
+    boolean dniExis = request.getAttribute("dniExis") == null ? false : (Boolean) request.getAttribute("dniExis");
     boolean contraTrim = request.getAttribute("contraTrim") == null ? true : (Boolean) request.getAttribute("contraTrim");
 
 %>
@@ -19,7 +20,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <jsp:include page="bootstrapRepository.jsp"/>
+    <jsp:include page="../bootstrapRepository.jsp"/>
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
@@ -108,12 +109,15 @@
                 <div class="form-group row">
                     <label for="inputName" class="col-sm-2 col-form-label">Nombres:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control <%=(request.getParameter("nombres") !=null && request.getParameter("nombres").equals(""))?"is-invalid":""%>"
+                        <%
+                            //(request.getParameter("nombres") !=null && request.getParameter("nombres").equals(""))?"is-invalid":""
+                        %>
+                        <input type="text" class="form-control <%=nombresB?"":"is-invalid"%>"
                                aria-describedby="inputNameFeedback"
                                name="nombres"
                                id="inputName" <%=request.getParameter("nombres")==null?"":"value='"+request.getParameter("nombres")+"'"%>>
                         <div id="inputNameFeedback" class="invalid-feedback">
-                            Ingrese datos, por favor.
+                            Ingrese datos validos, por favor.
                         </div>
                     </div>
                 </div>
@@ -125,7 +129,7 @@
                                name="apellidos"
                                id="inputLastName" <%=request.getParameter("apellidos")==null?"":"value='"+request.getParameter("apellidos")+"'"%>>
                         <div id="inputLastNameFeedback" class="invalid-feedback">
-                            Ingrese datos, por favor.
+                            Ingrese datos validos, por favor.
                         </div>
                     </div>
                 </div>
@@ -218,7 +222,12 @@
             <%}%>
             <%if(correoExis){%>
             <div class="alert alert-danger" role="alert">
-                ¡El correo ingresado ya tiene una cuenta  en el sistema!
+                ¡El correo ingresado ya tiene una cuenta asociada!
+            </div>
+            <%}%>
+            <%if(dniExis){%>
+            <div class="alert alert-danger" role="alert">
+                ¡El dni ingresado ya tiene una cuenta asociada!
             </div>
             <%}%>
         </div>
