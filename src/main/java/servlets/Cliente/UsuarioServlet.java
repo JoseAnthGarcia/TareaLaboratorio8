@@ -791,8 +791,15 @@ public class UsuarioServlet extends HttpServlet {
                 case "cancelarPedido": //cancelarPedido
                     //TODO: validar codigoPedido
                     String codigoPedido = request.getParameter("codigoPedido");
-                    usuarioDao.cancelarPedido(codigoPedido);
-                    response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
+                    boolean aTiempo =  usuarioDao.verificarHoraPedido(codigoPedido);
+                    if(aTiempo){
+                        usuarioDao.cancelarPedido(codigoPedido);
+                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
+                    }else{
+                        request.getSession().setAttribute("errorCancelarPedido", true);
+                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
+                    }
+
                     break;
                 case "Home":
                     request.setAttribute("usuario", clienteActual);

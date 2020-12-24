@@ -1,5 +1,4 @@
 <%@ page import="beans.PedidoBean" %>
-<%@ page import="daos.PedidosUsuarioDao" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id= "listaPedidos" scope="request" type="java.util.ArrayList<beans.PedidoBean>" />
 <jsp:useBean id="cantPag" scope="request" type="java.lang.Integer"/>
@@ -46,6 +45,11 @@
 </header>
 <div class ='container'>
     <h1 class="margen">Mis pedidos</h1>
+    <%if(request.getSession().getAttribute("errorCancelarPedido")!=null){%>
+    <div class="alert alert-danger" role="alert">
+        No se puede cancelar el pedido.
+    </div>
+    <%}%>
     <div class="container-fluid">
         <table class="table container-fluid">
             <tr>
@@ -60,16 +64,10 @@
                 <td>S/. <%=pedido.getTotalApagar()%></td>
                 <td><%=pedido.getEstado()%></td>
                 <% if(pedido.getEstado().equalsIgnoreCase("Pendiente")){%>
-                    <%if(PedidosUsuarioDao.verificarHoraPedido(Integer.parseInt(pedido.getCodigo()))){ %>
                     <td>
-                        <a onclick="return confirm('¿Estas seguro que deseas cancelar tu pedido?')"
-                        href="<%=request.getContextPath()%>/UsuarioServlet?accion=cancelarPedido&codigoPedido=<%=Integer.parseInt(pedido.getCodigo())%>"
-                        class="btn btn-danger">Cancelar</a></td>
-                    <%}else{ %>
-                     <td>
-                         <a onclick="return confirm('No es posible cancelar este pedido porque el tiempo límite de cancelación se ha cumplido')"
-                         class="btn btn-danger">Cancelar</a></td>
-                    <%} %>
+                    <a onclick="return confirm('¿Estas seguro que deseas cancelar tu pedido?')"
+                       href="<%=request.getContextPath()%>/UsuarioServlet?accion=cancelarPedido&codigoPedido=<%=Integer.parseInt(pedido.getCodigo())%>"
+                       class="btn btn-danger">Cancelar</a></td>
                 <% }else{ %>
                 <td></td>
                 <% }%>
