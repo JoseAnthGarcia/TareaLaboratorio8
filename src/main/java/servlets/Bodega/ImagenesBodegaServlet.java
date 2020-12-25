@@ -17,6 +17,8 @@ public class ImagenesBodegaServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+
         if (request.getParameter("idProducto")!=null){
             //Se debe recibir el id de lo que se queire mostrar
             int id=Integer.parseInt(request.getParameter("idProducto"));

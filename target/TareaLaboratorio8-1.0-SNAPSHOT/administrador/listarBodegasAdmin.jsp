@@ -14,6 +14,7 @@
 <html>
 <head>
     <jsp:include page="../bootstrapRepository.jsp"/>
+    <jsp:include page="/includes/utf8Cod.jsp"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .btn{

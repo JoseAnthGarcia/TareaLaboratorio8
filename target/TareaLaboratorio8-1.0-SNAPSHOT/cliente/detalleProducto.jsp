@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>Detalles de producto</title>
-    <meta charset="utf-8">
+    <jsp:include page="/includes/utf8Cod.jsp"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <jsp:include page="/bootstrapRepository.jsp"/>
     <!-- para los iconos como botones -->

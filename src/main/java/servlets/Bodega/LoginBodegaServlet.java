@@ -34,7 +34,10 @@ public class LoginBodegaServlet extends HttpServlet {
         return  resultado;
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+
         String inputEmail = request.getParameter("inputEmail");
         String inputPassword = request.getParameter("inputPassword");
 
@@ -143,7 +146,9 @@ public class LoginBodegaServlet extends HttpServlet {
 
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
 
 
         HttpSession session = request.getSession();

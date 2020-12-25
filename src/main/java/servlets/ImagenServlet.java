@@ -18,6 +18,8 @@ public class ImagenServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+
         if (request.getParameter("idProducto")!=null){
             //Se debe recibir el id del usuario del que se mostrara la imagen
             int id=Integer.parseInt(request.getParameter("idProducto"));

@@ -16,6 +16,7 @@
 <head>
     <title>Información de Pedido</title>
     <jsp:include page="../bootstrapRepository.jsp"/>
+    <jsp:include page="/includes/utf8Cod.jsp"/>
 
     <style>
         .btn {

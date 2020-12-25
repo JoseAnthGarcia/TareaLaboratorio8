@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <jsp:include page="/includes/utf8Cod.jsp"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>¡Bienvenido!</title>
     <jsp:include page="/bootstrapRepository.jsp"/>
