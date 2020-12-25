@@ -98,8 +98,9 @@
                 <% if(bodega.getEstadoBodega().toLowerCase().equals("activo")){%>
                     <%if(AdminDao.pedidoPendiente(bodega.getNombreBodega())){ %>
                     <td>
-                        <a onclick="return confirm('No es posible bloquear esta bodega porque presenta al menos un pedido en estado pendiente')"
-                           class="btn btn-danger">Bloquear</a></td>
+                        <button onclick="alert('No es posible bloquear esta bodega porque presenta al menos un pedido en estado pendiente')" class="btn btn-danger">
+                            Bloquear</button>
+                    </td>
                     <% }else{%>
                     <td>
                         <a onclick="return confirm('¿Estas seguro que deseas bloquear?')"

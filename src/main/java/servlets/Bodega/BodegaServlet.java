@@ -1,4 +1,4 @@
-package servlets;
+package servlets.Bodega;
 
 
 import beans.BodegaBean;
@@ -244,13 +244,13 @@ public class BodegaServlet extends HttpServlet {
                 request.setAttribute("listaProductoBodegas", listaProductos);
                 request.setAttribute("cantPag", cantPag);
                 request.setAttribute("paginaAct", paginaAct);
-                view = request.getRequestDispatcher("MiBodegaProductos.jsp");
+                view = request.getRequestDispatcher("/bodega/MiBodegaProductos.jsp");
                 view.forward(request, response);
                 break;
             case "home":
                 BodegaBean bodega = bodegaDao.obtenerBodega(idBodegaActual);
                 request.setAttribute("bodega", bodega);
-                view = request.getRequestDispatcher("HomeBodega.jsp");
+                view = request.getRequestDispatcher("/bodega/HomeBodega.jsp");
                 view.forward(request,response);
                 break;
             case "agregar":
@@ -304,7 +304,7 @@ public class BodegaServlet extends HttpServlet {
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet");
                         } else {
                             request.setAttribute("pedidosConProducto", listaPedidos);
-                            view = request.getRequestDispatcher("MiBodegaProductos.jsp");
+                            view = request.getRequestDispatcher("/bodega/MiBodegaProductos.jsp");
                             view.forward(request, response);
                         }
 
@@ -316,6 +316,57 @@ public class BodegaServlet extends HttpServlet {
                 }
 
 
+                break;
+
+            //-------------------------------Listar pedidos---------------------------
+            case "listarPedidos":
+                String pag1 = request.getParameter("pag") == null ?
+                        "1" : request.getParameter("pag");
+                int paginaAct1 = Integer.parseInt(pag1);
+                int cantPag1 = bodegaDao.calcularCantPagPedidos();
+                try{
+                    paginaAct1 = Integer.parseInt(pag1);
+                    if(paginaAct1>cantPag1){
+                        paginaAct1 = 1;
+                    }
+                }catch(NumberFormatException e){
+                    paginaAct1 = 1;
+                }
+
+                ArrayList<PedidoBean> listaPedidos = bodegaDao.obtenerListaPedidos(paginaAct1,idBodegaActual);
+                request.setAttribute("listaPedidos", listaPedidos);
+                request.setAttribute("cantPag", cantPag1);
+                request.setAttribute("paginaAct",paginaAct1);
+                view = request.getRequestDispatcher("/bodega/listaPedido.jsp");
+                view.forward(request,response);
+                break;
+
+            case "mostrarPedido":
+                String codigo = request.getParameter("codigo");
+                PedidosDatosDTO pedido = bodegaDao.mostrarPedido(codigo);
+                request.setAttribute("pedido", pedido);
+                view = request.getRequestDispatcher("/bodega/mostrarPedido.jsp");
+                view.forward(request,response);
+                break;
+            case "entregarPedido":
+                String codigo2 = request.getParameter("codigo");
+                if (bodegaDao.obtenerPedidoBodega(codigo2) != null) {
+                    bodegaDao.entregarPedido(codigo2);
+                    HttpSession session1 = request.getSession();
+                    session1.setAttribute("estado", "entregado");
+                }
+                response.sendRedirect(request.getContextPath() + "/PedidosServlet");
+                break;
+            case "cancelarPedido":
+                String codigo3 = request.getParameter("codigo");
+                if (bodegaDao.obtenerPedidoBodega(codigo3) != null) {
+                    HttpSession session1 = request.getSession();
+                    boolean valCancelar = bodegaDao.verificarCancelarPedido(codigo3);
+                    session1.setAttribute("valCancelar", valCancelar);
+                    session1.setAttribute("estado", "cancelado");
+                    bodegaDao.cancelarPedido(codigo3);
+                }
+                response.sendRedirect(request.getContextPath() + "/PedidosServlet");
                 break;
         }
 

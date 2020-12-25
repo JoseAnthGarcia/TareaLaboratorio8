@@ -15,7 +15,7 @@
 <html>
 <head>
     <title>Información de Pedido</title>
-    <jsp:include page="bootstrapRepository.jsp"/>
+    <jsp:include page="../bootstrapRepository.jsp"/>
 
 </head>
 <body>

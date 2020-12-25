@@ -16,7 +16,6 @@ BodegaBean {
     private int idDistrito;
     private DistritoBean distrito;
     private int idAdministrador;
-    private String contraseniaBodega;
 
     public DistritoBean getDistrito() {
         return distrito;
@@ -81,14 +80,6 @@ BodegaBean {
 
     public void setIdAdministrador(int idAdministrador) {
         this.idAdministrador = idAdministrador;
-    }
-
-    public String getContraseniaBodega() {
-        return contraseniaBodega;
-    }
-
-    public void setContraseniaBodega(String contraseniaBodega) {
-        this.contraseniaBodega = contraseniaBodega;
     }
 
     public int getIdBodega() {

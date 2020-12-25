@@ -13,7 +13,7 @@
 <html lang="en">
 <head>
     <title>Home</title>
-    <jsp:include page="bootstrapRepository.jsp"/>
+    <jsp:include page="../bootstrapRepository.jsp"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .btn {
@@ -47,28 +47,7 @@
 </head>
 <body>
 <header>
-    <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-
-        </div>
-    </div>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>MiMarca.com</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=home" class="navbar-brand d-flex align-items-center">
-                <strong>Mi Bodega</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=listar" class="navbar-brand d-flex align-items-center">
-                <strong>Productos</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/PedidosServlet" class="navbar-brand d-flex align-items-center">
-                <strong>Pedidos</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/LoginBodega?accion=logout" ><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR9XQYb7eVu1VyTTjGNd69RWqaIge0precdjw&usqp=CAU.png" height="30px"/></a>
-        </div>
-    </div>
+    <jsp:include page="includes/headerBodega.jsp" />
 </header>
 
 <div class=" Container" style="margin-top: 30px">
