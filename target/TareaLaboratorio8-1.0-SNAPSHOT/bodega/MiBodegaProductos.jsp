@@ -33,6 +33,15 @@
             font-size: 15px;
             cursor: pointer;
         }
+
+        .btn2 {
+            background-color: #343a40;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 15px;
+            cursor: pointer;
+        }
         /* Darker background on mouse-over */
         .btn:hover {
             background-color: #767676;
@@ -55,41 +64,15 @@
 
 <!-- todo:  corregir el espaciado entre Mi Bodega, Pedidos y Productos -->
 <header>
-    <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-
-        </div>
-    </div>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>MiMarca.com</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=home" class="navbar-brand d-flex align-items-center">
-                <strong>Mi Bodega</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=listar" class="navbar-brand d-flex align-items-center">
-                <strong>Productos</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/PedidosServlet" class="navbar-brand d-flex align-items-center">
-                <strong>Pedidos</strong>
-            </a>
-            <a>
-                <div class="card">
-                    <a href="<%=request.getContextPath()%>/LoginBodega?accion=logout" ><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR9XQYb7eVu1VyTTjGNd69RWqaIge0precdjw&usqp=CAU.png" height="30px"/></a>
-                </div>
-            </a>
-
-        </div>
-    </div>
+    <jsp:include page="includes/headerBodega.jsp" />
 </header>
 
 
 
-<div class="container" style="margin-top: 20px">
+<div class="container" >
 
     <!-- botones -->
-    <div class="container" style="margin-bottom: 20px;">
+    <div class="container" style="margin-top: 20px">
         <div class="row">
             <div class="col-sm-11">
                 <% if(pedidosConProducto!=null){ %>
@@ -101,6 +84,27 @@
                 </div>
                 <%}%>
             </div>
+
+        </div>
+    </div>
+
+    <!-- BARRA DE BUSQUEDA -->
+    <div class="row">
+        <div class="col-sm-8">
+            <form method="post" action="<%=request.getContextPath()%>/BodegaServlet?accion=buscar">
+                <div class="form-group row">
+                    <div class="col-10">
+                        <input class="form-control" type="text" placeholder="Buscar producto"
+                               name="textoBuscar" value="<%=productoBusqueda%>"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-2">
+            <a class="btn btn-danger btn2" href="<%=request.getContextPath()%>/BodegaServlet?accion=listar">Limpiar</a>
+        </div>
+
+        <div class="col-sm-2">
             <div class="col-sm-1">
                 <a href="<%=request.getContextPath()%>/BodegaServlet?accion=agregar">
                     <button class="btn"><i class="fa fa-plus"></i></button>
@@ -109,18 +113,11 @@
         </div>
     </div>
 
-    <!-- BARRA DE BUSQUEDA -->
-    <div>
-        <form method="post" action="<%=request.getContextPath()%>/BodegaServlet?accion=buscar">
-            <div class="form-group row">
-                <div class="col-10">
-                    <input class="form-control" type="text" placeholder="<%=productoBusqueda%>"
-                           name="textoBuscar"/>
-                </div>
-            </div>
-        </form>
+    <%if(listaProductoBodegas.size()==0){%>
+    <div class="alert alert-danger" role="alert" align="center">
+        No se ha encontrado ningún producto.
     </div>
-
+    <%}else{%>
     <!-- LISTA DE PRODUCTOS -->
     <form>
         <div class="row">
@@ -211,6 +208,7 @@
             </ul>
         </nav>
     </div>
+    <%}%>
 
 </div>
 

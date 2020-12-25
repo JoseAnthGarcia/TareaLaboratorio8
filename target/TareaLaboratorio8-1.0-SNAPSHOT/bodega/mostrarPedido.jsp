@@ -20,28 +20,7 @@
 </head>
 <body>
 <header>
-    <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-
-        </div>
-    </div >
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>MiMarca.com</strong>
-            </a>
-            <a href="../MiBodega.html" class="navbar-brand d-flex align-items-center">
-                <strong>Mi Bodega</strong>
-            </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Productos</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/PedidosServlet" class="navbar-brand d-flex align-items-center">
-                <strong>Pedidos</strong>
-            </a>
-            </a>
-        </div>
-    </div>
+    <jsp:include page="includes/headerBodega.jsp" />
 </header>
 <div class="container" style="margin-top: 20px">
     <div class="container-fluid">

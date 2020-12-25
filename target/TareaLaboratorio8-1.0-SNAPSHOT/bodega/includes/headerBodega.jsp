@@ -12,6 +12,10 @@
         <a href="<%=request.getContextPath()%>/BodegaServlet?accion=listarPedidos" class="navbar-brand d-flex align-items-center">
             <strong>Pedidos</strong>
         </a>
-        <a href="<%=request.getContextPath()%>/LoginBodega?accion=logout" ><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR9XQYb7eVu1VyTTjGNd69RWqaIge0precdjw&usqp=CAU.png" height="30px"/></a>
+        <a>
+            <div class="card">
+                <a href="<%=request.getContextPath()%>/LoginBodega?accion=logout"><img src="https://www.flaticon.com/svg/static/icons/svg/1828/1828479.svg" height="30px"/></a>
+            </div>
+        </a>
     </div>
 </div>

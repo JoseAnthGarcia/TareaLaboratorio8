@@ -186,9 +186,10 @@ public class BodegaServlet extends HttpServlet {
                 request.setAttribute("paginaAct", paginaAct);
                 request.setAttribute("productoBusqueda", textoBuscar);
 
-                request.setAttribute("listaProductoBodegas", BodegaDao.listarProductoBodega(paginaAct,textoBuscar, idBodegaActual)
-                        );
-                view = request.getRequestDispatcher("MiBodegaProductos.jsp");
+                ArrayList<ProductoBean> listaProductosBuscar = BodegaDao.listarProductoBodega(paginaAct,textoBuscar, idBodegaActual);
+
+                request.setAttribute("listaProductoBodegas", listaProductosBuscar);
+                view = request.getRequestDispatcher("/bodega/MiBodegaProductos.jsp");
                 view.forward(request, response);
                 break;
         }
@@ -214,6 +215,14 @@ public class BodegaServlet extends HttpServlet {
         RequestDispatcher view;
 
         switch (accion) {
+
+            case "home":
+                BodegaBean bodega = bodegaDao.obtenerBodega(idBodegaActual);
+                request.setAttribute("bodega", bodega);
+                view = request.getRequestDispatcher("/bodega/HomeBodega.jsp");
+                view.forward(request,response);
+                break;
+
             case "listar":
                 // Por defecto se deja en un string vacio, que mostraría todos los productos
                 String productoBusqueda = "";
@@ -247,16 +256,12 @@ public class BodegaServlet extends HttpServlet {
                 view = request.getRequestDispatcher("/bodega/MiBodegaProductos.jsp");
                 view.forward(request, response);
                 break;
-            case "home":
-                BodegaBean bodega = bodegaDao.obtenerBodega(idBodegaActual);
-                request.setAttribute("bodega", bodega);
-                view = request.getRequestDispatcher("/bodega/HomeBodega.jsp");
-                view.forward(request,response);
-                break;
+
             case "agregar":
                 view = request.getRequestDispatcher("anadirProducto.jsp");
                 view.forward(request, response);
                 break;
+
             case "editar":
 
                 boolean idProductoNumber = true;
@@ -303,6 +308,7 @@ public class BodegaServlet extends HttpServlet {
                             bodegaDao.eliminarProducto(idProductoInt2);
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet");
                         } else {
+                            //CORRECCION: flata enviar la lista de productos
                             request.setAttribute("pedidosConProducto", listaPedidos);
                             view = request.getRequestDispatcher("/bodega/MiBodegaProductos.jsp");
                             view.forward(request, response);
