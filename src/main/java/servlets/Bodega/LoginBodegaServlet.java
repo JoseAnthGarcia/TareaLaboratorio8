@@ -82,7 +82,7 @@ public class LoginBodegaServlet extends HttpServlet {
                     
                 }else{
                     request.setAttribute("rucExis",rucExis);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("actualizarContraBodega.jsp");
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("/bodega/actualizarContraBodega.jsp");
                     requestDispatcher.forward(request, response);
                 }
                 break;
@@ -161,7 +161,7 @@ public class LoginBodegaServlet extends HttpServlet {
 
         switch (accion) {
             case "actualizarContraCorreo":
-                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("actualizarContraBodega.jsp");
+                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("/bodega/actualizarContraBodega.jsp");
                 requestDispatcher2.forward(request, response);
                 break;
             case "actualizarContra":

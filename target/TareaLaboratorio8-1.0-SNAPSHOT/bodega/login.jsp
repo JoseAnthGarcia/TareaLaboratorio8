@@ -68,7 +68,7 @@
             <img style="border-radius: 50%" src="https://us.123rf.com/450wm/yupiramos/yupiramos1702/yupiramos170217136/72457937-bodega-de-almacenamiento-de-color-con-m%C3%BAltiples-cajas-y-la-ilustraci%C3%B3n-de-vector-de-carretilla-elevadora.jpg?ver=6" height="450px"/>
             <a href="<%=request.getContextPath()%>/LoginServlet?accion=parteEmpresa" class="btn btn-secondary my-2">Regresar</a>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-5">
 
             <div>
                 <h1 class="jumbotron-heading" style="margin-bottom: 30px; padding-bottom: 10px; border-bottom: 0.2px solid;">Ingrese sus datos proporcionados por la compañía</h1>
@@ -90,6 +90,8 @@
                 <button type="submit" class="btn btn-secondary my-2">Ingresar</button>
                 <a href="<%=request.getContextPath()%>/LoginServlet?accion=parteEmpresa" class="btn btn-secondary my-2">Regresar</a>
             </form>
+        </div>
+        <div class="col-lg-1">
         </div>
     </div>
 
