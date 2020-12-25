@@ -6,14 +6,14 @@
 <jsp:useBean id="paginaAct" scope="request" type="java.lang.Integer"/>
 <html>
 <head>
-    <title>Listar pedidos</title>
+    <title>Lista pedidos</title>
     <jsp:include page="../bootstrapRepository.jsp"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .btn {
-            background-color: #d6d2c4;
+            background-color: #343a40;
             border: none;
-            color: black;
+            color: white;
             padding: 12px 16px;
             font-size: 15px;
             cursor: pointer;
@@ -29,13 +29,14 @@
             text-align: center;
             padding: 3% 15% ;
         }
+
         .page-item .page-link {
-            color: #767676;
-            border-color: #767676;
+            color: #343a40;
+            border-color: #343a40;
         }
         .page-item.active .page-link {
-            border-color: #767676;
-            background-color: #767676;
+            border-color: #343a40;
+            background-color: #343a40;
         }
     </style>
 </head>
@@ -45,7 +46,7 @@
     <jsp:include page="includes/headerBodega.jsp" />
 </header>
 
-<div class="container" style="margin-top: 20px">
+<div class="container" >
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
@@ -79,14 +80,14 @@
             </tr>
             <%for (PedidoBean pedidos : listaPedidos) { %>
             <tr>
-                <td><a href="<%=request.getContextPath()%>/BodegaServlet?accion=mostrarPedido&codigo=<%=pedidos.getCodigo() %>"><%=pedidos.getCodigo()%></a>
+                <td height="70px"><a href="<%=request.getContextPath()%>/BodegaServlet?accion=mostrarPedido&codigo=<%=pedidos.getCodigo() %>"><%=pedidos.getCodigo()%></a>
                 </td>
-                <td><%=pedidos.getEstado()%></td>
+                <td height="70px"><%=pedidos.getEstado()%></td>
                 <td>
                     <% if(pedidos.getEstado().equalsIgnoreCase("Pendiente")){
                     %>
-                <a href="<%=request.getContextPath()%>/BodegaServlet?accion=entregarPedido&codigo=<%=pedidos.getCodigo()%>" class="btn btn-outline-success">Pedido Entregado</a>
-                <a href="<%=request.getContextPath()%>/BodegaServlet?accion=cancelarPedido&codigo=<%=pedidos.getCodigo()%>" class="btn btn-outline-danger">Cancelar Pedido</a>
+                <a href="<%=request.getContextPath()%>/BodegaServlet?accion=entregarPedido&codigo=<%=pedidos.getCodigo()%>" class="btn btn-success">Pedido Entregado</a>
+                <a href="<%=request.getContextPath()%>/BodegaServlet?accion=cancelarPedido&codigo=<%=pedidos.getCodigo()%>" class="btn btn-danger">Cancelar Pedido</a>
                     <% } %>
                 </td>
 
@@ -102,7 +103,7 @@
                     </li>
                     <%}else{%>
                     <li class="page-item">
-                        <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=paginaAct-1%>">Anterior</a>
+                        <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?accion=listarPedidos&pag=<%=paginaAct-1%>">Anterior</a>
                     </li>
                     <%}%>
 
@@ -113,7 +114,7 @@
                           </span>
                     </li>
                     <%      }else{%>
-                    <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=k%>"><%=k%></a></li>
+                    <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?accion=listarPedidos&pag=<%=k%>"><%=k%></a></li>
                     <%      }
                     } %>
 
@@ -124,7 +125,7 @@
                     </li>
                     <%}else{%>
                     <li class="page-item">
-                        <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?pag=<%=paginaAct+1%>">Siguiente</a>
+                        <a class="page-link" href="<%=request.getContextPath()%>/BodegaServlet?accion=listarPedidos&pag=<%=paginaAct+1%>">Siguiente</a>
                     </li>
                     <%}%>
 
@@ -132,11 +133,7 @@
             </nav>
         </div>
     </div>
-<footer class="page-footer font-small blue" style="margin-top: 60px">
-    <div class="footer-copyright text-center py-3">© 2020 Copyright:
-        <a href="#"> MiMarca.com</a>
-    </div>
-</footer>
+
 </div>
 </body>
 </html>

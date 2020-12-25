@@ -26,8 +26,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         /* Darker background on mouse-over */
+        .btn {
+            background-color: #343a40;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        /* Darker background on mouse-over */
         .btn:hover {
-            background-color: #767676;
+            background-color: #f05454;
         }
     </style>
 
@@ -43,7 +52,7 @@
 
 <p></p>
 <main class="my-form">
-    <div class="cotainer">
+    <div class="cotainer" style="margin-left: 5%; margin-right: 5%">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -123,11 +132,6 @@
     <div>
     </div>
 
-    <footer class="page-footer font-small blue" style="margin-top: 60px">
-        <div class="footer-copyright text-center py-3">© 2020 Copyright:
-            <a href="#"> MiMarca.com.pe</a>
-        </div>
-    </footer>
 </main>
 </body>
 </html>
