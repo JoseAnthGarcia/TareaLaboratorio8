@@ -365,18 +365,23 @@ public class BodegaServlet extends HttpServlet {
                     HttpSession session1 = request.getSession();
                     session1.setAttribute("estado", "entregado");
                 }
-                response.sendRedirect(request.getContextPath() + "/PedidosServlet");
+                response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listarPedidos");
                 break;
             case "cancelarPedido":
                 String codigo3 = request.getParameter("codigo");
                 if (bodegaDao.obtenerPedidoBodega(codigo3) != null) {
                     HttpSession session1 = request.getSession();
                     boolean valCancelar = bodegaDao.verificarCancelarPedido(codigo3);
+
                     session1.setAttribute("valCancelar", valCancelar);
                     session1.setAttribute("estado", "cancelado");
-                    bodegaDao.cancelarPedido(codigo3);
+                    if(valCancelar){
+                        bodegaDao.cancelarPedido(codigo3);
+                    }
+                    response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listarPedidos");
+                }else{
+                    response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listarPedidos");
                 }
-                response.sendRedirect(request.getContextPath() + "/PedidosServlet");
                 break;
         }
 

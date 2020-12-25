@@ -455,16 +455,10 @@ public class BodegaDao extends BaseDao{
     public ArrayList<PedidoBean> obtenerListaPedidos(int pagina, int idBodega) {
         int limit = (pagina-1)*5;
         ArrayList<PedidoBean> listaPedidos = new ArrayList<>();
-        String sql = "SELECT p.idPedido, p.codigo, p.estado FROM pedido p \n" +
-                "where p.idBodega = ? limit ?, 5";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        String sql = "SELECT * FROM pedido \n" +
+                "where idBodega = ? ORDER BY fecha_registro DESC limit ?, 5";
 
         try {
-
             Connection connection = getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, idBodega);
@@ -473,9 +467,11 @@ public class BodegaDao extends BaseDao{
             try (ResultSet rs = statement.executeQuery();) {
                 while (rs.next()) {
                     PedidoBean pedidos = new PedidoBean();
-                    pedidos.setId(rs.getInt(1));
-                    pedidos.setCodigo(rs.getString(2));
-                    pedidos.setEstado(rs.getString(3));
+                    pedidos.setId(rs.getInt("idPedido"));
+                    pedidos.setCodigo(rs.getString("codigo"));
+                    pedidos.setEstado(rs.getString("estado"));
+                    pedidos.setFecha_registro(rs.getString("fecha_registro"));
+                    pedidos.setFecha_recojo(rs.getString("fecha_recojo"));
                     listaPedidos.add(pedidos);
                 }
             }

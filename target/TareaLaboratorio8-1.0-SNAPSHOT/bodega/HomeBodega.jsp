@@ -12,7 +12,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Home</title>
+    <title>Bodega: <%=bodega.getNombreBodega()%></title>
     <jsp:include page="../bootstrapRepository.jsp"/>
     <jsp:include page="/includes/utf8Cod.jsp"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -54,11 +54,11 @@
 <div class=" Container" style="margin-top: 30px; margin-left: 5%; margin-right: 5%">
     <div class="row">
         <div class="col-lg-6 col-md-12">
-            <div class="row">
+            <div class="row" style="margin-top: 60px;">
                 <div class="col-lg-2 col-md-12">
                 </div>
                 <div class="col-lg-8 col-md-12">
-                    <img src="<%=request.getContextPath()%>/ImagenServlet?idBodega=<%=bodega.getIdBodega()%>" width="400px"/>
+                    <img src="<%=request.getContextPath()%>/ImagenServlet?idBodega=<%=bodega.getIdBodega()%>" width="400px" class="img-thumbnail"/>
                 </div>
                 <div class="col-lg-2 col-md-12">
                 </div>
@@ -92,12 +92,6 @@
     </div>
 
 </div>
-
-    <footer class="page-footer font-small blue" style="margin-top: 60px">
-        <div class="footer-copyright text-center py-3">© 2020 Copyright:
-            <a href="#"> MiMarca.com</a>
-        </div>
-    </footer>
 
 
 </body>

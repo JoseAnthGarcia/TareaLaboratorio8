@@ -47,12 +47,14 @@
     <jsp:include page="includes/headerBodega.jsp" />
 </header>
 
-<div class="container" >
+
     <div class="container-fluid">
         <div class="row">
+            <%/*
             <div class="col-sm-6">
-                <h1 class="margen">Pedidos</h1>
+                <h1 class="margen">Lista de pedidos</h1>
             </div>
+            */%>
             <div class="col-sm-6">
                 <%if(session.getAttribute("valCancelar")!=null){
                 if(!(boolean)session.getAttribute("valCancelar")){%>
@@ -62,20 +64,30 @@
                     la fecha de recojo.
                 </div>
                 <%}%>
-                <%session.removeAttribute("valCancelar");}%>
+                <%}%>
             </div>
-            <% if (session.getAttribute("estado") != null) {
-                String estado = (String) session.getAttribute("estado");%>
-            <div class="alert alert-success" role="alert">
-                ¡ Pedido <%=estado%> con éxito !
-            </div>
-            <% session.removeAttribute("estado");
-            }%>
+            <%if(session.getAttribute("estado") != null){
+                if(((String)session.getAttribute("estado")).equalsIgnoreCase("cancelado")){
+                    if(session.getAttribute("valCancelar")!=null &&
+                            (boolean)session.getAttribute("valCancelar")){%>
+                    <div class="alert alert-success" role="alert">
+                        ¡ Pedido <%=(String)session.getAttribute("estado")%> con éxito !
+                    </div>
+                    <%}
+                        session.removeAttribute("valCancelar");%>
+                <%}else{%>
+                    <div class="alert alert-success" role="alert">
+                        ¡ Pedido <%=(String)session.getAttribute("estado")%> con éxito !
+                    </div>
+                <%}%>
+            <%session.removeAttribute("estado");}%>
         </div>
         <table class="table container-fluid">
             <tr>
                 <th>Codigo</th>
                 <th>Estado</th>
+                <th>Fecha de registro</th>
+                <th>Fecha de recojo</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -84,11 +96,17 @@
                 <td height="70px"><a href="<%=request.getContextPath()%>/BodegaServlet?accion=mostrarPedido&codigo=<%=pedidos.getCodigo() %>"><%=pedidos.getCodigo()%></a>
                 </td>
                 <td height="70px"><%=pedidos.getEstado()%></td>
+                <td><%=pedidos.getFecha_registro()%></td>
+                <td><%=pedidos.getFecha_registro()%></td>
                 <td>
                     <% if(pedidos.getEstado().equalsIgnoreCase("Pendiente")){
                     %>
-                <a href="<%=request.getContextPath()%>/BodegaServlet?accion=entregarPedido&codigo=<%=pedidos.getCodigo()%>" class="btn btn-success">Pedido Entregado</a>
-                <a href="<%=request.getContextPath()%>/BodegaServlet?accion=cancelarPedido&codigo=<%=pedidos.getCodigo()%>" class="btn btn-danger">Cancelar Pedido</a>
+                <a href="<%=request.getContextPath()%>/BodegaServlet?accion=entregarPedido&codigo=<%=pedidos.getCodigo()%>"
+                   onclick="return confirm('¿Esta seguro de quiere entregar este pedido?')"
+                   class="btn btn-success">Pedido Entregado</a>
+                <a href="<%=request.getContextPath()%>/BodegaServlet?accion=cancelarPedido&codigo=<%=pedidos.getCodigo()%>"
+                   onclick="return confirm('¿Esta seguro de quiere cancelar este pedido?')"
+                   class="btn btn-danger">Cancelar Pedido</a>
                     <% } %>
                 </td>
 
@@ -135,6 +153,6 @@
         </div>
     </div>
 
-</div>
+
 </body>
 </html>
