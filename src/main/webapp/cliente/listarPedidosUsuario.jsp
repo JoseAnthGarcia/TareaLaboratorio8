@@ -67,8 +67,9 @@
                         class="btn btn-danger">Cancelar</a></td>
                     <%}else{ %>
                      <td>
-                         <a onclick="return confirm('No es posible cancelar este pedido porque el tiempo límite de cancelación se ha cumplido')"
-                         class="btn btn-danger">Cancelar</a></td>
+                         <button onclick="alert('No es posible cancelar este pedido porque el tiempo límite de cancelación se ha cumplido')" class="btn btn-danger">
+                             Bloquear</button>
+                     </td>
                     <%} %>
                 <% }else{ %>
                 <td></td>
