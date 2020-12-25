@@ -149,7 +149,7 @@
                     <td><%=producto.getStock()%></td>
                     <td>S/<%=producto.getPrecioProducto()%></td>
                     <td>
-                        <a href="<%=request.getContextPath()%>/BodegaServlet?accion=editar&idProducto=<%=producto.getId()%>">
+                        <a href="<%=request.getContextPath()%>/BodegaServlet?accion=editarProducto&idProducto=<%=producto.getId()%>">
                             <i class="fa fa-edit btn"></i>
                         </a>
                     </td>

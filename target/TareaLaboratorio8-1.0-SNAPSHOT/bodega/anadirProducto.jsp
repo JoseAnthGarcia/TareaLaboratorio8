@@ -1,6 +1,4 @@
-<%@ page import="beans.ProductoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="producto" scope="request" type="beans.ProductoBean" />
 
 <!-- validaciones de input -->
 <%
@@ -10,8 +8,8 @@
     boolean validPrecioUnitario = request.getAttribute("validPrecioUnitario") != null ?
             ((boolean) request.getAttribute("validPrecioUnitario")) : true;
 
-    boolean validDescr = request.getAttribute("validDescr") != null ?
-            ((boolean) request.getAttribute("validDescr")) : true;
+    boolean validNombreProducto = request.getAttribute("validNombreProducto") != null ?
+            ((boolean) request.getAttribute("validNombreProducto")) : true;
 %>
 
 <html>
@@ -24,13 +22,15 @@
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
+
+        }
         /* Darker background on mouse-over */
         .btn:hover {
             background-color: #767676;
         }
     </style>
 
-    <title>Editar Producto</title>
+    <title>Agregar Producto</title>
 
 </head>
 
@@ -38,57 +38,42 @@
 
 <!-- todo:  corregir el espaciado entre Mi Bodega, Pedidos y Productos -->
 <header>
-    <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-
-        </div>
-    </div>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>MiMarca.com</strong>
-            </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Mi Bodega</strong>
-            </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Productos</strong>
-            </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Pedidos</strong>
-            </a>
-            <a>
-                <div class="card"><a href="login.html" >
-                    <img src="signout.png" height="30px"/>
-                </a>
-                </div>
-            </a>
-        </div>
-    </div>
+    <jsp:include page="includes/headerBodega.jsp" />
 </header>
+
 <p></p>
 <main class="my-form">
     <div class="cotainer">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Editar Producto: <%=producto.getNombreProducto()%></div>
+                    <div class="card-header">Registrar Producto</div>
                     <div class="card-body">
 
                         <!-- FORMULARIO -->
                         <% System.out.println(request.getContextPath()); %>
-                        <form method="POST" action="<%=request.getContextPath()%>/BodegaServlet?accion=actualizar">
-                                <input hidden name="idProducto" value="<%=producto.getId()%>">
+                        <form method="POST" action="<%=request.getContextPath()%>/BodegaServlet?accion=guardar" enctype="multipart/form-data"
+                        >
+
+                            <!-- NOMBRE -->
+                            <div class="form-group row">
+                                <label for="nombreProducto" class="col-md-4 col-form-label text-md-right">Producto</label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control <%=validNombreProducto?"":"is-invalid"%>" name="nombreProducto"
+                                           id="nombreProducto"
+                                           aria-describedby="validationServer05Feedback" required>
+                                    <div id="validationServer05Feedback" class="invalid-feedback">
+                                        No puede estar vacío
+                                    </div>
+
+                                </div>
+                            </div>
+
                             <!-- DESCRIPCIO -->
                             <div class="form-group row">
                                 <label for="Descripcion" class="col-md-4 col-form-label text-md-right">Descripción</label>
                                 <div class="col-md-6">
-                                    <input  type="text" id="Descripcion" class="form-control <%=validDescr?"":"is-invalid"%>"
-                                            name="descripcion"
-                                            value="<%=producto.getDescripcion()%>">
-                                    <div class="invalid-feedback">
-                                        Ingrese una descripcion valida, por favor.
-                                    </div>
+                                    <textarea  type="text" id="Descripcion" class="form-control" name="descripcion" placeholder="Ingrese una descripcion"></textarea>
                                 </div>
                             </div>
 
@@ -96,11 +81,11 @@
                             <div class="form-group row">
                                 <label for="Stock" class="col-md-4 col-form-label text-md-right">Stock</label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control <%=validStock?"":"is-invalid"%>" name="stock" value="<%=producto.getStock()%>"
+                                    <input type="text" class="form-control <%=validStock?"":"is-invalid"%>" name="stock"
                                            id="Stock"
                                            aria-describedby="validationServer03Feedback" required>
                                     <div id="validationServer03Feedback" class="invalid-feedback">
-                                        Debe ser un número
+                                        Debe ser un número válido
                                     </div>
                                 </div>
                             </div>
@@ -109,27 +94,23 @@
                             <div class="form-group row">
                                 <label for="Precio" class="col-md-4 col-form-label text-md-right">Precio Unitario</label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control <%=validPrecioUnitario?"":"is-invalid"%>" name="precioProducto" value="<%=producto.getPrecioProducto()%>"
+                                    <input type="text" class="form-control <%=validPrecioUnitario?"":"is-invalid"%>" name="precioProducto"
                                            id="Precio"
                                            aria-describedby="validationServer04Feedback" required>
                                     <div id="validationServer04Feedback" class="invalid-feedback">
-                                        Debe ser un número
+                                        Debe ser un número válido
                                     </div>
                                 </div>
 
                             </div>
 
-                            <!--TODO: como se maneja el subir imagenes
+                            <!--imagenes -->
                             <div class="form-group row">
-
-                                <label for="Imagen de la bodega" class="col-md-4 col-form-label text-md-right">Imagen del Producto</label>
+                                <label  class="col-md-4 col-form-label text-md-right">Imagen:</label>
                                 <div class="col-md-6">
-                                    <form enctype="multipart/form-data" action="uploader.php" method="POST">
-                                        <input name="uploadedfile" type="file" />
-                                    </form>
-                                    <img src="frutas.svg" height="60px"/>
+                                    <input type="file" name="foto">
                                 </div>
-                            </div> -->
+                            </div>
 
                             <!-- BOTONES CONFIRMAR Y CANCELAR <-->
                             <div class="col-md-6 offset-md-4">
@@ -137,16 +118,18 @@
                                     <input type="submit" value="Confirmar" class="btn btn-outline-secondary">
                                 </a>
                                 <a class="btn btn-outline-danger" href="<%=request.getContextPath()%>/BodegaServlet">
-                                    Cancelar
+                                        Cancelar
                                 </a>
                             </div>
-                        </form>
+
                     </div>
                 </div>
+
+                </form>
             </div>
         </div>
     </div>
-    <div>
+    </div>
     </div>
 
     <footer class="page-footer font-small blue" style="margin-top: 60px">

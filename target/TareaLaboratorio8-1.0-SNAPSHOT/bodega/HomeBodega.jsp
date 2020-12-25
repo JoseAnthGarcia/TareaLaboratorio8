@@ -50,7 +50,7 @@
     <jsp:include page="includes/headerBodega.jsp" />
 </header>
 
-<div class=" Container" style="margin-top: 30px">
+<div class=" Container" style="margin-top: 30px; margin-left: 5%; margin-right: 5%">
     <div class="row">
         <div class="col-lg-6 col-md-12">
             <div class="row">

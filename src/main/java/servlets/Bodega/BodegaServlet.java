@@ -39,6 +39,7 @@ public class BodegaServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
 
         HttpSession session = request.getSession();
         BodegaBean bodegaActual = (BodegaBean) session.getAttribute("bodega");
@@ -103,7 +104,7 @@ public class BodegaServlet extends HttpServlet {
                     request.setAttribute("validPrecioUnitario", validPrecioUnitario);
                     request.setAttribute("validNombreProducto", validNombreProducto);
 
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("anadirProducto.jsp");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/bodega/anadirProducto.jsp");
                     dispatcher.forward(request, response);
                 }
 
@@ -150,7 +151,7 @@ public class BodegaServlet extends HttpServlet {
                         if(bodegaDao.buscarProducto2(idProductoInt)!=null){
                             //actualiza
                             bodegaDao.actualizarProducto(idProductoInt, descripcion2, stock2, precioUnitario2);
-                            response.sendRedirect(request.getContextPath() + "/BodegaServlet");
+                            response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
                         }else{
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet");
                         }
@@ -160,7 +161,7 @@ public class BodegaServlet extends HttpServlet {
                         request.setAttribute("validStock", validStock2);
                         request.setAttribute("validPrecioUnitario", validPrecioUnitario2);
 
-                        RequestDispatcher dispatcher = request.getRequestDispatcher("editarProducto.jsp");
+                        RequestDispatcher dispatcher = request.getRequestDispatcher("/bodega/editarProducto.jsp");
                         dispatcher.forward(request, response);
                     }
                 }else{
@@ -198,6 +199,7 @@ public class BodegaServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
 
         HttpSession session = request.getSession();
         BodegaBean bodegaActual = (BodegaBean) session.getAttribute("bodega");
@@ -258,11 +260,11 @@ public class BodegaServlet extends HttpServlet {
                 break;
 
             case "agregar":
-                view = request.getRequestDispatcher("anadirProducto.jsp");
+                view = request.getRequestDispatcher("/bodega/anadirProducto.jsp");
                 view.forward(request, response);
                 break;
 
-            case "editar":
+            case "editarProducto":
 
                 boolean idProductoNumber = true;
 
@@ -280,7 +282,7 @@ public class BodegaServlet extends HttpServlet {
                         response.sendRedirect(request.getContextPath() + "/BodegaServlet");
                     } else {
                         request.setAttribute("producto", producto);
-                        view = request.getRequestDispatcher("editarProducto.jsp");
+                        view = request.getRequestDispatcher("/bodega/editarProducto.jsp");
                         view.forward(request, response);
                     }
                 } else {
@@ -384,5 +386,5 @@ public class BodegaServlet extends HttpServlet {
         view2.forward(request, response);
     }
 
-    }
+         }
 }
