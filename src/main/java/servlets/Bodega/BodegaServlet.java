@@ -309,9 +309,11 @@ public class BodegaServlet extends HttpServlet {
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet");
                         } else {
                             //CORRECCION: flata enviar la lista de productos
-                            request.setAttribute("pedidosConProducto", listaPedidos);
-                            view = request.getRequestDispatcher("/bodega/MiBodegaProductos.jsp");
-                            view.forward(request, response);
+                            //request.setAttribute("pedidosConProducto", listaPedidos);
+                            request.getSession().setAttribute("pedidosConProducto", listaPedidos);
+                            //view = request.getRequestDispatcher("/bodega/MiBodegaProductos.jsp");
+                            //view.forward(request, response);
+                            response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
                         }
 
                     } else {

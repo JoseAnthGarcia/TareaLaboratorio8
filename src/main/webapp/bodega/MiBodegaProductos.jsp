@@ -13,7 +13,6 @@
 <jsp:useBean id="cantPag" scope="request" type="java.lang.Integer"/>
 <jsp:useBean id="paginaAct" scope="request" type="java.lang.Integer"/>
 <jsp:useBean id="productoBusqueda" scope="request" type="java.lang.String"/>
-<%ArrayList<PedidoBean> pedidosConProducto = request.getAttribute("pedidosConProducto")==null?null:(ArrayList<PedidoBean>)request.getAttribute("pedidosConProducto");%>
 
 <html>
 <head>
@@ -75,14 +74,16 @@
     <div class="container" style="margin-top: 20px">
         <div class="row">
             <div class="col-sm-11">
-                <% if(pedidosConProducto!=null){ %>
+                <% if(session.getAttribute("pedidosConProducto")!=null){
+                    ArrayList<PedidoBean> pedidosConProducto = (ArrayList<PedidoBean>) session.getAttribute("pedidosConProducto"); %>
                 <div class="alert alert-danger" role="alert">
                     <h6>El producto que desea eliminar se ha encontrado en los siguientes pedidos pendientes:</h6>
                     <%for(PedidoBean pedido: pedidosConProducto){%>
                     <h6>-<%=pedido.getCodigo()%></h6>
                     <%}%>
                 </div>
-                <%}%>
+                <%session.removeAttribute("pedidosConProducto");
+                }%>
             </div>
 
         </div>
