@@ -95,7 +95,7 @@
                                name="contraseniaB" id="inputPassword1" <%=request.getParameter("contraseniaB")==null?"":"value='"+request.getParameter("contraseniaB")+"'"%> >
                         <div id="inputPasswordBFeedback" class="invalid-feedback">
                             <%if(!contraSecu1){%>
-                            La contraseña debe tener longitud mínima de 8 caracteres e incluir letras y números
+                            La contraseña debe tener longitud mínima de 8 caracteres, no incluir espacios vacios e incluir letras y números
                             <%}else{%>
                             Ingrese una contraseña válida
                             <%}%>

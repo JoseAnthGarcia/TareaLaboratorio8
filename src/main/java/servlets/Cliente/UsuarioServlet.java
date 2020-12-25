@@ -823,6 +823,34 @@ public class UsuarioServlet extends HttpServlet {
                     requestDispatcher.forward(request, response);
 
                     break;
+                case "detalleProducto":
+                    if (session.getAttribute("bodegaEscogida") != null) {
+                        boolean noNumber = false;
+                        int idProducto = -1;
+
+                        try {
+                            idProducto = Integer.parseInt(request.getParameter("productSelect"));
+                        } catch (NumberFormatException e) {
+                            noNumber = true;
+                        }
+
+                        if (!noNumber && usuarioDao.verificarProductoBodega(idProducto, ((BodegaBean) session.getAttribute("bodegaEscogida")).getIdBodega())) {
+                            ProductoBean productoBean1 = usuarioDao.obtenerProducto(idProducto);
+                            request.setAttribute("producto",productoBean1);
+                            requestDispatcher = request.getRequestDispatcher("/cliente/detalleProducto.jsp");
+
+                            requestDispatcher.forward(request, response);
+
+                        } else {
+                            //accion malintensionado
+                            requestDispatcher = request.getRequestDispatcher("/cliente/default.jsp");
+                            requestDispatcher.forward(request, response);
+                        }
+                    } else {
+                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=escogerBodega1");
+                    }
+
+                    break;
                 default:
                     requestDispatcher = request.getRequestDispatcher("/cliente/default.jsp");
                     requestDispatcher.forward(request, response);
