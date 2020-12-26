@@ -116,7 +116,7 @@
 
                             <!-- BOTONES CONFIRMAR Y CANCELAR <-->
                             <div class="col-md-6 offset-md-4">
-                                <a>
+                                <a href="<%=request.getContextPath()%>/BodegaServlet?accion=listar">
                                     <input type="submit" onclick="return confirm('¿Esta seguro de quiere editar este producto?')" value="Confirmar" class="btn btn-outline-secondary">
                                 </a>
                                 <a class="btn btn-outline-danger" href="<%=request.getContextPath()%>/BodegaServlet?accion=listar">

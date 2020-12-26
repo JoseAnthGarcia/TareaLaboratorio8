@@ -98,7 +98,6 @@ public class BodegaServlet extends HttpServlet {
                 // si es que los datos son correctos, se guarda el producto
                 if (validStock & validPrecioUnitario & validNombreProducto) {
                     BodegaDao.crearProducto(nombreProducto, descripcion, stock, precioUnitario, idBodegaActual, inputStream);
-
                 } else {
                     request.setAttribute("validStock", validStock);
                     request.setAttribute("validPrecioUnitario", validPrecioUnitario);
@@ -151,7 +150,7 @@ public class BodegaServlet extends HttpServlet {
                         if(bodegaDao.buscarProducto2(idProductoInt)!=null){
                             //actualiza
                             bodegaDao.actualizarProducto(idProductoInt, descripcion2, stock2, precioUnitario2);
-                            response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
+                            response.sendRedirect(request.getContextPath() + "/BodegaServlet");
                         }else{
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet");
                         }
@@ -209,7 +208,7 @@ public class BodegaServlet extends HttpServlet {
 
 
             String accion = request.getParameter("accion") == null ?
-                "home" : request.getParameter("accion");
+                "listar" : request.getParameter("accion");
 
 
         BodegaDao bodegaDao = new BodegaDao();
@@ -284,6 +283,7 @@ public class BodegaServlet extends HttpServlet {
                         request.setAttribute("producto", producto);
                         view = request.getRequestDispatcher("/bodega/editarProducto.jsp");
                         view.forward(request, response);
+
                     }
                 } else {
                     response.sendRedirect(request.getContextPath() + "/BodegaServlet");
@@ -315,7 +315,7 @@ public class BodegaServlet extends HttpServlet {
                             request.getSession().setAttribute("pedidosConProducto", listaPedidos);
                             //view = request.getRequestDispatcher("/bodega/MiBodegaProductos.jsp");
                             //view.forward(request, response);
-                            response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
+                            response.sendRedirect(request.getContextPath() + "/BodegaServlet");
                         }
 
                     } else {

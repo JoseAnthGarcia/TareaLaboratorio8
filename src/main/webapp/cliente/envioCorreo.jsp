@@ -66,11 +66,7 @@
 </div>
 <a href="<%=request.getContextPath()%>/LoginServlet">
     <button type="button" class="btn btn-success tercero">Entendido</button></a>
-<footer class="page-footer font-small blue" style="margin-top: 100px">
-    <div class="footer-copyright text-center py-3">© 2020 Copyright:
-        <a href="#">MiMarca</a>
-    </div>
-</footer>
+
 
 </body>
 </html>

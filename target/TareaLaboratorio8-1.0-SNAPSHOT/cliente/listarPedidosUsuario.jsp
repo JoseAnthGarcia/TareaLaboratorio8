@@ -120,15 +120,7 @@
         </nav>
     </div>
 
-    <div class="mt-5">
-        <footer class="page-footer font-small blue" style="margin-top: 20px">
 
-            <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="#">MiMarca</a>
-            </div>
-
-        </footer>
-    </div>
 
 </div>
 
