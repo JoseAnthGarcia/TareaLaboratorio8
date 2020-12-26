@@ -97,7 +97,9 @@
             <div class="navbar navbar-dark bg-dark box-shadow">
                 <div class="container d-flex justify-content-between">
                     <div class="container d-flex justify-content-between">
-                        <a href="#" class="navbar-brand d-flex align-items-center">
+                        <a onclick="return confirm('¿Estas seguro que deseas salir del registro de la bodega? ' +
+                         '')"
+                           href="<%=request.getContextPath()%>/AdminServlet?accion=miPerfil" class="navbar-brand d-flex align-items-center">
                             <strong>Administración</strong>
                         </a>
                         <a href="<%=request.getContextPath()%>/AdminServlet?accion=registrar" class="navbar-brand d-flex align-items-center">
