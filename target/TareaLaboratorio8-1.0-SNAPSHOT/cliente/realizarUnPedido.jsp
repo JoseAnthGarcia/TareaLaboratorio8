@@ -61,7 +61,7 @@
     <jsp:include page="/cliente/includes/headerClient.jsp"/>
 </header>
 
-<div class="container" style="margin-top: 65px; margin-left: 15%; margin-right: 15%">
+<div class="container" style="margin-top: 20px; margin-left: 8%">
 
     <div class="row">
         <div class="col-sm-8">
@@ -199,14 +199,7 @@
 
 
 </div>
-<div class="container mt-5">
-    <footer class="page-footer font-small blue" style="margin-top: 20px">
-        <div class="footer-copyright text-center py-3">© 2020 Copyright:
-            <a href="#">MiMarca</a>
-        </div>
-    </footer>
 
-</div>
 
 
 
