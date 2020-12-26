@@ -429,7 +429,6 @@ public class UsuarioServlet extends HttpServlet {
                                 pedido.setTotalApagar(precioTotal);
                                 BodegaBean bodegaEscogida = (BodegaBean) session1.getAttribute("bodegaEscogida");
                                 pedido.setBodegaBean(bodegaEscogida);
-                                //TODO: falta usuaio, esta bien??
                                 UsuarioBean usuario = (UsuarioBean) session1.getAttribute("usuario");
                                 pedido.setUsuario(usuario);
                                 int idPedido = usuarioDao.crearPedido(pedido);
@@ -631,9 +630,6 @@ public class UsuarioServlet extends HttpServlet {
 
                 case "escogerBodega1":
                     HttpSession session5 = request.getSession();
-                    /*int idDistrito = ((UsuarioBean)session.getAttribute("usuario")).getIdUsuario();
-                    //TODO: OJO !!!!
-                    System.out.println(((UsuarioBean)session.getAttribute("usuario")).getDistrito().getNombre());*/
                     ArrayList<BodegaBean> listaBodegas2 = usuarioDao.listarBodegasDistrito(((UsuarioBean) session5.getAttribute("usuario")).getIdUsuario());
                     request.setAttribute("listaBodegasDistrito", listaBodegas2);
                     requestDispatcher = request.getRequestDispatcher("/cliente/bodegasCercanas.jsp");
@@ -641,7 +637,6 @@ public class UsuarioServlet extends HttpServlet {
                     break;
 
                 case "escogerBodega2":
-                    //TODO: VALIDAR PAGINA
                     String pag = request.getParameter("pag") == null ? "1" : request.getParameter("pag");
 
                     int cantPags = usuarioDao.calcularCantPagListarBodegas();
