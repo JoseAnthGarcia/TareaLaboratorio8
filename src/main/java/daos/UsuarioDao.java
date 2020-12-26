@@ -632,7 +632,7 @@ public class UsuarioDao extends BaseDao {
         ArrayList<PedidoBean> listaPedidos=  new ArrayList<>();
 
         int limit = (pagina-1)*cantPorPag;
-        String sql= "select idPedido, codigo, estado, totalApagar \n" +
+        String sql= "select idPedido, codigo, estado, totalApagar,fecha_registro, fecha_recojo\n" +
                 "from pedido\n" +
                 "where idUsuario=? order by estado desc, fecha_registro desc\n" +
                 "limit ?,5;";
@@ -650,6 +650,8 @@ public class UsuarioDao extends BaseDao {
                     pedidosClienteBean.setCodigo(rs.getString("codigo"));
                     pedidosClienteBean.setEstado(rs.getString("estado"));
                     pedidosClienteBean.setTotalApagar(rs.getBigDecimal("totalApagar"));
+                    pedidosClienteBean.setFecha_registro(rs.getString("fecha_registro"));
+                    pedidosClienteBean.setFecha_recojo(rs.getString("fecha_recojo"));
                     listaPedidos.add(pedidosClienteBean);
                 }
             }

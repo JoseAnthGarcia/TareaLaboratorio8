@@ -56,6 +56,8 @@
             <tr>
                 <th>Código </th>
                 <th>Costo total</th>
+                <th>Fecha de registro</th>
+                <th>Fecha de entrega</th>
                 <th>Estado</th>
                 <th>Cancelar pedido</th>
             </tr>
@@ -63,6 +65,8 @@
             <tr>
                 <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=verDetallesPedido&idPedido=<%=pedido.getId()%>" ><%=pedido.getCodigo()%></a> </td>
                 <td>S/. <%=pedido.getTotalApagar()%></td>
+                <td> <%=pedido.getFecha_registro()%></td>
+                <td> <%=pedido.getFecha_recojo()%></td>
                 <td><%=pedido.getEstado()%></td>
                 <% if(pedido.getEstado().equalsIgnoreCase("Pendiente")){%>
                     <td>
