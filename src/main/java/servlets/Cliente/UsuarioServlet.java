@@ -466,6 +466,8 @@ public class UsuarioServlet extends HttpServlet {
                         }
                     } else {
                         //error malintensionado
+                        view2 = request.getRequestDispatcher("cliente/default.jsp");
+                        view2.forward(request, response);
                     }
 
                     break;
@@ -596,8 +598,6 @@ public class UsuarioServlet extends HttpServlet {
             int usuarioActualId = clienteActual.getIdUsuario();
 
             switch (accion) {
-
-
 
                 case "miPerfil":
 
@@ -827,15 +827,26 @@ public class UsuarioServlet extends HttpServlet {
                 case "productosDisponibles":
                     ProductoBean productoBean = new ProductoBean();
                     String pag2 = request.getParameter("pag2") == null ? "1" : request.getParameter("pag2");
-                    int pag2Int = Integer.parseInt(pag2);
-                    ArrayList<ProductosClienteDTO> listaProductos = usuarioDao.listarProductos(pag2Int);
-                    int cantPags2 = usuarioDao.calcularCantPagListarProductos();
+                    int pag2Int;
 
+                    int cantPags2 = usuarioDao.calcularCantPagListarProductos();
+                    try{
+                         pag2Int = Integer.parseInt(pag2);
+                        if(pag2Int>cantPags2 || pag2Int==0){
+                            pag2Int=1;
+                        }
+
+                    }catch (NumberFormatException e){
+                        pag2Int=1;
+                    }
+
+                    ArrayList<ProductosClienteDTO> listaProductos = usuarioDao.listarProductos(pag2Int);
                     request.setAttribute("listaProductos", listaProductos);
                     request.setAttribute("paginaAct", pag2Int);
                     request.setAttribute("cantPag", cantPags2);
                     requestDispatcher = request.getRequestDispatcher("/cliente/listarProductos.jsp");
                     requestDispatcher.forward(request, response);
+
 
                     break;
                 case "detalleProducto":

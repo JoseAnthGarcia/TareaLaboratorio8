@@ -53,10 +53,6 @@ public class LoginAdminServlet extends HttpServlet {
             UsuarioBean admin2 = (UsuarioBean) session.getAttribute("admin");
 
             if (admin != null && admin2.getIdUsuario() > 0) {
-              /*  response.addHeader("Pragma", "no-cache");
-                response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-                response.addHeader("Cache-Control", "pre-check=0, post-check=0");
-                response.setDateHeader("Expires", 0);*/
                 response.sendRedirect(request.getContextPath() + "/AdminServlet");
             }
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/login.jsp");

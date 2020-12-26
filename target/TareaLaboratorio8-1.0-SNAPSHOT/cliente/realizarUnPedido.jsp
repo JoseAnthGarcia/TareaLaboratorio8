@@ -136,7 +136,7 @@
         </table>
     </div>
 
-    <div class="row mt-5">
+    <div class="row mt-5 mb-5">
 
         <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger <%=listaProductos.size()!=0?"izq":""%>">Volver a inicio</a>
         <%if (cantPag != -1) {%>
