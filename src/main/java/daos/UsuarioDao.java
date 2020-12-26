@@ -153,7 +153,8 @@ public class UsuarioDao extends BaseDao {
                     usuarioBean.setDistrito(distritoBean);
 
                     //se agrego contraseniaHashed - ATENCIÓN!!!
-                    usuarioBean.setContraseniaHashed(rs.getString(8));
+                    usuarioBean
+                            .setContraseniaHashed(rs.getString(8));
 
 
 

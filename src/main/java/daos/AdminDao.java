@@ -111,7 +111,7 @@ public class AdminDao extends BaseDao{
                 administrador.setNombre(rs.getString("nombreUsuario"));
                 administrador.setApellido(rs.getString("apellido"));
                 administrador.setCorreo(rs.getString("correo"));
-                administrador.setContrasenia(rs.getString("contrasenia"));
+
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
