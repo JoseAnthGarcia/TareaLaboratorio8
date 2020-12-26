@@ -96,7 +96,7 @@
                 <% } %>
 
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-6" style=" position: relative; top: 15px">
                         <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
                     </div>
 

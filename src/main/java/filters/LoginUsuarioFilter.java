@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(filterName = "LoginUsuarioFilter", urlPatterns = {"/LoginServlet", ""})
+@WebFilter(filterName = "LoginUsuarioFilter", servletNames = {"LoginServlet"})
 public class LoginUsuarioFilter implements Filter {
 
     public void destroy() {
@@ -27,7 +27,7 @@ public class LoginUsuarioFilter implements Filter {
         UsuarioBean admin = (UsuarioBean) request.getSession().getAttribute("admin");
 
         if(usuario!=null && usuario.getIdUsuario()>0){
-            if(request.getParameter("accion").equals("logout")){
+            if(request.getParameter("accion")!=null && request.getParameter("accion").equals("logout")){
                 chain.doFilter(req, resp);
             }else{
                 response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=Home");
@@ -43,7 +43,6 @@ public class LoginUsuarioFilter implements Filter {
     }
 
     public void init(FilterConfig config) throws ServletException {
-
     }
 
 }
