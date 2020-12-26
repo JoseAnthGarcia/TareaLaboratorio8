@@ -68,7 +68,7 @@
         <div class="col-lg-4 col-md-12" style=" position: relative; top:20px;">
             <div class="row">
                 <div class="col-lg-8 col-md-12" style="text-align: center">
-                    <img src="imagenes/profile_admin.png" width="150px" height=150px">
+                    <img src="https://www.flaticon.com/svg/static/icons/svg/3135/3135789.svg" width="150px" height=150px">
                 </div>
                 <div class="col-lg-4 col-md-12" style="text-align: center">
                     <button class="btn-perfil" ><%=usuario.getNombre()+" "+usuario.getApellido()%></button>
@@ -86,14 +86,14 @@
             <a class="opcion" href="<%=request.getContextPath()%>/AdminServlet?accion=registrar">
                 <button class="btn opcion">Registrar bodegas
                 <br>
-                <img src="imagenes/registrar_bodega.png" width="50px" height="50px">
+                <img src="https://image.flaticon.com/icons/png/512/1698/1698572.png" width="50px" height="50px">
             </button></a>
         </div>
         <div class="col-md-6" style="text-align: center">
             <a class="opcion" href="<%=request.getContextPath()%>/AdminServlet?accion=listar"
             ><button class="btn opcion">Listar bodegas
                 <br>
-                <img src="imagenes/lista_bodegas.png" width="50px" height="50px">
+                <img src="http://www.pngmart.com/files/8/Checklist-PNG-File.png" width="50px" height="50px">
             </button></a>
         </div>
 
