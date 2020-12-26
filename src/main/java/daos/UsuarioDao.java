@@ -132,7 +132,7 @@ public class UsuarioDao extends BaseDao {
         String sql = "select u.idUsuario, u.nombreUsuario, u.apellido, u.dni, u.correo,u.idDistrito, d.nombreDistrito, u.contraseniaHashed \n" +
                 "from usuario u\n" +
                 "inner join distrito d on u.idDistrito=d.idDistrito\n" +
-                "where idUsuario=?;";
+                "where idUsuario=? and rol='Usuario';";
         UsuarioBean usuarioBean = new UsuarioBean();
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -251,7 +251,7 @@ public class UsuarioDao extends BaseDao {
 
 
         String sql = "select idUsuario, contraseniaHashed " +
-                "from usuario  where correo=?;";
+                "from usuario  where correo=? and rol='Usuario';";
         UsuarioBean usuarioBean = new UsuarioBean();
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -379,7 +379,7 @@ public class UsuarioDao extends BaseDao {
     }
 
     public UsuarioBean validarUsuarioPassword(String user, String password){
-        String sql = "select* from usuario where correo=? and contraseniaHashed=sha2(?,256);";
+        String sql = "select* from usuario where correo=? and contraseniaHashed=sha2(?,256) and rol='Usuario';";
         UsuarioBean usuarioBean = null;
         try(Connection conn = getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql);){

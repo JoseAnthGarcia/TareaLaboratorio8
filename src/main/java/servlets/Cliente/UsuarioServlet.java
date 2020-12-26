@@ -591,7 +591,14 @@ public class UsuarioServlet extends HttpServlet {
         response.addHeader("Cache-Control", "pre-check=0, post-check=0");
         response.setDateHeader("Expires", 0);
         UsuarioDao usuarioDao = new UsuarioDao();
-        if (clienteActual != null && clienteActual.getIdUsuario() > 0 && !(accion.equals("agregar"))) {
+        if (clienteActual != null && clienteActual.getIdUsuario() > 0
+                && !(accion.equals("agregar"))) {
+
+            response.addHeader("Pragma", "no-cache");
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            response.addHeader("Cache-Control", "pre-check=0, post-check=0");
+            response.setDateHeader("Expires", 0);
+
             RequestDispatcher requestDispatcher;
 
             int usuarioActualId = clienteActual.getIdUsuario();
