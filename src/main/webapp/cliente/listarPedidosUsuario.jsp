@@ -45,7 +45,16 @@
     <jsp:include page="/cliente/includes/headerClient.jsp"/>
 </header>
 <div class ='container'>
-    <h1 class="margen">Mis pedidos</h1>
+    <div class="row mt-5">
+        <div class="col-3">
+            <h1 class="margen">Mis pedidos</h1>
+        </div>
+        <div class="col-9">
+            <p class="margen">Obs: Solo se puede cancelar el pedido hasta  una hora antes de la fecha de entrega.</p>
+        </div>
+    </div>
+
+
     <%if(request.getSession().getAttribute("errorCancelarPedido")!=null){%>
     <div align="center" class="alert alert-danger" role="alert">
         No es posible cancelar este pedido porque el tiempo límite de cancelación se ha cumplido.
@@ -56,6 +65,8 @@
             <tr>
                 <th>Código </th>
                 <th>Costo total</th>
+                <th>Fecha de registro</th>
+                <th>Fecha de entrega</th>
                 <th>Estado</th>
                 <th>Cancelar pedido</th>
             </tr>
@@ -63,6 +74,8 @@
             <tr>
                 <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=verDetallesPedido&idPedido=<%=pedido.getId()%>" ><%=pedido.getCodigo()%></a> </td>
                 <td>S/. <%=pedido.getTotalApagar()%></td>
+                <td> <%=pedido.getFecha_registro()%></td>
+                <td> <%=pedido.getFecha_recojo()%></td>
                 <td><%=pedido.getEstado()%></td>
                 <% if(pedido.getEstado().equalsIgnoreCase("Pendiente")){%>
                     <td>
