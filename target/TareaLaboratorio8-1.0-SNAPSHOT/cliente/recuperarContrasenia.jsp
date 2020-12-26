@@ -112,13 +112,6 @@
         </div>
     </div>
 </div>
-<div>
-    <footer class="page-footer font-small blue" style="margin-top: 50px">
-        <div class="footer-copyright text-center py-3">© 2020 Copyright:
-            <a href="#">MiMarca</a>
-        </div>
-    </footer>
-</div>
 
 </body>
 </html>
