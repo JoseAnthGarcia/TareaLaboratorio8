@@ -305,9 +305,16 @@ public class AdminServlet extends HttpServlet {
                     break;
                 case "bloquear":
                     String nombreBodega = request.getParameter("nombreB");
-                    boolean estado = Boolean.parseBoolean(request.getParameter("state"));
-                    AdminDao.actualizarEstadoBodega(nombreBodega,estado);
-                    response.sendRedirect("AdminServlet?accion=listar");
+                    boolean aTiempo = AdminDao.pedidoPendiente(nombreBodega); //devuelve true si presenta al menos un pedido en estado pendiente
+                    if(!aTiempo){
+                        boolean bloqueo = Boolean.parseBoolean(request.getParameter("bloqueo"));
+                        request.getSession().setAttribute("accion", bloqueo);
+                        AdminDao.actualizarEstadoBodega(nombreBodega,bloqueo);
+                        response.sendRedirect(request.getContextPath() +"/AdminServlet?accion=listar");
+                    }else{
+                        request.getSession().setAttribute("errorBloquearBodega", true);
+                        response.sendRedirect(request.getContextPath() +"/AdminServlet?accion=listar");
+                    }
                     break;
 
             }
