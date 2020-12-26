@@ -178,7 +178,6 @@ public class AdminServlet extends HttpServlet {
                 }
                 if (contraseniaB && contrasenia2B) {
                     if (contIguales) {
-                        bodegaDao.registrarContrasenia(idBodega2, contrasenia);
                         bodegaDao.contraHasheada(idBodega2,contrasenia);
                         BodegaBean bodega = bodegaDao.buscarBodega(idBodega2);
                         String nombreBodega = bodega.getNombreBodega();
