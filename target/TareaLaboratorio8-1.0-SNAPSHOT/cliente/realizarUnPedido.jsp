@@ -122,7 +122,7 @@
             <%for (ProductoBean producto : listaProductos) {%>
             <tr>
                 <td><img src="<%=request.getContextPath()%>/ImagenServlet?idProducto=<%=producto.getId()%>" height="50px"></td>
-                <td><%=producto.getNombreProducto()%>
+                <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=detalleProducto&productSelect=<%=producto.getId()%>"><%=producto.getNombreProducto()%></a>
                 </td>
                 <td><%=producto.getPrecioProducto()%>
                 </td>
