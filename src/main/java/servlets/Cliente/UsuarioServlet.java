@@ -798,23 +798,40 @@ public class UsuarioServlet extends HttpServlet {
                     break;
 
                 case "verDetallesPedido":
-                    //TODO: validar idPedido
                     String idPedido = request.getParameter("idPedido");
-                    DetallesPedidoDto detalles = usuarioDao.detallesPedido(Integer.parseInt(idPedido));
-                    request.setAttribute("detalles", detalles);
-                    requestDispatcher = request.getRequestDispatcher("cliente/detallesPedido.jsp");
-                    requestDispatcher.forward(request, response);
+                    boolean pedidoExis = false;
+                    int idPedidoInt = -1;
+                    try{
+                        idPedidoInt = Integer.parseInt(idPedido);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+
+                    DetallesPedidoDto detalles = usuarioDao.detallesPedido(idPedidoInt);
+
+                    if(detalles!=null){
+                        request.setAttribute("detalles", detalles);
+                        requestDispatcher = request.getRequestDispatcher("cliente/detallesPedido.jsp");
+                        requestDispatcher.forward(request, response);
+                    }else{
+                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
+                    }
+
                     break;
 
                 case "cancelarPedido": //cancelarPedido
-                    //TODO: validar codigoPedido
+
                     String codigoPedido = request.getParameter("codigoPedido");
-                    boolean aTiempo =  usuarioDao.verificarHoraPedido(codigoPedido);
-                    if(aTiempo){
-                        usuarioDao.cancelarPedido(codigoPedido);
-                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
+                    if(usuarioDao.obtenerPedido(codigoPedido)!=null){
+                        boolean aTiempo =  usuarioDao.verificarHoraPedido(codigoPedido);
+                        if(aTiempo){
+                            usuarioDao.cancelarPedido(codigoPedido);
+                            response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
+                        }else{
+                            request.getSession().setAttribute("errorCancelarPedido", true);
+                            response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
+                        }
                     }else{
-                        request.getSession().setAttribute("errorCancelarPedido", true);
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
                     }
 
