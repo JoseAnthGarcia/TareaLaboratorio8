@@ -53,7 +53,7 @@
     <jsp:include page="/cliente/includes/headerClient.jsp"/>
 </header>
 
-<div class="container" style="margin-top: 65px; margin-left: 15%; margin-right: 15%">
+<div class="container" style="margin-top: 65px">
     <div class="row">
         <div class="col-sm-3"></div>
         <div class="col-sm-6">

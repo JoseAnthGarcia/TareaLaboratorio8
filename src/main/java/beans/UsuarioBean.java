@@ -7,6 +7,7 @@ public class UsuarioBean {
     private String correo;
     private DistritoBean distrito;
     private int idUsuario;
+    private String contraseniaHashed;
 
     public String getNombre() {
         return nombre;
@@ -47,6 +48,7 @@ public class UsuarioBean {
     public void setDistrito(DistritoBean distrito) {
         this.distrito = distrito;
     }
+
     public int getIdUsuario() {
         return idUsuario;
     }
@@ -55,4 +57,11 @@ public class UsuarioBean {
         this.idUsuario = idUsuario;
     }
 
+    public String getContraseniaHashed() {
+        return contraseniaHashed;
+    }
+
+    public void setContraseniaHashed(String contraseniaHashed) {
+        this.contraseniaHashed = contraseniaHashed;
+    }
 }

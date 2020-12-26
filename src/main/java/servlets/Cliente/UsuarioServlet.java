@@ -643,15 +643,26 @@ public class UsuarioServlet extends HttpServlet {
                 case "escogerBodega2":
                     //TODO: VALIDAR PAGINA
                     String pag = request.getParameter("pag") == null ? "1" : request.getParameter("pag");
-                    int pagInt = Integer.parseInt(pag);
-                    ArrayList<BodegaBean> listaBodegas = usuarioDao.listarBodegas(pagInt);
-                    int cantPags = usuarioDao.calcularCantPagListarBodegas();
 
+                    int cantPags = usuarioDao.calcularCantPagListarBodegas();
+                    int pagInt = -1;
+                    try{
+                        pagInt = Integer.parseInt(pag);
+                        if(pagInt>cantPags){
+                            pagInt = 1;
+                        }
+                    }catch (NumberFormatException e){
+                        pagInt = 1;
+                    }
+
+
+                    ArrayList<BodegaBean> listaBodegas = usuarioDao.listarBodegas(pagInt);
                     request.setAttribute("listaBodegas", listaBodegas);
                     request.setAttribute("paginaAct", pagInt);
                     request.setAttribute("cantPag", cantPags);
                     requestDispatcher = request.getRequestDispatcher("/cliente/bodegasDisponibles.jsp");
                     requestDispatcher.forward(request, response);
+
                     break;
                 case "realizarPedido":
                     HttpSession session1 = request.getSession();
