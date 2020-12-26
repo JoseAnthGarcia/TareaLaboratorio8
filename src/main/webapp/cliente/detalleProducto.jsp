@@ -84,21 +84,13 @@
             <h3>Stock: <%=producto.getStock()%></h3>
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-5">
         <div>
             <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="button btn btn-primary mt-5">Regresar</a>
         </div>
 
     </div>
-    <div class="mt-5">
-        <footer class="page-footer font-small blue" style="margin-top: 20px">
 
-            <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="#">MiMarca</a>
-            </div>
-
-        </footer>
-    </div>
 
 </div>
 

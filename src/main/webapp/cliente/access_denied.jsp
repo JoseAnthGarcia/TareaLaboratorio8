@@ -29,11 +29,7 @@
         <p class="lead">Inicie sesión para poder acceder al recurso.</p>
     </div>
 </div>
-<footer class="page-footer font-small blue" style="margin-top: 20%">
-    <div class="footer-copyright text-center py-3">© 2020 Copyright:
-        <a href="<%=request.getContextPath()%>/LoginServlet">MiMarca</a>
-    </div>
-</footer>
+
 
 </body>
 

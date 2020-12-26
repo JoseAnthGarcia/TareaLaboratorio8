@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>Detalles de producto</title>
-    <meta charset="utf-8">
+    <jsp:include page="/includes/utf8Cod.jsp"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <jsp:include page="/bootstrapRepository.jsp"/>
     <!-- para los iconos como botones -->
@@ -84,21 +84,13 @@
             <h3>Stock: <%=producto.getStock()%></h3>
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-5">
         <div>
             <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="button btn btn-primary mt-5">Regresar</a>
         </div>
 
     </div>
-    <div class="mt-5">
-        <footer class="page-footer font-small blue" style="margin-top: 20px">
 
-            <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="#">MiMarca</a>
-            </div>
-
-        </footer>
-    </div>
 
 </div>
 
