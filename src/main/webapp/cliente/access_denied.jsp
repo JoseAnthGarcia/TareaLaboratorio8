@@ -18,6 +18,18 @@
         h1{
             font-size: 4rem;
         }
+        .btn {
+            background-color: #343a40;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        /* Darker background on mouse-over */
+        .btn:hover {
+            background-color: #767676;
+        }
 
     </style>
     <title>Página no encontrada</title>
@@ -29,7 +41,9 @@
         <p class="lead">Inicie sesión para poder acceder al recurso.</p>
     </div>
 </div>
-
+<div class="row">
+    <a href="<%=request.getContextPath()%>/LoginServlet" class="btn btn-outline-danger primero" style="position: absolute; right: 15%">Iniciar sesión</a>
+</div>
 
 </body>
 
