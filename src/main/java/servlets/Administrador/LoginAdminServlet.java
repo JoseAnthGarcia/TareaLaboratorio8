@@ -17,7 +17,9 @@ import java.io.IOException;
 
 @WebServlet(name = "LoginAdminServlet", urlPatterns = {"/LoginAdmin"})
 public class LoginAdminServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
 
         String inputEmail = request.getParameter("inputEmail");
         String inputPassword = request.getParameter("inputPassword");
@@ -35,7 +37,9 @@ public class LoginAdminServlet extends HttpServlet {
 
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
 
         HttpSession session = request.getSession();
         RequestDispatcher view2;
@@ -49,10 +53,6 @@ public class LoginAdminServlet extends HttpServlet {
             UsuarioBean admin2 = (UsuarioBean) session.getAttribute("admin");
 
             if (admin != null && admin2.getIdUsuario() > 0) {
-              /*  response.addHeader("Pragma", "no-cache");
-                response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-                response.addHeader("Cache-Control", "pre-check=0, post-check=0");
-                response.setDateHeader("Expires", 0);*/
                 response.sendRedirect(request.getContextPath() + "/AdminServlet");
             }
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/login.jsp");

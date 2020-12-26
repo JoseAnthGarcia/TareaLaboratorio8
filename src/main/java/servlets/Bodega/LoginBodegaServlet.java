@@ -34,7 +34,10 @@ public class LoginBodegaServlet extends HttpServlet {
         return  resultado;
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+
         String inputEmail = request.getParameter("inputEmail");
         String inputPassword = request.getParameter("inputPassword");
 
@@ -79,7 +82,7 @@ public class LoginBodegaServlet extends HttpServlet {
                     
                 }else{
                     request.setAttribute("rucExis",rucExis);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("actualizarContraBodega.jsp");
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("/bodega/actualizarContraBodega.jsp");
                     requestDispatcher.forward(request, response);
                 }
                 break;
@@ -103,7 +106,6 @@ public class LoginBodegaServlet extends HttpServlet {
                     }
                     if (contraseniaB && contrasenia2B) {
                         if (contIguales) {
-                            bodegaD.registrarContrasenia(idBodega2, contrasenia);
                             bodegaD.contraHasheada(idBodega2,contrasenia);
                             bodega = bodegaD.buscarBodega(idBodega2);
                             String nombreBodega = bodega.getNombreBodega();
@@ -143,7 +145,9 @@ public class LoginBodegaServlet extends HttpServlet {
 
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
 
 
         HttpSession session = request.getSession();
@@ -156,7 +160,7 @@ public class LoginBodegaServlet extends HttpServlet {
 
         switch (accion) {
             case "actualizarContraCorreo":
-                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("actualizarContraBodega.jsp");
+                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("/bodega/actualizarContraBodega.jsp");
                 requestDispatcher2.forward(request, response);
                 break;
             case "actualizarContra":

@@ -51,7 +51,10 @@ public class LoginServlet extends HttpServlet {
         return  resultado;
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+
         String accion = request.getParameter("accion") == null ?
                 "login" : request.getParameter("accion");
 
@@ -160,7 +163,9 @@ public class LoginServlet extends HttpServlet {
 
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
 
         HttpSession session = request.getSession();
         RequestDispatcher view2;

@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <jsp:include page="/includes/utf8Cod.jsp"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>¡Bienvenido!</title>
     <jsp:include page="/bootstrapRepository.jsp"/>
@@ -126,6 +126,24 @@
     margin-left: 150px;text-align: center;position: relative; top:40px;">
             <div class="row">
                 <div class="col-10">
+                    <div align="center">
+                        <%if(correoEnviado==1){%>
+                        <div class="alert alert-success" role="alert">
+                            Solicitud enviada correctamente, revise su bandeja de entrada.
+
+                        </div>
+                        <%}else if(correoEnviado==2){%>
+                        <div class="alert alert-danger" role="alert">
+                            Ha ocurrido un error al enviar el correo. Intentelo de nuevo.
+                        </div>
+                        <%}%>
+                        <%if(cambioContra){%>
+                        <div class="alert alert-success" role="alert">
+                            Contraseña restablecida exitosamente.
+                        </div>
+                        <%}%>
+                        <%session.invalidate(); %>
+                    </div>
 
                     <input type="text" name="inputEmail" class="form-control ingresa" placeholder="Correo" autofocus="">
 
@@ -174,24 +192,6 @@
             </form>
         </div>
     </div>
-    <div align="center">
-        <%if(correoEnviado==1){%>
-        <div class="alert alert-success" role="alert">
-            El correo fue enviado exitosamente. Revise su bandeja de entrada.
-
-        </div>
-        <%}else if(correoEnviado==2){%>
-        <div class="alert alert-danger" role="alert">
-            Ha ocurrido un error al enviar el correo. Intentelo de nuevo.
-        </div>
-        <%}%>
-        <%if(cambioContra){%>
-        <div class="alert alert-success" role="alert">
-            Contraseña restablecida exitosamente.
-        </div>
-        <%}%>
-        <%session.invalidate(); %>
-    </div>
     <div class="mt-5">
         <footer class="page-footer font-small blue" >
 
@@ -201,7 +201,6 @@
 
         </footer>
     </div>
-
 
 </div>
 

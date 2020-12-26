@@ -318,7 +318,7 @@ public class UsuarioDao extends BaseDao {
         int limit = (pagina - 1) * cantPorPag;
 
         String sql = "SELECT * FROM producto WHERE idBodega=?\n" +
-                "limit ?,?;";
+                " order by nombreProducto limit ?,?;";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -873,6 +873,31 @@ public class UsuarioDao extends BaseDao {
             }
         }
 
+    }
+
+    public boolean verificarHoraPedido(String codigo){
+        boolean aTiempo = true;
+
+        String sql;
+
+        sql = "select (TIMEDIFF(fecha_recojo, now())) from pedido where codigo=?;";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, codigo);
+            try(ResultSet rs = pstmt.executeQuery();){
+                rs.next();
+                String tiempo = rs.getString(1);
+                String[] array = tiempo.split(":");
+                if(Integer.parseInt(array[0])==0){   //Si rs < 60 minutos -> aTiempo = false
+                    aTiempo=false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return aTiempo;
     }
 
 

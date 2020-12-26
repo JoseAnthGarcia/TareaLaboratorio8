@@ -1,5 +1,4 @@
 <%@ page import="beans.PedidoBean" %>
-<%@ page import="daos.PedidosUsuarioDao" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id= "listaPedidos" scope="request" type="java.util.ArrayList<beans.PedidoBean>" />
 <jsp:useBean id="cantPag" scope="request" type="java.lang.Integer"/>
@@ -7,6 +6,7 @@
 <html>
 <head>
     <jsp:include page="/bootstrapRepository.jsp"/>
+    <jsp:include page="/includes/utf8Cod.jsp"/>
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
@@ -46,6 +46,11 @@
 </header>
 <div class ='container'>
     <h1 class="margen">Mis pedidos</h1>
+    <%if(request.getSession().getAttribute("errorCancelarPedido")!=null){%>
+    <div align="center" class="alert alert-danger" role="alert">
+        No es posible cancelar este pedido porque el tiempo límite de cancelación se ha cumplido.
+    </div>
+    <%request.getSession().removeAttribute("errorCancelarPedido");}%>
     <div class="container-fluid">
         <table class="table container-fluid">
             <tr>
@@ -60,16 +65,10 @@
                 <td>S/. <%=pedido.getTotalApagar()%></td>
                 <td><%=pedido.getEstado()%></td>
                 <% if(pedido.getEstado().equalsIgnoreCase("Pendiente")){%>
-                    <%if(PedidosUsuarioDao.verificarHoraPedido(Integer.parseInt(pedido.getCodigo()))){ %>
                     <td>
-                        <a onclick="return confirm('¿Estas seguro que deseas cancelar tu pedido?')"
-                        href="<%=request.getContextPath()%>/UsuarioServlet?accion=cancelarPedido&codigoPedido=<%=Integer.parseInt(pedido.getCodigo())%>"
-                        class="btn btn-danger">Cancelar</a></td>
-                    <%}else{ %>
-                     <td>
-                         <a onclick="return confirm('No es posible cancelar este pedido porque el tiempo límite de cancelación se ha cumplido')"
-                         class="btn btn-danger">Cancelar</a></td>
-                    <%} %>
+                    <a onclick="return confirm('¿Estas seguro que deseas cancelar tu pedido?')"
+                       href="<%=request.getContextPath()%>/UsuarioServlet?accion=cancelarPedido&codigoPedido=<%=Integer.parseInt(pedido.getCodigo())%>"
+                       class="btn btn-danger">Cancelar</a></td>
                 <% }else{ %>
                 <td></td>
                 <% }%>

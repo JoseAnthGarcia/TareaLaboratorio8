@@ -4,6 +4,7 @@
 <html>
 <head>
     <jsp:include page="/bootstrapRepository.jsp"/>
+    <jsp:include page="/includes/utf8Cod.jsp"/>
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Mi Marca</title>
@@ -64,7 +65,7 @@
         <div class="col-lg-8 col-md-12" >
             <img src="https://img.freepik.com/vector-gratis/concepto-tienda-supermercado-gente-supermercado_40816-713.jpg?size=626&ext=jpg" width="80%" >
         </div>
-        <div class="col-lg-4 col-md-12" style=" position: relative; top:88px;">
+        <div class="col-lg-4 col-md-12" style=" position: relative; top:20px;">
             <div class="row">
                 <div class="col-lg-8 col-md-12" style="text-align: center">
                     <img src="imagenes/profile_admin.png" width="150px" height=150px">
@@ -76,15 +77,19 @@
         </div>
 
     </div>
-    <div class="row mt-5">
-        <div class="col-lg-4 col-md-12 opcion mt-5" >
-            <a class="opcion" href="<%=request.getContextPath()%>/AdminServlet?accion=registrar"
-            ><button class="btn opcion">Registrar bodegas
+    <br>
+    <br>
+    <br>
+
+    <div class="row">
+        <div class="col-md-6" style="text-align: center" >
+            <a class="opcion" href="<%=request.getContextPath()%>/AdminServlet?accion=registrar">
+                <button class="btn opcion">Registrar bodegas
                 <br>
                 <img src="imagenes/registrar_bodega.png" width="50px" height="50px">
             </button></a>
         </div>
-        <div class="col-lg-4 col-md-12 opcion mt-5" >
+        <div class="col-md-6" style="text-align: center">
             <a class="opcion" href="<%=request.getContextPath()%>/AdminServlet?accion=listar"
             ><button class="btn opcion">Listar bodegas
                 <br>

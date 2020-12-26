@@ -46,6 +46,7 @@
 <body>
 <header>
     <jsp:include page="/cliente/includes/headerClient.jsp"/>
+    <jsp:include page="/includes/utf8Cod.jsp"/>
 </header>
 <div class="container-fluid">
     <div class="row">

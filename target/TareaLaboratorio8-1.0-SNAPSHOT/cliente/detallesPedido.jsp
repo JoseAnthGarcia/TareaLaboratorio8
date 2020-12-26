@@ -5,6 +5,7 @@
 <html>
 <head>
     <jsp:include page="/bootstrapRepository.jsp"/>
+    <jsp:include page="/includes/utf8Cod.jsp"/>
     <title>Ver pedido</title>
     <style>
         .btn {

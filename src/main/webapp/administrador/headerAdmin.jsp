@@ -1,8 +1,9 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="navbar navbar-dark bg-dark box-shadow">
     <div class="container d-flex justify-content-between">
 
         <a href="#" class="navbar-brand d-flex align-items-center">
-            <strong>Administración</strong>
+            <strong>AdministraciÃ³n</strong>
         </a>
         <a href="<%=request.getContextPath()%>/AdminServlet?accion=registrar" class="navbar-brand d-flex align-items-center">
             <strong>Registrar bodega</strong>

@@ -4,6 +4,7 @@
 <html>
 <head>
     <jsp:include page="/bootstrapRepository.jsp"/>
+    <jsp:include page="/includes/utf8Cod.jsp"/>
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
@@ -92,7 +93,7 @@
                         Seleccionar
                     </label>
                 </div>
-                <img src="<%=request.getContextPath()%>/ImagenServlet?idBodega=<%=listaBodegasDistrito.get(j).getIdBodega()%>" width="150" class="img-thumbnail">
+                <img src="<%=request.getContextPath()%>/ImagenServlet?idBodega=<%=listaBodegasDistrito.get(j).getIdBodega()%>" width="150px" height="150px"  class="img-thumbnail">
                 <p class="mb-1"><b>Bodega: </b> <%=listaBodegasDistrito.get(j).getNombreBodega()%> </p>
                 <p class="mb-0"><b>direccion: </b> <%=listaBodegasDistrito.get(j).getDireccionBodega()%> </p>
             </div>

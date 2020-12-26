@@ -12,6 +12,7 @@
 <html>
 <head>
     <jsp:include page="/bootstrapRepository.jsp"/>
+    <jsp:include page="/includes/utf8Cod.jsp"/>
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -72,7 +73,7 @@
                     <label for="precioTotal">Precio total de su pedido:</label>
                     <input name="precioTotal" type="number" class="form-control" value="<%=precioTotal%>" placeholder="<%=precioTotal%>" id="precioTotal" readonly>
                 </div>
-                <button type="submit" class="btn btn-outline-success der">Confirmar pedido</button>
+                <button onclick="return confirm('¿Esta seguro de realizar este pedido?')" type="submit" class="btn btn-outline-success der">Confirmar pedido</button>
                 <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=verCarrito" class="btn btn-outline-danger izq>">Regresar</a>
             </form>
         </div>

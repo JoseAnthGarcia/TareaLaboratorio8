@@ -13,11 +13,10 @@
 <jsp:useBean id="cantPag" scope="request" type="java.lang.Integer"/>
 <jsp:useBean id="paginaAct" scope="request" type="java.lang.Integer"/>
 <jsp:useBean id="productoBusqueda" scope="request" type="java.lang.String"/>
-<%ArrayList<PedidoBean> pedidosConProducto = request.getAttribute("pedidosConProducto")==null?null:(ArrayList<PedidoBean>)request.getAttribute("pedidosConProducto");%>
 
 <html>
 <head>
-
+    <jsp:include page="/includes/utf8Cod.jsp"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
@@ -29,6 +28,15 @@
             background-color: #ffffff;
             border: none;
             color: black;
+            padding: 12px 16px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .btn2 {
+            background-color: #343a40;
+            border: none;
+            color: white;
             padding: 12px 16px;
             font-size: 15px;
             cursor: pointer;
@@ -55,52 +63,49 @@
 
 <!-- todo:  corregir el espaciado entre Mi Bodega, Pedidos y Productos -->
 <header>
-    <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-
-        </div>
-    </div>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>MiMarca.com</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=home" class="navbar-brand d-flex align-items-center">
-                <strong>Mi Bodega</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=listar" class="navbar-brand d-flex align-items-center">
-                <strong>Productos</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/PedidosServlet" class="navbar-brand d-flex align-items-center">
-                <strong>Pedidos</strong>
-            </a>
-            <a>
-                <div class="card">
-                    <a href="<%=request.getContextPath()%>/LoginBodega?accion=logout" ><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR9XQYb7eVu1VyTTjGNd69RWqaIge0precdjw&usqp=CAU.png" height="30px"/></a>
-                </div>
-            </a>
-
-        </div>
-    </div>
+    <jsp:include page="includes/headerBodega.jsp" />
 </header>
 
 
 
-<div class="container" style="margin-top: 20px">
+<div class="container" >
 
     <!-- botones -->
-    <div class="container" style="margin-bottom: 20px;">
+    <div class="container" style="margin-top: 20px">
         <div class="row">
             <div class="col-sm-11">
-                <% if(pedidosConProducto!=null){ %>
+                <% if(session.getAttribute("pedidosConProducto")!=null){
+                    ArrayList<PedidoBean> pedidosConProducto = (ArrayList<PedidoBean>) session.getAttribute("pedidosConProducto"); %>
                 <div class="alert alert-danger" role="alert">
                     <h6>El producto que desea eliminar se ha encontrado en los siguientes pedidos pendientes:</h6>
                     <%for(PedidoBean pedido: pedidosConProducto){%>
                     <h6>-<%=pedido.getCodigo()%></h6>
                     <%}%>
                 </div>
-                <%}%>
+                <%session.removeAttribute("pedidosConProducto");
+                }%>
             </div>
+
+        </div>
+    </div>
+
+    <!-- BARRA DE BUSQUEDA -->
+    <div class="row">
+        <div class="col-sm-8">
+            <form method="post" action="<%=request.getContextPath()%>/BodegaServlet?accion=buscar">
+                <div class="form-group row">
+                    <div class="col-10">
+                        <input class="form-control" type="text" placeholder="Buscar producto"
+                               name="textoBuscar" value="<%=productoBusqueda%>"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-2">
+            <a class="btn btn-danger btn2" href="<%=request.getContextPath()%>/BodegaServlet?accion=listar">Limpiar</a>
+        </div>
+
+        <div class="col-sm-2">
             <div class="col-sm-1">
                 <a href="<%=request.getContextPath()%>/BodegaServlet?accion=agregar">
                     <button class="btn"><i class="fa fa-plus"></i></button>
@@ -109,18 +114,11 @@
         </div>
     </div>
 
-    <!-- BARRA DE BUSQUEDA -->
-    <div>
-        <form method="post" action="<%=request.getContextPath()%>/BodegaServlet?accion=buscar">
-            <div class="form-group row">
-                <div class="col-10">
-                    <input class="form-control" type="text" placeholder="<%=productoBusqueda%>"
-                           name="textoBuscar"/>
-                </div>
-            </div>
-        </form>
+    <%if(listaProductoBodegas.size()==0){%>
+    <div class="alert alert-danger" role="alert" align="center">
+        No se ha encontrado ningún producto.
     </div>
-
+    <%}else{%>
     <!-- LISTA DE PRODUCTOS -->
     <form>
         <div class="row">
@@ -151,7 +149,7 @@
                     <td><%=producto.getStock()%></td>
                     <td>S/<%=producto.getPrecioProducto()%></td>
                     <td>
-                        <a href="<%=request.getContextPath()%>/BodegaServlet?accion=editar&idProducto=<%=producto.getId()%>">
+                        <a href="<%=request.getContextPath()%>/BodegaServlet?accion=editarProducto&idProducto=<%=producto.getId()%>">
                             <i class="fa fa-edit btn"></i>
                         </a>
                     </td>
@@ -211,16 +209,9 @@
             </ul>
         </nav>
     </div>
+    <%}%>
 
 </div>
-
-
-<footer class="page-footer font-small blue" style="margin-top: 60px">
-    <div class="footer-copyright text-center py-3">© 2020 Copyright:
-        <a href="#">MiMarca</a>
-    </div>
-</footer>
-
 
 
 </div>

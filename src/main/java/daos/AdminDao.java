@@ -214,7 +214,6 @@ public class AdminDao extends BaseDao{
     }
 
 
-
     public static boolean pedidoPendiente(String nombreBodega){    //devuelve true si presenta al menos un pedido en estado pendiente
         boolean pedidoPendiente = false;
 
@@ -252,23 +251,6 @@ public class AdminDao extends BaseDao{
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void registrarContrasenia(int idBodega,String contrasenia){
-
-        String sql = "UPDATE bodega SET contrasenia = ? WHERE idBodega = ?";
-
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);) {
-
-            pstmt.setString(1,contrasenia);
-            pstmt.setInt(2,idBodega);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 

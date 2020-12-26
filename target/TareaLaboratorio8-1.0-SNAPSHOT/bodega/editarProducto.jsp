@@ -16,6 +16,7 @@
 
 <html>
 <head>
+    <jsp:include page="/includes/utf8Cod.jsp"/>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
@@ -25,8 +26,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         /* Darker background on mouse-over */
+        .btn {
+            background-color: #343a40;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        /* Darker background on mouse-over */
         .btn:hover {
-            background-color: #767676;
+            background-color: #f05454;
         }
     </style>
 
@@ -36,39 +46,13 @@
 
 <body>
 
-<!-- todo:  corregir el espaciado entre Mi Bodega, Pedidos y Productos -->
 <header>
-    <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-
-        </div>
-    </div>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>MiMarca.com</strong>
-            </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Mi Bodega</strong>
-            </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Productos</strong>
-            </a>
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>Pedidos</strong>
-            </a>
-            <a>
-                <div class="card"><a href="login.html" >
-                    <img src="signout.png" height="30px"/>
-                </a>
-                </div>
-            </a>
-        </div>
-    </div>
+    <jsp:include page="includes/headerBodega.jsp" />
 </header>
+
 <p></p>
 <main class="my-form">
-    <div class="cotainer">
+    <div class="cotainer" style="margin-left: 5%; margin-right: 5%">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -83,9 +67,8 @@
                             <div class="form-group row">
                                 <label for="Descripcion" class="col-md-4 col-form-label text-md-right">Descripción</label>
                                 <div class="col-md-6">
-                                    <input  type="text" id="Descripcion" class="form-control <%=validDescr?"":"is-invalid"%>"
-                                            name="descripcion"
-                                            value="<%=producto.getDescripcion()%>">
+
+                                    <textarea  type="text" id="Descripcion" class="form-control <%=validDescr?"":"is-invalid"%>" name="descripcion" ><%=producto.getDescripcion()%></textarea>
                                     <div class="invalid-feedback">
                                         Ingrese una descripcion valida, por favor.
                                     </div>
@@ -134,9 +117,9 @@
                             <!-- BOTONES CONFIRMAR Y CANCELAR <-->
                             <div class="col-md-6 offset-md-4">
                                 <a>
-                                    <input type="submit" value="Confirmar" class="btn btn-outline-secondary">
+                                    <input type="submit" onclick="return confirm('¿Esta seguro de quiere editar este producto?')" value="Confirmar" class="btn btn-outline-secondary">
                                 </a>
-                                <a class="btn btn-outline-danger" href="<%=request.getContextPath()%>/BodegaServlet">
+                                <a class="btn btn-outline-danger" href="<%=request.getContextPath()%>/BodegaServlet?accion=listar">
                                     Cancelar
                                 </a>
                             </div>
@@ -149,11 +132,6 @@
     <div>
     </div>
 
-    <footer class="page-footer font-small blue" style="margin-top: 60px">
-        <div class="footer-copyright text-center py-3">© 2020 Copyright:
-            <a href="#"> MiMarca.com.pe</a>
-        </div>
-    </footer>
 </main>
 </body>
 </html>

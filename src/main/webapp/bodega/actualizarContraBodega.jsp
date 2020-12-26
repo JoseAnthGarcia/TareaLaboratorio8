@@ -8,7 +8,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <jsp:include page="bootstrapRepository.jsp"/>
+        <jsp:include page="../bootstrapRepository.jsp"/>
+        <jsp:include page="/includes/utf8Cod.jsp"/>
         <!-- para los iconos como botones -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
@@ -59,31 +60,13 @@
             </div>
             <div class="navbar navbar-dark bg-dark box-shadow">
                 <div class="container d-flex justify-content-between">
-                    <a href="#" class="navbar-brand d-flex align-items-center">
+                    <a  class="navbar-brand d-flex align-items-center">
                         <strong>MiMarca.com</strong>
                     </a>
                 </div>
             </div>
         </header>
-        <div class="modal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Modal body text goes here.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
         <div class="container" style="margin-top: 30px">
             <div class="row">
@@ -103,18 +86,13 @@
                                 </div>
                             </div>
                         </div>
+                        <a href="<%=request.getContextPath()%>/LoginBodega" class="btn btn-success pull-left">Regresar</a>
                         <button type="submit" class="btn btn-success pull-right">Registrar</button>
                     </form>
                 </div>
             </div>
         </div>
-        </div>
-        <footer class="page-footer font-small blue" style="margin-top: 20px">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="#">MiMarca</a>
-            </div>
-        </footer>
-        </div>
+
 
     </body>
 </html>

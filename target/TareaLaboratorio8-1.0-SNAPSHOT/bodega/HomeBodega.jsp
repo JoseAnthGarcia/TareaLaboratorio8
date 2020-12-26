@@ -12,8 +12,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Home</title>
-    <jsp:include page="bootstrapRepository.jsp"/>
+    <title>Bodega: <%=bodega.getNombreBodega()%></title>
+    <jsp:include page="../bootstrapRepository.jsp"/>
+    <jsp:include page="/includes/utf8Cod.jsp"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .btn {
@@ -47,38 +48,17 @@
 </head>
 <body>
 <header>
-    <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-
-        </div>
-    </div>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong>MiMarca.com</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=home" class="navbar-brand d-flex align-items-center">
-                <strong>Mi Bodega</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=listar" class="navbar-brand d-flex align-items-center">
-                <strong>Productos</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/PedidosServlet" class="navbar-brand d-flex align-items-center">
-                <strong>Pedidos</strong>
-            </a>
-            <a href="<%=request.getContextPath()%>/LoginBodega?accion=logout" ><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR9XQYb7eVu1VyTTjGNd69RWqaIge0precdjw&usqp=CAU.png" height="30px"/></a>
-        </div>
-    </div>
+    <jsp:include page="includes/headerBodega.jsp" />
 </header>
 
-<div class=" Container" style="margin-top: 30px">
+<div class=" Container" style="margin-top: 30px; margin-left: 5%; margin-right: 5%">
     <div class="row">
         <div class="col-lg-6 col-md-12">
-            <div class="row">
+            <div class="row" style="margin-top: 60px;">
                 <div class="col-lg-2 col-md-12">
                 </div>
                 <div class="col-lg-8 col-md-12">
-                    <img src="<%=request.getContextPath()%>/ImagenServlet?idBodega=<%=bodega.getIdBodega()%>" width="400px"/>
+                    <img src="<%=request.getContextPath()%>/ImagenServlet?idBodega=<%=bodega.getIdBodega()%>" width="400px" class="img-thumbnail"/>
                 </div>
                 <div class="col-lg-2 col-md-12">
                 </div>
@@ -112,12 +92,6 @@
     </div>
 
 </div>
-
-    <footer class="page-footer font-small blue" style="margin-top: 60px">
-        <div class="footer-copyright text-center py-3">© 2020 Copyright:
-            <a href="#"> MiMarca.com</a>
-        </div>
-    </footer>
 
 
 </body>
