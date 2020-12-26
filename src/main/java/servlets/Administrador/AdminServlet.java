@@ -158,52 +158,6 @@ public class AdminServlet extends HttpServlet {
         int idBodega ;
         Long rucBodega;
 
-        if (accion=="definirContrasenia"){
-            int idBodega2= Integer.parseInt(request.getParameter("idBodega") == null ?
-                    "nada" : request.getParameter("idBodega"));
-            Long rucBodega2= Long.parseLong((request.getParameter("rucBodega") == null ?
-                    "nada" : request.getParameter("rucBodega")));
-
-            request.setAttribute("idBodega",idBodega2);
-            request.setAttribute("rucBodega",rucBodega2);
-            if(idBodega2==bodegaDao.buscarIdBodega(String.valueOf(rucBodega2))) {
-                String contrasenia = request.getParameter("contrasenia");
-                String contrasenia2 = request.getParameter("contrasenia2");
-
-                boolean contraseniaB = validarContrasenia(contrasenia);
-                boolean contrasenia2B = validarContrasenia(contrasenia2);
-                boolean contIguales = false;
-                if (contrasenia.equals(contrasenia2)) {
-                    contIguales = true;
-                }
-                if (contraseniaB && contrasenia2B) {
-                    if (contIguales) {
-                        bodegaDao.contraHasheada(idBodega2,contrasenia);
-                        BodegaBean bodega = bodegaDao.buscarBodega(idBodega2);
-                        String nombreBodega = bodega.getNombreBodega();
-                        Long ruc3 = bodega.getRucBodega();
-                        request.setAttribute("ruc2", ruc3);
-                        request.setAttribute("nombreBodega", nombreBodega);
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("ContraseniaExitosa.jsp");
-                        requestDispatcher.forward(request, response);
-                        ;
-                    } else {
-                        request.setAttribute("contIguales", contIguales);
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
-                        requestDispatcher.forward(request, response);
-                    }
-                } else {
-                    request.setAttribute("contraseniaB", contraseniaB);
-                    request.setAttribute("contrasenia2B", contrasenia2B);
-                    request.setAttribute("contIguales", contIguales);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
-                    requestDispatcher.forward(request, response);
-                }
-            }else{
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("ErrorIdBodega.jsp");
-                requestDispatcher.forward(request, response);
-            }
-        }
 
         switch (accion){
             case  "registrar":
@@ -302,30 +256,11 @@ public class AdminServlet extends HttpServlet {
         String accion = (String) request.getParameter("accion") == null ? "miPerfil":
                 (String) request.getParameter("accion");
 
-        response.addHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-        response.addHeader("Cache-Control", "pre-check=0, post-check=0");
-        response.setDateHeader("Expires", 0);
-
-        if (accion=="definirContrasenia"){
-            try{
-                int idBodega= Integer.parseInt(request.getParameter("idBodega") == null ?
-                        "nada" : request.getParameter("idBodega"));
-                request.setAttribute("idBodega",idBodega);
-                String rucBodegaString = request.getParameter("rucBodega")==null?"nada":request.getParameter("rucBodega");
-                Long rucBodega= Long.parseLong(request.getParameter("rucBodega") == null ?
-                        "nada" : request.getParameter("rucBodega"));
-
-                request.setAttribute("rucBodega",rucBodega);
-                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("contraseniaBodega.jsp");
-                requestDispatcher2.forward(request,response);
-            }catch (NumberFormatException e){
-                e.printStackTrace();
-                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("ErrorIdBodega.jsp");
-                requestDispatcher2.forward(request,response);
-            }
-        }
         if(adminActual!= null){
+            response.addHeader("Pragma", "no-cache");
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            response.addHeader("Cache-Control", "pre-check=0, post-check=0");
+            response.setDateHeader("Expires", 0);
             int idAdminActual = adminActual.getIdUsuario();
 
             AdminDao bodegaDao = new AdminDao();
