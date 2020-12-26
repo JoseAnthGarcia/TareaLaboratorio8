@@ -208,7 +208,7 @@ public class BodegaServlet extends HttpServlet {
 
 
             String accion = request.getParameter("accion") == null ?
-                "listar" : request.getParameter("accion");
+                "home" : request.getParameter("accion");
 
 
         BodegaDao bodegaDao = new BodegaDao();
