@@ -151,7 +151,7 @@
 
 
     </div>
-    <div class="row mt-5">
+    <div class="row mt-5 mb-5">
         <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger primero">Volver a inicio</a>
         <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodega1" class="btn btn-outline-danger mx-auto">Escoger bodega cercana</a>
         <button type="submit" class="btn btn-outline-success tercero">Escoger bodega</button>

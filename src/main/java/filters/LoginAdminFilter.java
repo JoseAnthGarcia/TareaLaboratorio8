@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebFilter(filterName = "AdminFilter", urlPatterns = {"/LoginAdmin"})
-public class AdminFilter implements Filter {
+public class LoginAdminFilter implements Filter {
     public void destroy() {
     }
 

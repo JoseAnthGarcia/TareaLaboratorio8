@@ -150,7 +150,7 @@
                         <div class="form-group row">
                             <label for="nombreBodega" class="col-sm-2 col-form-label">Nombre:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control <%=(request.getParameter("nombreBodega") !=null && request.getParameter("nombreBodega").equals(""))?"is-invalid":""%>"
+                                <input type="text" class="form-control <%=nombreBodegaB?"":"is-invalid"%>"
                                        aria-describedby="inputNameFeedback"
                                        name="nombreBodega"
                                        id="nombreBodega" <%=request.getParameter("nombreBodega")==null?"":"value='"+request.getParameter("nombreBodega")+"'"%>>
@@ -252,11 +252,7 @@
 
 
         </div>
-        <footer class="page-footer font-small blue" style="margin-top: 20px">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="#">MiMarca</a>
-            </div>
-        </footer>
+
         </div>
 
     </body>
