@@ -765,6 +765,24 @@ public class UsuarioDao extends BaseDao {
         return listaDetalles;
     }
 
+    public String obtenerFechaMax(String codigoPedido){
+
+        String sql1 = "SELECT DATE_SUB(fecha_recojo, INTERVAL 1 HOUR) FROM pedido WHERE codigo=?;";
+        String fecha = "";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql1);) {
+            pstmt.setString(1, codigoPedido);
+            try(ResultSet rs = pstmt.executeQuery()){
+                rs.next();
+                fecha = rs.getString(1);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return fecha;
+    }
+
     public void actualizarTotalApagar(){
         //obtengo pedidos:
         String sql1 = "SELECT * FROM pedido;";

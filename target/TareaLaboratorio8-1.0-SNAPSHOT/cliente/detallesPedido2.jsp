@@ -2,6 +2,7 @@
 <%@ page import="java.math.BigDecimal" %>
 <%@ page import="beans.PedidoBean" %>
 <%@ page import="beans.PedidoHasProductoBean" %>
+<%@ page import="daos.UsuarioDao" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="pedidoProductoLista" scope="request" type="java.util.ArrayList<beans.PedidoHasProductoBean>"/>
 <html>
@@ -45,6 +46,8 @@
             <h4>Bodega: <%=pedido.getBodegaBean().getNombreBodega()%></h4>
             <h4>Fecha y hora del registro: <%=pedido.getFecha_registro()%></h4>
             <h4>Fecha y hora de entrega: <%=pedido.getFecha_recojo()%></h4>
+            <%UsuarioDao usuarioDao = new UsuarioDao();%>
+            <h4>Fecha limite para cancelar el pedido: <%=usuarioDao.obtenerFechaMax(pedido.getCodigo())%></h4>
             <table class="table mt-5" style="text-align: center;">
                 <tr>
                     <th>Nombre producto</th>

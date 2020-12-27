@@ -1,10 +1,7 @@
 package servlets.Bodega;
 
 
-import beans.BodegaBean;
-import beans.PedidoBean;
-import beans.ProductoBean;
-import beans.UsuarioBean;
+import beans.*;
 import daos.BodegaDao;
 import daos.UsuarioDao;
 import dtos.PedidosDatosDTO;
@@ -392,16 +389,20 @@ public class BodegaServlet extends HttpServlet {
                 break;
 
             case "mostrarPedido":
-                String codigo = request.getParameter("codigo");
+
+                String codigoPedido = request.getParameter("codigo");
                 UsuarioDao usuarioDao2 = new UsuarioDao();
-                if(usuarioDao2.obtenerPedido(codigo)!=null){
-                    PedidosDatosDTO pedido = bodegaDao.mostrarPedido(codigo);
-                    request.setAttribute("pedido", pedido);
-                    view = request.getRequestDispatcher("/bodega/mostrarPedido.jsp");
-                    view.forward(request,response);
+
+                if(usuarioDao2.obtenerPedido(codigoPedido)!=null){
+                    ArrayList<PedidoHasProductoBean> pedidoProductoLista = usuarioDao2.obtenerDetallesPedido(codigoPedido);
+                    request.setAttribute("pedidoProductoLista", pedidoProductoLista);
+                    view = request.getRequestDispatcher("bodega/mostrarPedido.jsp");
+                    view.forward(request, response);
                 }else{
                     response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listarPedidos");
                 }
+
+
 
                 break;
             case "entregarPedido":

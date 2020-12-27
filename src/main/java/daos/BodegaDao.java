@@ -488,6 +488,7 @@ public class BodegaDao extends BaseDao{
                     pedidos.setId(rs.getInt("idPedido"));
                     pedidos.setCodigo(rs.getString("codigo"));
                     pedidos.setEstado(rs.getString("estado"));
+                    pedidos.setTotalApagar(rs.getBigDecimal("totalApagar"));
                     pedidos.setFecha_registro(rs.getString("fecha_registro"));
                     pedidos.setFecha_recojo(rs.getString("fecha_recojo"));
                     listaPedidos.add(pedidos);
