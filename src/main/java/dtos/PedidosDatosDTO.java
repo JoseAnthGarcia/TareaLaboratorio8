@@ -1,6 +1,7 @@
 package dtos;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class PedidosDatosDTO {
     private String codigo;
@@ -10,6 +11,15 @@ public class PedidosDatosDTO {
     private String fecha_limite;
     private int unidades;
     private BigDecimal costo_total;
+    private ArrayList<ProductoCantDto> listaProductCant;
+
+    public ArrayList<ProductoCantDto> getListaProductCant() {
+        return listaProductCant;
+    }
+
+    public void setListaProductCant(ArrayList<ProductoCantDto> listaProductCant) {
+        this.listaProductCant = listaProductCant;
+    }
 
     public String getCodigo() {
         return codigo;
