@@ -41,7 +41,7 @@
     </div>
 </div>
 <div class="row">
-    <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger primero" style="position: absolute; right: 15%">Volver a Home</a>
+    <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger primero" style="position: absolute; right: 15%">Volver a página principal</a>
 </div>
 
 </body>

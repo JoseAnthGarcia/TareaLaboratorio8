@@ -113,7 +113,7 @@
         </div>
         <%}%>
 
-        <div class="row mt-5">
+        <div class="row mt-5 mb-5">
             <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger primero">Volver</a>
 
             <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodega2" class="btn btn-outline-success mx-auto">Escoger otra bodega</a>
