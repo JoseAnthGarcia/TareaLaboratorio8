@@ -109,7 +109,7 @@
     <div class="row">
         <%//Listar productos de cierta bodega%>
         <%if(listaProductos.size()!=0){%>
-        <table class="table">
+        <table class="table table-hover">
             <thead>
             <tr>
                 <th scope="col"></th>
@@ -121,6 +121,7 @@
             </thead>
             <tbody>
             <%for (ProductoBean producto : listaProductos) {%>
+
             <tr>
                 <td><img src="<%=request.getContextPath()%>/ImagenServlet?idProducto=<%=producto.getId()%>" height="50px"></td>
                 <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=detalleProducto&productSelect=<%=producto.getId()%>"><%=producto.getNombreProducto()%></a>
