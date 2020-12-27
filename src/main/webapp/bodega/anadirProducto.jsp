@@ -151,17 +151,17 @@
                 </div>
 
             </div>
+            <div class="col-sm-3">
 
                 <%if(!fotoVal){%>
                 <div class="alert alert-danger" role="alert">
                     No se ha ingresado una fotografia o el formato es invalido.
                 </div>
                 <%}%>
-
+            </div>
         </div>
     </div>
-    </div>
-    </div>
+
 
 </main>
 </body>
