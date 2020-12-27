@@ -2,7 +2,6 @@ package servlets.Cliente;
 
 import beans.*;
 import daos.UsuarioDao;
-import dtos.DetallesPedidoDto;
 import dtos.ProductoCantDto;
 import dtos.ProductosClienteDTO;
 import servlets.Emails;
@@ -799,20 +798,13 @@ public class UsuarioServlet extends HttpServlet {
                     break;
 
                 case "verDetallesPedido":
-                    String idPedido = request.getParameter("idPedido");
-                    boolean pedidoExis = false;
-                    int idPedidoInt = -1;
-                    try{
-                        idPedidoInt = Integer.parseInt(idPedido);
-                    } catch (NumberFormatException e) {
-                        e.printStackTrace();
-                    }
 
-                    DetallesPedidoDto detalles = usuarioDao.detallesPedido(idPedidoInt);
+                    String codigoPedido = request.getParameter("codigoPedido");
 
-                    if(detalles!=null){
-                        request.setAttribute("detalles", detalles);
-                        requestDispatcher = request.getRequestDispatcher("cliente/detallesPedido.jsp");
+                    if(usuarioDao.obtenerPedido(codigoPedido)!=null){
+                        ArrayList<PedidoHasProductoBean> pedidoProductoLista = usuarioDao.obtenerDetallesPedido(codigoPedido);
+                        request.setAttribute("pedidoProductoLista", pedidoProductoLista);
+                        requestDispatcher = request.getRequestDispatcher("cliente/detallesPedido2.jsp");
                         requestDispatcher.forward(request, response);
                     }else{
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
@@ -822,11 +814,11 @@ public class UsuarioServlet extends HttpServlet {
 
                 case "cancelarPedido": //cancelarPedido
 
-                    String codigoPedido = request.getParameter("codigoPedido");
-                    if(usuarioDao.obtenerPedido(codigoPedido)!=null){
-                        boolean aTiempo =  usuarioDao.verificarHoraPedido(codigoPedido);
+                    String codigoPedido2 = request.getParameter("codigoPedido");
+                    if(usuarioDao.obtenerPedido(codigoPedido2)!=null){
+                        boolean aTiempo =  usuarioDao.verificarHoraPedido(codigoPedido2);
                         if(aTiempo){
-                            usuarioDao.cancelarPedido(codigoPedido);
+                            usuarioDao.cancelarPedido(codigoPedido2);
                             response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
                         }else{
                             request.getSession().setAttribute("errorCancelarPedido", true);

@@ -7,7 +7,6 @@ import dtos.ProductosClienteDTO;
 import servlets.Emails;
 
 import javax.mail.MessagingException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
@@ -484,6 +483,7 @@ public class UsuarioDao extends BaseDao {
                 bodega = new BodegaBean();
                 bodega.setIdBodega(rs.getInt("idBodega"));
                 bodega.setNombreBodega(rs.getString("nombreBodega"));
+                bodega.setEstadoBodega(rs.getString("estado"));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -578,13 +578,14 @@ public class UsuarioDao extends BaseDao {
     public void ingresarProductosApedido(int idPedido, ArrayList<ProductoCantDto> listaProductos){
         for(ProductoCantDto productoPedido: listaProductos){
             //Ingreso los productos:
-            String sql = "insert into pedido_has_producto (idPedido,idProducto, Cantidad)\n" +
-                    "values(?,?, ?);";
+            String sql = "insert into pedido_has_producto (idPedido,idProducto, Cantidad, precioUnitario)\n" +
+                    "values(?,?, ?, ?);";
             try (Connection conn = getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(sql);) {
                 pstmt.setInt(1, idPedido);
                 pstmt.setInt(2,productoPedido.getProducto().getId());
                 pstmt.setInt(3,productoPedido.getCant());
+                pstmt.setBigDecimal(4, productoPedido.getProducto().getPrecioProducto());
                 pstmt.executeUpdate();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
@@ -732,6 +733,38 @@ public class UsuarioDao extends BaseDao {
         return detallesPedidoDto;
     }
 
+    public ArrayList<PedidoHasProductoBean> obtenerDetallesPedido(String codigoPedido){
+
+        ArrayList<PedidoHasProductoBean> listaDetalles = new ArrayList<>();
+
+        String sql1 = "select * from pedido_has_producto where idPedido=?;";
+        PedidoBean pedido = obtenerPedido(codigoPedido);
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql1);) {
+            pstmt.setInt(1, pedido.getId());
+            try(ResultSet rs = pstmt.executeQuery()){
+                while(rs.next()){
+                    PedidoHasProductoBean php = new PedidoHasProductoBean();
+
+                    php.setPedido(pedido);
+
+                    ProductoBean producto = obtenerProducto(rs.getInt("idProducto"));
+                    php.setProducto(producto);
+
+                    php.setCantidad(rs.getInt("cantidad"));
+                    php.setPrecioUnitario(rs.getBigDecimal("precioUnitario"));
+
+                    listaDetalles.add(php);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return listaDetalles;
+    }
+
     public void actualizarTotalApagar(){
         //obtengo pedidos:
         String sql1 = "SELECT * FROM pedido;";
@@ -853,8 +886,7 @@ public class UsuarioDao extends BaseDao {
                     pedido.setFecha_recojo(rs.getString("fecha_recojo"));
                     pedido.setTotalApagar(rs.getBigDecimal("totalApagar"));
 
-                    BodegaBean bodega = new BodegaBean();
-                    bodega.setIdBodega(rs.getInt("idBodega"));
+                    BodegaBean bodega = obtenerBodega(rs.getInt("idBodega"));
                     pedido.setBodegaBean(bodega);
 
                     UsuarioBean usuario = new UsuarioBean();
@@ -882,33 +914,19 @@ public class UsuarioDao extends BaseDao {
         }
 
         //actualizamos el stock
-        String sql2 = "select idPedido from pedido where codigo=?;";
-        int idPedido = -1;
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql2)) {
-            pstmt.setString(1, codigo);
-            ResultSet rs = pstmt.executeQuery();
-            rs.next();
-            idPedido = rs.getInt(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        ArrayList<PedidoHasProductoBean> detallesPedido = obtenerDetallesPedido(codigo);
 
-        DetallesPedidoDto detalles = detallesPedido(idPedido);
-
-        for(ProductoCantDto productoPedido: detalles.getListaProductCant()){
-
-            //TODO: validar stock maximo
+        for (PedidoHasProductoBean php : detallesPedido){
             //Actualizo el stock:
-            ProductoBean producto = obtenerProducto(productoPedido.getProducto().getId());
-            int newStock = producto.getStock() + productoPedido.getCant();
+            ProductoBean producto = php.getProducto();
+            int newStock = producto.getStock() + php.getCantidad();
             String sql1 = "update producto set stock = ?\n" +
                     "where idProducto = ?;";
 
             try (Connection conn1 = getConnection();
                  PreparedStatement pstmt1 = conn1.prepareStatement(sql1);) {
                 pstmt1.setInt(1, newStock);
-                pstmt1.setInt(2, productoPedido.getProducto().getId());
+                pstmt1.setInt(2, producto.getId());
                 pstmt1.executeUpdate();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
