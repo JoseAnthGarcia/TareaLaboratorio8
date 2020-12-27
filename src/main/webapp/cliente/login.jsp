@@ -123,7 +123,7 @@
         </div>
         <div class="col-lg-7 col-md-12 ">
             <form class="form-signin" method="POST" action="<%=request.getContextPath()%>/LoginServlet?accion=login" style="
-    margin-left: 150px;text-align: center;position: relative; top:40px;">
+    margin-left: 150px;text-align: left;position: relative; top:40px;">
             <div class="row">
                 <div class="col-10">
                     <div align="center">
