@@ -24,7 +24,7 @@ public class AdminFilter implements Filter {
         UsuarioBean admin = (UsuarioBean) request.getSession().getAttribute("admin");
 
         if(admin!=null && admin.getIdUsuario()>0){
-            if(request.getParameter("accion").equals("logout")){
+            if(request.getParameter("accion")!=null && request.getParameter("accion").equals("logout")){
                 chain.doFilter(req, resp);
             }else{
                 response.sendRedirect(request.getContextPath() + "/AdminServlet?accion=miPerfil");
