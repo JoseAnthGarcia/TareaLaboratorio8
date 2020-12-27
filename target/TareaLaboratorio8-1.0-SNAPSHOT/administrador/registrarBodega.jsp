@@ -10,7 +10,8 @@
     boolean correoB = request.getAttribute("correoB") == null ? true : (Boolean) request.getAttribute("correoB");
     boolean distritoSelected = request.getAttribute("distritoSelected") == null ? true : (Boolean) request.getAttribute("distritoSelected");
     boolean rucExis = request.getAttribute("rucExis") == null ? false : (Boolean) request.getAttribute("rucExis");
-    boolean fotoExis = request.getAttribute("fotoExis") == null ? true : (Boolean) request.getAttribute("fotoExis");
+    boolean fotoVal = request.getAttribute("fotoVal") == null ? true : (Boolean) request.getAttribute("fotoVal");
+    boolean correoExis = request.getAttribute("correoExis") == null ? false : (Boolean) request.getAttribute("correoExis");
 %>
 
 <!DOCTYPE html>
@@ -56,7 +57,7 @@
         </style>
 
         <title>Registrarse</title>
-        <% if( rucB && direccionB && nombreBodegaB && correoB && distritoSelected && rucExis){ %>
+        <% if( rucB && direccionB && nombreBodegaB && correoB && distritoSelected && !rucExis){ %>
         <script>
             $(document).ready(function () {
                 $("#exampleModal").modal("show");
@@ -68,7 +69,7 @@
 
         <!-- todo:  corregir el espaciado entre Mi Bodega, Pedidos y Productos -->
         <header>
-            <% if( rucB && direccionB && nombreBodegaB && correoB && distritoSelected && rucExis){ %>
+            <% if( rucB && direccionB && nombreBodegaB && correoB && distritoSelected && rucExis && correoExis && !fotoVal){ %>
             <!-- Modal -->
             <div class="modal fade in" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
@@ -235,9 +236,14 @@
                         El ruc ingresado ya está registrado.
                     </div>
                     <%}%>
-                    <%if(!fotoExis){%>
+                    <%if(!fotoVal){%>
                     <div class="alert alert-danger" role="alert">
-                        Ingrese una fotografia.
+                        No se ha ingresado una fotografia o el formato es invalido.
+                    </div>
+                    <%}%>
+                    <%if(correoExis){%>
+                    <div class="alert alert-danger" role="alert">
+                        El correo ingresado ya está registrado
                     </div>
                     <%}%>
                 </div>
