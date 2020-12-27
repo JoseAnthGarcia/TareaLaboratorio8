@@ -106,7 +106,7 @@
     </form>
 
 
-    <div class="row">
+    <div class="row" style="text-align: center">
         <%//Listar productos de cierta bodega%>
         <%if(listaProductos.size()!=0){%>
         <table class="table table-hover">
@@ -126,7 +126,7 @@
                 <td><img src="<%=request.getContextPath()%>/ImagenServlet?idProducto=<%=producto.getId()%>" height="50px"></td>
                 <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=detalleProducto&productSelect=<%=producto.getId()%>"><%=producto.getNombreProducto()%></a>
                 </td>
-                <td><%=producto.getPrecioProducto()%>
+                <td>S/.<%=producto.getPrecioProducto()%>
                 </td>
                 <td>
                     <a class="btn btn-secondary" href="<%=request.getContextPath()%>/UsuarioServlet?accion=agregarCarrito&productSelect=<%=producto.getId()%>">Seleccionar</a>
