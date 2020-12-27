@@ -357,10 +357,16 @@ public class BodegaServlet extends HttpServlet {
 
             case "mostrarPedido":
                 String codigo = request.getParameter("codigo");
-                PedidosDatosDTO pedido = bodegaDao.mostrarPedido(codigo);
-                request.setAttribute("pedido", pedido);
-                view = request.getRequestDispatcher("/bodega/mostrarPedido.jsp");
-                view.forward(request,response);
+                UsuarioDao usuarioDao2 = new UsuarioDao();
+                if(usuarioDao2.obtenerPedido(codigo)!=null){
+                    PedidosDatosDTO pedido = bodegaDao.mostrarPedido(codigo);
+                    request.setAttribute("pedido", pedido);
+                    view = request.getRequestDispatcher("/bodega/mostrarPedido.jsp");
+                    view.forward(request,response);
+                }else{
+                    response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listarPedidos");
+                }
+
                 break;
             case "entregarPedido":
                 String codigo2 = request.getParameter("codigo");

@@ -25,7 +25,7 @@ public class LoginBodegaFilter implements Filter {
         UsuarioBean admin = (UsuarioBean) request.getSession().getAttribute("admin");
 
         if(bodega!=null && bodega.getIdBodega()>0){
-            if(request.getParameter("accion").equals("logout")){
+            if(request.getParameter("accion")!=null && request.getParameter("accion").equals("logout")){
                 chain.doFilter(req, resp);
             }else{
                 response.sendRedirect(request.getContextPath() + "/BodegaServlet");
