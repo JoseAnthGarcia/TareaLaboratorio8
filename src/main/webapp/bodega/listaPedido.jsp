@@ -97,7 +97,7 @@
                 </td>
                 <td height="70px"><%=pedidos.getEstado()%></td>
                 <td><%=pedidos.getFecha_registro()%></td>
-                <td><%=pedidos.getFecha_registro()%></td>
+                <td><%=pedidos.getFecha_recojo()%></td>
                 <td>
                     <% if(pedidos.getEstado().equalsIgnoreCase("Pendiente")){
                     %>
