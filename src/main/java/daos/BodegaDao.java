@@ -449,11 +449,6 @@ public class BodegaDao extends BaseDao{
 
     //-------------------------------Listar pedidos---------------------------
     public int calcularCantPagPedidos(int idBodegaActual){
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
         String sql = "select ceil(count(codigo)/5) from pedido where idBodega = ?";
 
@@ -461,11 +456,11 @@ public class BodegaDao extends BaseDao{
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql); ) {
 
-            pstmt.setInt(idBodegaActual,1);
-            try(ResultSet rs = pstmt.executeQuery();){
-                rs.next();
-                cantPag = rs.getInt(1);
-            }
+                pstmt.setInt(1,idBodegaActual);
+                try(ResultSet rs = pstmt.executeQuery();){
+                    rs.next();
+                    cantPag = rs.getInt(1);
+                }
 
 
         } catch (SQLException throwables) {
