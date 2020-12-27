@@ -70,7 +70,7 @@
     <h1 class="mb-3 mt-3">Mi  perfil </h1>
     <div class="row">
 
-        <div class="col-lg-6 col-md-12 centrar">
+        <div class="col-lg-6 col-md-12 centrar mb-3">
             <img src="https://www.flaticon.com/svg/static/icons/svg/3135/3135715.svg" width="408px" height="400px" />
         </div>
         <div class="col-lg-6 col-md-12 centrar">
@@ -114,13 +114,7 @@
 
 
 </div>
-<div class="container-fluid">
-    <footer class="page-footer font-small blue mb-3 mt-3" style="margin-top: 20px">
-        <div class="footer-copyright text-center py-3">© 2020 Copyright:
-            <a href="#">MiMarca</a>
-        </div>
-    </footer>
-</div>
+
 
 </body>
 </html>
