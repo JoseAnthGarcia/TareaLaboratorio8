@@ -63,6 +63,11 @@ public class BodegaServlet extends HttpServlet {
                 BigDecimal precioUnitario = BigDecimal.valueOf(0);
 
                 Part part = request.getPart("foto");
+                boolean fotoVal = true;
+                if(part.getSize()==0 || !part.getContentType().contains("image/")){
+                    fotoVal = false;
+                }
+
                 InputStream inputStream = part.getInputStream();
 
                 // se valida ue el nombre no esté vacio o lleno de espacios
@@ -97,11 +102,12 @@ public class BodegaServlet extends HttpServlet {
                 }
 
                 // si es que los datos son correctos, se guarda el producto
-                if (validStock & validPrecioUnitario & validNombreProducto) {
+                if (validStock & validPrecioUnitario & validNombreProducto && fotoVal) {
                     BodegaDao.crearProducto(nombreProducto, descripcion, stock, precioUnitario, idBodegaActual, inputStream);
                     response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
                 } else {
                     request.setAttribute("validStock", validStock);
+                    request.setAttribute("fotoVal", fotoVal);
                     request.setAttribute("validPrecioUnitario", validPrecioUnitario);
                     request.setAttribute("validNombreProducto", validNombreProducto);
 
