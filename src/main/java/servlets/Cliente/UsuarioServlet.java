@@ -674,7 +674,7 @@ public class UsuarioServlet extends HttpServlet {
                         int idBodega = ((BodegaBean) session1.getAttribute("bodegaEscogida")).getIdBodega();
                         int cantPorPagina = 4;
                         //calculamos paginas:
-                        String query = "SELECT * FROM producto WHERE idBodega=" + idBodega + ";";
+                        String query = "SELECT * FROM producto WHERE stock <> 0 and idBodega=" + idBodega + ";";
                         int cantPag = usuarioDao.calcularCantPagQuery(query, cantPorPagina);
 
                         String pag2 = request.getParameter("pag") == null ?

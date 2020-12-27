@@ -603,7 +603,7 @@ public class BodegaDao extends BaseDao{
     public boolean verificarCancelarPedido(String codigo){
 
         boolean esPosible=false;
-        String sql = "select * from pedido where codigo = ?  AND (timediff(now(), fecha_recojo) >= '24:00:00');";
+        String sql = "select * from pedido where codigo = ?  AND (TIMESTAMPDIFF(DAY, fecha_recojo, now()) >= 1);";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, codigo);
