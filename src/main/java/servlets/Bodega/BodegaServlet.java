@@ -158,17 +158,17 @@ public class BodegaServlet extends HttpServlet {
                 //TODO: Aqui se metera foto
                 Part part1 = request.getPart("foto");
 
-                boolean fotoVal = true;
+                boolean fotoVal1 = true;
                 if(part1.getSize() != 0){
                     if(!part1.getContentType().contains("image/")){
-                        fotoVal = false;
+                        fotoVal1 = false;
                     }
                 }
 
                 InputStream inputStream1 = part1.getInputStream();
 
                 if(idProductoNumber && bodegaDao.buscarProducto2(idProductoInt)!=null){
-                    if (validStock2 && validPrecioUnitario2 && valdespcr2 && fotoVal) {
+                    if (validStock2 && validPrecioUnitario2 && valdespcr2 && fotoVal1) {
                         if(bodegaDao.buscarProducto2(idProductoInt)!=null && part1.getSize() == 0){
                             //actualiza
                             bodegaDao.actualizarProducto(idProductoInt, descripcion2, stock2, precioUnitario2);
@@ -186,7 +186,7 @@ public class BodegaServlet extends HttpServlet {
                         request.setAttribute("validStock", validStock2);
                         request.setAttribute("validPrecioUnitario", validPrecioUnitario2);
                         if(part1.getSize()!=0){
-                            request.setAttribute("esFoto",fotoVal);
+                            request.setAttribute("esFoto",fotoVal1);
                         }
 
                         RequestDispatcher dispatcher = request.getRequestDispatcher("/bodega/editarProducto.jsp");

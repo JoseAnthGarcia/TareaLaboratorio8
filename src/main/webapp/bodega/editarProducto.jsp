@@ -104,10 +104,11 @@
 
                             </div>
                             <!-- FOTO -->
+                            <div class="form-group row">
                             <div class="col-sm-10">
                                 <input type="file" name="foto" accept="image/*">
                             </div>
-
+                            </div>
 
                             <!--TODO: como se maneja el subir imagenes
                             <div class="form-group row">
