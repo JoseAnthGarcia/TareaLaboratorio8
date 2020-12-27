@@ -105,8 +105,9 @@
                             </div>
                             <!-- FOTO -->
                             <div class="form-group row">
-                            <div class="col-sm-10">
-                                <input type="file" name="foto" accept="image/*">
+                            <label for="foto" class="col-md-4 col-form-label text-md-right">Foto</label>
+                            <div class="col-sm-2">
+                                <input type="file" name="foto" id="foto" accept="image/*">
                             </div>
                             </div>
 
