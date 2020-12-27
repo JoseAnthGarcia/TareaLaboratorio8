@@ -38,19 +38,25 @@ public class LoginBodegaServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
-        String inputEmail = request.getParameter("inputEmail");
-        String inputPassword = request.getParameter("inputPassword");
-
         String accion = request.getParameter("accion") == null ?
                 "login" : request.getParameter("accion");
 
         BodegaDao bodegaDao = new BodegaDao();
-        BodegaBean bodega = bodegaDao.validarUsuarioPasswordHashed(inputEmail, inputPassword);
-        //UsuarioDao usuarioDao = new UsuarioDao();
-        //UsuarioBean usuario = usuarioDao.validarUsuarioPassword(inputEmail,inputPassword);
         AdminDao bodegaD = new AdminDao();
 
         switch (accion){
+            case "login":
+                String inputEmail = request.getParameter("inputEmail");
+                String inputPassword = request.getParameter("inputPassword");
+                BodegaBean bodega = bodegaDao.validarUsuarioPasswordHashed(inputEmail, inputPassword);
+                if(bodega!=null){
+                    HttpSession session = request.getSession();
+                    session.setAttribute("bodega",bodega);
+                    response.sendRedirect(request.getContextPath()+"/BodegaServlet?accion=home"); // TODO: mostrar la pagina HOME
+                }else{
+                    response.sendRedirect(request.getContextPath()+"/LoginBodega?error");  // TODO: manejo de error
+                }
+                break;
             case "actualizarContraCorreo":
                 
                 String ruc = request.getParameter("ruc");
@@ -64,8 +70,7 @@ public class LoginBodegaServlet extends HttpServlet {
                     Long ruc2= Long.valueOf(ruc);
                     request.setAttribute("ruc2",ruc2);
                     request.setAttribute("nombreBodega", nombreBodega);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("correoContra.jsp");
-                    requestDispatcher.forward(request, response);
+
                     Emails emails = new Emails();
                     String correoAenviar = bodega1.getCorreoBodega();
                     String asunto = "ACTUALIZAR CONTRASEÑA";
@@ -77,8 +82,11 @@ public class LoginBodegaServlet extends HttpServlet {
                     try {
                         emails.enviarCorreo(correoAenviar, asunto, contenido);
                     } catch (MessagingException e) {
-                        System.out.println("Se capturo excepcion en envio de correo");
+                        System.out.println("Se capturo excepcion en envio de correo REGISTRO BODEGA");
                     }
+
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("/bodega/correoContra.jsp");
+                    requestDispatcher.forward(request, response);
                     
                 }else{
                     request.setAttribute("rucExis",rucExis);
@@ -106,25 +114,24 @@ public class LoginBodegaServlet extends HttpServlet {
                     }
                     if (contraseniaB && contrasenia2B) {
                         if (contIguales) {
-                            bodegaD.contraHasheada(idBodega2,contrasenia);
-                            bodega = bodegaD.buscarBodega(idBodega2);
-                            String nombreBodega = bodega.getNombreBodega();
-                            Long ruc3 = bodega.getRucBodega();
+                            bodegaD.contraHasheada(idBodega2,contrasenia); //actualiza la contrasenia
+                            BodegaBean bodega2 = bodegaD.buscarBodega(idBodega2);
+                            String nombreBodega = bodega2.getNombreBodega();
+                            Long ruc3 = bodega2.getRucBodega();
                             request.setAttribute("ruc2", ruc3);
                             request.setAttribute("nombreBodega", nombreBodega);
-                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("ContraseniaExitosa.jsp");
+                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/bodega/ContraseniaExitosa.jsp");
                             requestDispatcher.forward(request, response);
-                            ;
                         } else {
                             request.setAttribute("contIguales", contIguales);
-                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
+                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/bodega/contraseniaBodega.jsp");
                             requestDispatcher.forward(request, response);
                         }
                     } else {
                         request.setAttribute("contraseniaB", contraseniaB);
                         request.setAttribute("contrasenia2B", contrasenia2B);
                         request.setAttribute("contIguales", contIguales);
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("contraseniaBodega.jsp");
+                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/bodega/contraseniaBodega.jsp");
                         requestDispatcher.forward(request, response);
                     }
                 }else{
@@ -133,14 +140,6 @@ public class LoginBodegaServlet extends HttpServlet {
                 }
                 break;
 
-        }
-
-        if(bodega!=null){
-            HttpSession session = request.getSession();
-            session.setAttribute("bodega",bodega);
-            response.sendRedirect(request.getContextPath()+"/BodegaServlet?accion=home"); // TODO: mostrar la pagina HOME
-        }else{
-            response.sendRedirect(request.getContextPath()+"/LoginBodega?error");  // TODO: manejo de error
         }
 
     }
@@ -173,7 +172,7 @@ public class LoginBodegaServlet extends HttpServlet {
                             "nada" : request.getParameter("rucBodega"));
 
                     request.setAttribute("rucBodega", rucBodega);
-                    RequestDispatcher requestDispatcher3 = request.getRequestDispatcher("contraseniaBodega.jsp");
+                    RequestDispatcher requestDispatcher3 = request.getRequestDispatcher("/bodega/contraseniaBodega.jsp");
                     requestDispatcher3.forward(request, response);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -185,13 +184,7 @@ public class LoginBodegaServlet extends HttpServlet {
 
 
         if (bodegaBean == null && accion.equals("login")) {
-            // TODO: por que se valida dos veces la misma vain en bodegaBean?
 
-            BodegaBean bodega = (BodegaBean) session.getAttribute("bodega");
-
-            if (bodegaBean != null && bodega.getIdBodega() > 0) {
-                response.sendRedirect(request.getContextPath() + "/BodegaServlet");
-            }
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("bodega/login.jsp");
             requestDispatcher.forward(request, response);
 

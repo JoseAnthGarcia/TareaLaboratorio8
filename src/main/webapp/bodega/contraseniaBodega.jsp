@@ -13,7 +13,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <jsp:include page="bootstrapRepository.jsp"/>
+        <jsp:include page="../bootstrapRepository.jsp"/>
         <jsp:include page="/includes/utf8Cod.jsp"/>
         <!-- para los iconos como botones -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -116,7 +116,7 @@
                                        aria-describedby="inputPassword2Feedback"
                                        name="contrasenia2" id="inputPassword2" <%=request.getParameter("contrasenia2")==null?"":"value='"+request.getParameter("contrasenia2")+"'"%>>
                                 <div id="inputPassword2Feedback" class="invalid-feedback">
-                                    Ingrese una contraseña valida, por favor.
+                                    La contraseña no debe incluir espacios vacios y debe incluir letras y números
                                 </div>
                             </div>
                         </div>
@@ -132,12 +132,6 @@
                 </div>
             </div>
         </div>
-        </div>
-        <footer class="page-footer font-small blue" style="margin-top: 20px">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="#">MiMarca</a>
-            </div>
-        </footer>
         </div>
 
     </body>
