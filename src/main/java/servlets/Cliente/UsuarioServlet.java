@@ -804,7 +804,7 @@ public class UsuarioServlet extends HttpServlet {
                     if(usuarioDao.obtenerPedido(codigoPedido)!=null){
                         ArrayList<PedidoHasProductoBean> pedidoProductoLista = usuarioDao.obtenerDetallesPedido(codigoPedido);
                         request.setAttribute("pedidoProductoLista", pedidoProductoLista);
-                        requestDispatcher = request.getRequestDispatcher("cliente/detallesPedido2.jsp");
+                        requestDispatcher = request.getRequestDispatcher("cliente/detallesPedido.jsp");
                         requestDispatcher.forward(request, response);
                     }else{
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
