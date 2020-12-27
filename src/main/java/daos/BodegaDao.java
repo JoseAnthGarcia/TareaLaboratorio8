@@ -430,6 +430,23 @@ public class BodegaDao extends BaseDao{
         }
     }
 
+    public void actualizarProductoFoto(int idProducto, String descripcion, int stock, BigDecimal precioUnitario, InputStream inputStream){
+        String sql = "UPDATE producto SET descripcion = ?, stock = ?, precioUnitario = ?, foto = ? WHERE idProducto = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+
+            pstmt.setString(1, descripcion);
+            pstmt.setInt(2, stock);
+            pstmt.setBigDecimal(3, precioUnitario);
+            pstmt.setBinaryStream(4,inputStream);
+            pstmt.setInt(5, idProducto);
+
+            pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     //-------------------------------Listar pedidos---------------------------
     public int calcularCantPagPedidos(){
         try {
@@ -584,8 +601,9 @@ public class BodegaDao extends BaseDao{
     }
 
     public boolean verificarCancelarPedido(String codigo){
+
         boolean esPosible=false;
-        String sql = "select * from pedido where codigo = ?  AND (datediff(now(), fecha_recojo) > 1)";
+        String sql = "select * from pedido where codigo = ?  AND (timediff(now(), fecha_recojo) >= '24:00:00');";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, codigo);

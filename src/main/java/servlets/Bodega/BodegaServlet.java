@@ -108,6 +108,7 @@ public class BodegaServlet extends HttpServlet {
                 } else {
                     request.setAttribute("validStock", validStock);
                     request.setAttribute("fotoVal", fotoVal);
+                    request.setAttribute("fotoVal", fotoVal);
                     request.setAttribute("validPrecioUnitario", validPrecioUnitario);
                     request.setAttribute("validNombreProducto", validNombreProducto);
 
@@ -155,11 +156,27 @@ public class BodegaServlet extends HttpServlet {
                     validPrecioUnitario2 = false;
                 }
 
+                //TODO: Aqui se metera foto
+                Part part1 = request.getPart("foto");
+
+                boolean fotoVal1 = true;
+                if(part1.getSize() != 0){
+                    if(!part1.getContentType().contains("image/")){
+                        fotoVal1 = false;
+                    }
+                }
+
+                InputStream inputStream1 = part1.getInputStream();
+
                 if(idProductoNumber && bodegaDao.buscarProducto2(idProductoInt)!=null){
-                    if (validStock2 && validPrecioUnitario2 && valdespcr2) {
-                        if(bodegaDao.buscarProducto2(idProductoInt)!=null){
+                    if (validStock2 && validPrecioUnitario2 && valdespcr2 && fotoVal1) {
+                        if(bodegaDao.buscarProducto2(idProductoInt)!=null && part1.getSize() == 0){
                             //actualiza
                             bodegaDao.actualizarProducto(idProductoInt, descripcion2, stock2, precioUnitario2);
+                            response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
+
+                        }else if((bodegaDao.buscarProducto2(idProductoInt)!=null) && part1.getContentType().contains("image/")){
+                            bodegaDao.actualizarProductoFoto(idProductoInt, descripcion2, stock2, precioUnitario2, inputStream1);
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
                         }else{
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet");
@@ -169,6 +186,9 @@ public class BodegaServlet extends HttpServlet {
                         request.setAttribute("validDescr", valdespcr2);
                         request.setAttribute("validStock", validStock2);
                         request.setAttribute("validPrecioUnitario", validPrecioUnitario2);
+                        if(part1.getSize()!=0){
+                            request.setAttribute("esFoto",fotoVal1);
+                        }
 
                         RequestDispatcher dispatcher = request.getRequestDispatcher("/bodega/editarProducto.jsp");
                         dispatcher.forward(request, response);
@@ -389,6 +409,7 @@ public class BodegaServlet extends HttpServlet {
                 if(usuarioDao.obtenerPedido(codigo3)!=null){
                     if (bodegaDao.obtenerPedidoBodega(codigo3) != null) {
                         HttpSession session1 = request.getSession();
+
                         boolean valCancelar = bodegaDao.verificarCancelarPedido(codigo3);
 
                         session1.setAttribute("valCancelar", valCancelar);

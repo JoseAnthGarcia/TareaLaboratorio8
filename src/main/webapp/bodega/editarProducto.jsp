@@ -12,6 +12,8 @@
 
     boolean validDescr = request.getAttribute("validDescr") != null ?
             ((boolean) request.getAttribute("validDescr")) : true;
+
+    boolean esFoto = request.getAttribute("esFoto") != null ? ((boolean) request.getAttribute("esFoto")) : true;
 %>
 
 <html>
@@ -61,7 +63,7 @@
 
                         <!-- FORMULARIO -->
                         <% System.out.println(request.getContextPath()); %>
-                        <form method="POST" action="<%=request.getContextPath()%>/BodegaServlet?accion=actualizar">
+                        <form method="POST" action="<%=request.getContextPath()%>/BodegaServlet?accion=actualizar" enctype="multipart/form-data">
                                 <input hidden name="idProducto" value="<%=producto.getId()%>">
                             <!-- DESCRIPCIO -->
                             <div class="form-group row">
@@ -101,6 +103,12 @@
                                 </div>
 
                             </div>
+                            <!-- FOTO -->
+                            <div class="form-group row">
+                            <div class="col-sm-10">
+                                <input type="file" name="foto" accept="image/*">
+                            </div>
+                            </div>
 
                             <!--TODO: como se maneja el subir imagenes
                             <div class="form-group row">
@@ -124,14 +132,20 @@
                                 </a>
                             </div>
                         </form>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
-    </div>
-    <div>
-    </div>
-
 </main>
+<div class="col-sm-6">
+        <%if(!esFoto){%>
+    <div class="alert alert-danger" role="alert">
+        El formato de la foto es invalido.
+    </div>
+        <%}%>
+    <div>
+</div>
 </body>
 </html>

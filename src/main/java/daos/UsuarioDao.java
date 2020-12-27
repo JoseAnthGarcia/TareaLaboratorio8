@@ -335,7 +335,10 @@ public class UsuarioDao extends BaseDao {
                     producto.setNombreProducto(rs.getString("nombreProducto"));
                     producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
                     producto.setStock(rs.getInt("stock"));
-                    listaProductos.add(producto);
+                    if(producto.getStock()!=0){
+                        listaProductos.add(producto);
+                    }
+
                 }
             }
         } catch (SQLException throwables) {
@@ -367,8 +370,10 @@ public class UsuarioDao extends BaseDao {
                     productoBean.setRutaFoto(rs.getString(3));*/
                     productoBean.setNombreProducto(rs.getString("nombreProducto"));
                     productoBean.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
-
-                    listaProductos.add(productoBean);
+                    productoBean.setStock(rs.getInt("stock"));
+                    if(productoBean.getStock()!=0) {
+                        listaProductos.add(productoBean);
+                    }
                 }
             }
         } catch (SQLException ex) {
