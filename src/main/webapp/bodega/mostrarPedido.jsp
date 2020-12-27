@@ -8,7 +8,10 @@
 <%@ page import = "java.util.ArrayList" %>
 <%@ page import= "beans.PedidoBean" %>
 <%@ page import="dtos.PedidosDatosDTO" %>
+<%@ page import="java.math.BigDecimal" %>
+<%@ page import="dtos.ProductoCantDto" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%
     PedidosDatosDTO pedido = (PedidosDatosDTO)request.getAttribute("pedido");
 %>
@@ -58,9 +61,28 @@
                     <div>
                         <h4>Fecha límite para cancelar el pedido: <%=pedido.getFecha_limite()%></h4>
                     </div>
-                    <div>
-                        <h4>Unidades: <%=pedido.getUnidades() == 0 ? "Sin unidades" :pedido.getUnidades()%></h4>
-                    </div>
+
+                    <table class="table mt-5" style="text-align: center;">
+                        <tr>
+                            <th>Nombre producto</th>
+                            <th>Precio unitario</th>
+                            <th>Unidades</th>
+                            <th>Costo parcial por producto</th>
+                        </tr>
+                        <%
+                            BigDecimal totalPagar = new BigDecimal("0");
+                            for (ProductoCantDto productoDto: pedido.getListaProductCant()){%>
+                        <tr>
+                            <td><%=productoDto.getProducto().getNombreProducto()%></td>
+                            <td>S/. <%=productoDto.getProducto().getPrecioProducto()%></td>
+                            <td><%=productoDto.getCant()%></td>
+                            <%  BigDecimal cant = new BigDecimal(productoDto.getCant());
+                                BigDecimal precioParc = productoDto.getProducto().getPrecioProducto().multiply(cant);%>
+                            <td>S/. <%=precioParc%></td>
+                        </tr>
+                        <% totalPagar = totalPagar.add(precioParc);
+                        } %>
+                    </table>
                     <div>
                         <h4>Costo: <%=pedido.getCosto_total() == null? "Sin costo" : pedido.getCosto_total()%></h4>
                     </div>
