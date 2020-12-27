@@ -62,8 +62,8 @@
 </head>
 <body>
 
-<div class="container" style="margin-top: 40px;">
-    <div class="row">
+<div class="container" style="margin-top: 7%;">
+    <div class="row ">
         <div class="col-lg-6">
             <img style="border-radius: 50%" src="https://us.123rf.com/450wm/yupiramos/yupiramos1702/yupiramos170217136/72457937-bodega-de-almacenamiento-de-color-con-m%C3%BAltiples-cajas-y-la-ilustraci%C3%B3n-de-vector-de-carretilla-elevadora.jpg?ver=6" height="450px"/>
             <a href="<%=request.getContextPath()%>/LoginServlet?accion=parteEmpresa" class="btn btn-secondary my-2">Regresar</a>
