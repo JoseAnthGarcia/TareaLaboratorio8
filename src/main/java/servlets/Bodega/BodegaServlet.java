@@ -134,24 +134,34 @@ public class BodegaServlet extends HttpServlet {
                 //validar descripcion
                 boolean valdespcr2 = true;
                 String descripcion2 = request.getParameter("descripcion");
-                if(descripcion2.equals("")){
-                    valdespcr2=false;
+
+                if(descripcion2.trim().equals("")){
+                    valdespcr2 = false;
                 }
+
 
                 // se valida el stock
                 boolean validStock2 = true;
                 int stock2 = -1;
                 try {
                     stock2 = Integer.parseInt(request.getParameter("stock"));
+                    if(stock2 < 0){
+                        validStock2 = false;
+                    }
                 } catch (NumberFormatException e) {
                     validStock2 = false;
                 }
 
                 // se valida el precioUnitario
+                BigDecimal cero = new BigDecimal(0);
+
                 boolean validPrecioUnitario2 = true;
                 BigDecimal precioUnitario2 = BigDecimal.valueOf(-1);
                 try {
                     precioUnitario2 = BigDecimal.valueOf(Double.parseDouble(request.getParameter("precioProducto")));
+                    if(precioUnitario2.compareTo(cero) == -1){
+                        validPrecioUnitario2 = false;
+                    }
                 } catch (NumberFormatException e) {
                     validPrecioUnitario2 = false;
                 }
