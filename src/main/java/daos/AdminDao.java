@@ -320,6 +320,25 @@ public class AdminDao extends BaseDao{
 
         return encontrado;
     }
+    public boolean buscarCorreo(String correo){
+        boolean encontrado = false;
+
+        String sql = "SELECT * FROM bodega WHERE correo = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setString(1,correo);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    encontrado = true;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return encontrado;
+    }
     public int buscarIdBodega(String ruc){
         String sql = "SELECT idBodega FROM bodega WHERE ruc = ?";
         int idBodega=0;

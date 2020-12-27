@@ -10,6 +10,7 @@
     boolean correoB = request.getAttribute("correoB") == null ? true : (Boolean) request.getAttribute("correoB");
     boolean distritoSelected = request.getAttribute("distritoSelected") == null ? true : (Boolean) request.getAttribute("distritoSelected");
     boolean rucExis = request.getAttribute("rucExis") == null ? false : (Boolean) request.getAttribute("rucExis");
+    boolean correoExis = request.getAttribute("correoExis") == null ? false : (Boolean) request.getAttribute("correoExis");
 %>
 
 <!DOCTYPE html>
@@ -55,7 +56,7 @@
         </style>
 
         <title>Registrarse</title>
-        <% if( rucB && direccionB && nombreBodegaB && correoB && distritoSelected && rucExis){ %>
+        <% if( rucB && direccionB && nombreBodegaB && correoB && distritoSelected && rucExis && correoExis){ %>
         <script>
             $(document).ready(function () {
                 $("#exampleModal").modal("show");
@@ -67,7 +68,7 @@
 
         <!-- todo:  corregir el espaciado entre Mi Bodega, Pedidos y Productos -->
         <header>
-            <% if( rucB && direccionB && nombreBodegaB && correoB && distritoSelected && rucExis){ %>
+            <% if( rucB && direccionB && nombreBodegaB && correoB && distritoSelected && rucExis && correoExis){ %>
             <!-- Modal -->
             <div class="modal fade in" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
@@ -230,6 +231,11 @@
                     <%if(rucExis){%>
                     <div class="alert alert-danger" role="alert">
                         El ruc ingresado ya está registrado
+                    </div>
+                    <%}%>
+                    <%if(correoExis){%>
+                    <div class="alert alert-danger" role="alert">
+                        El correo ingresado ya está registrado
                     </div>
                     <%}%>
                 </div>

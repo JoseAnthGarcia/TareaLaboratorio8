@@ -189,8 +189,12 @@ public class AdminServlet extends HttpServlet {
                     if(bodegaDao.buscarRuc(ruc)){
                         rucExis = true;
                     }
+                    boolean correoExis = false;
+                    if(bodegaDao.buscarCorreo(correo)){
+                        correoExis = true;
+                    }
 
-                    if(distritoSelected && !rucExis && idDistritoInt != 0){
+                    if(distritoSelected && !rucExis && !correoExis && idDistritoInt != 0){
 
                         b.setFoto(inputStream);
                         b.setNombreBodega(nombreBodega);
@@ -231,6 +235,7 @@ public class AdminServlet extends HttpServlet {
                         requestDispatcher.forward(request, response);
                     }else{
                         request.setAttribute("rucExis", rucExis);
+                        request.setAttribute("correoExis", correoExis);
                         request.setAttribute("distritoSelected", distritoSelected);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/registrarBodega.jsp");
                         requestDispatcher.forward(request, response);
