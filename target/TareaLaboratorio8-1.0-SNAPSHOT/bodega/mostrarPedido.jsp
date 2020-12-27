@@ -61,7 +61,7 @@
                     <div>
                         <h4>Fecha límite para cancelar el pedido: <%=pedido.getFecha_limite()%></h4>
                     </div>
-                    
+
                     <table class="table mt-5" style="text-align: center;">
                         <tr>
                             <th>Nombre producto</th>

@@ -21,19 +21,30 @@ public class LoginAdminServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
-        String inputEmail = request.getParameter("inputEmail");
-        String inputPassword = request.getParameter("inputPassword");
 
         AdminDao adminDao = new AdminDao();
-        UsuarioBean admin = adminDao.validarUsuarioPassword(inputEmail, inputPassword);
 
-        if(admin!=null){
-            HttpSession session = request.getSession();
-            session.setAttribute("admin",admin);
-            response.sendRedirect(request.getContextPath()+"/AdminServlet?accion=miPerfil");
-        }else{
-            response.sendRedirect(request.getContextPath()+"/LoginAdmin?error");  // TODO: manejo de error
+
+        String accion = request.getParameter("accion") == null ?
+                "login" : request.getParameter("accion");
+
+        switch(accion){
+            case "login":
+                String inputEmail = request.getParameter("inputEmail");
+                String inputPassword = request.getParameter("inputPassword");
+
+                UsuarioBean admin = adminDao.validarUsuarioPassword(inputEmail, inputPassword);
+                if(admin!=null){
+                    HttpSession session = request.getSession();
+                    session.setAttribute("admin",admin);
+                    response.sendRedirect(request.getContextPath()+"/AdminServlet?accion=miPerfil");
+                }else{
+                    response.sendRedirect(request.getContextPath()+"/LoginAdmin?error");
+                }
+                break;
+
         }
+
 
     }
 
@@ -63,6 +74,5 @@ public class LoginAdminServlet extends HttpServlet {
             view2 = request.getRequestDispatcher("administrador/access_denied.jsp");
             view2.forward(request, response);
         }
-
     }
 }

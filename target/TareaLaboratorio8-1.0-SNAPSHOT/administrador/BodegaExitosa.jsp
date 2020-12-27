@@ -35,7 +35,7 @@
 
 
         <div class="row">
-            <a href="<%=request.getContextPath()%>/AdminServlet?accion=miPerfil" class="btn btn-outline-danger primero" style="position: absolute; right: 15%">Ok</a>
+            <a href="<%=request.getContextPath()%>/AdminServlet?accion=miPerfil" class="btn btn-outline-success primero" style="position: absolute; right: 15%">Ok</a>
         </div>
     </body>
 </html>
