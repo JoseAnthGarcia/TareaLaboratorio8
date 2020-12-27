@@ -10,6 +10,9 @@
 
     boolean validNombreProducto = request.getAttribute("validNombreProducto") != null ?
             ((boolean) request.getAttribute("validNombreProducto")) : true;
+
+    boolean fotoVal = request.getAttribute("fotoVal") == null ?
+            true : (Boolean) request.getAttribute("fotoVal");
 %>
 
 <html>
@@ -73,7 +76,9 @@
                                     <input type="text" class="form-control <%=validNombreProducto?"":"is-invalid"%>"
                                            name="nombreProducto"
                                            id="nombreProducto"
-                                           aria-describedby="validationServer05Feedback" required>
+                                           aria-describedby="validationServer05Feedback"
+                                        <%=request.getParameter("nombreProducto")==null?"":"value='"+request.getParameter("nombreProducto")+"'"%>
+                                           required>
                                     <div id="validationServer05Feedback" class="invalid-feedback">
                                         No puede estar vacío
                                     </div>
@@ -81,13 +86,14 @@
                                 </div>
                             </div>
 
-                            <!-- DESCRIPCIO -->
+                            <!-- DESCRIPCION -->
                             <div class="form-group row">
                                 <label for="Descripcion"
                                        class="col-md-4 col-form-label text-md-right">Descripción</label>
                                 <div class="col-md-6">
                                     <textarea type="text" id="Descripcion" class="form-control" name="descripcion"
-                                              placeholder="Ingrese una descripcion"></textarea>
+                                              placeholder="Ingrese una descripcion" maxlength="150"
+                                    ><%=request.getParameter("descripcion")==null?"":request.getParameter("descripcion")%></textarea>
                                 </div>
                             </div>
 
@@ -97,7 +103,9 @@
                                 <div class="col-md-6">
                                     <input type="text" class="form-control <%=validStock?"":"is-invalid"%>" name="stock"
                                            id="Stock"
-                                           aria-describedby="validationServer03Feedback" required>
+                                           aria-describedby="validationServer03Feedback"
+                                        <%=request.getParameter("stock")==null?"":"value='"+request.getParameter("stock")+"'"%>
+                                           required>
                                     <div id="validationServer03Feedback" class="invalid-feedback">
                                         Debe ser un número válido
                                     </div>
@@ -112,6 +120,7 @@
                                     <input type="text" class="form-control <%=validPrecioUnitario?"":"is-invalid"%>"
                                            name="precioProducto"
                                            id="Precio"
+                                        <%=request.getParameter("precioProducto")==null?"":"value='"+request.getParameter("precioProducto")+"'"%>
                                            aria-describedby="validationServer04Feedback" required>
                                     <div id="validationServer04Feedback" class="invalid-feedback">
                                         Debe ser un número válido
@@ -122,7 +131,7 @@
 
                             <!--imagenes -->
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label text-md-right">Imagen:</label>
+                                <label class="col-md-4 col-form-label text-md-right ">Imagen:</label>
                                 <div class="col-md-6">
                                     <input type="file" name="foto">
                                 </div>
@@ -142,6 +151,13 @@
                 </div>
 
             </div>
+
+                <%if(!fotoVal){%>
+                <div class="alert alert-danger" role="alert">
+                    No se ha ingresado una fotografia o el formato es invalido.
+                </div>
+                <%}%>
+
         </div>
     </div>
     </div>
