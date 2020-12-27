@@ -10,6 +10,7 @@
     boolean correoB = request.getAttribute("correoB") == null ? true : (Boolean) request.getAttribute("correoB");
     boolean distritoSelected = request.getAttribute("distritoSelected") == null ? true : (Boolean) request.getAttribute("distritoSelected");
     boolean rucExis = request.getAttribute("rucExis") == null ? false : (Boolean) request.getAttribute("rucExis");
+    boolean fotoExis = request.getAttribute("fotoExis") == null ? true : (Boolean) request.getAttribute("fotoExis");
 %>
 
 <!DOCTYPE html>
@@ -110,7 +111,9 @@
                                 href="<%=request.getContextPath()%>/AdminServlet" class="navbar-brand d-flex align-items-center">
                             <strong>Lista de bodegas</strong>
                         </a>
-                        <a href="<%=request.getContextPath()%>/LoginAdmin?accion=logout" ><img src="https://www.flaticon.com/svg/static/icons/svg/1828/1828479.svg" height="30px"/></a>
+                        <div class="card">
+                            <a href="<%=request.getContextPath()%>/LoginAdmin?accion=logout"><img src="https://www.flaticon.com/svg/static/icons/svg/1828/1828479.svg" height="30px"/></a>
+                        </div>
                     </div>
 
                 </div>
@@ -229,7 +232,12 @@
                 <div class="col-sm-3">
                     <%if(rucExis){%>
                     <div class="alert alert-danger" role="alert">
-                        El ruc ingresado ya está registrado
+                        El ruc ingresado ya está registrado.
+                    </div>
+                    <%}%>
+                    <%if(!fotoExis){%>
+                    <div class="alert alert-danger" role="alert">
+                        Ingrese una fotografia.
                     </div>
                     <%}%>
                 </div>

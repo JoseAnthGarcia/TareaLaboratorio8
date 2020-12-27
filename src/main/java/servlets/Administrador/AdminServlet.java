@@ -168,6 +168,12 @@ public class AdminServlet extends HttpServlet {
                 String idDistrito = request.getParameter("idDistrito");
 
                 Part part = request.getPart("foto");
+
+                boolean fotoExis = true;
+                if(part.getSize()==0){
+                    fotoExis = false;
+                }
+
                 InputStream inputStream = part.getInputStream();
                 boolean rucB = isRUCValid(ruc);
                 boolean direccionB = validarString(direccion);
@@ -177,7 +183,7 @@ public class AdminServlet extends HttpServlet {
 
                 BodegaBean b = new BodegaBean();
 
-                if(rucB && direccionB && nombreBodegaB && correoB && distritoB){
+                if(rucB && direccionB && nombreBodegaB && correoB && distritoB && fotoExis){
 
                     int idDistritoInt = Integer.parseInt(idDistrito);
 
@@ -240,6 +246,7 @@ public class AdminServlet extends HttpServlet {
                     request.setAttribute("direccionB",direccionB);
                     request.setAttribute("nombreBodegaB",nombreBodegaB);
                     request.setAttribute("correoB",correoB);
+                    request.setAttribute("fotoExis", fotoExis);
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/registrarBodega.jsp");
                     requestDispatcher.forward(request, response);
                 }
