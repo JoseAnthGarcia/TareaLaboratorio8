@@ -429,7 +429,6 @@ public class UsuarioServlet extends HttpServlet {
                                 pedido.setTotalApagar(precioTotal);
                                 BodegaBean bodegaEscogida = (BodegaBean) session1.getAttribute("bodegaEscogida");
                                 pedido.setBodegaBean(bodegaEscogida);
-                                //TODO: falta usuaio, esta bien??
                                 UsuarioBean usuario = (UsuarioBean) session1.getAttribute("usuario");
                                 pedido.setUsuario(usuario);
                                 int idPedido = usuarioDao.crearPedido(pedido);
@@ -592,7 +591,14 @@ public class UsuarioServlet extends HttpServlet {
         response.addHeader("Cache-Control", "pre-check=0, post-check=0");
         response.setDateHeader("Expires", 0);
         UsuarioDao usuarioDao = new UsuarioDao();
-        if (clienteActual != null && clienteActual.getIdUsuario() > 0 && !(accion.equals("agregar"))) {
+        if (clienteActual != null && clienteActual.getIdUsuario() > 0
+                && !(accion.equals("agregar"))) {
+
+            response.addHeader("Pragma", "no-cache");
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            response.addHeader("Cache-Control", "pre-check=0, post-check=0");
+            response.setDateHeader("Expires", 0);
+
             RequestDispatcher requestDispatcher;
 
             int usuarioActualId = clienteActual.getIdUsuario();
@@ -631,9 +637,6 @@ public class UsuarioServlet extends HttpServlet {
 
                 case "escogerBodega1":
                     HttpSession session5 = request.getSession();
-                    /*int idDistrito = ((UsuarioBean)session.getAttribute("usuario")).getIdUsuario();
-                    //TODO: OJO !!!!
-                    System.out.println(((UsuarioBean)session.getAttribute("usuario")).getDistrito().getNombre());*/
                     ArrayList<BodegaBean> listaBodegas2 = usuarioDao.listarBodegasDistrito(((UsuarioBean) session5.getAttribute("usuario")).getIdUsuario());
                     request.setAttribute("listaBodegasDistrito", listaBodegas2);
                     requestDispatcher = request.getRequestDispatcher("/cliente/bodegasCercanas.jsp");
@@ -641,17 +644,27 @@ public class UsuarioServlet extends HttpServlet {
                     break;
 
                 case "escogerBodega2":
-                    //TODO: VALIDAR PAGINA
                     String pag = request.getParameter("pag") == null ? "1" : request.getParameter("pag");
-                    int pagInt = Integer.parseInt(pag);
-                    ArrayList<BodegaBean> listaBodegas = usuarioDao.listarBodegas(pagInt);
-                    int cantPags = usuarioDao.calcularCantPagListarBodegas();
 
+                    int cantPags = usuarioDao.calcularCantPagListarBodegas();
+                    int pagInt = -1;
+                    try{
+                        pagInt = Integer.parseInt(pag);
+                        if(pagInt>cantPags){
+                            pagInt = 1;
+                        }
+                    }catch (NumberFormatException e){
+                        pagInt = 1;
+                    }
+
+
+                    ArrayList<BodegaBean> listaBodegas = usuarioDao.listarBodegas(pagInt);
                     request.setAttribute("listaBodegas", listaBodegas);
                     request.setAttribute("paginaAct", pagInt);
                     request.setAttribute("cantPag", cantPags);
                     requestDispatcher = request.getRequestDispatcher("/cliente/bodegasDisponibles.jsp");
                     requestDispatcher.forward(request, response);
+
                     break;
                 case "realizarPedido":
                     HttpSession session1 = request.getSession();
@@ -787,23 +800,40 @@ public class UsuarioServlet extends HttpServlet {
                     break;
 
                 case "verDetallesPedido":
-                    //TODO: validar idPedido
                     String idPedido = request.getParameter("idPedido");
-                    DetallesPedidoDto detalles = usuarioDao.detallesPedido(Integer.parseInt(idPedido));
-                    request.setAttribute("detalles", detalles);
-                    requestDispatcher = request.getRequestDispatcher("cliente/detallesPedido.jsp");
-                    requestDispatcher.forward(request, response);
+                    boolean pedidoExis = false;
+                    int idPedidoInt = -1;
+                    try{
+                        idPedidoInt = Integer.parseInt(idPedido);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+
+                    DetallesPedidoDto detalles = usuarioDao.detallesPedido(idPedidoInt);
+
+                    if(detalles!=null){
+                        request.setAttribute("detalles", detalles);
+                        requestDispatcher = request.getRequestDispatcher("cliente/detallesPedido.jsp");
+                        requestDispatcher.forward(request, response);
+                    }else{
+                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
+                    }
+
                     break;
 
                 case "cancelarPedido": //cancelarPedido
-                    //TODO: validar codigoPedido
+
                     String codigoPedido = request.getParameter("codigoPedido");
-                    boolean aTiempo =  usuarioDao.verificarHoraPedido(codigoPedido);
-                    if(aTiempo){
-                        usuarioDao.cancelarPedido(codigoPedido);
-                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
+                    if(usuarioDao.obtenerPedido(codigoPedido)!=null){
+                        boolean aTiempo =  usuarioDao.verificarHoraPedido(codigoPedido);
+                        if(aTiempo){
+                            usuarioDao.cancelarPedido(codigoPedido);
+                            response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
+                        }else{
+                            request.getSession().setAttribute("errorCancelarPedido", true);
+                            response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
+                        }
                     }else{
-                        request.getSession().setAttribute("errorCancelarPedido", true);
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
                     }
 

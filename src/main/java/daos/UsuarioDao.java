@@ -132,7 +132,7 @@ public class UsuarioDao extends BaseDao {
         String sql = "select u.idUsuario, u.nombreUsuario, u.apellido, u.dni, u.correo,u.idDistrito, d.nombreDistrito, u.contraseniaHashed \n" +
                 "from usuario u\n" +
                 "inner join distrito d on u.idDistrito=d.idDistrito\n" +
-                "where idUsuario=?;";
+                "where idUsuario=? and rol='Usuario';";
         UsuarioBean usuarioBean = new UsuarioBean();
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -153,7 +153,8 @@ public class UsuarioDao extends BaseDao {
                     usuarioBean.setDistrito(distritoBean);
 
                     //se agrego contraseniaHashed - ATENCIÓN!!!
-                    usuarioBean.setContraseniaHashed(rs.getString(8));
+                    usuarioBean
+                            .setContraseniaHashed(rs.getString(8));
 
 
 
@@ -250,7 +251,7 @@ public class UsuarioDao extends BaseDao {
 
 
         String sql = "select idUsuario, contraseniaHashed " +
-                "from usuario  where correo=?;";
+                "from usuario  where correo=? and rol='Usuario';";
         UsuarioBean usuarioBean = new UsuarioBean();
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -378,7 +379,7 @@ public class UsuarioDao extends BaseDao {
     }
 
     public UsuarioBean validarUsuarioPassword(String user, String password){
-        String sql = "select* from usuario where correo=? and contraseniaHashed=sha2(?,256);";
+        String sql = "select* from usuario where correo=? and contraseniaHashed=sha2(?,256) and rol='Usuario';";
         UsuarioBean usuarioBean = null;
         try(Connection conn = getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql);){
@@ -663,6 +664,9 @@ public class UsuarioDao extends BaseDao {
     }
 
     public DetallesPedidoDto  detallesPedido (int idPedido){
+
+        DetallesPedidoDto detallesPedidoDto = null;
+
         //obtengo pedido:
         String sql1 = "select p. codigo, b.nombreBodega, p.fecha_registro, p.fecha_recojo, \n" +
                 "\t\tDATE_SUB(p.fecha_recojo, INTERVAL 1 HOUR) as \"fecha_limite\" \n" +
@@ -670,55 +674,57 @@ public class UsuarioDao extends BaseDao {
                 "inner join bodega b on p.idBodega=b.idBodega\n" +
                 "where p.idPedido= ?;";
 
-        DetallesPedidoDto detallesPedidoDto = new DetallesPedidoDto();
-
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql1);) {
             pstmt.setInt(1, idPedido);
             try(ResultSet rs = pstmt.executeQuery()){
-                rs.next();
-                PedidoBean pedido = new PedidoBean();
-                pedido.setCodigo(rs.getString("codigo"));
-                pedido.setFecha_registro(rs.getString("fecha_registro"));
-                pedido.setFecha_recojo(rs.getString("fecha_recojo"));
-                BodegaBean bodega = new BodegaBean();
-                bodega.setNombreBodega(rs.getString("nombreBodega"));
-                pedido.setBodegaBean(bodega);
-                detallesPedidoDto.setPedido(pedido);
-                detallesPedidoDto.setFechaLimitCancel(rs.getString("fecha_limite"));
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        String sql2 = "select pr.idProducto, pr.nombreProducto , ph.cantidad, pr.precioUnitario, (ph.cantidad*pr.precioUnitario)\n" +
-                "from pedido pe\n" +
-                "inner join pedido_has_producto ph on pe.idPedido=ph.idPedido\n" +
-                "inner join producto pr on ph.idProducto=pr.idProducto\n" +
-                "where pe.idPedido=?;";
-
-        ArrayList<ProductoCantDto> listProdCant = new ArrayList<>();
-
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql2);) {
-            pstmt.setInt(1, idPedido);
-            try(ResultSet rs1 = pstmt.executeQuery()){
-                while(rs1.next()){
-                    ProductoCantDto productoCantDto = new ProductoCantDto();
-                    ProductoBean producto = new ProductoBean();
-                    producto.setId(rs1.getInt("pr.idProducto"));
-                    producto.setNombreProducto(rs1.getString("pr.nombreProducto"));
-                    producto.setPrecioProducto(rs1.getBigDecimal("pr.precioUnitario"));
-                    productoCantDto.setProducto(producto);
-                    productoCantDto.setCant(rs1.getInt("ph.cantidad"));
-                    listProdCant.add(productoCantDto);
+                if(rs.next()){
+                    detallesPedidoDto = new DetallesPedidoDto();
+                    PedidoBean pedido = new PedidoBean();
+                    pedido.setCodigo(rs.getString("codigo"));
+                    pedido.setFecha_registro(rs.getString("fecha_registro"));
+                    pedido.setFecha_recojo(rs.getString("fecha_recojo"));
+                    BodegaBean bodega = new BodegaBean();
+                    bodega.setNombreBodega(rs.getString("nombreBodega"));
+                    pedido.setBodegaBean(bodega);
+                    detallesPedidoDto.setPedido(pedido);
+                    detallesPedidoDto.setFechaLimitCancel(rs.getString("fecha_limite"));
                 }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        detallesPedidoDto.setListaProductCant(listProdCant);
+        if(detallesPedidoDto != null){
+            String sql2 = "select pr.idProducto, pr.nombreProducto , ph.cantidad, pr.precioUnitario, (ph.cantidad*pr.precioUnitario)\n" +
+                    "from pedido pe\n" +
+                    "inner join pedido_has_producto ph on pe.idPedido=ph.idPedido\n" +
+                    "inner join producto pr on ph.idProducto=pr.idProducto\n" +
+                    "where pe.idPedido=?;";
+
+            ArrayList<ProductoCantDto> listProdCant = new ArrayList<>();
+
+            try (Connection conn = getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql2);) {
+                pstmt.setInt(1, idPedido);
+                try(ResultSet rs1 = pstmt.executeQuery()){
+                    while(rs1.next()){
+                        ProductoCantDto productoCantDto = new ProductoCantDto();
+                        ProductoBean producto = new ProductoBean();
+                        producto.setId(rs1.getInt("pr.idProducto"));
+                        producto.setNombreProducto(rs1.getString("pr.nombreProducto"));
+                        producto.setPrecioProducto(rs1.getBigDecimal("pr.precioUnitario"));
+                        productoCantDto.setProducto(producto);
+                        productoCantDto.setCant(rs1.getInt("ph.cantidad"));
+                        listProdCant.add(productoCantDto);
+                    }
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            detallesPedidoDto.setListaProductCant(listProdCant);
+        }
 
         return detallesPedidoDto;
     }
@@ -828,6 +834,37 @@ public class UsuarioDao extends BaseDao {
         return listaProductos;
     }
 
+    public PedidoBean obtenerPedido(String codigo){
+        PedidoBean pedido = null;
+        String sql = "SELECT * FROM pedido WHERE codigo=?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setString(1, codigo);
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    pedido = new PedidoBean();
+                    pedido.setId(rs.getInt("idPedido"));
+                    pedido.setCodigo(rs.getString("codigo"));
+                    pedido.setEstado(rs.getString("estado"));
+                    pedido.setFecha_registro(rs.getString("fecha_registro"));
+                    pedido.setFecha_recojo(rs.getString("fecha_recojo"));
+                    pedido.setTotalApagar(rs.getBigDecimal("totalApagar"));
+
+                    BodegaBean bodega = new BodegaBean();
+                    bodega.setIdBodega(rs.getInt("idBodega"));
+                    pedido.setBodegaBean(bodega);
+
+                    UsuarioBean usuario = new UsuarioBean();
+                    usuario.setIdUsuario(rs.getInt("idUsuario"));
+                    pedido.setUsuario(usuario);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return pedido;
+    }
+
     public void cancelarPedido(String codigo){
 
         String sql = "update pedido set estado= \"Cancelado\" where codigo=?;";
@@ -901,8 +938,6 @@ public class UsuarioDao extends BaseDao {
 
         return aTiempo;
     }
-
-
 
 
 }
