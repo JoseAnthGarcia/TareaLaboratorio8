@@ -370,7 +370,7 @@ public class BodegaServlet extends HttpServlet {
                 String pag1 = request.getParameter("pag") == null ?
                         "1" : request.getParameter("pag");
                 int paginaAct1 = Integer.parseInt(pag1);
-                int cantPag1 = bodegaDao.calcularCantPagPedidos();
+                int cantPag1 = bodegaDao.calcularCantPagPedidos(idBodegaActual);
                 try{
                     paginaAct1 = Integer.parseInt(pag1);
                     if(paginaAct1>cantPag1){
