@@ -488,8 +488,8 @@ public class UsuarioServlet extends HttpServlet {
 
             boolean dniB = validarDni(dni);
             boolean correoB = validarCorreo(correo);
-            boolean contraseniaB = validarString(contrasenia);
-            boolean contrasenia2B = validarString(contrasenia2);
+            boolean contraseniaB = validarString(contrasenia) && validarContrasenia(contrasenia);
+            boolean contrasenia2B = validarString(contrasenia2) && validarContrasenia(contrasenia2);
 
             if (nombresB && apellidosB && dniB && correoB && contraseniaB
                     && contrasenia2B && distritoBoolean) {
@@ -804,7 +804,7 @@ public class UsuarioServlet extends HttpServlet {
                     if(usuarioDao.obtenerPedido(codigoPedido)!=null){
                         ArrayList<PedidoHasProductoBean> pedidoProductoLista = usuarioDao.obtenerDetallesPedido(codigoPedido);
                         request.setAttribute("pedidoProductoLista", pedidoProductoLista);
-                        requestDispatcher = request.getRequestDispatcher("cliente/detallesPedido2.jsp");
+                        requestDispatcher = request.getRequestDispatcher("cliente/detallesPedido.jsp");
                         requestDispatcher.forward(request, response);
                     }else{
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
