@@ -176,6 +176,7 @@
 
     <!-- paginacion -->
     <div class="row">
+        <a href="<%=request.getContextPath()%>/BodegaServlet?accion=home" class="btn2 btn-outline-danger" >Regresar</a>
         <nav aria-label="Page navigation example" class = "mx-auto"> <!-- Recordar centro !! -->
             <ul class="pagination justify-content-center">
                 <%if(paginaAct==1){%>
