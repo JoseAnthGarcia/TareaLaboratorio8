@@ -85,6 +85,7 @@
         <table class="table container-fluid">
             <tr>
                 <th>Codigo</th>
+                <th>Costo Total</th>
                 <th>Estado</th>
                 <th>Fecha de registro</th>
                 <th>Fecha de recojo</th>
@@ -95,6 +96,7 @@
             <tr>
                 <td height="70px"><a href="<%=request.getContextPath()%>/BodegaServlet?accion=mostrarPedido&codigo=<%=pedidos.getCodigo() %>"><%=pedidos.getCodigo()%></a>
                 </td>
+                <td><%=pedidos.getTotalApagar()%></td>
                 <td height="70px"><%=pedidos.getEstado()%></td>
                 <td><%=pedidos.getFecha_registro()%></td>
                 <td><%=pedidos.getFecha_recojo()%></td>
