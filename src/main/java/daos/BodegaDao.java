@@ -2,6 +2,7 @@ package daos;
 
 import beans.*;
 import dtos.PedidosDatosDTO;
+import dtos.ProductoCantDto;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -507,6 +508,36 @@ public class BodegaDao extends BaseDao{
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        if(pedidos != null){
+            String sql1 = "select pr.idProducto, pr.nombreProducto , ph.cantidad, pr.precioUnitario, (ph.cantidad*pr.precioUnitario)\n" +
+                    "from pedido pe\n" +
+                    "inner join pedido_has_producto ph on pe.idPedido=ph.idPedido\n" +
+                    "inner join producto pr on ph.idProducto=pr.idProducto\n" +
+                    "where pe.codigo=?;";
+
+            ArrayList<ProductoCantDto> listProdCant = new ArrayList<>();
+
+            try (Connection conn = getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql1);) {
+                pstmt.setString(1, codigo);
+                try(ResultSet rs1 = pstmt.executeQuery()){
+                    while(rs1.next()){
+                        ProductoCantDto productoCantDto = new ProductoCantDto();
+                        ProductoBean producto = new ProductoBean();
+                        producto.setId(rs1.getInt("pr.idProducto"));
+                        producto.setNombreProducto(rs1.getString("pr.nombreProducto"));
+                        producto.setPrecioProducto(rs1.getBigDecimal("pr.precioUnitario"));
+                        productoCantDto.setProducto(producto);
+                        productoCantDto.setCant(rs1.getInt("ph.cantidad"));
+                        listProdCant.add(productoCantDto);
+                    }
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            pedidos.setListaProductCant(listProdCant);
         }
 
         return pedidos;
