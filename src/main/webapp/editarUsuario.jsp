@@ -184,12 +184,6 @@
 
 
 </div>
-<div class="container-fluid">
-    <footer class="page-footer font-small blue mb-3 mt-3" style="margin-top: 20px">
-        <div class="footer-copyright text-center py-3">© 2020 Copyright:
-            <a href="#">MiMarca</a>
-        </div>
-    </footer>
-</div>
+
 </body>
 </html>
