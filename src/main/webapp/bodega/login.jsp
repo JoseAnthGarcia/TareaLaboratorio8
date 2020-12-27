@@ -88,7 +88,7 @@
                 <div class="text-danger mb-2">Error en usuario o contraseña</div>
                 <% } %>
                 <button type="submit" class="btn btn-secondary my-2">Ingresar</button>
-                <a href="<%=request.getContextPath()%>/LoginServlet?accion=parteEmpresa" class="btn btn-secondary my-2">Regresar</a>
+                <%--<a href="<%=request.getContextPath()%>/LoginServlet?accion=parteEmpresa" class="btn btn-secondary my-2">Regresar</a> --%>
             </form>
         </div>
         <div class="col-lg-1">
