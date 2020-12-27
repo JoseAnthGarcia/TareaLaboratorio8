@@ -18,6 +18,20 @@
                 font-size: 4rem;
             }
 
+            .btn {
+                background-color: #343a40;
+                border: none;
+                color: white;
+                padding: 12px 16px;
+                font-size: 15px;
+                cursor: pointer;
+            }
+
+            .tercero{
+                position: absolute;
+                right: 15%;
+            }
+
         </style>
     </head>
     <header>
@@ -44,8 +58,10 @@
     </div>
 
 
-        <div class="row">
-            <a href="<%=request.getContextPath()%>/Loginbodega" class="btn btn-outline-success primero" style="position: absolute; right: 15%">Ok</a>
-        </div>
+
+            <a href="<%=request.getContextPath()%>/Loginbodega">
+            <button type="button" class="btn btn-success tercero">Entendido</button>
+            </a>
+
     </body>
 </html>
