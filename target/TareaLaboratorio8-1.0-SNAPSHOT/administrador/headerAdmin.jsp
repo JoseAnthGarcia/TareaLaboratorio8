@@ -11,6 +11,8 @@
         <a href="<%=request.getContextPath()%>/AdminServlet?accion=listar" class="navbar-brand d-flex align-items-center">
             <strong>Lista de bodegas</strong>
         </a>
-        <a href="<%=request.getContextPath()%>/LoginAdmin?accion=logout" ><img src="https://www.flaticon.com/svg/static/icons/svg/1828/1828479.svg" height="30px"/></a>
+        <div class="card">
+            <a href="<%=request.getContextPath()%>/LoginAdmin?accion=logout"><img src="https://www.flaticon.com/svg/static/icons/svg/1828/1828479.svg" height="30px"/></a>
+        </div>
     </div>
 </div>

@@ -236,10 +236,7 @@ public class LoginServlet extends HttpServlet {
 
             default:
                 if (usuarioBean == null && accion.equals("login")) {
-                    UsuarioBean usuario = (UsuarioBean) session.getAttribute("usuario");
-                    if (usuario != null && usuario.getIdUsuario() > 0) {
-                        response.sendRedirect(request.getContextPath() + "/UsuarioServlet");
-                    }
+
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/login.jsp");
                     requestDispatcher.forward(request, response);
 
