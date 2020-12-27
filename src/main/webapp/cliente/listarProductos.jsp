@@ -82,7 +82,7 @@
     <!-- paginacion -->
     <div class="row mt-5">
 
-        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger">Volver</a>
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger">Regresar</a>
 
         <nav aria-label="Page navigation example" class = "mx-auto"> <!-- Recordar centro !! -->
             <ul class="pagination justify-content-center">
