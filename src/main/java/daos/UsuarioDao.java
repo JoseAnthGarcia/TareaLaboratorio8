@@ -318,7 +318,7 @@ public class UsuarioDao extends BaseDao {
 
         int limit = (pagina - 1) * cantPorPag;
 
-        String sql = "SELECT * FROM producto WHERE idBodega=?\n" +
+        String sql = "SELECT * FROM producto WHERE idBodega=? and stock <> 0\n" +
                 " order by nombreProducto limit ?,?;";
 
         try (Connection conn = getConnection();
@@ -335,9 +335,7 @@ public class UsuarioDao extends BaseDao {
                     producto.setNombreProducto(rs.getString("nombreProducto"));
                     producto.setPrecioProducto(rs.getBigDecimal("precioUnitario"));
                     producto.setStock(rs.getInt("stock"));
-                    if(producto.getStock()!=0){
-                        listaProductos.add(producto);
-                    }
+                    listaProductos.add(producto);
 
                 }
             }
