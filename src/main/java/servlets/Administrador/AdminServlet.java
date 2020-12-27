@@ -335,7 +335,7 @@ public class AdminServlet extends HttpServlet {
             }
         }else{
             RequestDispatcher view2;
-            view2 = request.getRequestDispatcher("cliente/access_denied.jsp");
+            view2 = request.getRequestDispatcher("administrador/access_denied.jsp");
             view2.forward(request, response);
         }
 

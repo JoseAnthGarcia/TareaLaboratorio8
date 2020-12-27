@@ -205,9 +205,8 @@
 
 
                 </div>
-                <a href="<%=request.getContextPath()%>/LoginServlet" class="btn btn-danger mt-3" >Regresar</a>
-                <button type="submit" class="btn btn-success pull-right" style="position: relative;
-                  top: 15px;  ">Registrarse</button>
+                <a href="<%=request.getContextPath()%>/LoginServlet" class="btn btn-danger mt-3 mb-5" >Regresar</a>
+                <button type="submit" class="btn btn-success pull-right mt-3 mb-5" >Registrarse</button>
 
             </form>
         </div>
