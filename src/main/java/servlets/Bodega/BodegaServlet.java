@@ -108,6 +108,7 @@ public class BodegaServlet extends HttpServlet {
                 } else {
                     request.setAttribute("validStock", validStock);
                     request.setAttribute("fotoVal", fotoVal);
+                    request.setAttribute("fotoVal", fotoVal);
                     request.setAttribute("validPrecioUnitario", validPrecioUnitario);
                     request.setAttribute("validNombreProducto", validNombreProducto);
 
@@ -408,6 +409,7 @@ public class BodegaServlet extends HttpServlet {
                 if(usuarioDao.obtenerPedido(codigo3)!=null){
                     if (bodegaDao.obtenerPedidoBodega(codigo3) != null) {
                         HttpSession session1 = request.getSession();
+
                         boolean valCancelar = bodegaDao.verificarCancelarPedido(codigo3);
 
                         session1.setAttribute("valCancelar", valCancelar);
