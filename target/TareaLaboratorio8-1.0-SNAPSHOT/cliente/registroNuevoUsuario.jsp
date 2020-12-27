@@ -165,7 +165,8 @@
                                aria-describedby="inputPasswordFeedback"
                                name="contrasenia" id="inputPassword" <%=request.getParameter("contrasenia")==null?"":"value='"+request.getParameter("contrasenia")+"'"%>>
                         <div id="inputPasswordFeedback" class="invalid-feedback">
-                            Ingrese una contraseña valida, por favor.
+                            La contraseña debe tener longitud mínima de 8 caracteres, no incluir espacios vacios e incluir letras y números
+
                         </div>
                     </div>
                 </div>

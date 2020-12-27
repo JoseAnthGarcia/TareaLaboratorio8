@@ -140,13 +140,14 @@
             </div>
         </div>
 </main>
-<div class="col-sm-6">
+<div class="container">
+<div class="col-md-auto">
         <%if(!esFoto){%>
     <div class="alert alert-danger" role="alert">
         El formato de la foto es invalido.
     </div>
         <%}%>
-    <div>
+    </div>
 </div>
 </body>
 </html>

@@ -1,7 +1,10 @@
 <%@ page import="dtos.ProductoCantDto" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="beans.PedidoBean" %>
+<%@ page import="beans.PedidoHasProductoBean" %>
+<%@ page import="daos.UsuarioDao" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="detalles" scope="request" type="dtos.DetallesPedidoDto"/>
+<jsp:useBean id="pedidoProductoLista" scope="request" type="java.util.ArrayList<beans.PedidoHasProductoBean>"/>
 <html>
 <head>
     <jsp:include page="/bootstrapRepository.jsp"/>
@@ -38,11 +41,13 @@
     <div class="row mt-3">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
-            <h1>Codigo del pedido: <%=detalles.getPedido().getCodigo()%></h1>
-            <h4>Bodega: <%=detalles.getPedido().getBodegaBean().getNombreBodega()%></h4>
-            <h4>Fecha y hora del registro: <%=detalles.getPedido().getFecha_registro()%></h4>
-            <h4>Fecha y hora de entrega: <%=detalles.getPedido().getFecha_recojo()%></h4>
-            <h4>Fecha limite para cancelar el pedido: <%=detalles.getFechaLimitCancel()%></h4>
+            <%PedidoBean pedido = pedidoProductoLista.get(0).getPedido();%>
+            <h1>Codigo del pedido: <%=pedido.getCodigo()%></h1>
+            <h4>Bodega: <%=pedido.getBodegaBean().getNombreBodega()%></h4>
+            <h4>Fecha y hora del registro: <%=pedido.getFecha_registro()%></h4>
+            <h4>Fecha y hora de entrega: <%=pedido.getFecha_recojo()%></h4>
+            <%UsuarioDao usuarioDao = new UsuarioDao();%>
+            <h4>Fecha limite para cancelar el pedido: <%=usuarioDao.obtenerFechaMax(pedido.getCodigo())%></h4>
             <table class="table mt-5" style="text-align: center;">
                 <tr>
                     <th>Nombre producto</th>
@@ -50,20 +55,18 @@
                     <th>Unidades</th>
                     <th>Costo parcial por producto</th>
                 </tr>
-                <%BigDecimal totalPagar = new BigDecimal("0");
-                    for (ProductoCantDto productoDto: detalles.getListaProductCant()){%>
+                <%for (PedidoHasProductoBean php : pedidoProductoLista){%>
                 <tr>
-                    <td><%=productoDto.getProducto().getNombreProducto()%></td>
-                    <td>S/. <%=productoDto.getProducto().getPrecioProducto()%></td>
-                    <td><%=productoDto.getCant()%></td>
-                    <%  BigDecimal cant = new BigDecimal(productoDto.getCant());
-                        BigDecimal precioParc = productoDto.getProducto().getPrecioProducto().multiply(cant);%>
+                    <td><%=php.getProducto().getNombreProducto()%></td>
+                    <td>S/. <%=php.getPrecioUnitario()%></td>
+                    <td><%=php.getCantidad()%></td>
+                    <%  BigDecimal cant = new BigDecimal(php.getCantidad());
+                        BigDecimal precioParc = php.getPrecioUnitario().multiply(cant);%>
                     <td>S/. <%=precioParc%></td>
                 </tr>
-                <% totalPagar = totalPagar.add(precioParc);
-                    } %>
+                <%}%>
             </table>
-            <h1>Total a pagar: S/. <%=totalPagar%></h1>
+            <h1>Total a pagar: S/. <%=pedido.getTotalApagar()%></h1>
         </div>
         <div class="col-sm-2"></div>
     </div>
