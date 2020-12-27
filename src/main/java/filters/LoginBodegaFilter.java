@@ -4,14 +4,15 @@ import beans.BodegaBean;
 import beans.UsuarioBean;
 
 import javax.servlet.*;
-import javax.servlet.Filter;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import javax.servlet.Filter;
 
-@WebFilter(filterName = "AdminFilter", urlPatterns = {"/LoginAdmin"})
-public class AdminFilter implements Filter {
+
+@WebFilter(filterName = "LoginBodegaFilter", urlPatterns = {"/LoginBodega"})
+public class LoginBodegaFilter implements Filter {
     public void destroy() {
     }
 
@@ -23,14 +24,14 @@ public class AdminFilter implements Filter {
         BodegaBean bodega = (BodegaBean) request.getSession().getAttribute("bodega");
         UsuarioBean admin = (UsuarioBean) request.getSession().getAttribute("admin");
 
-        if(admin!=null && admin.getIdUsuario()>0){
+        if(bodega!=null && bodega.getIdBodega()>0){
             if(request.getParameter("accion").equals("logout")){
                 chain.doFilter(req, resp);
             }else{
-                response.sendRedirect(request.getContextPath() + "/AdminServlet?accion=miPerfil");
+                response.sendRedirect(request.getContextPath() + "/BodegaServlet");
             }
-        }else if (bodega!=null && bodega.getIdBodega()>0){
-            response.sendRedirect(request.getContextPath() + "/BodegaServlet");
+        }else if (admin!=null && admin.getIdUsuario()>0){
+            response.sendRedirect(request.getContextPath() + "/AdminServlet?accion=miPerfil");
         }else if (usuario!=null && usuario.getIdUsuario()>0){
             response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=Home");
         }else{
