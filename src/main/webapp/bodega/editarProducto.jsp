@@ -85,7 +85,7 @@
                                            id="Stock"
                                            aria-describedby="validationServer03Feedback" required>
                                     <div id="validationServer03Feedback" class="invalid-feedback">
-                                        Debe ser un número
+                                        Debe ser un número positivo
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
                                            id="Precio"
                                            aria-describedby="validationServer04Feedback" required>
                                     <div id="validationServer04Feedback" class="invalid-feedback">
-                                        Debe ser un número
+                                        Debe ser un número positivo
                                     </div>
                                 </div>
 
