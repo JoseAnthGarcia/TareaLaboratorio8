@@ -35,17 +35,17 @@
         </div>
     </header>
     <body>
-        <div class="container-fluid">
-            <h1>Registro exitoso</h1>
-            <h3>Se ha registrado exitosamente la contaseña de la bodega <%=nombreBodega%>
-                con RUC <%=ruc2%>.</h3>
-
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Registro exitoso</h1>
+            <p class="lead">Se ha registrado exitosamente la contaseña de la bodega <%=nombreBodega%>
+                con RUC <%=ruc2%>.</p>
         </div>
-        <footer class="page-footer font-small blue" style="margin-top: 20px">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="#">MiMarca</a>
-            </div>
-        </footer>
+    </div>
 
+
+        <div class="row">
+            <a href="<%=request.getContextPath()%>/Loginbodega" class="btn btn-outline-success primero" style="position: absolute; right: 15%">Ok</a>
+        </div>
     </body>
 </html>

@@ -25,17 +25,17 @@
     <jsp:include page="/administrador/headerAdmin.jsp"/>
 
     <body>
-        <div class="container-fluid">
-            <h1>Registro exitoso</h1>
-            <h3>Se ha iniciado el proceso de registro  de la bodega <%=nombreBodega%> con ruc
-                <%=ruc%>, revise su correo  <%=correo%> para establecer su contraseña y culminar con el registro .</h3>
-
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Registro exitoso</h1>
+            <p class="lead">Se ha iniciado el proceso de registro  de la bodega <%=nombreBodega%> con ruc
+                <%=ruc%>, revise su correo  <%=correo%> para establecer su contraseña y culminar con el registro.</p>
         </div>
-        <footer class="page-footer font-small blue" style="margin-top: 20px">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="#">MiMarca</a>
-            </div>
-        </footer>
+    </div>
 
+
+        <div class="row">
+            <a href="<%=request.getContextPath()%>/AdminServlet?accion=miPerfil" class="btn btn-outline-danger primero" style="position: absolute; right: 15%">Ok</a>
+        </div>
     </body>
 </html>

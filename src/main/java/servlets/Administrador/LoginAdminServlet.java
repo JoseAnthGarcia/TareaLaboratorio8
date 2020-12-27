@@ -50,11 +50,6 @@ public class LoginAdminServlet extends HttpServlet {
                 "login" : request.getParameter("accion");
 
         if(admin==null && accion.equals("login")) {
-            UsuarioBean admin2 = (UsuarioBean) session.getAttribute("admin");
-
-            if (admin != null && admin2.getIdUsuario() > 0) {
-                response.sendRedirect(request.getContextPath() + "/AdminServlet");
-            }
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/login.jsp");
             requestDispatcher.forward(request, response);
 
