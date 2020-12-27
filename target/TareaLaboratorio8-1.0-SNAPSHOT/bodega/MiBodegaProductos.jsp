@@ -73,6 +73,10 @@
     <!-- botones -->
     <div class="container" style="margin-top: 20px">
         <div class="row">
+            <div class="col-sm-8">
+                <h1>Productos</h1>
+
+            </div>
             <div class="col-sm-11">
                 <% if(session.getAttribute("pedidosConProducto")!=null){
                     ArrayList<PedidoBean> pedidosConProducto = (ArrayList<PedidoBean>) session.getAttribute("pedidosConProducto"); %>
@@ -91,7 +95,7 @@
 
     <!-- BARRA DE BUSQUEDA -->
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-10">
             <form method="post" action="<%=request.getContextPath()%>/BodegaServlet?accion=buscar">
                 <div class="form-group row">
                     <div class="col-10">
@@ -101,11 +105,11 @@
                 </div>
             </form>
         </div>
-        <div class="col-sm-2">
+        <div class="col-1">
             <a class="btn btn-danger btn2" href="<%=request.getContextPath()%>/BodegaServlet?accion=listar">Limpiar</a>
         </div>
 
-        <div class="col-sm-2">
+        <div class="col-1">
             <div class="col-sm-1">
                 <a href="<%=request.getContextPath()%>/BodegaServlet?accion=agregar">
                     <button class="btn"><i class="fa fa-plus"></i></button>
