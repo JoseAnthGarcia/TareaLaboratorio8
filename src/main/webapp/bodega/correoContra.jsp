@@ -18,6 +18,20 @@
                 font-size: 4rem;
             }
 
+            .btn {
+                background-color: #343a40;
+                border: none;
+                color: white;
+                padding: 12px 16px;
+                font-size: 15px;
+                cursor: pointer;
+            }
+
+            .tercero{
+                position: absolute;
+                right: 15%;
+            }
+
         </style>
     </head>
     <header>
@@ -35,17 +49,18 @@
         </div>
     </header>
     <body>
-        <div class="container-fluid">
-            <h1>Actualizacion de contraseña</h1>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1>Actualización de contraseña</h1>
             <h3>Se ha enviado un correo al asociado al RUC para la actualizacion de la contaseña de la bodega <%=nombreBodega%>
                 con RUC <%=ruc2%>.</h3>
 
         </div>
-        <footer class="page-footer font-small blue" style="margin-top: 20px">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="#">MiMarca</a>
-            </div>
-        </footer>
+    </div>
+
+        <a href="<%=request.getContextPath()%>/Loginbodega">
+            <button type="button" class="btn btn-success tercero">Entendido</button>
+        </a>
 
     </body>
 </html>
