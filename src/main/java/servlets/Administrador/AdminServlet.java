@@ -168,6 +168,12 @@ public class AdminServlet extends HttpServlet {
                 String idDistrito = request.getParameter("idDistrito");
 
                 Part part = request.getPart("foto");
+
+                boolean fotoVal = true;
+                if(part.getSize()==0 || !part.getContentType().contains("image/")){
+                    fotoVal = false;
+                }
+
                 InputStream inputStream = part.getInputStream();
                 boolean rucB = isRUCValid(ruc);
                 boolean direccionB = validarString(direccion);
@@ -194,7 +200,7 @@ public class AdminServlet extends HttpServlet {
                         correoExis = true;
                     }
 
-                    if(distritoSelected && !rucExis && !correoExis && idDistritoInt != 0){
+                    if(distritoSelected && !rucExis && !correoExis && idDistritoInt != 0 && fotoVal){
 
                         b.setFoto(inputStream);
                         b.setNombreBodega(nombreBodega);
@@ -237,6 +243,7 @@ public class AdminServlet extends HttpServlet {
                         request.setAttribute("rucExis", rucExis);
                         request.setAttribute("correoExis", correoExis);
                         request.setAttribute("distritoSelected", distritoSelected);
+                        request.setAttribute("fotoVal", fotoVal);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/registrarBodega.jsp");
                         requestDispatcher.forward(request, response);
                     }
@@ -245,6 +252,7 @@ public class AdminServlet extends HttpServlet {
                     request.setAttribute("direccionB",direccionB);
                     request.setAttribute("nombreBodegaB",nombreBodegaB);
                     request.setAttribute("correoB",correoB);
+                    request.setAttribute("fotoVal", fotoVal);
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/registrarBodega.jsp");
                     requestDispatcher.forward(request, response);
                 }
