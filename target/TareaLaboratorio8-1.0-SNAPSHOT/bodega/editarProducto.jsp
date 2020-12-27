@@ -132,23 +132,20 @@
                                 </a>
                             </div>
                         </form>
-                        <div class="col-sm-3">
-
-                            <%if(!esFoto){%>
-                            <div class="alert alert-danger" role="alert">
-                                El formato de la foto es invalido.
-                            </div>
-                            <%}%>
-
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
-    </div>
-    <div>
-    </div>
-
 </main>
+<div class="col-sm-6">
+        <%if(!esFoto){%>
+    <div class="alert alert-danger" role="alert">
+        El formato de la foto es invalido.
+    </div>
+        <%}%>
+    <div>
+</div>
 </body>
 </html>
