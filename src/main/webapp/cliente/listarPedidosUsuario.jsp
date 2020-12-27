@@ -50,7 +50,7 @@
             <h1 class="margen">Mis pedidos</h1>
         </div>
         <div class="col-9">
-            <p class="margen">Obs: Solo se puede cancelar el pedido hasta  una hora antes de la fecha de entrega.</p>
+            <p class="margen">Obs: Solo se puede cancelar el pedido hasta  una hora antes de la fecha de recojo.</p>
         </div>
     </div>
 
@@ -66,7 +66,7 @@
                 <th>Código </th>
                 <th>Costo total</th>
                 <th>Fecha de registro</th>
-                <th>Fecha de entrega</th>
+                <th>Fecha de recojo</th>
                 <th>Estado</th>
                 <th>Cancelar pedido</th>
             </tr>
@@ -91,7 +91,7 @@
     </div>
     <div class="row mb-5">
         <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger" >Regresar</a>
-        <nav aria-label="Page navigation example" class = "mx-auto" "> <!-- Recordar centro !! -->
+        <nav aria-label="Page navigation example" class = "mx-auto" > <!-- Recordar centro !! -->
             <ul class="pagination justify-content-center">
                 <%if(paginaAct==1){%>
                 <li class="page-item disabled">

@@ -49,12 +49,21 @@
 
 
     <div class="container-fluid">
+        <div class="row  mb-5">
+            <div class="col-3">
+                <h1 class="margen">Mis pedidos</h1>
+            </div>
+            <div class="col-9 "style="text-align: left">
+                <p class="margen">Obs: Solo se puede cancelar el pedido si ha pasado un día de la fecha de recojo.</p>
+            </div>
+        </div>
         <div class="row">
             <%/*
             <div class="col-sm-6">
                 <h1 class="margen">Lista de pedidos</h1>
             </div>
             */%>
+
             <div class="col-sm-6">
                 <%if(session.getAttribute("valCancelar")!=null){
                 if(!(boolean)session.getAttribute("valCancelar")){%>
@@ -116,6 +125,7 @@
             <% } %>
         </table>
         <div class="row">
+            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=home" class="btn btn-outline-danger" >Regresar</a>
             <nav aria-label="Page navigation example" class = "mx-auto"> <!-- Recordar centro !! -->
                 <ul class="pagination justify-content-center">
                     <%if(paginaAct==1){%>
