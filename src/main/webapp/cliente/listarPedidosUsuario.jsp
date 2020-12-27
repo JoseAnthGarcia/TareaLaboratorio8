@@ -72,7 +72,7 @@
             </tr>
             <% for (PedidoBean pedido: listaPedidos){%>
             <tr>
-                <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=verDetallesPedido&idPedido=<%=pedido.getId()%>" ><%=pedido.getCodigo()%></a> </td>
+                <td><a href="<%=request.getContextPath()%>/UsuarioServlet?accion=verDetallesPedido&codigoPedido=<%=pedido.getCodigo()%>" ><%=pedido.getCodigo()%></a> </td>
                 <td>S/. <%=pedido.getTotalApagar()%></td>
                 <td> <%=pedido.getFecha_registro()%></td>
                 <td> <%=pedido.getFecha_recojo()%></td>
