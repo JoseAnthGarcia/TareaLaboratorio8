@@ -48,7 +48,7 @@
 </header>
 
 
-    <div class="container-fluid">
+    <div class="container">
         <div class="row  mb-5">
             <div class="col-3">
                 <h1 class="margen">Mis pedidos</h1>
