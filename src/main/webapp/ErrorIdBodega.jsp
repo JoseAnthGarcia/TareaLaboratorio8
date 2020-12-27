@@ -33,11 +33,14 @@
         </div>
     </header>
     <body>
-        <div class="container-fluid">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
             <h1>Registro inválido</h1>
             <h3>No puedes establecer la contraseña de otra bodega.</h3>
 
         </div>
+    </div>
+
 
 
     </body>
