@@ -488,8 +488,8 @@ public class UsuarioServlet extends HttpServlet {
 
             boolean dniB = validarDni(dni);
             boolean correoB = validarCorreo(correo);
-            boolean contraseniaB = validarString(contrasenia);
-            boolean contrasenia2B = validarString(contrasenia2);
+            boolean contraseniaB = validarString(contrasenia) && validarContrasenia(contrasenia);
+            boolean contrasenia2B = validarString(contrasenia2) && validarContrasenia(contrasenia2);
 
             if (nombresB && apellidosB && dniB && correoB && contraseniaB
                     && contrasenia2B && distritoBoolean) {

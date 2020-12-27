@@ -92,7 +92,7 @@
                                aria-describedby="inputPasswordBFeedback"
                                name="contrasenia2R" id="inputPassword2" <%=request.getParameter("contRecuEmpty2")==null?"":"value='"+request.getParameter("contRecuEmpty2")+"'"%> >
                         <div id="inputPasswordBFeedback" class="invalid-feedback">
-                            Ingrese una contraseña válida
+                            Ingrese una contraseña válida, por favor
                         </div>
                     </div>
                 </div>
