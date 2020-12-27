@@ -168,6 +168,12 @@ public class AdminServlet extends HttpServlet {
                 String idDistrito = request.getParameter("idDistrito");
 
                 Part part = request.getPart("foto");
+
+                boolean fotoVal = true;
+                if(part.getSize()==0 || !part.getContentType().contains("image/")){
+                    fotoVal = false;
+                }
+
                 InputStream inputStream = part.getInputStream();
                 boolean rucB = isRUCValid(ruc);
                 boolean direccionB = validarString(direccion);
@@ -189,8 +195,12 @@ public class AdminServlet extends HttpServlet {
                     if(bodegaDao.buscarRuc(ruc)){
                         rucExis = true;
                     }
+                    boolean correoExis = false;
+                    if(bodegaDao.buscarCorreo(correo)){
+                        correoExis = true;
+                    }
 
-                    if(distritoSelected && !rucExis && idDistritoInt != 0){
+                    if(distritoSelected && !rucExis && !correoExis && idDistritoInt != 0 && fotoVal){
 
                         b.setFoto(inputStream);
                         b.setNombreBodega(nombreBodega);
@@ -231,7 +241,9 @@ public class AdminServlet extends HttpServlet {
                         requestDispatcher.forward(request, response);
                     }else{
                         request.setAttribute("rucExis", rucExis);
+                        request.setAttribute("correoExis", correoExis);
                         request.setAttribute("distritoSelected", distritoSelected);
+                        request.setAttribute("fotoVal", fotoVal);
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/registrarBodega.jsp");
                         requestDispatcher.forward(request, response);
                     }
@@ -240,6 +252,7 @@ public class AdminServlet extends HttpServlet {
                     request.setAttribute("direccionB",direccionB);
                     request.setAttribute("nombreBodegaB",nombreBodegaB);
                     request.setAttribute("correoB",correoB);
+                    request.setAttribute("fotoVal", fotoVal);
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher("administrador/registrarBodega.jsp");
                     requestDispatcher.forward(request, response);
                 }
@@ -316,11 +329,13 @@ public class AdminServlet extends HttpServlet {
                         response.sendRedirect(request.getContextPath() +"/AdminServlet?accion=listar");
                     }
                     break;
-
+                default:
+                    response.sendRedirect(request.getContextPath() +"/AdminServlet?accion=miPerfil");
+                    break;
             }
         }else{
             RequestDispatcher view2;
-            view2 = request.getRequestDispatcher("administrador/access_denied.jsp");
+            view2 = request.getRequestDispatcher("cliente/access_denied.jsp");
             view2.forward(request, response);
         }
 

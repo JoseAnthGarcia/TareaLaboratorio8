@@ -10,6 +10,8 @@
     boolean correoB = request.getAttribute("correoB") == null ? true : (Boolean) request.getAttribute("correoB");
     boolean distritoSelected = request.getAttribute("distritoSelected") == null ? true : (Boolean) request.getAttribute("distritoSelected");
     boolean rucExis = request.getAttribute("rucExis") == null ? false : (Boolean) request.getAttribute("rucExis");
+    boolean fotoVal = request.getAttribute("fotoVal") == null ? true : (Boolean) request.getAttribute("fotoVal");
+    boolean correoExis = request.getAttribute("correoExis") == null ? false : (Boolean) request.getAttribute("correoExis");
 %>
 
 <!DOCTYPE html>
@@ -55,7 +57,7 @@
         </style>
 
         <title>Registrarse</title>
-        <% if( rucB && direccionB && nombreBodegaB && correoB && distritoSelected && rucExis){ %>
+        <% if( rucB && direccionB && nombreBodegaB && correoB && distritoSelected && !rucExis){ %>
         <script>
             $(document).ready(function () {
                 $("#exampleModal").modal("show");
@@ -67,7 +69,7 @@
 
         <!-- todo:  corregir el espaciado entre Mi Bodega, Pedidos y Productos -->
         <header>
-            <% if( rucB && direccionB && nombreBodegaB && correoB && distritoSelected && rucExis){ %>
+            <% if( rucB && direccionB && nombreBodegaB && correoB && distritoSelected && rucExis && correoExis && !fotoVal){ %>
             <!-- Modal -->
             <div class="modal fade in" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
@@ -110,7 +112,9 @@
                                 href="<%=request.getContextPath()%>/AdminServlet" class="navbar-brand d-flex align-items-center">
                             <strong>Lista de bodegas</strong>
                         </a>
-                        <a href="<%=request.getContextPath()%>/LoginAdmin?accion=logout" ><img src="https://www.flaticon.com/svg/static/icons/svg/1828/1828479.svg" height="30px"/></a>
+                        <div class="card">
+                            <a href="<%=request.getContextPath()%>/LoginAdmin?accion=logout"><img src="https://www.flaticon.com/svg/static/icons/svg/1828/1828479.svg" height="30px"/></a>
+                        </div>
                     </div>
 
                 </div>
@@ -229,7 +233,17 @@
                 <div class="col-sm-3">
                     <%if(rucExis){%>
                     <div class="alert alert-danger" role="alert">
-                        El ruc ingresado ya está registrado
+                        El ruc ingresado ya está registrado.
+                    </div>
+                    <%}%>
+                    <%if(!fotoVal){%>
+                    <div class="alert alert-danger" role="alert">
+                        No se ha ingresado una fotografia o el formato es invalido.
+                    </div>
+                    <%}%>
+                    <%if(correoExis){%>
+                    <div class="alert alert-danger" role="alert">
+                        El correo ingresado ya está registrado
                     </div>
                     <%}%>
                 </div>

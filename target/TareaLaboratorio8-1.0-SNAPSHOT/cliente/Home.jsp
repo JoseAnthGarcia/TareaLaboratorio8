@@ -85,21 +85,21 @@
 
     </div>
     <div class="row mt-5">
-        <div class="col-lg-4 col-md-12 opcion mt-5" >
+        <div class="col-lg-4 col-sm-12 opcion mt-5" >
             <a class="opcion" href="<%=request.getContextPath()%>/UsuarioServlet?accion=productosDisponibles"
             ><button class="btn opcion">Productos disponibles
                 <br>
             <img src="https://www.flaticon.com/svg/static/icons/svg/2674/2674505.svg" width="50px" height="50px">
             </button></a>
         </div>
-        <div class="col-lg-4 col-md-12 opcion mt-5" >
+        <div class="col-lg-4 col-sm-12 opcion mt-5" >
             <a class="opcion" href="<%=request.getContextPath()%>/UsuarioServlet?accion=escogerBodega1"
             ><button class="btn opcion">Realizar un pedido
                 <br>
                 <img src="https://www.flaticon.com/svg/static/icons/svg/2922/2922775.svg" width="50px" height="50px">
             </button></a>
         </div>
-        <div class="col-lg-4 col-md-12 opcion mt-5" >
+        <div class="col-lg-4 col-sm-12 opcion mt-5" >
             <a class="opcion" href="<%=request.getContextPath()%>/UsuarioServlet?accion=listar"
             ><button class="btn opcion">Mis pedidos
                 <br>

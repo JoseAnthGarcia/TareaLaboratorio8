@@ -581,23 +581,22 @@ public class UsuarioServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
+        response.addHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.addHeader("Cache-Control", "pre-check=0, post-check=0");
+        response.setDateHeader("Expires", 0);
+
         HttpSession session = request.getSession();
         RequestDispatcher view2;
         UsuarioBean clienteActual = (UsuarioBean) session.getAttribute("usuario");
         String accion = request.getParameter("accion") == null ?
                 "Home" : request.getParameter("accion");
-        response.addHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-        response.addHeader("Cache-Control", "pre-check=0, post-check=0");
-        response.setDateHeader("Expires", 0);
+
         UsuarioDao usuarioDao = new UsuarioDao();
         if (clienteActual != null && clienteActual.getIdUsuario() > 0
                 && !(accion.equals("agregar"))) {
 
-            response.addHeader("Pragma", "no-cache");
-            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-            response.addHeader("Cache-Control", "pre-check=0, post-check=0");
-            response.setDateHeader("Expires", 0);
+
 
             RequestDispatcher requestDispatcher;
 
