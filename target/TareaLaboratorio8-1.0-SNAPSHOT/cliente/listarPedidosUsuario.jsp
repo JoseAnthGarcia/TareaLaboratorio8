@@ -89,9 +89,9 @@
             <% } %>
         </table>
     </div>
-    <div class="row">
-        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger">Regresar</a>
-        <nav aria-label="Page navigation example" class = "mx-auto"> <!-- Recordar centro !! -->
+    <div class="row mb-5">
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger" >Regresar</a>
+        <nav aria-label="Page navigation example" class = "mx-auto" "> <!-- Recordar centro !! -->
             <ul class="pagination justify-content-center">
                 <%if(paginaAct==1){%>
                 <li class="page-item disabled">
