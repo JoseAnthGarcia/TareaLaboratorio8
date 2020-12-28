@@ -19,6 +19,20 @@
                 font-size: 4rem;
             }
 
+            .btn {
+                background-color: #343a40;
+                border: none;
+                color: white;
+                padding: 12px 16px;
+                font-size: 15px;
+                cursor: pointer;
+            }
+
+            .tercero{
+                position: absolute;
+                right: 15%;
+            }
+
         </style>
     </head>
 
