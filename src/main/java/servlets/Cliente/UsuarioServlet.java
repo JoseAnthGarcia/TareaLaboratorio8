@@ -396,6 +396,7 @@ public class UsuarioServlet extends HttpServlet {
 
                         //validamos fecha
                         String fecha = request.getParameter("fecha");
+                        System.out.println(fecha);
                         if (!fecha.equals("")) {
                             int pos = 10;
                             String nuevaFecha = fecha.substring(0, pos) + ' ' + fecha.substring(pos + 1);

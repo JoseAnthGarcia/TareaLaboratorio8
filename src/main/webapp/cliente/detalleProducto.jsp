@@ -79,7 +79,9 @@
         </div>
         <div class="col-lg-6 col-md-12">
             <h1 class="mb-5"><%=producto.getNombreProducto()%></h1>
-            <h3>Descripcion: <%=producto.getDescripcion()%></h3>
+            <%if(!producto.getDescripcion().equals("")){%>
+            <h3>Descripción: <%=producto.getDescripcion()%></h3>
+            <%}%>
             <h3>Precio unitario: S/.<%=producto.getPrecioProducto()%></h3>
         </div>
     </div>
