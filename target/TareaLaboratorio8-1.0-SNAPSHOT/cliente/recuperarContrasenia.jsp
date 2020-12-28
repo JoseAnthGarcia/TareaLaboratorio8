@@ -78,9 +78,9 @@
                     <div class="col-sm-10">
                         <input type="password" class="form-control <%=(contRecuEmpty1 && contraSecu1 && contraTrim)?"":"is-invalid"%>"
                                aria-describedby="inputPasswordFeedback"
-                               name="contraseniaR" id="inputPassword1" <%=request.getParameter("contRecuEmpty1")==null?"":"value='"+request.getParameter("contRecuEmpty1")+"'"%> >
+                               name="contraseniaR" id="inputPassword1" <%=request.getParameter("contraseniaR")==null?"":"value='"+request.getParameter("contraseniaR")+"'"%> >
                         <div id="inputPasswordFeedback" class="invalid-feedback">
-                            La contraseña debe tener longitud mínima de 8 caracteres, no incluir espacios vacios e incluir letras y números
+                            La contraseña debe tener longitud mínima de 8 caracteres, no incluir espacios vacios e incluir letras y números.
                         </div>
                     </div>
                 </div>
@@ -90,9 +90,9 @@
                     <div class="col-sm-10">
                         <input type="password" class="form-control <%=(contRecuEmpty2 && contraSecu2)?"":"is-invalid"%>"
                                aria-describedby="inputPasswordBFeedback"
-                               name="contrasenia2R" id="inputPassword2" <%=request.getParameter("contRecuEmpty2")==null?"":"value='"+request.getParameter("contRecuEmpty2")+"'"%> >
+                               name="contrasenia2R" id="inputPassword2" <%=request.getParameter("contrasenia2R")==null?"":"value='"+request.getParameter("contrasenia2R")+"'"%> >
                         <div id="inputPasswordBFeedback" class="invalid-feedback">
-                            Ingrese una contraseña válida, por favor
+                            La contraseña debe tener longitud mínima de 8 caracteres, no incluir espacios vacios e incluir letras y números.
                         </div>
                     </div>
                 </div>

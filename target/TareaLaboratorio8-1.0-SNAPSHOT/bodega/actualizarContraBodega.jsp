@@ -78,7 +78,7 @@
                         <div class="form-group row">
                             <label for="inputRuc" class="col-sm-2 col-form-label">RUC:</label>
                             <div class="col-sm-10">
-                                <input type="input" class="form-control <%=!rucExis?"":"is-invalid"%>"
+                                <input type="input" class="form-control <%=!rucExis?"   ":"is-invalid"%>"
                                        aria-describedby="inputRucFeedback"
                                        name="ruc" id="inputRuc" <%=request.getParameter("ruc")==null?"":"value='"+request.getParameter("ruc")+"'"%>>
                                 <div id="inputRucFeedback" class="invalid-feedback">
