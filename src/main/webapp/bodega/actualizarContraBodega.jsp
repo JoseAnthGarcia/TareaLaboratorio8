@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    boolean rucExis = request.getAttribute("rucExis") == null ? false : (Boolean) request.getAttribute("rucExis");
+    boolean rucExis = request.getAttribute("rucExis") == null ? true : (Boolean) request.getAttribute("rucExis");
 %>
 <!DOCTYPE html>
 <html>
@@ -47,7 +47,7 @@
             }
         </style>
 
-        <title>Definir contraseña</title>
+        <title>Recuperar contraseña</title>
     </head>
     <body>
 
@@ -73,12 +73,12 @@
                 <div class="col-sm-3">
                 </div>
                 <div class="col-sm-6">
-                    <h1>Actualizar contraseña</h1>
+                    <h1>Recuperar contraseña</h1>
                     <form method="POST" action="<%=request.getContextPath()%>/LoginBodega?accion=actualizarContraCorreo">
                         <div class="form-group row">
                             <label for="inputRuc" class="col-sm-2 col-form-label">RUC:</label>
                             <div class="col-sm-10">
-                                <input type="input" class="form-control <%=!rucExis?"   ":"is-invalid"%>"
+                                <input type="input" class="form-control <%=rucExis?"":"is-invalid"%>"
                                        aria-describedby="inputRucFeedback"
                                        name="ruc" id="inputRuc" <%=request.getParameter("ruc")==null?"":"value='"+request.getParameter("ruc")+"'"%>>
                                 <div id="inputRucFeedback" class="invalid-feedback">
@@ -87,7 +87,7 @@
                             </div>
                         </div>
                         <a href="<%=request.getContextPath()%>/LoginBodega" class="btn btn-success pull-left">Regresar</a>
-                        <button type="submit" class="btn btn-success pull-right">Registrar</button>
+                        <button type="submit" class="btn btn-success pull-right">Enviar</button>
                     </form>
                 </div>
             </div>

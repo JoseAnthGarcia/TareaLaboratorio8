@@ -75,9 +75,11 @@ public class LoginBodegaServlet extends HttpServlet {
                     String correoAenviar = bodega1.getCorreoBodega();
                     String asunto = "ACTUALIZAR CONTRASEÑA";
                     String contenido = "Se ha solicitado la actualizacion de la contraseña de su bodega "+nombreBodega+" con RUC:"+ruc2+
-                            ", para continuar con el registro ingrese al siguiente link y establezca una nueva contraseña:" +
+                            ", para continuar con lo solicitado ingrese al siguiente link y establezca una nueva contraseña:\n" +
                             "http://localhost:8080/TareaLaboratorio8_war_exploded/LoginBodega?accion=actualizarContra&idBodega="
-                            +bodega1.getIdBodega()+"&rucBodega="+ruc2;
+                            +bodega1.getIdBodega()+"&rucBodega="+ruc2+"\n" +
+                            "Atentamente,\n" +
+                            "El equipo de MiMarca.com ";
 
                     try {
                         emails.enviarCorreo(correoAenviar, asunto, contenido);
@@ -147,6 +149,11 @@ public class LoginBodegaServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+
+        response.addHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.addHeader("Cache-Control", "pre-check=0, post-check=0");
+        response.setDateHeader("Expires", 0);
 
 
         HttpSession session = request.getSession();
