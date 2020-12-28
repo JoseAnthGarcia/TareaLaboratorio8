@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="producto" type="beans.ProductoBean" scope="request"/>
+<jsp:useBean id="vista" type="java.lang.String" scope="request"/>
 <html>
 <head>
     <title>Detalles de producto</title>
@@ -86,9 +87,16 @@
         </div>
     </div>
     <div class="row mt-5">
+        <%if(vista.equals("realizarPedido")){%>
         <div>
             <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="button btn btn-primary mt-5">Regresar</a>
         </div>
+        <%}%>
+        <%if(vista.equals("productosDisponibles")){%>
+        <div>
+            <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=productosDisponibles" class="button btn btn-primary mt-5">Regresar</a>
+        </div>
+        <%}%>
 
     </div>
 

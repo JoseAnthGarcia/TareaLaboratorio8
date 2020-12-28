@@ -873,6 +873,7 @@ public class UsuarioServlet extends HttpServlet {
 
                         if (!noNumber && usuarioDao.verificarProductoBodega(idProducto, ((BodegaBean) session.getAttribute("bodegaEscogida")).getIdBodega())) {
                             ProductoBean productoBean1 = usuarioDao.obtenerProducto(idProducto);
+                            request.setAttribute("vista","realizarPedido");
                             request.setAttribute("producto",productoBean1);
                             requestDispatcher = request.getRequestDispatcher("/cliente/detalleProducto.jsp");
 
@@ -888,6 +889,29 @@ public class UsuarioServlet extends HttpServlet {
                     }
 
                     break;
+                case "detalleProducto2":
+                    int idProducto = -1;
+                    boolean noNumber = false;
+                    try {
+                        idProducto = Integer.parseInt(request.getParameter("productSelect"));
+                    } catch (NumberFormatException e) {
+                        noNumber = true;
+                    }
+                    if (!noNumber ) {
+                        ProductoBean productoBean1 = usuarioDao.obtenerProducto(idProducto);
+                        request.setAttribute("vista","productosDisponibles");
+                        request.setAttribute("producto",productoBean1);
+                        requestDispatcher = request.getRequestDispatcher("/cliente/detalleProducto.jsp");
+
+                        requestDispatcher.forward(request, response);
+
+                    } else {
+                        //accion malintensionado
+                        requestDispatcher = request.getRequestDispatcher("/cliente/default.jsp");
+                        requestDispatcher.forward(request, response);
+                    }
+                    break;
+
                 default:
                     requestDispatcher = request.getRequestDispatcher("/cliente/default.jsp");
                     requestDispatcher.forward(request, response);
