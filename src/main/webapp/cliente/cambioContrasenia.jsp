@@ -95,11 +95,7 @@
                                aria-describedby="inputPasswordBFeedback"
                                name="contraseniaB" id="inputPassword1" <%=request.getParameter("contraseniaB")==null?"":"value='"+request.getParameter("contraseniaB")+"'"%> >
                         <div id="inputPasswordBFeedback" class="invalid-feedback">
-                            <%if(!contraSecu1){%>
-                            La contraseña debe tener longitud mínima de 8 caracteres, no incluir espacios vacios e incluir letras y números
-                            <%}else{%>
-                            Ingrese una contraseña válida
-                            <%}%>
+                            La contraseña debe tener longitud mínima de 8 caracteres, no incluir espacios vacios e incluir letras y números.
                         </div>
                     </div>
                 </div>
@@ -111,7 +107,7 @@
                                aria-describedby="inputPassword2BFeedback"
                                name="contrasenia2B" id="inputPassword2" <%=request.getParameter("contrasenia2B")==null?"":"value='"+request.getParameter("contrasenia2B")+"'"%> >
                         <div id="inputPassword2BFeedback" class="invalid-feedback">
-                            Ingrese una contraseña válida
+                            La contraseña debe tener longitud mínima de 8 caracteres, no incluir espacios vacios e incluir letras y números.
                         </div>
                     </div>
                 </div>

@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="producto" type="beans.ProductoBean" scope="request"/>
+<jsp:useBean id="vista" type="java.lang.String" scope="request"/>
 <html>
 <head>
     <title>Detalles de producto</title>
@@ -79,14 +80,23 @@
         </div>
         <div class="col-lg-6 col-md-12">
             <h1 class="mb-5"><%=producto.getNombreProducto()%></h1>
-            <h3>Descripcion: <%=producto.getDescripcion()%></h3>
+            <%if(!producto.getDescripcion().equals("")){%>
+            <h3>Descripción: <%=producto.getDescripcion()%></h3>
+            <%}%>
             <h3>Precio unitario: S/.<%=producto.getPrecioProducto()%></h3>
         </div>
     </div>
     <div class="row mt-5">
+        <%if(vista.equals("realizarPedido")){%>
         <div>
             <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="button btn btn-primary mt-5">Regresar</a>
         </div>
+        <%}%>
+        <%if(vista.equals("productosDisponibles")){%>
+        <div>
+            <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=productosDisponibles" class="button btn btn-primary mt-5">Regresar</a>
+        </div>
+        <%}%>
 
     </div>
 
