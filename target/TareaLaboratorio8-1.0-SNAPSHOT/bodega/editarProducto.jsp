@@ -10,8 +10,8 @@
     boolean validPrecioUnitario = request.getAttribute("validPrecioUnitario") != null ?
             ((boolean) request.getAttribute("validPrecioUnitario")) : true;
 
-    //boolean validDescr = request.getAttribute("validDescr") != null ?
-    //        ((boolean) request.getAttribute("validDescr")) : true;
+    boolean validDescr = request.getAttribute("validDescr") != null ?
+            ((boolean) request.getAttribute("validDescr")) : true;
 
     boolean esFoto = request.getAttribute("esFoto") != null ? ((boolean) request.getAttribute("esFoto")) : true;
 %>
@@ -69,7 +69,11 @@
                             <div class="form-group row">
                                 <label for="Descripcion" class="col-md-4 col-form-label text-md-right">Descripción</label>
                                 <div class="col-md-6">
-                                    <textarea  type="text" id="Descripcion" class="form-control"  name="descripcion"><%=producto.getDescripcion()%></textarea>
+
+                                    <textarea  type="text" id="Descripcion" class="form-control <%=validDescr?"":"is-invalid"%>" name="descripcion" ><%=producto.getDescripcion()%></textarea>
+                                    <div class="invalid-feedback">
+                                        Ingrese una descripcion valida, por favor.
+                                    </div>
                                 </div>
                             </div>
 
