@@ -56,6 +56,14 @@ public class BodegaServlet extends HttpServlet {
 
                 String nombreProducto = request.getParameter("nombreProducto");
                 String descripcion = request.getParameter("descripcion");
+
+                int cant_caracteres = descripcion.length();
+                //System.out.println(cant_caracteres);
+                boolean validarDescripcion = true;
+                if(cant_caracteres>150){
+                    validarDescripcion = false;
+                }
+
                 int stock = 0;
                 BigDecimal precioUnitario = BigDecimal.valueOf(0);
 
@@ -99,7 +107,7 @@ public class BodegaServlet extends HttpServlet {
                 }
 
                 // si es que los datos son correctos, se guarda el producto
-                if (validStock & validPrecioUnitario & validNombreProducto && fotoVal) {
+                if (validStock & validPrecioUnitario & validNombreProducto && fotoVal && validarDescripcion) {
                     BodegaDao.crearProducto(nombreProducto, descripcion, stock, precioUnitario, idBodegaActual, inputStream);
                     response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
                 } else {
@@ -108,6 +116,7 @@ public class BodegaServlet extends HttpServlet {
                     request.setAttribute("fotoVal", fotoVal);
                     request.setAttribute("validPrecioUnitario", validPrecioUnitario);
                     request.setAttribute("validNombreProducto", validNombreProducto);
+                    request.setAttribute("validDescripcion", validarDescripcion);
 
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/bodega/anadirProducto.jsp");
                     dispatcher.forward(request, response);
