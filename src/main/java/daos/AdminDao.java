@@ -148,7 +148,7 @@ public class AdminDao extends BaseDao{
         ArrayList<BodegaBean> listaBodegas = new ArrayList<>();
 
         int limit = (pagina-1)*5;
-        String sql = "select * from bodega where idAdministrador=? limit ?,5;";
+        String sql = "select * from bodega where idAdministrador=? order by nombreBodega limit ?,5;";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {

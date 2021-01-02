@@ -93,7 +93,7 @@
             <a class="opcion" href="<%=request.getContextPath()%>/AdminServlet?accion=listar"
             ><button class="btn opcion">Listar bodegas
                 <br>
-                <img src="http://www.pngmart.com/files/8/Checklist-PNG-File.png" width="50px" height="50px">
+                <img src="https://cdn4.iconfinder.com/data/icons/icoflat3/512/clipboard-512.png" width="50px" height="50px">
             </button></a>
         </div>
 
