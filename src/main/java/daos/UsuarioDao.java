@@ -317,7 +317,7 @@ public class UsuarioDao extends BaseDao {
 
         int limit = (pagina - 1) * cantPorPag;
 
-        String sql = "SELECT * FROM producto WHERE idBodega=? and stock <> 0\n" +
+        String sql = "SELECT * FROM producto WHERE idBodega=? and stock <> 0 and estado <> 'Eliminado' \n" +
                 " order by nombreProducto limit ?,?;";
 
         try (Connection conn = getConnection();
@@ -349,7 +349,7 @@ public class UsuarioDao extends BaseDao {
 
         ArrayList<ProductoBean> listaProductos = new ArrayList<>();
 
-        String sql = "select * from producto where idBodega =? and lower(nombreProducto) like ?;";
+        String sql = "select * from producto where idBodega =? and estado<> 'Eliminado' and lower(nombreProducto) like ?;";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -843,7 +843,7 @@ public class UsuarioDao extends BaseDao {
 
         String sql = "select ceil(count(p.idProducto)/8) \n" +
                 "from producto p\n" +
-                "inner join bodega b on p.idBodega=b.idBodega;";
+                "inner join bodega b on p.idBodega=b.idBodega where p.estado <> 'Eliminado';";
 
         int cantPag = 0;
         try (Connection conn = getConnection();
@@ -865,7 +865,7 @@ public class UsuarioDao extends BaseDao {
         int cantPag = 8;
         String sql = "select p.idProducto, p.foto, p.nombreProducto, p.precioUnitario, b.nombreBodega\n" +
                 "from producto p\n" +
-                "inner join bodega b on p.idBodega =b.idBodega\n" +
+                "inner join bodega b on p.idBodega =b.idBodega where p.estado <> 'Eliminado' \n" +
                 "limit ?,?;";
 
         try (Connection conn = getConnection();
