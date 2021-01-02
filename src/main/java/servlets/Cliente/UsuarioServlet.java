@@ -178,7 +178,7 @@ public class UsuarioServlet extends HttpServlet {
                         } else {
 
                             request.setAttribute("distritoSelected", distritoSelected);
-                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
+                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/cliente/editarUsuario.jsp");
                             requestDispatcher.forward(request, response);
 
                         }
@@ -187,7 +187,7 @@ public class UsuarioServlet extends HttpServlet {
                     } else {
                         request.setAttribute("nombresB", nombresB);
                         request.setAttribute("apellidosB", apellidosB);
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
+                        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/cliente/editarUsuario.jsp");
                         requestDispatcher.forward(request, response);
                     }
                     break;
@@ -611,7 +611,7 @@ public class UsuarioServlet extends HttpServlet {
 
                     request.setAttribute("usuario", usuario);
 
-                    requestDispatcher = request.getRequestDispatcher("miPerfil.jsp");
+                    requestDispatcher = request.getRequestDispatcher("/cliente/miPerfil.jsp");
                     requestDispatcher.forward(request, response);
                     break;
                 case "editar":
@@ -624,7 +624,7 @@ public class UsuarioServlet extends HttpServlet {
 
                     request.setAttribute("cambiar", cambiar);
                     request.setAttribute("usuario", clienteActual);
-                    requestDispatcher = request.getRequestDispatcher("editarUsuario.jsp");
+                    requestDispatcher = request.getRequestDispatcher("/cliente/editarUsuario.jsp");
                     requestDispatcher.forward(request, response);
 
                     break;
