@@ -21,7 +21,7 @@
 
 <html>
 <head>
-    <jsp:include page="bootstrapRepository.jsp"/>
+    <jsp:include page="../bootstrapRepository.jsp"/>
     <jsp:include page="/includes/utf8Cod.jsp"/>
 
     <!-- para los iconos como botones -->

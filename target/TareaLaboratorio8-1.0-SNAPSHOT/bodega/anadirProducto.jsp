@@ -58,7 +58,7 @@
 
 <p></p>
 <main class="my-form">
-    <div class="cotainer">
+    <div class="cotainer" style="margin-left: 5%; margin-right: 5%">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -160,14 +160,13 @@
                 </div>
 
             </div>
+            <%if(!fotoVal){%>
             <div class="col-sm-3">
-
-                <%if(!fotoVal){%>
                 <div class="alert alert-danger" role="alert">
                     No se ha ingresado una fotografia o el formato es invalido.
                 </div>
-                <%}%>
             </div>
+            <%}%>
         </div>
     </div>
 

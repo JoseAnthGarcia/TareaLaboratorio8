@@ -60,6 +60,14 @@
         No es posible cancelar este pedido porque el tiempo límite de cancelación se ha cumplido.
     </div>
     <%request.getSession().removeAttribute("errorCancelarPedido");}%>
+
+    <%if(request.getSession().getAttribute("pedidoCancelado")!=null){%>
+    <div align="center" class="alert alert-success" role="alert">
+        Pedido cancelado con exito!
+    </div>
+    <%request.getSession().removeAttribute("pedidoCancelado");}%>
+
+
     <div class="container-fluid">
         <table class="table container-fluid">
             <tr>
