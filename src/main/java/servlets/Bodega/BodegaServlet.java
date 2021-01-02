@@ -109,6 +109,7 @@ public class BodegaServlet extends HttpServlet {
                 // si es que los datos son correctos, se guarda el producto
                 if (validStock & validPrecioUnitario & validNombreProducto && fotoVal && validarDescripcion) {
                     BodegaDao.crearProducto(nombreProducto, descripcion, stock, precioUnitario, idBodegaActual, inputStream);
+                    request.getSession().setAttribute("productoAgregado", true);
                     response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
                 } else {
                     request.setAttribute("validStock", validStock);
@@ -189,10 +190,12 @@ public class BodegaServlet extends HttpServlet {
                         if(bodegaDao.buscarProducto2(idProductoInt)!=null && part1.getSize() == 0){
                             //actualiza
                             bodegaDao.actualizarProducto(idProductoInt, descripcion2, stock2, precioUnitario2);
+                            request.getSession().setAttribute("productoActualizado", true);
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
 
                         }else if((bodegaDao.buscarProducto2(idProductoInt)!=null) && part1.getContentType().contains("image/")){
                             bodegaDao.actualizarProductoFoto(idProductoInt, descripcion2, stock2, precioUnitario2, inputStream1);
+                            request.getSession().setAttribute("productoActualizado", true);
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
                         }else{
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet");
@@ -360,6 +363,7 @@ public class BodegaServlet extends HttpServlet {
                         ArrayList<PedidoBean> listaPedidos = bodegaDao.buscarPedidoConProducto(idProductoInt2);
                         if (listaPedidos.size() == 0) { //si no existe pedidos:
                             bodegaDao.eliminarProducto(idProductoInt2);
+                            request.getSession().setAttribute("productoEliminado", true);
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
                         } else {
                             //CORRECCION: flata enviar la lista de productos
