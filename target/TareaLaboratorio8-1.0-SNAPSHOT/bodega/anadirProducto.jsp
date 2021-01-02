@@ -11,6 +11,9 @@
     boolean validNombreProducto = request.getAttribute("validNombreProducto") != null ?
             ((boolean) request.getAttribute("validNombreProducto")) : true;
 
+    boolean validDescripcion = request.getAttribute("validDescripcion") != null ?
+            ((boolean) request.getAttribute("validDescripcion")) : true;
+
     boolean fotoVal = request.getAttribute("fotoVal") == null ?
             true : (Boolean) request.getAttribute("fotoVal");
 %>
@@ -91,9 +94,15 @@
                                 <label for="Descripcion"
                                        class="col-md-4 col-form-label text-md-right">Descripción</label>
                                 <div class="col-md-6">
-                                    <textarea type="text" id="Descripcion" class="form-control" name="descripcion"
-                                              placeholder="Ingrese una descripcion" maxlength="150"
-                                    ><%=request.getParameter("descripcion")==null?"":request.getParameter("descripcion")%></textarea>
+                                    <textarea type="text" id="Descripcion" class="form-control <%=validDescripcion?"":"is-invalid"%>"
+                                              name="descripcion" maxlength="150"
+                                              placeholder="Ingrese una descripcion"
+                                              aria-describedby="validationFeedback"
+                                    ><%=request.getParameter("descripcion")==null?"":request.getParameter("descripcion")%>
+                                    </textarea>
+                                    <div id="validationFeedback" class="invalid-feedback">
+                                        La descripción no debe exceder el límite de 150 caracteres.
+                                    </div>
                                 </div>
                             </div>
 
