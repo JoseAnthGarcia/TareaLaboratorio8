@@ -127,15 +127,15 @@
         </div>
 
 
-        <div class="row col-12 mt-5">
-            <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-success primero">Regresar</a>
-            <button type="submit" class="btn btn-outline-success tercero">Generar pedido</button>
+        <div class="row col-12 mt-5 mb-3">
+            <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-success primero" >Regresar</a>
+            <button type="submit" class="btn btn-outline-success tercero " style="margin-bottom: 80px;">Generar pedido</button>
         </div>
         <%}else{%>
         <div class="alert alert-secondary" role="alert">
             El carrito se encuentra vacio.
         </div>
-        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-success primero " style="margin-top: 80px;">Regresar</a>
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-success primero " >Regresar</a>
         <%}%>
 
     </div>
