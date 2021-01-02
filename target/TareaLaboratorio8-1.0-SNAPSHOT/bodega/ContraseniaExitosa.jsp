@@ -59,7 +59,7 @@
 
 
 
-            <a href="<%=request.getContextPath()%>/Loginbodega">
+            <a href="<%=request.getContextPath()%>/LoginBodega">
             <button type="button" class="btn btn-success tercero">Entendido</button>
             </a>
 

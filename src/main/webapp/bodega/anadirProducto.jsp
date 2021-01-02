@@ -11,6 +11,9 @@
     boolean validNombreProducto = request.getAttribute("validNombreProducto") != null ?
             ((boolean) request.getAttribute("validNombreProducto")) : true;
 
+    boolean validDescripcion = request.getAttribute("validDescripcion") != null ?
+            ((boolean) request.getAttribute("validDescripcion")) : true;
+
     boolean fotoVal = request.getAttribute("fotoVal") == null ?
             true : (Boolean) request.getAttribute("fotoVal");
 %>
@@ -55,7 +58,7 @@
 
 <p></p>
 <main class="my-form">
-    <div class="cotainer">
+    <div class="cotainer" style="margin-left: 5%; margin-right: 5%">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -91,9 +94,15 @@
                                 <label for="Descripcion"
                                        class="col-md-4 col-form-label text-md-right">Descripción</label>
                                 <div class="col-md-6">
-                                    <textarea type="text" id="Descripcion" class="form-control" name="descripcion"
-                                              placeholder="Ingrese una descripcion" maxlength="150"
-                                    ><%=request.getParameter("descripcion")==null?"":request.getParameter("descripcion")%></textarea>
+                                    <textarea type="text" id="Descripcion" class="form-control <%=validDescripcion?"":"is-invalid"%>"
+                                              name="descripcion" maxlength="150"
+                                              placeholder="Ingrese una descripcion"
+                                              aria-describedby="validationFeedback"
+                                    ><%=request.getParameter("descripcion")==null?"":request.getParameter("descripcion")%>
+                                    </textarea>
+                                    <div id="validationFeedback" class="invalid-feedback">
+                                        La descripción no debe exceder el límite de 150 caracteres.
+                                    </div>
                                 </div>
                             </div>
 
@@ -151,14 +160,13 @@
                 </div>
 
             </div>
+            <%if(!fotoVal){%>
             <div class="col-sm-3">
-
-                <%if(!fotoVal){%>
                 <div class="alert alert-danger" role="alert">
                     No se ha ingresado una fotografia o el formato es invalido.
                 </div>
-                <%}%>
             </div>
+            <%}%>
         </div>
     </div>
 
