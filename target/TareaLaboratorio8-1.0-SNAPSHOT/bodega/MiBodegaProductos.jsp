@@ -88,6 +88,24 @@
                 </div>
                 <%session.removeAttribute("pedidosConProducto");
                 }%>
+
+                <%if(session.getAttribute("productoAgregado")!=null){%>
+                    <div class="alert alert-success" role="alert">
+                        El producto fue agregado.
+                    </div>
+                <%session.removeAttribute("productoAgregado");}%>
+
+                <%if(session.getAttribute("productoEliminado")!=null){%>
+                    <div class="alert alert-danger" role="alert">
+                        El producto fue eliminado.
+                    </div>
+                <%session.removeAttribute("productoEliminado");}%>
+
+                <%if(session.getAttribute("productoActualizado")!=null){%>
+                    <div class="alert alert-success" role="alert">
+                        El producto fue editado.
+                    </div>
+                <%session.removeAttribute("productoActualizado");}%>
             </div>
 
         </div>

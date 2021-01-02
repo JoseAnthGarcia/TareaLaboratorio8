@@ -820,6 +820,7 @@ public class UsuarioServlet extends HttpServlet {
                         boolean aTiempo =  usuarioDao.verificarHoraPedido(codigoPedido2);
                         if(aTiempo){
                             usuarioDao.cancelarPedido(codigoPedido2);
+                            request.getSession().setAttribute("pedidoCancelado", true);
                             response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
                         }else{
                             request.getSession().setAttribute("errorCancelarPedido", true);
