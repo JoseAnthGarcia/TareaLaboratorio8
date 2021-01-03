@@ -1,6 +1,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="daos.AdminDao" %>
 <%@ page import="beans.BodegaBean" %>
+<%@ page import="beans.PedidoBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
@@ -82,8 +83,12 @@
 <div class ='container'>
     <h1 class="margen">Mis Bodegas</h1>
     <%if(request.getSession().getAttribute("errorBloquearBodega")!=null){%>
-    <div align="center" class="alert alert-danger" role="alert">
-        No es posible bloquear esta bodega porque presenta al menos un pedido en estado pendiente.
+    <div class="alert alert-danger" role="alert">
+        <h6> No es posible bloquear esta bodega porque presenta los siguientes pedidos en estado pendiente:</h6>
+        <%  ArrayList<PedidoBean> listaPedidosPendiente = (ArrayList<PedidoBean>) session.getAttribute("listaPedidosPendiente");
+            for(PedidoBean pedido: listaPedidosPendiente){%>
+        <h6>-<%=pedido.getCodigo()%></h6>
+        <%}%>
     </div>
     <%request.getSession().removeAttribute("errorBloquearBodega");
     }%>
@@ -102,7 +107,7 @@
     <%}%>
 
     <div class="container-fluid">
-        <table class="table container-fluid">
+        <table class="table container-fluid table-hover">
             <tr>
                 <th>RUC de la bodega</th>
                 <th>Nombre de la bodega</th>
@@ -113,7 +118,9 @@
                 for(BodegaBean bodega : listaBodegas){
             %>
             <tr>
-                <td><%= bodega.getRucBodega() %></td>
+                <td>
+                    <a href="<%=request.getContextPath()%>/AdminServlet?accion=mostrarBodega&ruc=<%=bodega.getRucBodega()%>"><%= bodega.getRucBodega() %></a>
+                </td>
                 <td><%= bodega.getNombreBodega() %></td>
                 <td><%= bodega.getEstadoBodega() %></td>
                 <% if(bodega.getEstadoBodega().toLowerCase().equals("activo")){%>

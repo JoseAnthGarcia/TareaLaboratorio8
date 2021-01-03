@@ -2,6 +2,7 @@ package servlets.Administrador;
 
 import beans.BodegaBean;
 import beans.DistritoBean;
+import beans.PedidoBean;
 import beans.UsuarioBean;
 import daos.AdminDao;
 import daos.BodegaDao;
@@ -319,6 +320,9 @@ public class AdminServlet extends HttpServlet {
                 case "bloquear":
                     String nombreBodega = request.getParameter("nombreB");
                     boolean aTiempo = AdminDao.pedidoPendiente(nombreBodega); //devuelve true si presenta al menos un pedido en estado pendiente
+
+                    ArrayList<PedidoBean> listaPedidos = bodegaDao.buscarBodegaconPedido(nombreBodega);
+
                     if(!aTiempo){
                         boolean bloqueo = Boolean.parseBoolean(request.getParameter("bloqueo"));
                         request.getSession().setAttribute("accion", bloqueo);
@@ -326,8 +330,22 @@ public class AdminServlet extends HttpServlet {
                         response.sendRedirect(request.getContextPath() +"/AdminServlet?accion=listar");
                     }else{
                         request.getSession().setAttribute("errorBloquearBodega", true);
+                        request.getSession().setAttribute("listaPedidosPendiente",listaPedidos);
                         response.sendRedirect(request.getContextPath() +"/AdminServlet?accion=listar");
                     }
+                    break;
+                case "mostrarBodega":
+                    String rucBodega = request.getParameter("ruc");
+                    AdminDao adminDao = new AdminDao();
+                    if(adminDao.buscarIdBodega(rucBodega)>0){
+                        BodegaBean bodega = adminDao.buscarBodega(rucBodega);
+                        request.setAttribute("bodega",bodega);
+                        view = request.getRequestDispatcher("administrador/mostrarBodega.jsp");
+                        view.forward(request, response);
+                    }else{
+                        response.sendRedirect(request.getContextPath() + "/AdminServlet?accion=listar");
+                    }
+
                     break;
                 default:
                     response.sendRedirect(request.getContextPath() +"/AdminServlet?accion=miPerfil");
