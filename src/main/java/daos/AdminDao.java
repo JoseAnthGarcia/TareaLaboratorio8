@@ -2,6 +2,7 @@ package daos;
 
 import beans.BodegaBean;
 import beans.DistritoBean;
+import beans.PedidoBean;
 import beans.UsuarioBean;
 
 import java.sql.*;
@@ -366,5 +367,33 @@ public class AdminDao extends BaseDao{
 
         return idBodega;
     }
+
+    public ArrayList<PedidoBean> buscarBodegaconPedido(String nombreBodega){
+        ArrayList<PedidoBean> lista = new ArrayList<>();
+
+        String sql = "select * from bodega b\n" +
+                "inner join pedido p\n" +
+                "on b.idBodega = p.idBodega\n" +
+                "where nombreBodega=?;";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, nombreBodega);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                while(rs.next()){
+                    PedidoBean pedido = new PedidoBean();
+                    pedido.setCodigo(rs.getString("codigo"));
+                    lista.add(pedido);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
 
 }
