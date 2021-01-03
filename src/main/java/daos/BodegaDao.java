@@ -473,7 +473,7 @@ public class BodegaDao extends BaseDao{
         int limit = (pagina-1)*5;
         ArrayList<PedidoBean> listaPedidos = new ArrayList<>();
         String sql = "SELECT * FROM pedido \n" +
-                "where idBodega = ? ORDER BY fecha_registro DESC limit ?, 5";
+                "where idBodega = ? ORDER BY estado desc, fecha_registro desc limit ?, 5";
 
         try {
             Connection connection = getConnection();
