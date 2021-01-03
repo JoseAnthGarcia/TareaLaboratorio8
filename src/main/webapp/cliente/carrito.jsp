@@ -100,7 +100,7 @@
                 <tr>
                     <td><%=entry.getValue().getNombreProducto()%>
                     </td>
-                    <td><%=entry.getValue().getPrecioProducto()%>
+                    <td><%=usuarioDao.obtenerProducto(entry.getValue().getId()).getPrecioProducto()%>
                     </td>
                     <td>
                         <%if(usuarioDao.obtenerProducto(entry.getValue().getId()).getStock()==0){%>

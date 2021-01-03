@@ -185,15 +185,15 @@ public class BodegaServlet extends HttpServlet {
 
                 InputStream inputStream1 = part1.getInputStream();
 
-                if(idProductoNumber && bodegaDao.buscarProducto2(idProductoInt)!=null){
+                if(idProductoNumber && bodegaDao.buscarProducto2(idProductoInt, idBodegaActual)!=null){
                     if (validStock2 && validPrecioUnitario2 && fotoVal1) {
-                        if(bodegaDao.buscarProducto2(idProductoInt)!=null && part1.getSize() == 0){
+                        if(bodegaDao.buscarProducto2(idProductoInt, idBodegaActual)!=null && part1.getSize() == 0){
                             //actualiza
                             bodegaDao.actualizarProducto(idProductoInt, descripcion2, stock2, precioUnitario2);
                             request.getSession().setAttribute("productoActualizado", true);
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
 
-                        }else if((bodegaDao.buscarProducto2(idProductoInt)!=null) && part1.getContentType().contains("image/")){
+                        }else if((bodegaDao.buscarProducto2(idProductoInt, idBodegaActual)!=null) && part1.getContentType().contains("image/")){
                             bodegaDao.actualizarProductoFoto(idProductoInt, descripcion2, stock2, precioUnitario2, inputStream1);
                             request.getSession().setAttribute("productoActualizado", true);
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet?accion=listar");
@@ -201,7 +201,7 @@ public class BodegaServlet extends HttpServlet {
                             response.sendRedirect(request.getContextPath() + "/BodegaServlet");
                         }
                     } else {
-                        request.setAttribute("producto", bodegaDao.buscarProducto2(idProductoInt));
+                        request.setAttribute("producto", bodegaDao.buscarProducto2(idProductoInt, idBodegaActual));
                         //request.setAttribute("validDescr", valdespcr2);
                         request.setAttribute("validStock", validStock2);
                         request.setAttribute("validPrecioUnitario", validPrecioUnitario2);
@@ -331,7 +331,7 @@ public class BodegaServlet extends HttpServlet {
                 }
 
                 if (idProductoNumber) {
-                    ProductoBean producto = bodegaDao.buscarProducto2(idProductoInt);
+                    ProductoBean producto = bodegaDao.buscarProducto2(idProductoInt, idBodegaActual);
                     if (producto == null) {
                         response.sendRedirect(request.getContextPath() + "/BodegaServlet");
                     } else {
@@ -357,7 +357,7 @@ public class BodegaServlet extends HttpServlet {
                 }
 
                 if (idProductoNumber2) {
-                    if (bodegaDao.buscarProducto(idProductoInt2)) {
+                    if (bodegaDao.buscarProducto(idProductoInt2, idBodegaActual)) {
 
                         //busco pedidos existentes:
                         ArrayList<PedidoBean> listaPedidos = bodegaDao.buscarPedidoConProducto(idProductoInt2);

@@ -237,16 +237,17 @@ public class BodegaDao extends BaseDao{
     }
 
 
-    public boolean buscarProducto(int idProducto){
+    public boolean buscarProducto(int idProducto, int idBodega){
 
         boolean exisProduct = false;
 
-        String sql = "SELECT * FROM producto WHERE idProducto = ? AND idBodega=30";
+        String sql = "SELECT * FROM producto WHERE idProducto = ? AND idBodega=?";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
             pstmt.setInt(1, idProducto);
+            pstmt.setInt(2, idBodega);
 
             try(ResultSet rs = pstmt.executeQuery();){
                 if(rs.next()){
@@ -260,16 +261,17 @@ public class BodegaDao extends BaseDao{
         return exisProduct;
     }
 
-    public ProductoBean buscarProducto2(int idProducto){
+    public ProductoBean buscarProducto2(int idProducto, int idBodega){
 
         ProductoBean producto = null;
 
-        String sql = "SELECT idProducto, nombreProducto, descripcion, stock, precioUnitario FROM producto WHERE idProducto = ?";
+        String sql = "SELECT idProducto, nombreProducto, descripcion, stock, precioUnitario FROM producto WHERE idProducto = ? AND idBodega=?";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
             pstmt.setInt(1, idProducto);
+            pstmt.setInt(2, idBodega);
 
             try(ResultSet rs = pstmt.executeQuery();){
                 if(rs.next()){
