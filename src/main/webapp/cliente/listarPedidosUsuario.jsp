@@ -63,7 +63,7 @@
 
     <%if(request.getSession().getAttribute("pedidoCancelado")!=null){%>
     <div align="center" class="alert alert-success" role="alert">
-        Pedido cancelado con exito!
+        ¡Pedido cancelado con éxito!
     </div>
     <%request.getSession().removeAttribute("pedidoCancelado");}%>
 
