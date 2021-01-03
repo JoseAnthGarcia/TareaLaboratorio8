@@ -76,7 +76,7 @@
             <div class="row">
                 <%if(session.getAttribute("productoExistente")!=null){%>
                 <div class="alert alert-danger" role="alert">
-                    El producto ya se encuentra en el carrito
+                    El producto ya se encuentra seleccionado
                 </div>
                 <%session.removeAttribute("productoExistente");
                 }%>
