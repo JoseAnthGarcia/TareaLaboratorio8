@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .btn {
-            background-color: #343a40;
+            background-color: #d6d2c4;
             border: none;
-            color: white;
+            color: black;
             padding: 12px 16px;
             font-size: 15px;
             cursor: pointer;
@@ -22,6 +22,10 @@
         /* Darker background on mouse-over */
         .btn:hover {
             background-color: #f05454;
+        }
+        .btn-activar:hover {
+            background-color: #34A100;
+            color: white;
         }
         .margen{
             margin-top: 2%;
@@ -114,7 +118,7 @@
                     %>
                 <a href="<%=request.getContextPath()%>/BodegaServlet?accion=entregarPedido&codigo=<%=pedidos.getCodigo()%>"
                    onclick="return confirm('¿Esta seguro de quiere entregar este pedido?')"
-                   class="btn btn-success">Pedido Entregado</a>
+                   class="btn btn-success btn-activar"  >Pedido Entregado</a>
                 <a href="<%=request.getContextPath()%>/BodegaServlet?accion=cancelarPedido&codigo=<%=pedidos.getCodigo()%>"
                    onclick="return confirm('¿Esta seguro de quiere cancelar este pedido?')"
                    class="btn btn-danger">Cancelar Pedido</a>
@@ -125,7 +129,7 @@
             <% } %>
         </table>
         <div class="row">
-            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=home" class="btn btn-outline-danger" >Regresar</a>
+            <a href="<%=request.getContextPath()%>/BodegaServlet?accion=home" class="btn btn-outline-danger" style="background-color: #343a40; color: white;">Regresar</a>
             <nav aria-label="Page navigation example" class = "mx-auto"> <!-- Recordar centro !! -->
                 <ul class="pagination justify-content-center">
                     <%if(paginaAct==1){%>
