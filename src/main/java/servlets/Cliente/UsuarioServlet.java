@@ -750,8 +750,7 @@ public class UsuarioServlet extends HttpServlet {
                             HashMap<Integer, ProductoBean> carrito2 = (HashMap<Integer, ProductoBean>) session2.getAttribute("carrito");
                             ProductoBean producto1 = usuarioDao.obtenerProducto(idProducto);
                             if (carrito2.containsKey(producto1.getId())) {
-                                session2.setAttribute("producto" +
-                                        "", true);
+                                session2.setAttribute("productoExistente", true);
 
                             } else {
                                 session2.setAttribute("productoAgregado", true);
