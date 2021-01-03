@@ -241,7 +241,7 @@ public class BodegaDao extends BaseDao{
 
         boolean exisProduct = false;
 
-        String sql = "SELECT * FROM producto WHERE idProducto = ? AND idBodega=?";
+        String sql = "SELECT * FROM producto WHERE idProducto = ? AND idBodega=? AND estado='Existente'";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -265,7 +265,7 @@ public class BodegaDao extends BaseDao{
 
         ProductoBean producto = null;
 
-        String sql = "SELECT idProducto, nombreProducto, descripcion, stock, precioUnitario FROM producto WHERE idProducto = ? AND idBodega=?";
+        String sql = "SELECT idProducto, nombreProducto, descripcion, stock, precioUnitario FROM producto WHERE idProducto = ? AND idBodega=? AND estado='Existente'";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {

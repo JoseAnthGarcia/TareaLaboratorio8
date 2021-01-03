@@ -173,7 +173,6 @@ public class BodegaServlet extends HttpServlet {
                     validPrecioUnitario2 = false;
                 }
 
-                //TODO: Aqui se metera foto
                 Part part1 = request.getPart("foto");
 
                 boolean fotoVal1 = true;
