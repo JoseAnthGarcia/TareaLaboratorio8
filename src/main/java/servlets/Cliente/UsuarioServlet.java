@@ -321,32 +321,35 @@ public class UsuarioServlet extends HttpServlet {
                         int idProducto = entry.getKey();
                         //Obtengo el producto:
                         ProductoBean producto = usuarioDao.obtenerProducto(idProducto);
-                        if(producto==null){
-                            errorGeneral = true;
-                            break;
-                        }
+
                         String cant = request.getParameter(String.valueOf(idProducto));
 
-                        try {
-                            int cantInt = Integer.parseInt(cant);
-                            if (cantInt < 1 || cantInt > producto.getStock()) {
-                                errorNumber = true;
+                        if(cant==null){
+                            errorGeneral = true;
+                            break;
+                        }else{
+                            try {
+                                int cantInt = Integer.parseInt(cant);
+                                if (cantInt < 1 || cantInt > producto.getStock()) {
+                                    errorNumber = true;
+                                    break;
+                                }
+                            } catch (NumberFormatException e) {
+                                if (cant.equals("")) {
+                                    errorNumber = true;
+                                } else {
+                                    errorGeneral = true;
+                                }
                                 break;
                             }
-                        } catch (NumberFormatException e) {
-                            if (cant.equals("")) {
-                                errorNumber = true;
-                            } else {
-                                errorGeneral = true;
-                            }
-                            break;
+
+                            ProductoCantDto productoCant = new ProductoCantDto();
+                            productoCant.setProducto(usuarioDao.obtenerProducto(idProducto));
+                            productoCant.setCant(Integer.parseInt(cant));
+
+                            listaProductosSelecCant.add(productoCant);
                         }
 
-                        ProductoCantDto productoCant = new ProductoCantDto();
-                        productoCant.setProducto(usuarioDao.obtenerProducto(idProducto));
-                        productoCant.setCant(Integer.parseInt(cant));
-
-                        listaProductosSelecCant.add(productoCant);
                     }
 
                     if (errorNumber || errorGeneral) {
