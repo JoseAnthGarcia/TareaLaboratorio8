@@ -120,7 +120,7 @@
                             <%if(usuarioDao.obtenerProducto(entry.getValue().getId()).getStock()==0){%>
                             Producto agotado
                             <%}else{%>
-                            Cantidad debe esta entre 1 y <%=usuarioDao.obtenerProducto(entry.getValue().getId()).getStock()%>.
+                            Ingrese una cantidad válida (stock: <%=usuarioDao.obtenerProducto(entry.getValue().getId()).getStock()%>).
                             <%}%>
                         </div>
                     </td>
@@ -142,8 +142,10 @@
         <div class="alert alert-secondary" role="alert">
             No existe productos seleccionados.
         </div>
+        <div class="row col-12 mt-5 mb-3">
         <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-success primero " >Regresar</a>
         <%}%>
+        </div>
 
     </div>
     </form>
