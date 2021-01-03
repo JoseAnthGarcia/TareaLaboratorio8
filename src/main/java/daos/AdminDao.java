@@ -195,16 +195,26 @@ public class AdminDao extends BaseDao{
 
     public BodegaBean buscarBodega(String ruc){
         BodegaBean bodega= new BodegaBean();
-        String sql = "SELECT * FROM bodega WHERE ruc = ?";
+        String sql = "select * from bodega b\n" +
+                "inner join distrito d\n" +
+                "on b.idDistrito = d.idDistrito \n" +
+                "where b.ruc =?;";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setString(1,ruc);
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
                     bodega.setIdBodega(rs.getInt("idBodega"));
-                    bodega.setNombreBodega(rs.getString("nombreBodega"));
-                    bodega.setCorreoBodega(rs.getString("correo"));
+                    bodega.setNombreBodega(rs.getString("nombreBodega"));   //
+                    bodega.setCorreoBodega(rs.getString("correo")); //
                     bodega.setEstadoBodega(rs.getString("estado"));
+
+                    DistritoBean distritoBean = new DistritoBean();
+                    distritoBean.setNombre(rs.getString("nombreDistrito")); //
+                    bodega.setDistrito(distritoBean);
+
+                    bodega.setRucBodega(rs.getLong("ruc"));  //
+                    bodega.setDireccionBodega(rs.getString("direccion"));   //
                 }
             }
         } catch (SQLException throwables) {

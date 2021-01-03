@@ -2,6 +2,7 @@ package servlets.Administrador;
 
 import beans.BodegaBean;
 import beans.DistritoBean;
+import beans.PedidoHasProductoBean;
 import beans.UsuarioBean;
 import daos.AdminDao;
 import daos.BodegaDao;
@@ -328,6 +329,20 @@ public class AdminServlet extends HttpServlet {
                         request.getSession().setAttribute("errorBloquearBodega", true);
                         response.sendRedirect(request.getContextPath() +"/AdminServlet?accion=listar");
                     }
+                    break;
+                case "mostrarBodega":
+                    String rucBodega = request.getParameter("ruc");
+                    AdminDao adminDao = new AdminDao();
+                    if(adminDao.buscarIdBodega(rucBodega)>0){
+                        BodegaBean bodega = adminDao.buscarBodega(rucBodega);
+
+                        request.setAttribute("bodega",bodega);
+                        view = request.getRequestDispatcher("administrador/mostrarBodega.jsp");
+                        view.forward(request, response);
+                    }else{
+                        response.sendRedirect(request.getContextPath() + "/AdminServlet?accion=listar");
+                    }
+
                     break;
                 default:
                     response.sendRedirect(request.getContextPath() +"/AdminServlet?accion=miPerfil");

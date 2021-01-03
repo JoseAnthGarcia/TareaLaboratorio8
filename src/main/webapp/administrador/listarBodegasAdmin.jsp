@@ -113,7 +113,9 @@
                 for(BodegaBean bodega : listaBodegas){
             %>
             <tr>
-                <td><%= bodega.getRucBodega() %></td>
+                <td>
+                    <a href="<%=request.getContextPath()%>/AdminServlet?accion=mostrarBodega&ruc=<%=bodega.getRucBodega()%>"><%= bodega.getRucBodega() %></a>
+                </td>
                 <td><%= bodega.getNombreBodega() %></td>
                 <td><%= bodega.getEstadoBodega() %></td>
                 <% if(bodega.getEstadoBodega().toLowerCase().equals("activo")){%>
