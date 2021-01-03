@@ -109,7 +109,7 @@
                         </a>
                         <a onclick="return confirm('¿Estas seguro que deseas salir del registro de la bodega? ' +
                          '')"
-                                href="<%=request.getContextPath()%>/AdminServlet" class="navbar-brand d-flex align-items-center">
+                                href="<%=request.getContextPath()%>/AdminServlet?accion=listar" class="navbar-brand d-flex align-items-center">
                             <strong>Lista de bodegas</strong>
                         </a>
                         <div class="card">

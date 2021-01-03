@@ -142,7 +142,7 @@
     </div>
     <div class="row">
 
-
+        <a href="<%=request.getContextPath()%>/AdminServlet?accion=miPerfil" class="btn btn-outline-danger" style="background-color: #343a40; color: white;" >Regresar</a>
         <nav aria-label="Page navigation example" class = "mx-auto"> <!-- Recordar centro !! -->
             <ul class="pagination justify-content-center">
                 <%if(paginaAct==1){%>
