@@ -487,16 +487,24 @@ public class UsuarioDao extends BaseDao {
 
     public BodegaBean obtenerBodega(int idBodega){
         BodegaBean bodega = null;
-        String sql = "SELECT * FROM bodega WHERE idBodega=?";
+        String sql = "SELECT * FROM bodega b\n" +
+                "inner join distrito d on d.idDistrito=b.idDistrito\n" +
+                "WHERE idBodega=?;";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setInt(1, idBodega);
             try(ResultSet rs = pstmt.executeQuery()){
                 rs.next();
                 bodega = new BodegaBean();
-                bodega.setIdBodega(rs.getInt("idBodega"));
-                bodega.setNombreBodega(rs.getString("nombreBodega"));
-                bodega.setEstadoBodega(rs.getString("estado"));
+                bodega.setIdBodega(rs.getInt("b.idBodega"));
+                bodega.setNombreBodega(rs.getString("b.nombreBodega"));
+                bodega.setEstadoBodega(rs.getString("b.estado"));
+                bodega.setDireccionBodega(rs.getString("b.direccion"));
+
+                DistritoBean distrito = new DistritoBean();
+                distrito.setId(rs.getInt("d.idDistrito"));
+                distrito.setNombre(rs.getString("d.nombreDistrito"));
+                bodega.setDistrito(distrito);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
