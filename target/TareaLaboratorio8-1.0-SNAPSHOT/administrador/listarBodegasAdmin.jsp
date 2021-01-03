@@ -91,7 +91,7 @@
     <%boolean accionExitosa = Boolean.parseBoolean(String.valueOf(request.getSession().getAttribute("accion")));%>
     <%if(request.getSession().getAttribute("accion")!=null){%>
         <%if(accionExitosa){%>
-        <div align="center" class="alert alert-success" role="alert">
+        <div align="center" class="alert alert-danger" role="alert">
             Bloqueo de bodega exitoso.
         </div>
         <%request.getSession().removeAttribute("accion");}else{%>
