@@ -914,12 +914,15 @@ public class UsuarioServlet extends HttpServlet {
                     }
                     if (!noNumber ) {
                         ProductoBean productoBean1 = usuarioDao.obtenerProducto(idProducto);
-                        request.setAttribute("vista","productosDisponibles");
-                        request.setAttribute("producto",productoBean1);
-                        requestDispatcher = request.getRequestDispatcher("/cliente/detalleProducto.jsp");
+                        if(productoBean1!=null){
+                            request.setAttribute("vista","productosDisponibles");
+                            request.setAttribute("producto",productoBean1);
+                            requestDispatcher = request.getRequestDispatcher("/cliente/detalleProducto.jsp");
 
-                        requestDispatcher.forward(request, response);
-
+                            requestDispatcher.forward(request, response);
+                        }else{
+                            response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=productosDisponibles");
+                        }
                     } else {
                         //accion malintensionado
                         requestDispatcher = request.getRequestDispatcher("/cliente/default.jsp");

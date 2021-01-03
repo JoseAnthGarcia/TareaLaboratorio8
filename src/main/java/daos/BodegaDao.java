@@ -334,30 +334,6 @@ public class BodegaDao extends BaseDao{
         }
     }
 
-    //-------------- Para inicio de sesion ------------------
-
-    /*
-    public BodegaBean validarUsuarioPassword(String user, String password){
-
-        String sql = "select * from bodega where correo=? and contrasenia=?;";
-        BodegaBean bodegaBean = null;
-        try(Connection conn = getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql);){
-
-            pstmt.setString(1,user);
-            pstmt.setString(2,password);
-            try(ResultSet rs = pstmt.executeQuery()){
-                if(rs.next()){
-                    int idBodega = rs.getInt(1);
-                    bodegaBean = this.obtenerBodega(idBodega);
-                }
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return bodegaBean;
-    }*/
 
     //ENCRIPTAR CONTRASENIA
     public BodegaBean validarUsuarioPasswordHashed(String correo, String contrasenia) {

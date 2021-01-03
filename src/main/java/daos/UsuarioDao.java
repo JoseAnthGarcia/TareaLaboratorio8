@@ -515,7 +515,7 @@ public class UsuarioDao extends BaseDao {
     //ojo: ya el producto esta como existente, pues sino no se muestra en la lista
     public ProductoBean obtenerProducto(int idProducto){
         ProductoBean producto = null;
-        String sql = "SELECT * FROM producto WHERE idProducto=?";
+        String sql = "SELECT * FROM producto WHERE idProducto=? AND estado='Existente';";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setInt(1, idProducto);
