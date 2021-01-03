@@ -120,7 +120,7 @@
                             <%if(usuarioDao.obtenerProducto(entry.getValue().getId()).getStock()==0){%>
                             Producto agotado
                             <%}else{%>
-                            Cantidad debe esta entre 1 y <%=usuarioDao.obtenerProducto(entry.getValue().getId()).getStock()%>.
+                            Ingrese una cantidad válida (stock: <%=usuarioDao.obtenerProducto(entry.getValue().getId()).getStock()%>).
                             <%}%>
                         </div>
                     </td>
