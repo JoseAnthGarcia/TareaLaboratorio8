@@ -405,9 +405,10 @@ public class UsuarioDao extends BaseDao {
     public ArrayList<BodegaBean> listarBodegas(int pag){
         ArrayList<BodegaBean> listaBodegas = new ArrayList<>();
         int cantPag = 8;
-        String sql = "select idBodega, foto,nombreBodega,  direccion  from bodega\n" +
-                "where bodega.estado = \"Activo\"\n" +
-                "order by nombreBodega ASC limit ?,?;";
+        String sql = "select *  from bodega b\n" +
+                "inner join distrito d on b.idDistrito=d.idDistrito\n" +
+                "where b.estado = \"Activo\"\n" +
+                "order by d.idDistrito, b.nombreBodega ASC limit ?,?;";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setInt(1, (pag-1)*cantPag);
@@ -415,10 +416,15 @@ public class UsuarioDao extends BaseDao {
             try(ResultSet rs = pstmt.executeQuery()){
                 while(rs.next()){
                     BodegaBean bodega = new BodegaBean();
-                    //TODO: JALAR FOTO
-                    bodega.setIdBodega(rs.getInt("idBodega"));
-                    bodega.setNombreBodega(rs.getString("nombreBodega"));
-                    bodega.setDireccionBodega(rs.getString("direccion"));
+                    bodega.setIdBodega(rs.getInt("b.idBodega"));
+                    bodega.setNombreBodega(rs.getString("b.nombreBodega"));
+                    bodega.setDireccionBodega(rs.getString("b.direccion"));
+
+                    DistritoBean distrito = new DistritoBean();
+                    distrito.setId(rs.getInt("d.idDistrito"));
+                    distrito.setNombre(rs.getString("d.nombreDistrito"));
+                    bodega.setDistrito(distrito);
+
                     listaBodegas.add(bodega);
                 }
             }
@@ -430,19 +436,26 @@ public class UsuarioDao extends BaseDao {
 
     public ArrayList<BodegaBean> listarBodegasDistrito(int idUsuario){
         ArrayList<BodegaBean> listaBodegas = new ArrayList<>();
-        String sql = "select idBodega, foto,nombreBodega,  direccion from bodega\n" +
-                "where idDistrito = (SELECT idDistrito FROM usuario WHERE idUsuario = ?) and estado = \"Activo\"\n" +
+        String sql = "select * from bodega b\n" +
+                "inner join distrito d on b.idDistrito=d.idDistrito\n" +
+                "where b.idDistrito = (SELECT idDistrito FROM usuario WHERE idUsuario = ?) and estado = \"Activo\"\n" +
                 "order by nombreBodega;";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setInt(1, idUsuario);
             try(ResultSet rs = pstmt.executeQuery()){
                 while(rs.next()){
+
                     BodegaBean bodega = new BodegaBean();
-                    //TODO: JALAR FOTO
-                    bodega.setIdBodega(rs.getInt("idBodega"));
-                    bodega.setNombreBodega(rs.getString("nombreBodega"));
-                    bodega.setDireccionBodega(rs.getString("direccion"));
+                    bodega.setIdBodega(rs.getInt("b.idBodega"));
+                    bodega.setNombreBodega(rs.getString("b.nombreBodega"));
+                    bodega.setDireccionBodega(rs.getString("b.direccion"));
+
+                    DistritoBean distrito = new DistritoBean();
+                    distrito.setId(rs.getInt("d.idDistrito"));
+                    distrito.setNombre(rs.getString("d.nombreDistrito"));
+                    bodega.setDistrito(distrito);
+
                     listaBodegas.add(bodega);
                 }
             }
@@ -454,7 +467,7 @@ public class UsuarioDao extends BaseDao {
 
     public static int calcularCantPagListarBodegas(){
 
-        String sql = "select ceil(count(*)/10)\n" +
+        String sql = "select ceil(count(*)/8)\n" +
                 "from (select b.idBodega, b.foto,nombreBodega,  b.direccion  from bodega b\n" +
                 "where b.estado = \"Activo\") t;";  // numero de paginas
 
@@ -474,16 +487,24 @@ public class UsuarioDao extends BaseDao {
 
     public BodegaBean obtenerBodega(int idBodega){
         BodegaBean bodega = null;
-        String sql = "SELECT * FROM bodega WHERE idBodega=?";
+        String sql = "SELECT * FROM bodega b\n" +
+                "inner join distrito d on d.idDistrito=b.idDistrito\n" +
+                "WHERE idBodega=?;";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setInt(1, idBodega);
             try(ResultSet rs = pstmt.executeQuery()){
                 rs.next();
                 bodega = new BodegaBean();
-                bodega.setIdBodega(rs.getInt("idBodega"));
-                bodega.setNombreBodega(rs.getString("nombreBodega"));
-                bodega.setEstadoBodega(rs.getString("estado"));
+                bodega.setIdBodega(rs.getInt("b.idBodega"));
+                bodega.setNombreBodega(rs.getString("b.nombreBodega"));
+                bodega.setEstadoBodega(rs.getString("b.estado"));
+                bodega.setDireccionBodega(rs.getString("b.direccion"));
+
+                DistritoBean distrito = new DistritoBean();
+                distrito.setId(rs.getInt("d.idDistrito"));
+                distrito.setNombre(rs.getString("d.nombreDistrito"));
+                bodega.setDistrito(distrito);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -866,7 +887,7 @@ public class UsuarioDao extends BaseDao {
         String sql = "select p.idProducto, p.foto, p.nombreProducto, p.precioUnitario, b.nombreBodega\n" +
                 "from producto p\n" +
                 "inner join bodega b on p.idBodega =b.idBodega where p.estado <> 'Eliminado' \n" +
-                "limit ?,?;";
+                "order by p.idBodega, p.nombreProducto limit ?,?;";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
