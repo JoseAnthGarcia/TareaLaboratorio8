@@ -142,8 +142,10 @@
         <div class="alert alert-secondary" role="alert">
             No existe productos seleccionados.
         </div>
+        <div class="row col-12 mt-5 mb-3">
         <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-success primero " >Regresar</a>
         <%}%>
+        </div>
 
     </div>
     </form>
