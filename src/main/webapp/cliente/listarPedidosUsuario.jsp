@@ -69,7 +69,7 @@
 
 
     <div class="container-fluid">
-        <table class="table container-fluid">
+        <table class="table container-fluid table-hover">
             <tr>
                 <th>Código </th>
                 <th>Costo total</th>

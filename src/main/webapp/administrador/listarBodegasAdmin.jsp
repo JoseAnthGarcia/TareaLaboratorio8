@@ -102,7 +102,7 @@
     <%}%>
 
     <div class="container-fluid">
-        <table class="table container-fluid">
+        <table class="table container-fluid table-hover">
             <tr>
                 <th>RUC de la bodega</th>
                 <th>Nombre de la bodega</th>

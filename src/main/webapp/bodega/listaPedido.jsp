@@ -95,7 +95,7 @@
                 <%}%>
             <%session.removeAttribute("estado");}%>
         </div>
-        <table class="table container-fluid">
+        <table class="table container-fluid table-hover">
             <tr>
                 <th>Codigo</th>
                 <th>Costo Total</th>
