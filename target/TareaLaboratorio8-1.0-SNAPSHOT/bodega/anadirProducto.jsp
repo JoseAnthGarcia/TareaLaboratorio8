@@ -98,8 +98,7 @@
                                               name="descripcion" maxlength="150"
                                               placeholder="Ingrese una descripcion"
                                               aria-describedby="validationFeedback"
-                                    ><%=request.getParameter("descripcion")==null?"":request.getParameter("descripcion")%>
-                                    </textarea>
+                                    ><%=request.getParameter("descripcion")==null?"":request.getParameter("descripcion")%></textarea>
                                     <div id="validationFeedback" class="invalid-feedback">
                                         La descripción no debe exceder el límite de 150 caracteres.
                                     </div>
