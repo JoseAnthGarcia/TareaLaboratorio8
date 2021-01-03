@@ -321,6 +321,10 @@ public class UsuarioServlet extends HttpServlet {
                         int idProducto = entry.getKey();
                         //Obtengo el producto:
                         ProductoBean producto = usuarioDao.obtenerProducto(idProducto);
+                        if(producto==null){
+                            errorGeneral = true;
+                            break;
+                        }
                         String cant = request.getParameter(String.valueOf(idProducto));
 
                         try {
