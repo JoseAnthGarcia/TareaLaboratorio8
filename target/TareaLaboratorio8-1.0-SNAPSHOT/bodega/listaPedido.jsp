@@ -118,7 +118,7 @@
                     %>
                 <a href="<%=request.getContextPath()%>/BodegaServlet?accion=entregarPedido&codigo=<%=pedidos.getCodigo()%>"
                    onclick="return confirm('¿Esta seguro de quiere entregar este pedido?')"
-                   class="btn btn-success btn-activar"  >Pedido Entregado</a>
+                   class="btn btn-success btn-activar">Pedido Entregado</a>
                 <a href="<%=request.getContextPath()%>/BodegaServlet?accion=cancelarPedido&codigo=<%=pedidos.getCodigo()%>"
                    onclick="return confirm('¿Esta seguro de quiere cancelar este pedido?')"
                    class="btn btn-danger">Cancelar Pedido</a>
