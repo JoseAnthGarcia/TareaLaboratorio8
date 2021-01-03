@@ -67,7 +67,7 @@
 </header>
 <div class=" Container">
 
-    <h1 class="mb-3 mt-3">Mi  perfil </h1>
+    <h1 class="mb-5 mt-5">Mi  perfil </h1>
     <%if(session.getAttribute("contraseniaActualizada")!=null){%>
     <div align="center" class="alert alert-success" role="alert">
         La contraseña fue actualizada.

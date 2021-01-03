@@ -73,7 +73,7 @@
 </header>
 <div class="container">
 
-    <h1 class="mb-3 mt-3">Editar mi perfil</h1>
+    <h1 class="mb-5 mt-5">Editar mi perfil</h1>
     <div class="row">
 
         <div class="col-lg-6 col-md-12 centrar">
