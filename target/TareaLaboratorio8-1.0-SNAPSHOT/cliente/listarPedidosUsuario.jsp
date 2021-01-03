@@ -11,16 +11,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .btn {
-            background-color: #343a40;
+            background-color: #d6d2c4;
             border: none;
-            color: white;
+            color: black;
             padding: 12px 16px;
             font-size: 15px;
             cursor: pointer;
         }
         /* Darker background on mouse-over */
         .btn:hover {
-            background-color: #767676;
+            background-color: #f05454;
         }
         .margen{
             margin-top: 2%;
@@ -69,7 +69,7 @@
 
 
     <div class="container-fluid">
-        <table class="table container-fluid">
+        <table class="table container-fluid table-hover">
             <tr>
                 <th>Código </th>
                 <th>Costo total</th>
@@ -98,7 +98,7 @@
         </table>
     </div>
     <div class="row mb-5">
-        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger" >Regresar</a>
+        <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=Home" class="btn btn-outline-danger" style="background-color: #343a40; color: white;" >Regresar</a>
         <nav aria-label="Page navigation example" class = "mx-auto" > <!-- Recordar centro !! -->
             <ul class="pagination justify-content-center">
                 <%if(paginaAct==1){%>

@@ -93,8 +93,8 @@
                 </label>
             </div>
             <img src="<%=request.getContextPath()%>/ImagenServlet?idBodega=<%=listaBodegas.get(j).getIdBodega()%>" width="150px" height="150px" class="img-thumbnail">
-            <p class="mb-1"><b>Bodega: </b> <%=listaBodegas.get(j).getNombreBodega()%> </p>
-            <p class="mb-0"><b>direccion: </b> <%=listaBodegas.get(j).getDireccionBodega()%> </p>
+            <p class="mb-1"><b>Bodega: </b><%=listaBodegas.get(j).getNombreBodega()%> - <%=listaBodegas.get(j).getDistrito().getNombre()%></p>
+            <p class="mb-0"><b>direccion: </b><%=listaBodegas.get(j).getDireccionBodega()%></p>
         </div>
         <% } else{ %>
         <div class="col-sm-3"> <!-- Probar medidas "sm-3"? -->
