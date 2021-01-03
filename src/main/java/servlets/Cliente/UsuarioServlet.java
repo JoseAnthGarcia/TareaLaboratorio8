@@ -347,12 +347,16 @@ public class UsuarioServlet extends HttpServlet {
 
                     if (errorNumber || errorGeneral) {
                         if (errorNumber) {
-                            session2.setAttribute("Error", true);
                             //response.sendRedirect(request.getContextPath()+"/UsuarioServlet?accion=verCarrito");
                             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/cliente/carrito.jsp");
                             requestDispatcher.forward(request, response);
                         } else if (errorGeneral) {
-                            //error malintencionado
+                            session2.removeAttribute("bodegaEscogida");
+                            session2.removeAttribute("listaProductosSelecCant");
+                            session2.removeAttribute("codigoPedido");
+                            session2.removeAttribute("precioTotal");
+                            session2.removeAttribute("carrito");
+                            response.sendRedirect(request.getContextPath() + "/UsuarioServlet");
                         }
                     } else {
                         //no es necesario guardarlo en sesion, ya que se mandara como formulario al
@@ -386,83 +390,94 @@ public class UsuarioServlet extends HttpServlet {
                     HttpSession session1 = request.getSession();
                     String codigo = request.getParameter("codigo");
                     if (codigo.equals(session1.getAttribute("codigoPedido"))) {
+
                         ArrayList<ProductoCantDto> listaProductosSelecCant1 = (ArrayList<ProductoCantDto>) session.getAttribute("listaProductosSelecCant");
                         //calculamos el precio total:
+                        boolean errorStock = false;
                         BigDecimal precioTotal = new BigDecimal("0");
                         for (ProductoCantDto producto : listaProductosSelecCant1) {
+                            if(producto.getCant()>usuarioDao.obtenerProducto(producto.getProducto().getId()).getStock()){
+                                errorStock = true;
+                                break;
+                            }
                             BigDecimal cantProducto = new BigDecimal(producto.getCant());
                             BigDecimal costo = producto.getProducto().getPrecioProducto().multiply(cantProducto);
                             precioTotal = precioTotal.add(costo);
                         }
 
-                        //validamos fecha
-                        String fecha = request.getParameter("fecha");
-                        System.out.println(fecha);
-                        if (!fecha.equals("")) {
-                            int pos = 10;
-                            String nuevaFecha = fecha.substring(0, pos) + ' ' + fecha.substring(pos + 1);
-                            Date objDate = new Date(); // Sistema actual La fecha y la hora se asignan a objDate
+                        if(!errorStock){
+                            //validamos fecha
+                            String fecha = request.getParameter("fecha");
+                            System.out.println(fecha);
+                            if (!fecha.equals("")) {
+                                int pos = 10;
+                                String nuevaFecha = fecha.substring(0, pos) + ' ' + fecha.substring(pos + 1);
+                                Date objDate = new Date(); // Sistema actual La fecha y la hora se asignan a objDate
 
-                            System.out.println("obj: " + objDate);//Hora y fecha actual
-                            String strDateFormat = "yyyy-MM-dd HH:mm";
-                            SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
-                            String now = dateFormat.format(objDate);
-                            System.out.println("Ahora: " + now);
-                            System.out.println("Fecha con espacio: " + nuevaFecha);
-                            //System.out.println(dateFormat.format(objDate));
-                            //SimpleDateFormat objSDF = new SimpleDateFormat("dd-mm-yyyy  HH: mm: ss ");
-                            int comparacion = 10;
-                            try {
-                                Date fechaParse = dateFormat.parse(nuevaFecha);
-                                Date ahora = dateFormat.parse(now);
-                                comparacion = fechaParse.compareTo(ahora);
-                                System.out.println(comparacion);
+                                System.out.println("obj: " + objDate);//Hora y fecha actual
+                                String strDateFormat = "yyyy-MM-dd HH:mm";
+                                SimpleDateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+                                String now = dateFormat.format(objDate);
+                                System.out.println("Ahora: " + now);
+                                System.out.println("Fecha con espacio: " + nuevaFecha);
+                                //System.out.println(dateFormat.format(objDate));
+                                //SimpleDateFormat objSDF = new SimpleDateFormat("dd-mm-yyyy  HH: mm: ss ");
+                                int comparacion = 10;
+                                try {
+                                    Date fechaParse = dateFormat.parse(nuevaFecha);
+                                    Date ahora = dateFormat.parse(now);
+                                    comparacion = fechaParse.compareTo(ahora);
+                                    System.out.println(comparacion);
 
-                            } catch (ParseException ex) {
-                                System.out.println("no entro");
-                            }
+                                } catch (ParseException ex) {
+                                    System.out.println("no entro");
+                                }
 
-                            //creo el pedido:
-                            if (comparacion == 1 || comparacion == 0 || fecha.equals("")) {
-                                PedidoBean pedido = new PedidoBean();
-                                pedido.setCodigo(codigo);
-                                pedido.setFecha_recojo(fecha);
-                                pedido.setTotalApagar(precioTotal);
-                                BodegaBean bodegaEscogida = (BodegaBean) session1.getAttribute("bodegaEscogida");
-                                pedido.setBodegaBean(bodegaEscogida);
-                                UsuarioBean usuario = (UsuarioBean) session1.getAttribute("usuario");
-                                pedido.setUsuario(usuario);
-                                int idPedido = usuarioDao.crearPedido(pedido);
+                                //creo el pedido:
+                                if (comparacion == 1 || comparacion == 0 || fecha.equals("")) {
+                                    PedidoBean pedido = new PedidoBean();
+                                    pedido.setCodigo(codigo);
+                                    pedido.setFecha_recojo(fecha);
+                                    pedido.setTotalApagar(precioTotal);
+                                    BodegaBean bodegaEscogida = (BodegaBean) session1.getAttribute("bodegaEscogida");
+                                    pedido.setBodegaBean(bodegaEscogida);
+                                    UsuarioBean usuario = (UsuarioBean) session1.getAttribute("usuario");
+                                    pedido.setUsuario(usuario);
+                                    int idPedido = usuarioDao.crearPedido(pedido);
 
-                                //relleno el pedido:
-                                usuarioDao.ingresarProductosApedido(idPedido, listaProductosSelecCant1);
+                                    //relleno el pedido:
+                                    usuarioDao.ingresarProductosApedido(idPedido, listaProductosSelecCant1);
 
-                                //Se elimina los atributos:
-                                session1.removeAttribute("bodegaEscogida");
-                                session1.removeAttribute("listaProductosSelecCant");
-                                session1.removeAttribute("codigoPedido");
-                                session1.removeAttribute("precioTotal");
-                                session1.removeAttribute("carrito");
+                                    //Se elimina los atributos:
+                                    session1.removeAttribute("bodegaEscogida");
+                                    session1.removeAttribute("listaProductosSelecCant");
+                                    session1.removeAttribute("codigoPedido");
+                                    session1.removeAttribute("precioTotal");
+                                    session1.removeAttribute("carrito");
 
-                                request.setAttribute("codigo", codigo);
-                                RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("cliente/registroExitoso.jsp");
-                                requestDispatcher2.forward(request, response);
+                                    request.setAttribute("codigo", codigo);
+                                    RequestDispatcher requestDispatcher2 = request.getRequestDispatcher("cliente/registroExitoso.jsp");
+                                    requestDispatcher2.forward(request, response);
+                                } else {
+                                    boolean errorFecha = true;
+                                    request.setAttribute("errorFecha", errorFecha);
+
+                                    request.setAttribute("codigoPedido", codigo);
+                                    request.setAttribute("precioTotal", precioTotal);
+                                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/confirmarPedido.jsp");
+                                    requestDispatcher.forward(request, response);
+                                }
                             } else {
-                                boolean errorFecha = true;
-                                request.setAttribute("errorFecha", errorFecha);
+                                request.setAttribute("errorFecha", true);
 
                                 request.setAttribute("codigoPedido", codigo);
                                 request.setAttribute("precioTotal", precioTotal);
                                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/confirmarPedido.jsp");
                                 requestDispatcher.forward(request, response);
                             }
-                        } else {
-                            request.setAttribute("errorFecha", true);
-
-                            request.setAttribute("codigoPedido", codigo);
-                            request.setAttribute("precioTotal", precioTotal);
-                            RequestDispatcher requestDispatcher = request.getRequestDispatcher("cliente/confirmarPedido.jsp");
-                            requestDispatcher.forward(request, response);
+                        }else{
+                            request.getSession().setAttribute("errorStock", true);
+                            response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=realizarPedido");
                         }
                     } else {
                         //error malintensionado
@@ -735,7 +750,8 @@ public class UsuarioServlet extends HttpServlet {
                             HashMap<Integer, ProductoBean> carrito2 = (HashMap<Integer, ProductoBean>) session2.getAttribute("carrito");
                             ProductoBean producto1 = usuarioDao.obtenerProducto(idProducto);
                             if (carrito2.containsKey(producto1.getId())) {
-                                session2.setAttribute("productoExistente", true);
+                                session2.setAttribute("producto" +
+                                        "", true);
 
                             } else {
                                 session2.setAttribute("productoAgregado", true);
@@ -745,9 +761,8 @@ public class UsuarioServlet extends HttpServlet {
                             }
                             response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=realizarPedido");
                         } else {
-                            //accion malintensionado
-                            requestDispatcher = request.getRequestDispatcher("/cliente/access_denied.jsp");
-                            requestDispatcher.forward(request, response);
+                            request.getSession().setAttribute("errorAgregarCarrito", true);
+                            response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=realizarPedido");
                         }
                     } else {
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=escogerBodega1");
@@ -882,9 +897,8 @@ public class UsuarioServlet extends HttpServlet {
                             requestDispatcher.forward(request, response);
 
                         } else {
-                            //accion malintensionado
-                            requestDispatcher = request.getRequestDispatcher("/cliente/default.jsp");
-                            requestDispatcher.forward(request, response);
+                            request.getSession().setAttribute("errorVerDetalles1", true);
+                            response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=realizarPedido");
                         }
                     } else {
                         response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=escogerBodega1");

@@ -537,7 +537,7 @@ public class UsuarioDao extends BaseDao {
 
     public boolean verificarProductoBodega(int idProducto, int idBodega){
         boolean existe = false;
-        String sql = "SELECT * FROM producto WHERE idProducto=? and idBodega=?";
+        String sql = "SELECT * FROM producto WHERE idProducto=? and idBodega=? and estado='Existente';";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setInt(1, idProducto);

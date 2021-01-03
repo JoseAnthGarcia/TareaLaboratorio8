@@ -6,6 +6,7 @@
 <%@ page import="beans.ProductoBean" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="daos.UsuarioDao" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 
@@ -16,7 +17,7 @@
     <!-- para los iconos como botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <title>Carrito</title>
+    <title>Productos seleccionados</title>
     <style>
         .izquierda1{
             left: 20px;
@@ -62,10 +63,10 @@
     <jsp:include page="/cliente/includes/headerClient.jsp"/>
 </header>
 
-<div class="container" style="margin-top: 65px; margin-left: 15%; margin-right: 15%">
+<div class="container" style="margin-top: 30px">
     <div class="row col-12">
         <div class="col-sm-3">
-            <h1>Mi carrito</h1>
+            <h1>Productos seleccionados</h1>
         </div>
 
         <div class="col-sm-5">
@@ -88,13 +89,13 @@
                 <tr>
                     <th scope="col">Producto</th>
                     <th scope="col">Precio Unitario</th>
-                    <th scope="col">Stock</th>
+                    <th scope="col">Cantidad</th>
                     <th scope="col">
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                <%
+                <%UsuarioDao usuarioDao = new UsuarioDao();
                     for (Map.Entry<Integer, ProductoBean> entry : listaProductos.entrySet()){%>
                 <tr>
                     <td><%=entry.getValue().getNombreProducto()%>
@@ -102,20 +103,26 @@
                     <td><%=entry.getValue().getPrecioProducto()%>
                     </td>
                     <td>
-                        <%if(request.getParameter(String.valueOf(entry.getValue().getId()))==null){%>
-                        <input name="<%=entry.getValue().getId()%>" type="number" min="1" max="<%=entry.getValue().getStock()%>" id="Stock" class="form-control" >
+                        <%if(usuarioDao.obtenerProducto(entry.getValue().getId()).getStock()==0){%>
+                        <input name="<%=entry.getValue().getId()%>" type="number" id="Stock" class="form-control is-invalid">
+                        <%}else if(request.getParameter(String.valueOf(entry.getValue().getId()))==null){%>
+                        <input name="<%=entry.getValue().getId()%>" type="number" id="Stock" class="form-control" >
                         <%}else{
                         String textValid = request.getParameter(String.valueOf(entry.getValue().getId())).equals("")
                                 || Integer.parseInt(request.getParameter(String.valueOf(entry.getValue().getId())))<1
-                                || Integer.parseInt(request.getParameter(String.valueOf(entry.getValue().getId())))> entry.getValue().getStock()
+                                || Integer.parseInt(request.getParameter(String.valueOf(entry.getValue().getId())))> usuarioDao.obtenerProducto(entry.getValue().getId()).getStock()
                                 ?"is-invalid":"";
                         String textvalue = request.getParameter(String.valueOf(entry.getValue().getId())).equals("")?"":"value='"+request.getParameter(String.valueOf(entry.getValue().getId()))+"'";%>
-                        <input name="<%=entry.getValue().getId()%>" type="number" min="1" max="<%=entry.getValue().getStock()%>" id="Stock" class="form-control <%=textValid%>"
+                        <input name="<%=entry.getValue().getId()%>" type="number" id="Stock" class="form-control <%=textValid%>"
                         <%=textvalue%>>
-                        <div class="invalid-feedback">
-                            Ingrese una cantidad valida, por favor.
-                        </div>
                         <%}%>
+                        <div class="invalid-feedback">
+                            <%if(usuarioDao.obtenerProducto(entry.getValue().getId()).getStock()==0){%>
+                            Producto agotado
+                            <%}else{%>
+                            Cantidad debe esta entre 1 y <%=usuarioDao.obtenerProducto(entry.getValue().getId()).getStock()%>.
+                            <%}%>
+                        </div>
                     </td>
                     <td>
                         <a class="btn btn-secondary" href="<%=request.getContextPath()%>/UsuarioServlet?accion=eliminarProductCarrito&productSelect=<%=entry.getValue().getId()%>">Eliminar</a>
@@ -133,7 +140,7 @@
         </div>
         <%}else{%>
         <div class="alert alert-secondary" role="alert">
-            El carrito se encuentra vacio.
+            No existe productos seleccionados.
         </div>
         <a href="<%=request.getContextPath()%>/UsuarioServlet?accion=realizarPedido" class="btn btn-outline-success primero " style="margin-top: 80px;">Regresar</a>
         <%}%>

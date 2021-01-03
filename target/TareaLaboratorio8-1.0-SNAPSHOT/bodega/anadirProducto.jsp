@@ -81,7 +81,7 @@
                                            id="nombreProducto"
                                            aria-describedby="validationServer05Feedback"
                                         <%=request.getParameter("nombreProducto")==null?"":"value='"+request.getParameter("nombreProducto")+"'"%>
-                                           required>
+                                           >
                                     <div id="validationServer05Feedback" class="invalid-feedback">
                                         No puede estar vacío
                                     </div>
@@ -113,7 +113,7 @@
                                            id="Stock"
                                            aria-describedby="validationServer03Feedback"
                                         <%=request.getParameter("stock")==null?"":"value='"+request.getParameter("stock")+"'"%>
-                                           required>
+                                           >
                                     <div id="validationServer03Feedback" class="invalid-feedback">
                                         Debe ser un número válido
                                     </div>
@@ -129,7 +129,7 @@
                                            name="precioProducto"
                                            id="Precio"
                                         <%=request.getParameter("precioProducto")==null?"":"value='"+request.getParameter("precioProducto")+"'"%>
-                                           aria-describedby="validationServer04Feedback" required>
+                                           aria-describedby="validationServer04Feedback" >
                                     <div id="validationServer04Feedback" class="invalid-feedback">
                                         Debe ser un número válido
                                     </div>

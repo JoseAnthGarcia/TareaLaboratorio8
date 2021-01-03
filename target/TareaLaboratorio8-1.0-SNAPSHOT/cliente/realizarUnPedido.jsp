@@ -86,6 +86,24 @@
                 </div>
                 <%session.removeAttribute("productoAgregado");
                 }%>
+                <%if(session.getAttribute("errorStock")!=null){%>
+                <div class="alert alert-danger" role="alert">
+                    Ocurrió un problema al intentar realizar el pedido.
+                </div>
+                <%session.removeAttribute("errorStock");
+                }%>
+                <%if(session.getAttribute("errorAgregarCarrito")!=null){%>
+                <div class="alert alert-danger" role="alert">
+                    Ocurrió un problema al intentar seleccionar el producto.
+                </div>
+                <%session.removeAttribute("errorAgregarCarrito");
+                }%>
+                <%if(session.getAttribute("errorVerDetalles1")!=null){%>
+                <div class="alert alert-danger" role="alert">
+                    Ocurrió un problema al intentar ver detalles del producto.
+                </div>
+                <%session.removeAttribute("errorVerDetalles1");
+                }%>
             </div>
 
         </div>
