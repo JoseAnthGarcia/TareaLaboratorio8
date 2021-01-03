@@ -63,7 +63,7 @@
 
     <%if(request.getSession().getAttribute("pedidoCancelado")!=null){%>
     <div align="center" class="alert alert-success" role="alert">
-        Pedido cancelado con éxito!
+        ¡Pedido cancelado con éxito!
     </div>
     <%request.getSession().removeAttribute("pedidoCancelado");}%>
 
@@ -88,7 +88,7 @@
                 <% if(pedido.getEstado().equalsIgnoreCase("Pendiente")){%>
                     <td>
                     <a onclick="return confirm('¿Estas seguro que deseas cancelar tu pedido?')"
-                       href="<%=request.getContextPath()%>/UsuarioServlet?accion=cancelarPedido&codigoPedido=<%=pedido.getCodigo()%>"
+                       href="<%=request.getContextPath()%>/UsuarioServlet?accion=cancelarPedido&codigoPedido=<%=Integer.parseInt(pedido.getCodigo())%>"
                        class="btn btn-danger">Cancelar</a></td>
                 <% }else{ %>
                 <td></td>

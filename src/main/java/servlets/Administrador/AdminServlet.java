@@ -226,9 +226,11 @@ public class AdminServlet extends HttpServlet {
                         String correoAenviar = correo;
                         String asunto = "REGISTRAR CONTRASEÑA";
                         String contenido = "Se ha iniciado el registro de su bodega "+nombreBodega+" con RUC:"+rucBodega+
-                                ", para continuar con el registro ingrese al siguiente link y establezca su contraseña:" +
+                                ", para continuar con el registro ingrese al siguiente link y establezca su contraseña:\n" +
                                 "http://localhost:"+puerto+request.getContextPath()+"/LoginBodega?accion=actualizarContra&idBodega="
-                                +idBodega+"&rucBodega="+rucBodega;
+                                +idBodega+"&rucBodega="+rucBodega+"\n" +
+                                "Atentamente,\n" +
+                                "El equipo de MiMarca.com ";
 
                         try {
                             emails.enviarCorreo(correoAenviar, asunto, contenido);
